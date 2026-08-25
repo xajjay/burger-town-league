@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
+
+export function getStaticPaths() {
+  return currentSeasonTabs
+    .filter(t => t.slug !== '')
+    .map(t => ({ params: { tab: t.slug }, props: { label: t.label } }));
+}
+
+const { tab } = Astro.params;
+const { label } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+<Base title={`${label} — Current Season — Burger Town Leagues`}>
+  <section style="padding-bottom: 0;">
+    <div class="wrap">
+      <div class="season-pills">
+        {currentSeasonTabs.map(t => (
+          <a class={`season-pill ${currentPath === `/current-season/${t.slug}` ? 'active' : ''}`} href={`/current-season/${t.slug}`}>{t.label}</a>
+        ))}
+      </div>
+      <span class="eyebrow">Coming Soon</span>
+      <h1 class="script-heading">{label}</h1>
+      <p style="color: var(--paper-dim); max-width: 60ch;">
+        {label} for Burger Town's first season will show up here once the season is underway.
+      </p>
+    </div>
+  </section>
+</Base>

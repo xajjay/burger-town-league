@@ -1,0 +1,48 @@
+---
+import Base from '../../layouts/Base.astro';
+import { seasons } from '../../data/leagueData.js';
+
+const currentPath = Astro.url.pathname;
+const historyTabs = [
+  { href: "/history", label: "Draft League History" },
+  ...seasons.map(s => ({ href: `/season/${s.id}`, label: s.name })),
+  { href: "/history/all-seasons", label: "All Seasons" },
+];
+---
+<Base title="History — Burger Town Leagues">
+  <section style="padding-bottom: 0;">
+    <div class="wrap">
+      <div class="season-pills">
+        {historyTabs.map(t => (
+          <a class={`season-pill ${currentPath === t.href ? 'active' : ''}`} href={t.href}>{t.label}</a>
+        ))}
+      </div>
+      <span class="eyebrow">Preserved from prior leagues</span>
+      <h1 class="script-heading">Draft League History</h1>
+      <p style="color: var(--paper-dim); max-width: 65ch;">
+        Burger Town's player base carries forward the history of two prior draft leagues. Seasons 1–2 were played under the <strong style="color: var(--paper);">CTRL League</strong>, and Seasons 3–5 under the <strong style="color: var(--paper);">Z Star League</strong>. That history is fully preserved here.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Champions &amp; MVPs</h2>
+      <div class="table-scroll">
+        <table class="stat-table">
+          <thead><tr><th>Season</th><th>League</th><th>Champion</th><th>MVP</th></tr></thead>
+          <tbody>
+            {seasons.map(s => (
+              <tr>
+                <td><a href={`/season/${s.id}`}>{s.name}</a></td>
+                <td>{s.league}</td>
+                <td>{s.champion}</td>
+                <td>{s.mvp !== 'TBD' ? <a href={`/players/${encodeURIComponent(s.mvp)}`}>{s.mvp}</a> : 'TBD'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Base>

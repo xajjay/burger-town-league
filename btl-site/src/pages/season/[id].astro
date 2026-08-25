@@ -1,0 +1,87 @@
+---
+import Base from '../../layouts/Base.astro';
+import { seasons, seasonStats, standings } from '../../data/leagueData.js';
+
+export function getStaticPaths() {
+  return seasons.map(s => ({ params: { id: String(s.id) } }));
+}
+
+const { id } = Astro.params;
+const seasonId = Number(id);
+const season = seasons.find(s => s.id === seasonId);
+const stats = [...(seasonStats[seasonId] || [])].sort((a, b) => b.kd - a.kd);
+const seasonStandings = standings[seasonId] || [];
+
+const historyTabs = [
+  { href: "/history", label: "Draft League History" },
+  ...seasons.map(s => ({ href: `/season/${s.id}`, label: s.name })),
+  { href: "/history/all-seasons", label: "All Seasons" },
+];
+const currentPath = Astro.url.pathname;
+---
+<Base title={`${season.name} — Burger Town Leagues`}>
+  <section style="padding-bottom: 0;">
+    <div class="wrap">
+      <div class="season-pills">
+        {historyTabs.map(t => (
+          <a class={`season-pill ${currentPath === t.href ? 'active' : ''}`} href={t.href}>{t.label}</a>
+        ))}
+      </div>
+      <span class="eyebrow">{season.status} · {season.league}</span>
+      <h1 class="script-heading">{season.name}</h1>
+      <p style="color: var(--paper-dim); max-width: 60ch;">
+        Champion: <strong style="color: var(--gold);">{season.champion}</strong>
+        {season.mvp !== 'TBD' && <> · MVP: <strong style="color: var(--gold);">{season.mvp}</strong></>}
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Player Stats</h2>
+      <div class="table-scroll">
+        <table class="stat-table">
+          <thead>
+            <tr><th>#</th><th>Player</th><th>Team</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Maps</th><th>Honors</th></tr>
+          </thead>
+          <tbody>
+            {stats.map((p, i) => (
+              <tr>
+                <td class={i === 0 ? 'rank-1' : ''}>{i + 1}</td>
+                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
+                <td>{p.team}</td>
+                <td>{p.kills}</td>
+                <td>{p.deaths}</td>
+                <td>{p.kd.toFixed(2)}</td>
+                <td>{p.maps}</td>
+                <td>{p.allStar && <span class="badge badge-gold">{p.allStar}</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  {seasonStandings.length > 0 && (
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Final Standings</h2>
+        <div class="table-scroll">
+          <table class="stat-table">
+            <thead><tr><th>#</th><th>Team</th><th>Record</th></tr></thead>
+            <tbody>
+              {seasonStandings.map(s => (
+                <tr>
+                  <td class={s.rank === 1 ? 'rank-1' : ''}>{s.rank}</td>
+                  <td>{s.team}</td>
+                  <td>{s.record}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+</Base>

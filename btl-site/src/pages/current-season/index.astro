@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
+
+const currentPath = Astro.url.pathname;
+---
+<Base title="Current Season — Burger Town Leagues">
+  <section style="padding-bottom: 0;">
+    <div class="wrap">
+      <div class="season-pills">
+        {currentSeasonTabs.map(t => (
+          <a class={`season-pill ${currentPath === `/current-season/${t.slug}` || (t.slug === '' && currentPath === '/current-season') || (t.slug === '' && currentPath === '/current-season/') ? 'active' : ''}`} href={`/current-season/${t.slug}`}>{t.label}</a>
+        ))}
+      </div>
+      <span class="eyebrow">Coming Soon</span>
+      <h1 class="script-heading">Burger Town's First Season</h1>
+      <p style="color: var(--paper-dim); max-width: 60ch;">
+        We're building out rosters, standings, and schedule now. Check back soon — or join the Discord to be the first to know when the draft goes live.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="pixel-card" style="max-width: 560px;">
+        <span class="eyebrow">Status</span>
+        <p style="color: var(--paper); font-size: 1.1rem; margin: 4px 0 16px;">Season details are on the way.</p>
+        <a class="btn btn-primary" href="https://discord.gg/G2kdxeGkZ" target="_blank" rel="noopener">Join the Discord</a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import { seasons, careerStats } from '../../data/leagueData.js';
+
+const currentPath = Astro.url.pathname;
+const historyTabs = [
+  { href: "/history", label: "Draft League History" },
+  ...seasons.map(s => ({ href: `/season/${s.id}`, label: s.name })),
+  { href: "/history/all-seasons", label: "All Seasons" },
+];
+
+const sorted = [...careerStats].sort((a, b) => b.kd - a.kd);
+---
+<Base title="All Seasons — Burger Town Leagues">
+  <section style="padding-bottom: 0;">
+    <div class="wrap">
+      <div class="season-pills">
+        {historyTabs.map(t => (
+          <a class={`season-pill ${currentPath === t.href ? 'active' : ''}`} href={t.href}>{t.label}</a>
+        ))}
+      </div>
+      <span class="eyebrow">Career Totals</span>
+      <h1 class="script-heading">All Seasons Combined</h1>
+      <p style="color: var(--paper-dim); max-width: 60ch;">
+        Every player's combined stats across every season recorded, spanning both prior leagues.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="table-scroll">
+        <table class="stat-table">
+          <thead>
+            <tr><th>#</th><th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Seasons</th><th>Accolades</th></tr>
+          </thead>
+          <tbody>
+            {sorted.map((p, i) => (
+              <tr>
+                <td class={i === 0 ? 'rank-1' : ''}>{i + 1}</td>
+                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
+                <td>{p.kills}</td>
+                <td>{p.deaths}</td>
+                <td>{p.kd.toFixed(2)}</td>
+                <td>{p.seasons.map(s => `S${s}`).join(', ')}</td>
+                <td style="white-space: normal; min-width: 260px; font-family: var(--font-body); font-size: 0.8rem; color: var(--paper-dim);">{p.accolades}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Base>
