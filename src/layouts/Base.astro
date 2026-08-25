@@ -1,0 +1,49 @@
+---
+import '../styles/global.css';
+import { social } from '../data/leagueData.js';
+const { title = "Burger Town Leagues", description = "Call of Duty: Black Ops Cold War competitive league — stats, standings, and history." } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" href="/images/burger-icon.png" />
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="/">
+        <img src="/images/burger-icon.png" alt="" />
+        Burger Town
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Home</a></li>
+        <li><a href="/season/5" aria-current={currentPath.startsWith('/season') ? 'page' : undefined}>Seasons</a></li>
+        <li><a href="/schedule" aria-current={currentPath === '/schedule' ? 'page' : undefined}>Schedule</a></li>
+        <li><a href="/hall-of-fame" aria-current={currentPath === '/hall-of-fame' ? 'page' : undefined}>Hall of Fame</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href={social.discord} target="_blank" rel="noopener">Discord</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <span>© {new Date().getFullYear()} Burger Town Leagues</span>
+      <ul class="footer-links">
+        <li><a href={social.youtube} target="_blank" rel="noopener">YouTube</a></li>
+        <li><a href={social.discord} target="_blank" rel="noopener">Discord</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

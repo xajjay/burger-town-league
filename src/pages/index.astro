@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import { seasons, seasonStats, standings, social } from '../data/leagueData.js';
+
+const latestSeason = seasons[seasons.length - 1];
+const topPlayers = [...seasonStats[latestSeason.id]].sort((a, b) => b.kd - a.kd).slice(0, 5);
+const currentStandings = (standings[latestSeason.id] || []).slice(0, 5);
+---
+<Base title="Burger Town Leagues — Cold War Draft League">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Est. Season 1</span>
+        <h1 class="script-heading">Burger Town Leagues</h1>
+        <p>The home of the Cold War Draft League — every season's stats, standings, and history, updated as new matches wrap up.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href={`/season/${latestSeason.id}`}>View Season {latestSeason.id}</a>
+          <a class="btn btn-ghost" href={social.youtube} target="_blank" rel="noopener">Watch on YouTube</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="/images/logo-full.png" alt="Burger Town Leagues logo" />
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Season {latestSeason.id} — Top K/D</h2>
+      <div class="table-scroll">
+        <table class="stat-table">
+          <thead>
+            <tr><th>#</th><th>Player</th><th>Team</th><th>K/D</th><th>Maps</th></tr>
+          </thead>
+          <tbody>
+            {topPlayers.map((p, i) => (
+              <tr>
+                <td class={i === 0 ? 'rank-1' : ''}>{i + 1}</td>
+                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
+                <td>{p.team}</td>
+                <td>{p.kd.toFixed(2)}</td>
+                <td>{p.maps}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Current Standings</h2>
+      <div class="table-scroll">
+        <table class="stat-table">
+          <thead><tr><th>#</th><th>Team</th><th>Record</th></tr></thead>
+          <tbody>
+            {currentStandings.map(s => (
+              <tr>
+                <td class={s.rank === 1 ? 'rank-1' : ''}>{s.rank}</td>
+                <td>{s.team}</td>
+                <td>{s.record}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Stay in the loop</h2>
+      <div class="grid grid-3">
+        <div class="pixel-card">
+          <span class="eyebrow">YouTube</span>
+          <p>Match VODs and season recaps, posted after every series.</p>
+          <a class="btn btn-primary" href={social.youtube} target="_blank" rel="noopener">Subscribe</a>
+        </div>
+        <div class="pixel-card">
+          <span class="eyebrow">Discord</span>
+          <p>Sign up for a draft, talk trash, and get match reminders.</p>
+          <a class="btn btn-primary" href={social.discord} target="_blank" rel="noopener">Join Server</a>
+        </div>
+        <div class="pixel-card">
+          <span class="eyebrow">Hall of Fame</span>
+          <p>Every champion, MVP, and All-Star since Season 1.</p>
+          <a class="btn btn-ghost" href="/hall-of-fame">View History</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import { seasons, careerStats } from '../data/leagueData.js';
+
+const topCareer = [...careerStats].sort((a, b) => b.kd - a.kd);
+---
+<Base title="Hall of Fame — Burger Town Leagues">
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">Since Season 1</span>
+      <h1 class="script-heading" style="margin-bottom: 32px;">Hall of Fame</h1>
+
+      <h2 class="section-title">Champions &amp; MVPs</h2>
+      <div class="table-scroll">
+        <table class="stat-table">
+          <thead><tr><th>Season</th><th>Champion</th><th>MVP</th></tr></thead>
+          <tbody>
+            {seasons.map(s => (
+              <tr>
+                <td><a href={`/season/${s.id}`}>{s.name}</a></td>
+                <td>{s.champion}</td>
+                <td>{s.mvp !== 'TBD' ? <a href={`/players/${encodeURIComponent(s.mvp)}`}>{s.mvp}</a> : 'TBD'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Career K/D Leaders</h2>
+      <div class="table-scroll">
+        <table class="stat-table">
+          <thead><tr><th>#</th><th>Player</th><th>K/D</th><th>Seasons Played</th></tr></thead>
+          <tbody>
+            {topCareer.map((p, i) => (
+              <tr>
+                <td class={i === 0 ? 'rank-1' : ''}>{i + 1}</td>
+                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
+                <td>{p.kd.toFixed(2)}</td>
+                <td>{p.seasons.length}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Base>
