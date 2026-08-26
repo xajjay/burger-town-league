@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import { careerStats } from '../../data/leagueData.js';
+
+const sorted = [...careerStats].sort((a, b) => b.kd - a.kd);
+---
+<Base title="Players — Burger Town Leagues">
+  <section style="padding-bottom: 0;">
+    <div class="wrap">
+      <span class="eyebrow">{sorted.length} Players</span>
+      <h1 class="script-heading" style="margin-bottom: 20px;">Find a Player</h1>
+      <input
+        id="player-search"
+        type="text"
+        placeholder="Search by name…"
+        style="width: 100%; max-width: 400px; padding: 12px 16px; background: var(--panel); border: 1px solid var(--line); color: var(--paper); font-family: var(--font-body); font-size: 1rem; border-radius: 2px;"
+      />
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="table-scroll">
+        <table class="stat-table" id="player-table">
+          <thead><tr><th>Player</th><th>Career K/D</th><th>Seasons</th></tr></thead>
+          <tbody>
+            {sorted.map(p => (
+              <tr class="player-row" data-name={p.player.toLowerCase()}>
+                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
+                <td>{p.kd.toFixed(2)}</td>
+                <td>{p.seasons.map(s => `S${s}`).join(', ')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const input = document.getElementById('player-search');
+    const rows = document.querySelectorAll('.player-row');
+    input?.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      rows.forEach((row) => {
+        const name = row.getAttribute('data-name') || '';
+        row.style.display = name.includes(q) ? '' : 'none';
+      });
+    });
+  </script>
+</Base>

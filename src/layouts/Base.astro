@@ -24,6 +24,7 @@ const currentPath = Astro.url.pathname;
         <li><a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Home</a></li>
         <li><a href="/current-season" aria-current={currentPath.startsWith('/current-season') ? 'page' : undefined}>Current Season</a></li>
         <li><a href="/history" aria-current={currentPath.startsWith('/history') || currentPath.startsWith('/season') ? 'page' : undefined}>History</a></li>
+        <li><a href="/players" aria-current={currentPath.startsWith('/players') ? 'page' : undefined}>Players</a></li>
         <li><a href="/hall-of-fame" aria-current={currentPath === '/hall-of-fame' ? 'page' : undefined}>Hall of Fame</a></li>
       </ul>
       <div class="nav-cta">
@@ -38,9 +39,10 @@ const currentPath = Astro.url.pathname;
 
   <footer class="site-footer">
     <div class="wrap footer-grid">
-      <span>© {new Date().getFullYear()} Burger Town Leagues</span>
+      <span>© {new Date().getFullYear()} Burger Town Leagues · <a href={`mailto:${social.email}`}>{social.email}</a></span>
       <ul class="footer-links">
         <li><a href={social.youtube} target="_blank" rel="noopener">YouTube</a></li>
+        <li><a href={social.twitter} target="_blank" rel="noopener">Twitter/X</a></li>
         <li><a href={social.discord} target="_blank" rel="noopener">Discord</a></li>
       </ul>
     </div>

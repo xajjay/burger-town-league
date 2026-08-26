@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { seasons, seasonStats, standings } from '../../data/leagueData.js';
+import { seasons, seasonStats, standings, seriesList } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return seasons.map(s => ({ params: { id: String(s.id) } }));
@@ -11,6 +11,7 @@ const seasonId = Number(id);
 const season = seasons.find(s => s.id === seasonId);
 const stats = [...(seasonStats[seasonId] || [])].sort((a, b) => b.kd - a.kd);
 const seasonStandings = standings[seasonId] || [];
+const seasonSeries = seriesList.filter(s => s.season === seasonId);
 
 const historyTabs = [
   { href: "/history", label: "Draft League History" },
@@ -69,13 +70,36 @@ const currentPath = Astro.url.pathname;
         <h2 class="section-title">Final Standings</h2>
         <div class="table-scroll">
           <table class="stat-table">
-            <thead><tr><th>#</th><th>Team</th><th>Record</th></tr></thead>
+            <thead><tr><th>#</th><th>Team</th><th>Record</th><th>Manager</th></tr></thead>
             <tbody>
               {seasonStandings.map(s => (
                 <tr>
                   <td class={s.rank === 1 ? 'rank-1' : ''}>{s.rank}</td>
-                  <td>{s.team}</td>
+                  <td>{s.team} {s.champion && <span class="badge badge-gold">Champion</span>}</td>
                   <td>{s.record}</td>
+                  <td>{s.manager}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {seasonSeries.length > 0 && (
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Series Results</h2>
+        <p style="color: var(--paper-dim); font-size: 0.9rem; margin-bottom: 16px;">Click a series to see the full per-player, per-map breakdown.</p>
+        <div class="table-scroll">
+          <table class="stat-table">
+            <thead><tr><th>Series</th><th>Teams</th></tr></thead>
+            <tbody>
+              {seasonSeries.map(s => (
+                <tr>
+                  <td><a href={`/season/${seasonId}/series/${s.slug}`}>{s.name}</a> {s.isPlayoff && <span class="badge badge-red">Playoffs</span>}</td>
+                  <td>{s.teams.map(t => t.team).join(' vs ')}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { careerStats, seasonStats } from '../../data/leagueData.js';
+import { careerStats, perPlayerSeasonHonors, seasonStats } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return careerStats.map(p => ({ params: { name: p.player } }));
@@ -9,43 +9,71 @@ export function getStaticPaths() {
 const { name } = Astro.params;
 const player = careerStats.find(p => p.player === name);
 
+const honorsBySeason = player ? (perPlayerSeasonHonors[player.player] || {}) : {};
+
 const seasonRows = player
   ? player.seasons.map(sid => {
-      const row = (seasonStats[sid] || []).find(r => r.player === name);
-      return row ? { season: sid, ...row } : null;
-    }).filter(Boolean)
+      const kd = player.seasonKD[sid];
+      const row = (seasonStats[sid] || []).find(r => r.player === player.player);
+      return {
+        season: sid,
+        kd: kd,
+        team: row?.team || '',
+        kills: row?.kills,
+        deaths: row?.deaths,
+        maps: row?.maps,
+        honors: honorsBySeason[sid] || [],
+      };
+    })
   : [];
+
+// Build tag chips: one per honor type, tagged with which season(s)
+const tagGroups = {};
+for (const row of seasonRows) {
+  for (const h of row.honors) {
+    (tagGroups[h] ||= []).push(row.season);
+  }
+}
+const tags = Object.entries(tagGroups).map(([label, seasonsList]) => ({
+  label,
+  seasons: seasonsList,
+}));
 ---
 <Base title={player ? `${player.player} — Burger Town Leagues` : 'Player not found'}>
   <section>
     <div class="wrap">
       {player ? (
         <>
-          <div class="pixel-card" style="max-width: 480px; margin-bottom: 40px;">
+          <div class="pixel-card" style="max-width: 520px; margin-bottom: 40px;">
             <span class="eyebrow">Service Record</span>
             <h1 class="script-heading" style="font-size: 2.4rem;">{player.player}</h1>
             <p style="font-family: var(--font-mono); font-size: 1.4rem; color: var(--gold); margin: 8px 0;">
               {player.kd.toFixed(2)} <span style="font-size: 0.7rem; color: var(--paper-dim); font-family: var(--font-body);">CAREER K/D</span>
             </p>
-            <p style="color: var(--paper-dim); margin: 4px 0;">{player.kills} kills · {player.deaths} deaths · {player.seasons.length} seasons played</p>
-            <div style="margin-top: 12px;">
-              {player.accolades.split(';').map(a => <span class="badge badge-red">{a.trim()}</span>)}
-            </div>
+            <p style="color: var(--paper-dim); margin: 4px 0;">{player.kills.toLocaleString()} kills · {player.deaths.toLocaleString()} deaths · {player.seasons.length} season{player.seasons.length !== 1 ? 's' : ''} played</p>
+            {tags.length > 0 && (
+              <div style="margin-top: 12px;">
+                {tags.map(t => (
+                  <span class="badge badge-red" title={`Season ${t.seasons.join(', ')}`}>{t.label} ({t.seasons.map(s => `S${s}`).join(', ')})</span>
+                ))}
+              </div>
+            )}
           </div>
 
           <h2 class="section-title">Season-by-Season</h2>
           <div class="table-scroll">
             <table class="stat-table">
-              <thead><tr><th>Season</th><th>Team</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Maps</th></tr></thead>
+              <thead><tr><th>Season</th><th>Team</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Maps</th><th>Honors</th></tr></thead>
               <tbody>
                 {seasonRows.map(r => (
                   <tr>
                     <td><a href={`/season/${r.season}`}>Season {r.season}</a></td>
                     <td>{r.team}</td>
-                    <td>{r.kills}</td>
-                    <td>{r.deaths}</td>
-                    <td>{r.kd.toFixed(2)}</td>
-                    <td>{r.maps}</td>
+                    <td>{r.kills ?? '—'}</td>
+                    <td>{r.deaths ?? '—'}</td>
+                    <td>{r.kd?.toFixed(2) ?? '—'}</td>
+                    <td>{r.maps ?? '—'}</td>
+                    <td>{r.honors.map(h => <span class="badge badge-gold">{h}</span>)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -53,7 +81,7 @@ const seasonRows = player
           </div>
         </>
       ) : (
-        <p>Player not found.</p>
+        <p>Player not found. <a href="/players">Browse all players</a>.</p>
       )}
     </div>
   </section>

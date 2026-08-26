@@ -1,0 +1,73 @@
+---
+import Base from '../../../../layouts/Base.astro';
+import { seriesList } from '../../../../data/leagueData.js';
+
+export function getStaticPaths() {
+  return seriesList.map(s => ({
+    params: { id: String(s.season), slug: s.slug },
+    props: { series: s },
+  }));
+}
+
+const { series } = Astro.props;
+const byTeam = {};
+for (const p of series.players) {
+  (byTeam[p.team] ||= []).push(p);
+}
+const teamNames = Object.keys(byTeam);
+const totals = teamNames.map(t => ({
+  team: t,
+  kills: byTeam[t].reduce((s, p) => s + (p.kills || 0), 0),
+  deaths: byTeam[t].reduce((s, p) => s + (p.deaths || 0), 0),
+}));
+const mapsPlayed = series.players[0]?.mapsList || [];
+---
+<Base title={`${series.name} — Burger Town Leagues`}>
+  <section style="padding-bottom: 0;">
+    <div class="wrap">
+      <a href={`/season/${series.season}`} class="btn btn-ghost" style="margin-bottom: 20px; display: inline-flex;">← Back to Season {series.season}</a>
+      <span class="eyebrow">{series.isPlayoff ? 'Playoff Series' : 'Regular Season Series'}</span>
+      <h1 class="script-heading" style="font-size: 2.2rem;">{series.name}</h1>
+      {mapsPlayed.length > 0 && (
+        <p style="color: var(--paper-dim);">Maps played: {mapsPlayed.join(', ')}</p>
+      )}
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="grid grid-3" style="margin-bottom: 32px;">
+        {totals.map(t => (
+          <div class="pixel-card">
+            <span class="eyebrow">{t.team}</span>
+            <p style="font-family: var(--font-mono); font-size: 1.3rem; color: var(--gold); margin: 4px 0;">
+              {t.kills}<span style="color: var(--paper-dim); font-size: 0.9rem;"> K</span> — {t.deaths}<span style="color: var(--paper-dim); font-size: 0.9rem;"> D</span>
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {teamNames.map(t => (
+        <>
+          <h2 class="section-title">{t}</h2>
+          <div class="table-scroll" style="margin-bottom: 32px;">
+            <table class="stat-table">
+              <thead><tr><th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Maps</th></tr></thead>
+              <tbody>
+                {byTeam[t].sort((a, b) => b.seriesKd - a.seriesKd).map(p => (
+                  <tr>
+                    <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.displayName}</a></td>
+                    <td>{p.kills}</td>
+                    <td>{p.deaths}</td>
+                    <td>{p.seriesKd?.toFixed(2)}</td>
+                    <td>{p.maps}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ))}
+    </div>
+  </section>
+</Base>

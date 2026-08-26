@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { seasons } from '../../data/leagueData.js';
+import { seasons, isKnownPlayer } from '../../data/leagueData.js';
 
 const currentPath = Astro.url.pathname;
 const historyTabs = [
@@ -37,7 +37,7 @@ const historyTabs = [
                 <td><a href={`/season/${s.id}`}>{s.name}</a></td>
                 <td>{s.league}</td>
                 <td>{s.champion}</td>
-                <td>{s.mvp !== 'TBD' ? <a href={`/players/${encodeURIComponent(s.mvp)}`}>{s.mvp}</a> : 'TBD'}</td>
+                <td>{isKnownPlayer(s.mvp) ? <a href={`/players/${encodeURIComponent(s.mvp)}`}>{s.mvp}</a> : s.mvp}</td>
               </tr>
             ))}
           </tbody>
