@@ -29,9 +29,11 @@ const seasonRows = player
   : [];
 
 // Build tag chips: one per honor type, tagged with which season(s)
+// (Super Burger is excluded here since it's already shown as a special badge above)
 const tagGroups = {};
 for (const row of seasonRows) {
   for (const h of row.honors) {
+    if (h === 'Super Burger') continue;
     (tagGroups[h] ||= []).push(row.season);
   }
 }

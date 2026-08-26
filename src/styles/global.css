@@ -416,11 +416,11 @@ section + section { border-top: 1px solid var(--line); }
 /* --- Hall of Fame / Super Burger name highlights, used across stat tables --- */
 .hof-name {
   color: var(--paper) !important;
-  text-shadow: 0 0 6px rgba(242, 169, 0, 0.55);
+  text-shadow: 0 0 10px rgba(242, 169, 0, 0.95), 0 0 18px rgba(242, 169, 0, 0.5);
 }
 .superburger-name {
   color: var(--paper) !important;
-  text-shadow: 0 0 6px rgba(160, 120, 230, 0.55);
+  text-shadow: 0 0 10px rgba(170, 100, 255, 0.95), 0 0 18px rgba(170, 100, 255, 0.5);
 }
 
 /* --- Player Card (trading card) --- */
@@ -522,9 +522,9 @@ section + section { border-top: 1px solid var(--line); }
   color: var(--gold);
 }
 .special-badge-superburger {
-  background: rgba(120, 80, 200, 0.18);
-  border: 1px solid #8a6fd6;
-  color: #c9b6ff;
+  background: rgba(147, 51, 234, 0.28);
+  border: 1px solid #a855f7;
+  color: #d8b4fe;
 }
 
 .player-card-top {
