@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { seasons, hallOfFame, isKnownPlayer } from '../data/leagueData.js';
+import { seasons, hallOfFame, isKnownPlayer, tournamentWinners } from '../data/leagueData.js';
 ---
 <Base title="Hall of Fame | Burger Town Leagues">
   <section>
@@ -56,6 +56,25 @@ import { seasons, hallOfFame, isKnownPlayer } from '../data/leagueData.js';
             ))}
           </tbody>
         </table>
+      </div>
+
+      <h2 class="section-title">Tournament Winners</h2>
+      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Special one-off tournaments outside the regular draft league seasons.</p>
+      <div class="grid grid-3">
+        {tournamentWinners.map(t => (
+          <div class="pixel-card">
+            <span class="eyebrow">{t.name}</span>
+            <p style="color: var(--gold); font-weight: 700; font-size: 1.1rem; margin: 4px 0 10px;">{t.team}</p>
+            <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 0;">
+              {t.players.map((p, i) => (
+                <>
+                  {isKnownPlayer(p) ? <a href={`/players/${encodeURIComponent(p)}`}>{p}</a> : p}
+                  {i < t.players.length - 1 ? ', ' : ''}
+                </>
+              ))}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   </section>

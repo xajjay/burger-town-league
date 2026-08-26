@@ -48,7 +48,10 @@ const sorted = [...careerStats].sort((a, b) => (b.overall ?? -1) - (a.overall ??
                 <td data-value={p.kd}>{p.kd.toFixed(2)}</td>
                 <td data-value={p.overall ?? ''} style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
                 <td data-value={p.seasons.length}>{p.seasons.map(s => `S${s}`).join(', ')}</td>
-                <td style="white-space: normal; min-width: 260px; font-family: var(--font-body); font-size: 0.8rem; color: var(--paper-dim);">{p.accolades}</td>
+                <td style="white-space: normal; min-width: 260px; font-family: var(--font-body); font-size: 0.8rem; color: var(--paper-dim);">
+                  {isHofPlayer(p.player) && <span class="badge badge-gold" style="margin-right: 6px;">🏆 Hall of Fame</span>}
+                  {p.accolades}
+                </td>
               </tr>
             ))}
           </tbody>

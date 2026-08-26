@@ -396,6 +396,34 @@ section + section { border-top: 1px solid var(--line); }
 .footer-links a { text-decoration: none; color: var(--paper-dim); }
 .footer-links a:hover { color: var(--paper); }
 
+.roster-details {
+  border: 1px solid var(--line);
+  margin-bottom: 8px;
+  background: var(--panel);
+}
+.roster-details summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: var(--paper);
+  list-style: none;
+}
+.roster-details summary::-webkit-details-marker { display: none; }
+.roster-details summary::before {
+  content: '▸ ';
+  color: var(--red);
+}
+.roster-details[open] summary::before {
+  content: '▾ ';
+}
+.roster-details .table-scroll {
+  border-top: 1px solid var(--line);
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+}
+
 .sortable-th {
   cursor: pointer;
   user-select: none;
@@ -517,14 +545,19 @@ section + section { border-top: 1px solid var(--line); }
   color: var(--black);
 }
 .special-badge-hof {
-  background: rgba(242, 169, 0, 0.15);
-  border: 1px solid var(--gold-dim);
-  color: var(--gold);
+  background: rgba(242, 169, 0, 0.28);
+  border: 1px solid var(--gold);
+  color: #ffd77a;
 }
 .special-badge-superburger {
   background: rgba(147, 51, 234, 0.28);
   border: 1px solid #a855f7;
   color: #d8b4fe;
+}
+.special-badge-tournament {
+  background: rgba(226, 35, 26, 0.15);
+  border: 1px solid var(--red-dark);
+  color: #ff9a8f;
 }
 
 .player-card-top {

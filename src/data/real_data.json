@@ -2653,7 +2653,7 @@
         {
           "player": "Crooked",
           "displayName": "Crooked",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 365,
           "deaths": 233,
           "kd": 1.57,
@@ -2672,7 +2672,7 @@
         {
           "player": "Chemwreck",
           "displayName": "Chemwreck",
-          "team": "Deerfield",
+          "team": "Deerfield Koshers",
           "kills": 67,
           "deaths": 46,
           "kd": 1.46,
@@ -2689,7 +2689,7 @@
         {
           "player": "Aj",
           "displayName": "Aj",
-          "team": "Phoenix",
+          "team": "Phoenix Hurrah",
           "kills": 266,
           "deaths": 203,
           "kd": 1.31,
@@ -2710,7 +2710,7 @@
         {
           "player": "Jmetree",
           "displayName": "Jmetree",
-          "team": "Phoenix",
+          "team": "Phoenix Hurrah",
           "kills": 238,
           "deaths": 194,
           "kd": 1.23,
@@ -2730,7 +2730,7 @@
         {
           "player": "Hype",
           "displayName": "Hype",
-          "team": "Vegas",
+          "team": "Vegas Vanity",
           "kills": 190,
           "deaths": 163,
           "kd": 1.17,
@@ -2749,7 +2749,7 @@
         {
           "player": "Nej",
           "displayName": "Nej",
-          "team": "Seattle",
+          "team": "Seattle Skies",
           "kills": 214,
           "deaths": 187,
           "kd": 1.14,
@@ -2768,7 +2768,7 @@
         {
           "player": "Nastyy",
           "displayName": "Nastyy",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 248,
           "deaths": 217,
           "kd": 1.14,
@@ -2787,7 +2787,7 @@
         {
           "player": "Renicide",
           "displayName": "Renicide",
-          "team": "Seattle",
+          "team": "Seattle Skies",
           "kills": 250,
           "deaths": 219,
           "kd": 1.14,
@@ -2806,7 +2806,7 @@
         {
           "player": "Tubby",
           "displayName": "Tubby",
-          "team": "Deerfield",
+          "team": "Deerfield Koshers",
           "kills": 121,
           "deaths": 107,
           "kd": 1.13,
@@ -2823,7 +2823,7 @@
         {
           "player": "Dez",
           "displayName": "Dez",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 253,
           "deaths": 224,
           "kd": 1.13,
@@ -2840,7 +2840,7 @@
         {
           "player": "Aurora",
           "displayName": "Aurora",
-          "team": "Boston",
+          "team": "Boston Excane",
           "kills": 151,
           "deaths": 135,
           "kd": 1.12,
@@ -2859,7 +2859,7 @@
         {
           "player": "Elive",
           "displayName": "Elive909",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 239,
           "deaths": 216,
           "kd": 1.11,
@@ -2876,7 +2876,7 @@
         {
           "player": "Mayan",
           "displayName": "Mayan",
-          "team": "Deerfield",
+          "team": "Deerfield Koshers",
           "kills": 130,
           "deaths": 118,
           "kd": 1.1,
@@ -2893,7 +2893,7 @@
         {
           "player": "Lazyy",
           "displayName": "Lazyyy",
-          "team": "Boston",
+          "team": "Boston Excane",
           "kills": 149,
           "deaths": 138,
           "kd": 1.08,
@@ -2910,7 +2910,7 @@
         {
           "player": "Boogey",
           "displayName": "Boogy",
-          "team": "Deerfield",
+          "team": "Deerfield Koshers",
           "kills": 109,
           "deaths": 103,
           "kd": 1.06,
@@ -2927,7 +2927,7 @@
         {
           "player": "Python",
           "displayName": "Python",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 236,
           "deaths": 229,
           "kd": 1.03,
@@ -2944,7 +2944,7 @@
         {
           "player": "Dayz",
           "displayName": "Dayz",
-          "team": "Phoenix",
+          "team": "Phoenix Hurrah",
           "kills": 229,
           "deaths": 225,
           "kd": 1.02,
@@ -2963,7 +2963,7 @@
         {
           "player": "Starry",
           "displayName": "Starry",
-          "team": "Boston",
+          "team": "Boston Excane",
           "kills": 139,
           "deaths": 137,
           "kd": 1.01,
@@ -2980,7 +2980,7 @@
         {
           "player": "Kirchy",
           "displayName": "Kirch",
-          "team": "Phoenix",
+          "team": "Phoenix Hurrah",
           "kills": 81,
           "deaths": 80,
           "kd": 1.01,
@@ -2999,7 +2999,7 @@
         {
           "player": "Noti",
           "displayName": "Noti",
-          "team": "Vegas",
+          "team": "Vegas Vanity",
           "kills": 277,
           "deaths": 284,
           "kd": 0.98,
@@ -3016,7 +3016,7 @@
         {
           "player": "Bebo",
           "displayName": "Bebo",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 61,
           "deaths": 63,
           "kd": 0.97,
@@ -3033,7 +3033,7 @@
         {
           "player": "Kfrankess",
           "displayName": "Kfrankess",
-          "team": "Seattle",
+          "team": "Seattle Skies",
           "kills": 191,
           "deaths": 206,
           "kd": 0.93,
@@ -3050,7 +3050,7 @@
         {
           "player": "Xylow",
           "displayName": "Xylow",
-          "team": "Deerfield",
+          "team": "Deerfield Koshers",
           "kills": 66,
           "deaths": 75,
           "kd": 0.88,
@@ -3067,7 +3067,7 @@
         {
           "player": "Verb",
           "displayName": "Verb",
-          "team": "Phoenix",
+          "team": "Phoenix Hurrah",
           "kills": 140,
           "deaths": 161,
           "kd": 0.87,
@@ -3086,7 +3086,7 @@
         {
           "player": "Ryanreplays",
           "displayName": "Ryanreplays",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 189,
           "deaths": 228,
           "kd": 0.83,
@@ -3103,7 +3103,7 @@
         {
           "player": "2fly",
           "displayName": "2fly",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 141,
           "deaths": 171,
           "kd": 0.82,
@@ -3120,7 +3120,7 @@
         {
           "player": "Utopian",
           "displayName": "Utopian",
-          "team": "Boston",
+          "team": "Boston Excane",
           "kills": 117,
           "deaths": 144,
           "kd": 0.81,
@@ -3137,7 +3137,7 @@
         {
           "player": "Secret",
           "displayName": "Secret",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 43,
           "deaths": 55,
           "kd": 0.78,
@@ -3154,7 +3154,7 @@
         {
           "player": "AGF",
           "displayName": "AGF",
-          "team": "Vegas",
+          "team": "Vegas Vanity",
           "kills": 122,
           "deaths": 158,
           "kd": 0.77,
@@ -3171,7 +3171,7 @@
         {
           "player": "Underwrld",
           "displayName": "Underwrld",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 67,
           "deaths": 87,
           "kd": 0.77,
@@ -3188,7 +3188,7 @@
         {
           "player": "Angelina",
           "displayName": "Angelina",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 45,
           "deaths": 59,
           "kd": 0.76,
@@ -3205,7 +3205,7 @@
         {
           "player": "LT7",
           "displayName": "LT7",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 46,
           "deaths": 61,
           "kd": 0.75,
@@ -3222,7 +3222,7 @@
         {
           "player": "Iconz",
           "displayName": "Iconz",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 69,
           "deaths": 94,
           "kd": 0.73,
@@ -3239,7 +3239,7 @@
         {
           "player": "Kugo",
           "displayName": "Kugo",
-          "team": "Vegas",
+          "team": "Vegas Vanity",
           "kills": 138,
           "deaths": 188,
           "kd": 0.73,
@@ -3256,7 +3256,7 @@
         {
           "player": "AlexthekillahH",
           "displayName": "AlexthekillahH",
-          "team": "Seattle",
+          "team": "Seattle Skies",
           "kills": 154,
           "deaths": 216,
           "kd": 0.71,
@@ -3273,7 +3273,7 @@
         {
           "player": "Avecti",
           "displayName": "Avecti",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 49,
           "deaths": 72,
           "kd": 0.68,
@@ -3290,7 +3290,7 @@
         {
           "player": "Jumpz",
           "displayName": "Jumpz",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 37,
           "deaths": 67,
           "kd": 0.55,
@@ -3308,59 +3308,284 @@
       "standings": [
         {
           "rank": 1,
-          "team": "Phoenix",
-          "manager": "ReapeR",
+          "team": "Phoenix Hurrah",
+          "manager": "@LH_ReapeR",
           "champion": true,
-          "record": ""
+          "record": "7-1",
+          "roster": [
+            {
+              "player": "Aj",
+              "kd": 1.31,
+              "overall": 83
+            },
+            {
+              "player": "Jmetree",
+              "kd": 1.23,
+              "overall": 82
+            },
+            {
+              "player": "Dayz",
+              "kd": 1.02,
+              "overall": 78
+            },
+            {
+              "player": "Kirchy",
+              "kd": 1.01,
+              "overall": 76
+            },
+            {
+              "player": "Verb",
+              "kd": 0.87,
+              "overall": 76
+            }
+          ],
+          "winPct": "79%",
+          "mapRecord": "22-6",
+          "runnerUp": false
         },
         {
           "rank": 2,
-          "team": "Boston",
-          "manager": "",
+          "team": "Berlin KAOS",
+          "manager": "@LandoMattt",
           "champion": false,
-          "record": ""
+          "record": "7-1",
+          "roster": [
+            {
+              "player": "Crooked",
+              "kd": 1.57,
+              "overall": 90
+            },
+            {
+              "player": "Dez",
+              "kd": 1.13,
+              "overall": 79
+            },
+            {
+              "player": "Python",
+              "kd": 1.03,
+              "overall": 78
+            },
+            {
+              "player": "2fly",
+              "kd": 0.82,
+              "overall": 75
+            },
+            {
+              "player": "Avecti",
+              "kd": 0.68,
+              "overall": 69
+            }
+          ],
+          "winPct": "81%",
+          "mapRecord": "22-5",
+          "runnerUp": true
         },
         {
           "rank": 3,
-          "team": "Berlin",
-          "manager": "",
+          "team": "Vegas Vanity",
+          "manager": "@Synatra2k",
           "champion": false,
-          "record": ""
+          "record": "6-2",
+          "roster": [
+            {
+              "player": "Hype",
+              "kd": 1.17,
+              "overall": 79
+            },
+            {
+              "player": "Noti",
+              "kd": 0.98,
+              "overall": 78
+            },
+            {
+              "player": "AGF",
+              "kd": 0.77,
+              "overall": 66
+            },
+            {
+              "player": "Kugo",
+              "kd": 0.73,
+              "overall": 68
+            }
+          ],
+          "winPct": "77%",
+          "mapRecord": "20-9",
+          "runnerUp": false
         },
         {
           "rank": 4,
-          "team": "New York",
-          "manager": "",
+          "team": "Boston Excane",
+          "manager": "@BombzPC",
           "champion": false,
-          "record": ""
+          "record": "6-2",
+          "roster": [
+            {
+              "player": "Aurora",
+              "kd": 1.12,
+              "overall": 78
+            },
+            {
+              "player": "Lazyy",
+              "kd": 1.08,
+              "overall": 78
+            },
+            {
+              "player": "Starry",
+              "kd": 1.01,
+              "overall": 77
+            },
+            {
+              "player": "Utopian",
+              "kd": 0.81,
+              "overall": 73
+            }
+          ],
+          "winPct": "69%",
+          "mapRecord": "18-8",
+          "runnerUp": false
         },
         {
           "rank": 5,
-          "team": "Seattle",
-          "manager": "",
+          "team": "Deerfield Koshers",
+          "manager": "@Cxnfid",
           "champion": false,
-          "record": ""
+          "record": "6-2",
+          "roster": [
+            {
+              "player": "Chemwreck",
+              "kd": 1.46,
+              "overall": 77
+            },
+            {
+              "player": "Tubby",
+              "kd": 1.13,
+              "overall": 77
+            },
+            {
+              "player": "Mayan",
+              "kd": 1.1,
+              "overall": 77
+            },
+            {
+              "player": "Boogey",
+              "kd": 1.06,
+              "overall": 77
+            },
+            {
+              "player": "Xylow",
+              "kd": 0.88,
+              "overall": 76
+            }
+          ],
+          "winPct": "73%",
+          "mapRecord": "19-6",
+          "runnerUp": false
         },
         {
           "rank": 6,
-          "team": "Vegas",
-          "manager": "",
+          "team": "Seattle Skies",
+          "manager": "@meksoo2",
           "champion": false,
-          "record": ""
+          "record": "4-4",
+          "roster": [
+            {
+              "player": "Nej",
+              "kd": 1.14,
+              "overall": 80
+            },
+            {
+              "player": "Renicide",
+              "kd": 1.14,
+              "overall": 80
+            },
+            {
+              "player": "Kfrankess",
+              "kd": 0.93,
+              "overall": 76
+            },
+            {
+              "player": "AlexthekillahH",
+              "kd": 0.71,
+              "overall": 65
+            }
+          ],
+          "winPct": "65%",
+          "mapRecord": "14-13",
+          "runnerUp": false
         },
         {
           "rank": 7,
-          "team": "Deerfield",
-          "manager": "",
+          "team": "New York Ferocity",
+          "manager": "@Clizslays & @xBebokins",
           "champion": false,
-          "record": ""
+          "record": "4-4",
+          "roster": [
+            {
+              "player": "Nastyy",
+              "kd": 1.14,
+              "overall": 80
+            },
+            {
+              "player": "Elive",
+              "kd": 1.11,
+              "overall": 80
+            },
+            {
+              "player": "Bebo",
+              "kd": 0.97,
+              "overall": 76
+            },
+            {
+              "player": "Ryanreplays",
+              "kd": 0.83,
+              "overall": 75
+            },
+            {
+              "player": "Underwrld",
+              "kd": 0.77,
+              "overall": 74
+            },
+            {
+              "player": "Iconz",
+              "kd": 0.73,
+              "overall": 75
+            }
+          ],
+          "winPct": "52%",
+          "mapRecord": "16-15",
+          "runnerUp": false
         },
         {
           "rank": 8,
-          "team": "Houston",
-          "manager": "",
+          "team": "Houston Spartans",
+          "manager": "@strykadelatorre",
           "champion": false,
-          "record": ""
+          "record": "3-5",
+          "roster": [
+            {
+              "player": "Secret",
+              "kd": 0.78,
+              "overall": 75
+            },
+            {
+              "player": "Angelina",
+              "kd": 0.76,
+              "overall": 75
+            },
+            {
+              "player": "LT7",
+              "kd": 0.75,
+              "overall": 75
+            },
+            {
+              "player": "Jumpz",
+              "kd": 0.55,
+              "overall": 71
+            }
+          ],
+          "winPct": "42%",
+          "mapRecord": "11-15",
+          "runnerUp": false
         }
       ]
     },
@@ -3369,7 +3594,7 @@
         {
           "player": "CrazieViews",
           "displayName": "CrazieViews",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 655,
           "deaths": 476,
           "kd": 1.38,
@@ -3388,7 +3613,7 @@
         {
           "player": "Ephrisy",
           "displayName": "Ephrisy",
-          "team": "Buffalo",
+          "team": "Buffalo Body Building Brutes",
           "kills": 759,
           "deaths": 575,
           "kd": 1.32,
@@ -3426,7 +3651,7 @@
         {
           "player": "Waly",
           "displayName": "Waly",
-          "team": "Tampa Bay",
+          "team": "Tampa Red Wolves",
           "kills": 895,
           "deaths": 727,
           "kd": 1.23,
@@ -3445,7 +3670,7 @@
         {
           "player": "Inkster",
           "displayName": "inkster",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 350,
           "deaths": 286,
           "kd": 1.22,
@@ -3462,7 +3687,7 @@
         {
           "player": "Acro Ace",
           "displayName": "Acro_Ace",
-          "team": "Minneapolis",
+          "team": "Minneapolis Mighty Ducks",
           "kills": 915,
           "deaths": 750,
           "kd": 1.22,
@@ -3481,7 +3706,7 @@
         {
           "player": "Hype",
           "displayName": "Hype",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 646,
           "deaths": 556,
           "kd": 1.16,
@@ -3500,7 +3725,7 @@
         {
           "player": "DessieLoso",
           "displayName": "DessieLoso",
-          "team": "Charlotte",
+          "team": "Charlotte SYG",
           "kills": 469,
           "deaths": 417,
           "kd": 1.12,
@@ -3517,7 +3742,7 @@
         {
           "player": "Thermo",
           "displayName": "Thermo",
-          "team": "Tampa Bay",
+          "team": "Tampa Red Wolves",
           "kills": 716,
           "deaths": 644,
           "kd": 1.11,
@@ -3536,7 +3761,7 @@
         {
           "player": "Collision",
           "displayName": "Collision",
-          "team": "Tampa Bay",
+          "team": "Tampa Red Wolves",
           "kills": 719,
           "deaths": 647,
           "kd": 1.11,
@@ -3553,7 +3778,7 @@
         {
           "player": "Nuance",
           "displayName": "Nuance",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 669,
           "deaths": 606,
           "kd": 1.1,
@@ -3570,7 +3795,7 @@
         {
           "player": "Aj",
           "displayName": "Codgamer45",
-          "team": "Minneapolis",
+          "team": "Minneapolis Mighty Ducks",
           "kills": 908,
           "deaths": 832,
           "kd": 1.09,
@@ -3589,7 +3814,7 @@
         {
           "player": "Lewy",
           "displayName": "LeWy",
-          "team": "Charlotte",
+          "team": "Charlotte SYG",
           "kills": 241,
           "deaths": 222,
           "kd": 1.09,
@@ -3606,7 +3831,7 @@
         {
           "player": "Tubby",
           "displayName": "TubbyXO",
-          "team": "Minneapolis",
+          "team": "Minneapolis Mighty Ducks",
           "kills": 180,
           "deaths": 169,
           "kd": 1.07,
@@ -3623,7 +3848,7 @@
         {
           "player": "Kai",
           "displayName": "Kai",
-          "team": "Buffalo",
+          "team": "Buffalo Body Building Brutes",
           "kills": 665,
           "deaths": 630,
           "kd": 1.06,
@@ -3642,7 +3867,7 @@
         {
           "player": "Renicide",
           "displayName": "Renicide",
-          "team": "Los Angeles",
+          "team": "Los Angeles NewLook",
           "kills": 838,
           "deaths": 807,
           "kd": 1.04,
@@ -3661,7 +3886,7 @@
         {
           "player": "Proxzify",
           "displayName": "Proxzify",
-          "team": "Los Angeles",
+          "team": "Los Angeles NewLook",
           "kills": 741,
           "deaths": 717,
           "kd": 1.03,
@@ -3678,7 +3903,7 @@
         {
           "player": "Nastyy",
           "displayName": "Nastyy",
-          "team": "Los Angeles",
+          "team": "Los Angeles NewLook",
           "kills": 810,
           "deaths": 794,
           "kd": 1.02,
@@ -3695,7 +3920,7 @@
         {
           "player": "JayDash",
           "displayName": "JayDash",
-          "team": "Charlotte",
+          "team": "Charlotte SYG",
           "kills": 161,
           "deaths": 158,
           "kd": 1.02,
@@ -3712,7 +3937,7 @@
         {
           "player": "Nada",
           "displayName": "Nada",
-          "team": "Minneapolis",
+          "team": "Minneapolis Mighty Ducks",
           "kills": 656,
           "deaths": 649,
           "kd": 1.01,
@@ -3729,7 +3954,7 @@
         {
           "player": "Boogey",
           "displayName": "Boogey",
-          "team": "Charlotte",
+          "team": "Charlotte SYG",
           "kills": 119,
           "deaths": 121,
           "kd": 0.98,
@@ -3746,7 +3971,7 @@
         {
           "player": "Hazier",
           "displayName": "Hazier",
-          "team": "Tampa Bay",
+          "team": "Tampa Red Wolves",
           "kills": 766,
           "deaths": 787,
           "kd": 0.97,
@@ -3763,7 +3988,7 @@
         {
           "player": "Pablo",
           "displayName": "Pablo",
-          "team": "Buffalo",
+          "team": "Buffalo Body Building Brutes",
           "kills": 464,
           "deaths": 486,
           "kd": 0.95,
@@ -3782,7 +4007,7 @@
         {
           "player": "Elive",
           "displayName": "Elive",
-          "team": "Mexico City",
+          "team": "Mexico City Warriors",
           "kills": 331,
           "deaths": 347,
           "kd": 0.95,
@@ -3799,7 +4024,7 @@
         {
           "player": "Casperfy",
           "displayName": "Casperfy",
-          "team": "Buffalo",
+          "team": "Buffalo Body Building Brutes",
           "kills": 517,
           "deaths": 543,
           "kd": 0.95,
@@ -3818,7 +4043,7 @@
         {
           "player": "Nacho",
           "displayName": "Nacho",
-          "team": "Mexico City",
+          "team": "Mexico City Warriors",
           "kills": 299,
           "deaths": 316,
           "kd": 0.95,
@@ -3835,7 +4060,7 @@
         {
           "player": "Aurora",
           "displayName": "Aurora",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 437,
           "deaths": 462,
           "kd": 0.95,
@@ -3852,7 +4077,7 @@
         {
           "player": "Utopian",
           "displayName": "Utopian",
-          "team": "Tampa Bay",
+          "team": "Tampa Red Wolves",
           "kills": 147,
           "deaths": 162,
           "kd": 0.91,
@@ -3869,7 +4094,7 @@
         {
           "player": "Sergio",
           "displayName": "Sergio",
-          "team": "Los Angeles",
+          "team": "Los Angeles NewLook",
           "kills": 499,
           "deaths": 550,
           "kd": 0.91,
@@ -3886,7 +4111,7 @@
         {
           "player": "Noti",
           "displayName": "Noti",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 532,
           "deaths": 594,
           "kd": 0.9,
@@ -3903,7 +4128,7 @@
         {
           "player": "Seno",
           "displayName": "Seno",
-          "team": "Minneapolis",
+          "team": "Minneapolis Mighty Ducks",
           "kills": 802,
           "deaths": 899,
           "kd": 0.89,
@@ -3920,7 +4145,7 @@
         {
           "player": "Lazyy",
           "displayName": "Lazyyy",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 381,
           "deaths": 428,
           "kd": 0.89,
@@ -3937,7 +4162,7 @@
         {
           "player": "Bleepa",
           "displayName": "Bleepa",
-          "team": "Mexico City",
+          "team": "Mexico City Warriors",
           "kills": 478,
           "deaths": 553,
           "kd": 0.86,
@@ -3954,7 +4179,7 @@
         {
           "player": "Nej",
           "displayName": "nej",
-          "team": "Mexico City",
+          "team": "Mexico City Warriors",
           "kills": 118,
           "deaths": 137,
           "kd": 0.86,
@@ -3971,7 +4196,7 @@
         {
           "player": "IBO",
           "displayName": "IBO",
-          "team": "Tampa Bay",
+          "team": "Tampa Red Wolves",
           "kills": 138,
           "deaths": 161,
           "kd": 0.86,
@@ -4005,7 +4230,7 @@
         {
           "player": "Dayz",
           "displayName": "Dayz",
-          "team": "Mexico City",
+          "team": "Mexico City Warriors",
           "kills": 207,
           "deaths": 258,
           "kd": 0.8,
@@ -4022,7 +4247,7 @@
         {
           "player": "Bebo",
           "displayName": "Bebo",
-          "team": "Mexico City",
+          "team": "Mexico City Warriors",
           "kills": 290,
           "deaths": 363,
           "kd": 0.8,
@@ -4056,7 +4281,7 @@
         {
           "player": "i2Dreamy",
           "displayName": "i2Dreamy",
-          "team": "New York",
+          "team": "New York Ferocity",
           "kills": 111,
           "deaths": 144,
           "kd": 0.77,
@@ -4073,7 +4298,7 @@
         {
           "player": "huxx",
           "displayName": "huxx",
-          "team": "Charlotte",
+          "team": "Charlotte SYG",
           "kills": 331,
           "deaths": 438,
           "kd": 0.76,
@@ -4107,7 +4332,7 @@
         {
           "player": "Chemwreck",
           "displayName": "ChemWreck",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 151,
           "deaths": 203,
           "kd": 0.74,
@@ -4124,7 +4349,7 @@
         {
           "player": "Shasta",
           "displayName": "Shasta",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 360,
           "deaths": 494,
           "kd": 0.73,
@@ -4141,7 +4366,7 @@
         {
           "player": "Python",
           "displayName": "Python",
-          "team": "Los Angeles",
+          "team": "Los Angeles NewLook",
           "kills": 156,
           "deaths": 218,
           "kd": 0.72,
@@ -4175,7 +4400,7 @@
         {
           "player": "Ryanreplays",
           "displayName": "RyanReplays",
-          "team": "Berlin",
+          "team": "Berlin KAOS",
           "kills": 57,
           "deaths": 86,
           "kd": 0.66,
@@ -4192,7 +4417,7 @@
         {
           "player": "Secret",
           "displayName": "Secret",
-          "team": "Buffalo",
+          "team": "Buffalo Body Building Brutes",
           "kills": 48,
           "deaths": 73,
           "kd": 0.66,
@@ -4211,7 +4436,7 @@
         {
           "player": "Verb",
           "displayName": "Verb",
-          "team": "Charlotte",
+          "team": "Charlotte SYG",
           "kills": 44,
           "deaths": 80,
           "kd": 0.55,
@@ -4313,7 +4538,7 @@
         {
           "player": "Space",
           "displayName": "Space",
-          "team": "Minneapolis",
+          "team": "Minneapolis Mighty Ducks",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -4331,59 +4556,324 @@
       "standings": [
         {
           "rank": 1,
-          "team": "Buffalo",
-          "manager": "Mekso",
+          "team": "Buffalo Body Building Brutes",
+          "manager": "@Meksoo2",
           "champion": true,
-          "record": "8-3"
+          "record": "8-3",
+          "roster": [
+            {
+              "player": "Ephrisy",
+              "kd": 1.32,
+              "overall": 95
+            },
+            {
+              "player": "Kai",
+              "kd": 1.06,
+              "overall": 83
+            },
+            {
+              "player": "Pablo",
+              "kd": 0.95,
+              "overall": 78
+            },
+            {
+              "player": "Casperfy",
+              "kd": 0.95,
+              "overall": 77
+            },
+            {
+              "player": "Secret",
+              "kd": 0.66,
+              "overall": 70
+            }
+          ],
+          "winPct": null,
+          "mapRecord": null,
+          "runnerUp": false
         },
         {
           "rank": 2,
-          "team": "Tampa Bay",
-          "manager": "",
+          "team": "Tampa Red Wolves",
+          "manager": "@Kirchyy",
           "champion": false,
-          "record": "8-4"
+          "record": "8-4",
+          "roster": [
+            {
+              "player": "Waly",
+              "kd": 1.23,
+              "overall": 91
+            },
+            {
+              "player": "Thermo",
+              "kd": 1.11,
+              "overall": 85
+            },
+            {
+              "player": "Collision",
+              "kd": 1.11,
+              "overall": 85
+            },
+            {
+              "player": "Hazier",
+              "kd": 0.97,
+              "overall": 78
+            },
+            {
+              "player": "Utopian",
+              "kd": 0.91,
+              "overall": 76
+            },
+            {
+              "player": "IBO",
+              "kd": 0.86,
+              "overall": 75
+            }
+          ],
+          "winPct": null,
+          "mapRecord": null,
+          "runnerUp": true
         },
         {
           "rank": 3,
-          "team": "Minneapolis",
-          "manager": "",
+          "team": "Minneapolis Mighty Ducks",
+          "manager": "@xJMETREE",
           "champion": false,
-          "record": "31-16"
+          "record": "10-3",
+          "roster": [
+            {
+              "player": "Acro Ace",
+              "kd": 1.22,
+              "overall": 90
+            },
+            {
+              "player": "Aj",
+              "kd": 1.09,
+              "overall": 84
+            },
+            {
+              "player": "Tubby",
+              "kd": 1.07,
+              "overall": 78
+            },
+            {
+              "player": "Nada",
+              "kd": 1.01,
+              "overall": 80
+            },
+            {
+              "player": "Seno",
+              "kd": 0.89,
+              "overall": 74
+            },
+            {
+              "player": "Space",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "winPct": null,
+          "mapRecord": null,
+          "runnerUp": false
         },
         {
           "rank": 4,
-          "team": "Los Angeles",
-          "manager": "",
+          "team": "Los Angeles NewLook",
+          "manager": "@TheRealYsiad",
           "champion": false,
-          "record": "22-19"
+          "record": "8-4",
+          "roster": [
+            {
+              "player": "Renicide",
+              "kd": 1.04,
+              "overall": 82
+            },
+            {
+              "player": "Proxzify",
+              "kd": 1.03,
+              "overall": 81
+            },
+            {
+              "player": "Nastyy",
+              "kd": 1.02,
+              "overall": 81
+            },
+            {
+              "player": "Sergio",
+              "kd": 0.91,
+              "overall": 75
+            },
+            {
+              "player": "Python",
+              "kd": 0.72,
+              "overall": 64
+            }
+          ],
+          "winPct": null,
+          "mapRecord": null,
+          "runnerUp": false
         },
         {
           "rank": 5,
-          "team": "New York",
-          "manager": "",
+          "team": "New York Ferocity",
+          "manager": "@Clizslays",
           "champion": false,
-          "record": "19-19"
+          "record": "5-6",
+          "roster": [
+            {
+              "player": "CrazieViews",
+              "kd": 1.38,
+              "overall": 97
+            },
+            {
+              "player": "Nuance",
+              "kd": 1.1,
+              "overall": 85
+            },
+            {
+              "player": "Aurora",
+              "kd": 0.95,
+              "overall": 77
+            },
+            {
+              "player": "Lazyy",
+              "kd": 0.89,
+              "overall": 75
+            },
+            {
+              "player": "i2Dreamy",
+              "kd": 0.77,
+              "overall": 70
+            }
+          ],
+          "winPct": null,
+          "mapRecord": null,
+          "runnerUp": false
         },
         {
           "rank": 6,
-          "team": "Berlin",
-          "manager": "",
+          "team": "Berlin KAOS",
+          "manager": "@LandoMattt",
           "champion": false,
-          "record": "12-17"
+          "record": "5-6",
+          "roster": [
+            {
+              "player": "Inkster",
+              "kd": 1.22,
+              "overall": 84
+            },
+            {
+              "player": "Hype",
+              "kd": 1.16,
+              "overall": 87
+            },
+            {
+              "player": "Noti",
+              "kd": 0.9,
+              "overall": 75
+            },
+            {
+              "player": "Chemwreck",
+              "kd": 0.74,
+              "overall": 66
+            },
+            {
+              "player": "Shasta",
+              "kd": 0.73,
+              "overall": 61
+            },
+            {
+              "player": "Ryanreplays",
+              "kd": 0.66,
+              "overall": 71
+            }
+          ],
+          "winPct": null,
+          "mapRecord": null,
+          "runnerUp": false
         },
         {
           "rank": 7,
-          "team": "Charlotte",
-          "manager": "",
+          "team": "Charlotte SYG",
+          "manager": "@astral & @Aavecti",
           "champion": false,
-          "record": "8-13"
+          "record": "3-6",
+          "roster": [
+            {
+              "player": "DessieLoso",
+              "kd": 1.12,
+              "overall": 84
+            },
+            {
+              "player": "Lewy",
+              "kd": 1.09,
+              "overall": 79
+            },
+            {
+              "player": "JayDash",
+              "kd": 1.02,
+              "overall": 77
+            },
+            {
+              "player": "Boogey",
+              "kd": 0.98,
+              "overall": 76
+            },
+            {
+              "player": "huxx",
+              "kd": 0.76,
+              "overall": 63
+            },
+            {
+              "player": "Verb",
+              "kd": 0.55,
+              "overall": 66
+            }
+          ],
+          "winPct": null,
+          "mapRecord": null,
+          "runnerUp": false
         },
         {
           "rank": 8,
-          "team": "Mexico City",
-          "manager": "",
+          "team": "Mexico City Warriors",
+          "manager": "@Itzmonzzy",
           "champion": false,
-          "record": "3-21"
+          "record": "2-8",
+          "roster": [
+            {
+              "player": "Elive",
+              "kd": 0.95,
+              "overall": 77
+            },
+            {
+              "player": "Nacho",
+              "kd": 0.95,
+              "overall": 77
+            },
+            {
+              "player": "Bleepa",
+              "kd": 0.86,
+              "overall": 72
+            },
+            {
+              "player": "Nej",
+              "kd": 0.86,
+              "overall": 75
+            },
+            {
+              "player": "Dayz",
+              "kd": 0.8,
+              "overall": 70
+            },
+            {
+              "player": "Bebo",
+              "kd": 0.8,
+              "overall": 67
+            }
+          ],
+          "winPct": null,
+          "mapRecord": null,
+          "runnerUp": false
         }
       ]
     },
@@ -4392,7 +4882,7 @@
         {
           "player": "Jmetree",
           "displayName": "Jmetree",
-          "team": "New York",
+          "team": "New York G Pieces",
           "kills": 448,
           "deaths": 338,
           "kd": 1.33,
@@ -4412,7 +4902,7 @@
         {
           "player": "Hype",
           "displayName": "Hype",
-          "team": "Chicago",
+          "team": "Chicago Canes",
           "kills": 448,
           "deaths": 348,
           "kd": 1.29,
@@ -4431,7 +4921,7 @@
         {
           "player": "Acro Ace",
           "displayName": "Acro Ace",
-          "team": "Seattle",
+          "team": "Seattle Aces",
           "kills": 331,
           "deaths": 262,
           "kd": 1.26,
@@ -4450,7 +4940,7 @@
         {
           "player": "Aurora",
           "displayName": "Aurora",
-          "team": "New Orleans",
+          "team": "New Orleans No Legs Academy",
           "kills": 274,
           "deaths": 219,
           "kd": 1.25,
@@ -4470,7 +4960,7 @@
         {
           "player": "Utopian",
           "displayName": "Utopian",
-          "team": "New York",
+          "team": "New York G Pieces",
           "kills": 405,
           "deaths": 358,
           "kd": 1.13,
@@ -4489,7 +4979,7 @@
         {
           "player": "Crooked",
           "displayName": "Crooked",
-          "team": "Boston",
+          "team": "Boston Excane",
           "kills": 373,
           "deaths": 336,
           "kd": 1.11,
@@ -4508,7 +4998,7 @@
         {
           "player": "Aj",
           "displayName": "Aj",
-          "team": "Nashville",
+          "team": "Nashville Whiskey",
           "kills": 382,
           "deaths": 345,
           "kd": 1.11,
@@ -4527,7 +5017,7 @@
         {
           "player": "Renicide",
           "displayName": "Renicide",
-          "team": "New Orleans",
+          "team": "New Orleans No Legs Academy",
           "kills": 384,
           "deaths": 354,
           "kd": 1.08,
@@ -4547,7 +5037,7 @@
         {
           "player": "Proxzify",
           "displayName": "Proxzify",
-          "team": "Seattle",
+          "team": "Seattle Aces",
           "kills": 271,
           "deaths": 262,
           "kd": 1.03,
@@ -4564,7 +5054,7 @@
         {
           "player": "Lewy",
           "displayName": "Lewy",
-          "team": "New York",
+          "team": "New York G Pieces",
           "kills": 423,
           "deaths": 419,
           "kd": 1.01,
@@ -4581,7 +5071,7 @@
         {
           "player": "MVP",
           "displayName": "MVP",
-          "team": "New Orleans",
+          "team": "New Orleans No Legs Academy",
           "kills": 217,
           "deaths": 217,
           "kd": 1.0,
@@ -4600,7 +5090,7 @@
         {
           "player": "Bubbles",
           "displayName": "Bubbles",
-          "team": "New Orleans",
+          "team": "New Orleans No Legs Academy",
           "kills": 270,
           "deaths": 273,
           "kd": 0.99,
@@ -4619,7 +5109,7 @@
         {
           "player": "Elive",
           "displayName": "Elive",
-          "team": "Chicago",
+          "team": "Chicago Canes",
           "kills": 315,
           "deaths": 325,
           "kd": 0.97,
@@ -4636,7 +5126,7 @@
         {
           "player": "Pablo",
           "displayName": "Pablo",
-          "team": "Seattle",
+          "team": "Seattle Aces",
           "kills": 298,
           "deaths": 309,
           "kd": 0.96,
@@ -4653,7 +5143,7 @@
         {
           "player": "Starry",
           "displayName": "Starry",
-          "team": "Seattle",
+          "team": "Seattle Aces",
           "kills": 385,
           "deaths": 400,
           "kd": 0.96,
@@ -4670,7 +5160,7 @@
         {
           "player": "NickyB",
           "displayName": "NickyB",
-          "team": "Boston",
+          "team": "Boston Excane",
           "kills": 305,
           "deaths": 329,
           "kd": 0.93,
@@ -4687,7 +5177,7 @@
         {
           "player": "Nastyy",
           "displayName": "Nastyy",
-          "team": "Nashville",
+          "team": "Nashville Whiskey",
           "kills": 333,
           "deaths": 365,
           "kd": 0.91,
@@ -4704,7 +5194,7 @@
         {
           "player": "Lazyy",
           "displayName": "Lazyy",
-          "team": "Boston",
+          "team": "Boston Excane",
           "kills": 266,
           "deaths": 293,
           "kd": 0.91,
@@ -4721,7 +5211,7 @@
         {
           "player": "Duffie",
           "displayName": "Duffie",
-          "team": "New York",
+          "team": "New York G Pieces",
           "kills": 388,
           "deaths": 433,
           "kd": 0.9,
@@ -4738,7 +5228,7 @@
         {
           "player": "Toremeant",
           "displayName": "Tourmeant",
-          "team": "New Orleans",
+          "team": "New Orleans No Legs Academy",
           "kills": 178,
           "deaths": 200,
           "kd": 0.89,
@@ -4757,7 +5247,7 @@
         {
           "player": "Python",
           "displayName": "Python",
-          "team": "Chicago",
+          "team": "Chicago Canes",
           "kills": 306,
           "deaths": 346,
           "kd": 0.88,
@@ -4774,7 +5264,7 @@
         {
           "player": "Bleepa",
           "displayName": "Poob",
-          "team": "Nashville",
+          "team": "Nashville Whiskey",
           "kills": 357,
           "deaths": 413,
           "kd": 0.86,
@@ -4791,7 +5281,7 @@
         {
           "player": "Kirchy",
           "displayName": "Kirchy",
-          "team": "Boston",
+          "team": "Boston Excane",
           "kills": 274,
           "deaths": 321,
           "kd": 0.85,
@@ -4808,7 +5298,7 @@
         {
           "player": "Tubby",
           "displayName": "Tubby",
-          "team": "Nashville",
+          "team": "Nashville Whiskey",
           "kills": 303,
           "deaths": 365,
           "kd": 0.83,
@@ -4825,7 +5315,7 @@
         {
           "player": "Cold",
           "displayName": "Cold",
-          "team": "Chicago",
+          "team": "Chicago Canes",
           "kills": 188,
           "deaths": 230,
           "kd": 0.82,
@@ -4842,7 +5332,7 @@
         {
           "player": "Verb",
           "displayName": "Verb",
-          "team": "Nashville",
+          "team": "Nashville Whiskey",
           "kills": 87,
           "deaths": 107,
           "kd": 0.81,
@@ -4859,7 +5349,7 @@
         {
           "player": "Zico",
           "displayName": "Zico",
-          "team": "Chicago",
+          "team": "Chicago Canes",
           "kills": 33,
           "deaths": 59,
           "kd": 0.56,
@@ -4876,7 +5366,7 @@
         {
           "player": "Shasta",
           "displayName": "Shasta",
-          "team": "Boston",
+          "team": "Boston Excane",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -4893,7 +5383,7 @@
         {
           "player": "Realist",
           "displayName": "Realist",
-          "team": "New York",
+          "team": "New York G Pieces",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -4910,7 +5400,7 @@
         {
           "player": "Wall-E",
           "displayName": "Wall-E",
-          "team": "Seattle",
+          "team": "Seattle Aces",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -4929,44 +5419,212 @@
         {
           "rank": 1,
           "team": "New York G Pieces",
-          "manager": "",
+          "manager": "@astral",
           "champion": false,
-          "record": "3-2"
+          "record": "3-2",
+          "roster": [
+            {
+              "player": "Jmetree",
+              "kd": 1.33,
+              "overall": 91
+            },
+            {
+              "player": "Utopian",
+              "kd": 1.13,
+              "overall": 84
+            },
+            {
+              "player": "Lewy",
+              "kd": 1.01,
+              "overall": 79
+            },
+            {
+              "player": "Duffie",
+              "kd": 0.9,
+              "overall": 75
+            },
+            {
+              "player": "Realist",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "runnerUp": true
         },
         {
           "rank": 2,
           "team": "Boston Excane",
-          "manager": "",
+          "manager": "@BombzPC",
           "champion": false,
-          "record": "3-1"
+          "record": "3-1",
+          "roster": [
+            {
+              "player": "Crooked",
+              "kd": 1.11,
+              "overall": 81
+            },
+            {
+              "player": "NickyB",
+              "kd": 0.93,
+              "overall": 76
+            },
+            {
+              "player": "Lazyy",
+              "kd": 0.91,
+              "overall": 76
+            },
+            {
+              "player": "Kirchy",
+              "kd": 0.85,
+              "overall": 73
+            },
+            {
+              "player": "Shasta",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 3,
           "team": "New Orleans No Legs Academy",
-          "manager": "Mekso & Cliz",
+          "manager": "@clizslays",
           "champion": true,
-          "record": "3-1"
+          "record": "3-1",
+          "roster": [
+            {
+              "player": "Aurora",
+              "kd": 1.25,
+              "overall": 82
+            },
+            {
+              "player": "Renicide",
+              "kd": 1.08,
+              "overall": 81
+            },
+            {
+              "player": "MVP",
+              "kd": 1.0,
+              "overall": 77
+            },
+            {
+              "player": "Bubbles",
+              "kd": 0.99,
+              "overall": 78
+            },
+            {
+              "player": "Toremeant",
+              "kd": 0.89,
+              "overall": 75
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 4,
           "team": "Seattle Aces",
           "manager": "",
           "champion": false,
-          "record": "2-2"
+          "record": "2-2",
+          "roster": [
+            {
+              "player": "Acro Ace",
+              "kd": 1.26,
+              "overall": 85
+            },
+            {
+              "player": "Proxzify",
+              "kd": 1.03,
+              "overall": 79
+            },
+            {
+              "player": "Pablo",
+              "kd": 0.96,
+              "overall": 77
+            },
+            {
+              "player": "Starry",
+              "kd": 0.96,
+              "overall": 78
+            },
+            {
+              "player": "Wall-E",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 5,
           "team": "Nashville Whiskey",
-          "manager": "",
+          "manager": "@ephrisy",
           "champion": false,
-          "record": "2-3"
+          "record": "2-3",
+          "roster": [
+            {
+              "player": "Aj",
+              "kd": 1.11,
+              "overall": 82
+            },
+            {
+              "player": "Nastyy",
+              "kd": 0.91,
+              "overall": 76
+            },
+            {
+              "player": "Bleepa",
+              "kd": 0.86,
+              "overall": 73
+            },
+            {
+              "player": "Tubby",
+              "kd": 0.83,
+              "overall": 71
+            },
+            {
+              "player": "Verb",
+              "kd": 0.81,
+              "overall": 75
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 6,
           "team": "Chicago Canes",
-          "manager": "",
+          "manager": "@Shadowx864",
           "champion": false,
-          "record": "0-4"
+          "record": "0-4",
+          "roster": [
+            {
+              "player": "Hype",
+              "kd": 1.29,
+              "overall": 86
+            },
+            {
+              "player": "Elive",
+              "kd": 0.97,
+              "overall": 77
+            },
+            {
+              "player": "Python",
+              "kd": 0.88,
+              "overall": 75
+            },
+            {
+              "player": "Cold",
+              "kd": 0.82,
+              "overall": 71
+            },
+            {
+              "player": "Zico",
+              "kd": 0.56,
+              "overall": 69
+            }
+          ],
+          "runnerUp": false
         }
       ]
     },
@@ -4975,7 +5633,7 @@
         {
           "player": "Hype",
           "displayName": "Hype",
-          "team": "Chicago",
+          "team": "POBO Chicago",
           "kills": 499,
           "deaths": 384,
           "kd": 1.3,
@@ -4995,7 +5653,7 @@
         {
           "player": "Purp",
           "displayName": "Purp",
-          "team": "WCi",
+          "team": "WCi LA",
           "kills": 663,
           "deaths": 537,
           "kd": 1.23,
@@ -5015,7 +5673,7 @@
         {
           "player": "Aj",
           "displayName": "Aj",
-          "team": "Nashville",
+          "team": "Nashville Iron Boots",
           "kills": 598,
           "deaths": 490,
           "kd": 1.22,
@@ -5034,7 +5692,7 @@
         {
           "player": "CrazieViews",
           "displayName": "CrazieViews",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 406,
           "deaths": 336,
           "kd": 1.21,
@@ -5053,7 +5711,7 @@
         {
           "player": "Killfeed",
           "displayName": "Killfeed",
-          "team": "Bronx",
+          "team": "Bronx Bombers",
           "kills": 106,
           "deaths": 91,
           "kd": 1.16,
@@ -5070,7 +5728,7 @@
         {
           "player": "Starry",
           "displayName": "Starry",
-          "team": "Honolulu",
+          "team": "Honolulu Hummingbirds",
           "kills": 434,
           "deaths": 380,
           "kd": 1.14,
@@ -5089,7 +5747,7 @@
         {
           "player": "AimKun",
           "displayName": "AimKun",
-          "team": "LA",
+          "team": "LA Reapers",
           "kills": 361,
           "deaths": 321,
           "kd": 1.12,
@@ -5106,7 +5764,7 @@
         {
           "player": "Acro Ace",
           "displayName": "Acro Ace",
-          "team": "Honolulu",
+          "team": "Honolulu Hummingbirds",
           "kills": 477,
           "deaths": 434,
           "kd": 1.1,
@@ -5125,7 +5783,7 @@
         {
           "player": "Jmetree",
           "displayName": "Jmetree",
-          "team": "New York",
+          "team": "New York Freaky D's",
           "kills": 363,
           "deaths": 331,
           "kd": 1.1,
@@ -5142,7 +5800,7 @@
         {
           "player": "Casperfy",
           "displayName": "Casperfy",
-          "team": "LA",
+          "team": "LA Reapers",
           "kills": 382,
           "deaths": 351,
           "kd": 1.09,
@@ -5159,7 +5817,7 @@
         {
           "player": "Utopian",
           "displayName": "Utopian",
-          "team": "New York",
+          "team": "New York Freaky D's",
           "kills": 372,
           "deaths": 342,
           "kd": 1.09,
@@ -5176,7 +5834,7 @@
         {
           "player": "Renicide",
           "displayName": "Renicide",
-          "team": "LA",
+          "team": "LA Reapers",
           "kills": 467,
           "deaths": 432,
           "kd": 1.08,
@@ -5195,7 +5853,7 @@
         {
           "player": "Nastyy",
           "displayName": "Nastyy",
-          "team": "WCi",
+          "team": "WCi LA",
           "kills": 645,
           "deaths": 599,
           "kd": 1.08,
@@ -5215,7 +5873,7 @@
         {
           "player": "Proxzify",
           "displayName": "Proxzify",
-          "team": "San Francisco",
+          "team": "San Francisco Proxzymines",
           "kills": 422,
           "deaths": 395,
           "kd": 1.07,
@@ -5232,7 +5890,7 @@
         {
           "player": "Waly",
           "displayName": "Waly",
-          "team": "Nashville",
+          "team": "Nashville Iron Boots",
           "kills": 491,
           "deaths": 462,
           "kd": 1.06,
@@ -5249,7 +5907,7 @@
         {
           "player": "Phanatic",
           "displayName": "Phanatic",
-          "team": "St Pete",
+          "team": "St. Petersburg Mafia",
           "kills": 142,
           "deaths": 135,
           "kd": 1.05,
@@ -5266,7 +5924,7 @@
         {
           "player": "Grihmey",
           "displayName": "Grihmey",
-          "team": "Chicago",
+          "team": "POBO Chicago",
           "kills": 342,
           "deaths": 326,
           "kd": 1.05,
@@ -5283,7 +5941,7 @@
         {
           "player": "Hums",
           "displayName": "Hums",
-          "team": "Honolulu",
+          "team": "Honolulu Hummingbirds",
           "kills": 491,
           "deaths": 469,
           "kd": 1.05,
@@ -5300,7 +5958,7 @@
         {
           "player": "TrapEU",
           "displayName": "TrapEU",
-          "team": "Nashville",
+          "team": "Nashville Iron Boots",
           "kills": 152,
           "deaths": 146,
           "kd": 1.04,
@@ -5317,7 +5975,7 @@
         {
           "player": "Ephrisy",
           "displayName": "Ephrisy",
-          "team": "New York",
+          "team": "New York Freaky D's",
           "kills": 314,
           "deaths": 304,
           "kd": 1.03,
@@ -5334,7 +5992,7 @@
         {
           "player": "Bubbles",
           "displayName": "Bubbles",
-          "team": "WCi",
+          "team": "WCi LA",
           "kills": 355,
           "deaths": 354,
           "kd": 1.0,
@@ -5353,7 +6011,7 @@
         {
           "player": "Zirow",
           "displayName": "Zirow",
-          "team": "St Pete",
+          "team": "St. Petersburg Mafia",
           "kills": 54,
           "deaths": 54,
           "kd": 1.0,
@@ -5370,7 +6028,7 @@
         {
           "player": "Iconz",
           "displayName": "Iconz",
-          "team": "Honolulu",
+          "team": "Honolulu Hummingbirds",
           "kills": 498,
           "deaths": 503,
           "kd": 0.99,
@@ -5387,7 +6045,7 @@
         {
           "player": "Elive",
           "displayName": "Elive",
-          "team": "Honolulu",
+          "team": "Honolulu Hummingbirds",
           "kills": 92,
           "deaths": 93,
           "kd": 0.99,
@@ -5404,7 +6062,7 @@
         {
           "player": "Freak",
           "displayName": "Freak",
-          "team": "New York",
+          "team": "New York Freaky D's",
           "kills": 118,
           "deaths": 121,
           "kd": 0.98,
@@ -5421,7 +6079,7 @@
         {
           "player": "Kai",
           "displayName": "Kai",
-          "team": "WCi",
+          "team": "WCi LA",
           "kills": 384,
           "deaths": 394,
           "kd": 0.97,
@@ -5440,7 +6098,7 @@
         {
           "player": "Kugo",
           "displayName": "Kugo",
-          "team": "Chicago",
+          "team": "POBO Chicago",
           "kills": 342,
           "deaths": 354,
           "kd": 0.97,
@@ -5457,7 +6115,7 @@
         {
           "player": "Aurora",
           "displayName": "Aurora",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 81,
           "deaths": 84,
           "kd": 0.96,
@@ -5474,7 +6132,7 @@
         {
           "player": "Duffie",
           "displayName": "Duffie",
-          "team": "Chicago",
+          "team": "POBO Chicago",
           "kills": 399,
           "deaths": 417,
           "kd": 0.96,
@@ -5491,7 +6149,7 @@
         {
           "player": "Kelp",
           "displayName": "Kelp",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 326,
           "deaths": 342,
           "kd": 0.95,
@@ -5508,7 +6166,7 @@
         {
           "player": "Wrihs",
           "displayName": "Wrihs",
-          "team": "San Francisco",
+          "team": "San Francisco Proxzymines",
           "kills": 383,
           "deaths": 405,
           "kd": 0.95,
@@ -5525,7 +6183,7 @@
         {
           "player": "Roll",
           "displayName": "Roll",
-          "team": "Bronx",
+          "team": "Bronx Bombers",
           "kills": 270,
           "deaths": 286,
           "kd": 0.94,
@@ -5542,7 +6200,7 @@
         {
           "player": "User",
           "displayName": "User",
-          "team": "San Francisco",
+          "team": "San Francisco Proxzymines",
           "kills": 279,
           "deaths": 301,
           "kd": 0.93,
@@ -5559,7 +6217,7 @@
         {
           "player": "Boogey",
           "displayName": "Boogey",
-          "team": "Nashville",
+          "team": "Nashville Iron Boots",
           "kills": 245,
           "deaths": 265,
           "kd": 0.92,
@@ -5576,7 +6234,7 @@
         {
           "player": "Andrix",
           "displayName": "Andrix",
-          "team": "St Pete",
+          "team": "St. Petersburg Mafia",
           "kills": 176,
           "deaths": 191,
           "kd": 0.92,
@@ -5593,7 +6251,7 @@
         {
           "player": "MVP",
           "displayName": "Mvp",
-          "team": "WCi",
+          "team": "WCi LA",
           "kills": 225,
           "deaths": 248,
           "kd": 0.91,
@@ -5612,7 +6270,7 @@
         {
           "player": "Stim",
           "displayName": "Stim",
-          "team": "Nashville",
+          "team": "Nashville Iron Boots",
           "kills": 357,
           "deaths": 404,
           "kd": 0.88,
@@ -5629,7 +6287,7 @@
         {
           "player": "Edot",
           "displayName": "Edot",
-          "team": "Bronx",
+          "team": "Bronx Bombers",
           "kills": 84,
           "deaths": 96,
           "kd": 0.88,
@@ -5646,7 +6304,7 @@
         {
           "player": "Lazyy",
           "displayName": "Lazyy",
-          "team": "LA",
+          "team": "LA Reapers",
           "kills": 115,
           "deaths": 132,
           "kd": 0.87,
@@ -5663,7 +6321,7 @@
         {
           "player": "Hyper",
           "displayName": "Hyper",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 281,
           "deaths": 323,
           "kd": 0.87,
@@ -5680,7 +6338,7 @@
         {
           "player": "Toremeant",
           "displayName": "Toremeant",
-          "team": "San Francisco",
+          "team": "San Francisco Proxzymines",
           "kills": 349,
           "deaths": 404,
           "kd": 0.86,
@@ -5697,7 +6355,7 @@
         {
           "player": "Stunless",
           "displayName": "Stunless",
-          "team": "St Pete",
+          "team": "St. Petersburg Mafia",
           "kills": 94,
           "deaths": 113,
           "kd": 0.83,
@@ -5714,7 +6372,7 @@
         {
           "player": "Dreamy",
           "displayName": "Dreamy",
-          "team": "St Pete",
+          "team": "St. Petersburg Mafia",
           "kills": 114,
           "deaths": 140,
           "kd": 0.81,
@@ -5731,7 +6389,7 @@
         {
           "player": "Scare",
           "displayName": "Scare",
-          "team": "New York",
+          "team": "New York Freaky D's",
           "kills": 209,
           "deaths": 258,
           "kd": 0.81,
@@ -5748,7 +6406,7 @@
         {
           "player": "Kirchy",
           "displayName": "Kirchy",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 300,
           "deaths": 377,
           "kd": 0.8,
@@ -5765,7 +6423,7 @@
         {
           "player": "Bleepa",
           "displayName": "Bleepa",
-          "team": "LA",
+          "team": "LA Reapers",
           "kills": 197,
           "deaths": 248,
           "kd": 0.79,
@@ -5782,7 +6440,7 @@
         {
           "player": "Sergio",
           "displayName": "Sergio",
-          "team": "Houston",
+          "team": "Houston Spartans",
           "kills": 202,
           "deaths": 258,
           "kd": 0.78,
@@ -5799,7 +6457,7 @@
         {
           "player": "Nada",
           "displayName": "Nada",
-          "team": "San Francisco",
+          "team": "San Francisco Proxzymines",
           "kills": 156,
           "deaths": 205,
           "kd": 0.76,
@@ -5816,7 +6474,7 @@
         {
           "player": "Zylix",
           "displayName": "Zylix",
-          "team": "Chicago",
+          "team": "POBO Chicago",
           "kills": 104,
           "deaths": 138,
           "kd": 0.75,
@@ -5833,7 +6491,7 @@
         {
           "player": "Cholo",
           "displayName": "Cholo",
-          "team": "San Francisco",
+          "team": "San Francisco Proxzymines",
           "kills": 68,
           "deaths": 100,
           "kd": 0.68,
@@ -5850,7 +6508,7 @@
         {
           "player": "Sybil",
           "displayName": "Sybil",
-          "team": "St Pete",
+          "team": "St. Petersburg Mafia",
           "kills": 59,
           "deaths": 88,
           "kd": 0.67,
@@ -5867,7 +6525,7 @@
         {
           "player": "Robi",
           "displayName": "Robi",
-          "team": "New York",
+          "team": "New York Freaky D's",
           "kills": 53,
           "deaths": 86,
           "kd": 0.62,
@@ -5884,7 +6542,7 @@
         {
           "player": "Secret",
           "displayName": "Secret",
-          "team": "Bronx",
+          "team": "Bronx Bombers",
           "kills": 56,
           "deaths": 101,
           "kd": 0.55,
@@ -5901,7 +6559,7 @@
         {
           "player": "Trap",
           "displayName": "Trap",
-          "team": "Nashville",
+          "team": "Nashville Iron Boots",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -5918,7 +6576,7 @@
         {
           "player": "Shasta",
           "displayName": "Shasta",
-          "team": "Honolulu",
+          "team": "Honolulu Hummingbirds",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -5935,7 +6593,7 @@
         {
           "player": "Poh",
           "displayName": "Poh",
-          "team": "Bronx",
+          "team": "Bronx Bombers",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -5952,7 +6610,7 @@
         {
           "player": "Nuance",
           "displayName": "Nuance",
-          "team": "Bronx",
+          "team": "Bronx Bombers",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -5969,7 +6627,7 @@
         {
           "player": "Angelina",
           "displayName": "Angelina",
-          "team": "WCi",
+          "team": "WCi LA",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -5988,7 +6646,7 @@
         {
           "player": "Zap",
           "displayName": "Zap",
-          "team": "LA",
+          "team": "LA Reapers",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -6005,7 +6663,7 @@
         {
           "player": "Noti",
           "displayName": "Noti",
-          "team": "Chicago",
+          "team": "POBO Chicago",
           "kills": 0,
           "deaths": 0,
           "kd": 0.0,
@@ -6026,70 +6684,400 @@
           "team": "Honolulu Hummingbirds",
           "manager": "",
           "champion": false,
-          "record": "6-2"
+          "record": "6-2",
+          "roster": [
+            {
+              "player": "Starry",
+              "kd": 1.14,
+              "overall": 84
+            },
+            {
+              "player": "Acro Ace",
+              "kd": 1.1,
+              "overall": 84
+            },
+            {
+              "player": "Hums",
+              "kd": 1.05,
+              "overall": 82
+            },
+            {
+              "player": "Iconz",
+              "kd": 0.99,
+              "overall": 79
+            },
+            {
+              "player": "Elive",
+              "kd": 0.99,
+              "overall": 76
+            },
+            {
+              "player": "Shasta",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 2,
           "team": "WCi LA",
           "manager": "",
           "champion": true,
-          "record": "6-2"
+          "record": "6-2",
+          "roster": [
+            {
+              "player": "Purp",
+              "kd": 1.23,
+              "overall": 91
+            },
+            {
+              "player": "Nastyy",
+              "kd": 1.08,
+              "overall": 84
+            },
+            {
+              "player": "Bubbles",
+              "kd": 1.0,
+              "overall": 79
+            },
+            {
+              "player": "Kai",
+              "kd": 0.97,
+              "overall": 78
+            },
+            {
+              "player": "MVP",
+              "kd": 0.91,
+              "overall": 76
+            },
+            {
+              "player": "Angelina",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 3,
           "team": "POBO Chicago",
-          "manager": "",
+          "manager": "@miixtty",
           "champion": false,
-          "record": "6-2"
+          "record": "6-2",
+          "roster": [
+            {
+              "player": "Hype",
+              "kd": 1.3,
+              "overall": 91
+            },
+            {
+              "player": "Grihmey",
+              "kd": 1.05,
+              "overall": 80
+            },
+            {
+              "player": "Kugo",
+              "kd": 0.97,
+              "overall": 78
+            },
+            {
+              "player": "Duffie",
+              "kd": 0.96,
+              "overall": 78
+            },
+            {
+              "player": "Zylix",
+              "kd": 0.75,
+              "overall": 70
+            },
+            {
+              "player": "Noti",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 4,
           "team": "Nashville Iron Boots",
           "manager": "",
           "champion": false,
-          "record": "5-3"
+          "record": "5-3",
+          "roster": [
+            {
+              "player": "Aj",
+              "kd": 1.22,
+              "overall": 90
+            },
+            {
+              "player": "Waly",
+              "kd": 1.06,
+              "overall": 82
+            },
+            {
+              "player": "TrapEU",
+              "kd": 1.04,
+              "overall": 77
+            },
+            {
+              "player": "Boogey",
+              "kd": 0.92,
+              "overall": 76
+            },
+            {
+              "player": "Stim",
+              "kd": 0.88,
+              "overall": 74
+            },
+            {
+              "player": "Trap",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 5,
           "team": "LA Reapers",
-          "manager": "",
+          "manager": "@lazyyykun",
           "champion": false,
-          "record": "5-3"
+          "record": "5-3",
+          "roster": [
+            {
+              "player": "AimKun",
+              "kd": 1.12,
+              "overall": 82
+            },
+            {
+              "player": "Casperfy",
+              "kd": 1.09,
+              "overall": 82
+            },
+            {
+              "player": "Renicide",
+              "kd": 1.08,
+              "overall": 82
+            },
+            {
+              "player": "Lazyy",
+              "kd": 0.87,
+              "overall": 75
+            },
+            {
+              "player": "Bleepa",
+              "kd": 0.79,
+              "overall": 70
+            },
+            {
+              "player": "Zap",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 6,
           "team": "New York Freaky D's",
-          "manager": "",
+          "manager": "@astral",
           "champion": false,
-          "record": "4-4"
+          "record": "4-4",
+          "roster": [
+            {
+              "player": "Jmetree",
+              "kd": 1.1,
+              "overall": 82
+            },
+            {
+              "player": "Utopian",
+              "kd": 1.09,
+              "overall": 82
+            },
+            {
+              "player": "Ephrisy",
+              "kd": 1.03,
+              "overall": 79
+            },
+            {
+              "player": "Freak",
+              "kd": 0.98,
+              "overall": 76
+            },
+            {
+              "player": "Scare",
+              "kd": 0.81,
+              "overall": 71
+            },
+            {
+              "player": "Robi",
+              "kd": 0.62,
+              "overall": 69
+            }
+          ],
+          "runnerUp": true
         },
         {
           "rank": 7,
           "team": "San Francisco Proxzymines",
           "manager": "",
           "champion": false,
-          "record": "4-4"
+          "record": "4-4",
+          "roster": [
+            {
+              "player": "Proxzify",
+              "kd": 1.07,
+              "overall": 82
+            },
+            {
+              "player": "Wrihs",
+              "kd": 0.95,
+              "overall": 77
+            },
+            {
+              "player": "User",
+              "kd": 0.93,
+              "overall": 76
+            },
+            {
+              "player": "Toremeant",
+              "kd": 0.86,
+              "overall": 73
+            },
+            {
+              "player": "Nada",
+              "kd": 0.76,
+              "overall": 67
+            },
+            {
+              "player": "Cholo",
+              "kd": 0.68,
+              "overall": 69
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 8,
           "team": "Houston Spartans",
-          "manager": "",
+          "manager": "@meksoo2 & @clizslays",
           "champion": false,
-          "record": "3-5"
+          "record": "3-5",
+          "roster": [
+            {
+              "player": "CrazieViews",
+              "kd": 1.21,
+              "overall": 86
+            },
+            {
+              "player": "Aurora",
+              "kd": 0.96,
+              "overall": 76
+            },
+            {
+              "player": "Kelp",
+              "kd": 0.95,
+              "overall": 77
+            },
+            {
+              "player": "Hyper",
+              "kd": 0.87,
+              "overall": 73
+            },
+            {
+              "player": "Kirchy",
+              "kd": 0.8,
+              "overall": 66
+            },
+            {
+              "player": "Sergio",
+              "kd": 0.78,
+              "overall": 70
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 9,
           "team": "St. Petersburg Mafia",
           "manager": "",
           "champion": false,
-          "record": "1-7"
+          "record": "1-7",
+          "roster": [
+            {
+              "player": "Phanatic",
+              "kd": 1.05,
+              "overall": 77
+            },
+            {
+              "player": "Zirow",
+              "kd": 1.0,
+              "overall": 76
+            },
+            {
+              "player": "Andrix",
+              "kd": 0.92,
+              "overall": 76
+            },
+            {
+              "player": "Stunless",
+              "kd": 0.83,
+              "overall": 75
+            },
+            {
+              "player": "Dreamy",
+              "kd": 0.81,
+              "overall": 74
+            },
+            {
+              "player": "Sybil",
+              "kd": 0.67,
+              "overall": 71
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 10,
           "team": "Bronx Bombers",
           "manager": "",
           "champion": false,
-          "record": "0-8"
+          "record": "0-8",
+          "roster": [
+            {
+              "player": "Killfeed",
+              "kd": 1.16,
+              "overall": 77
+            },
+            {
+              "player": "Roll",
+              "kd": 0.94,
+              "overall": 77
+            },
+            {
+              "player": "Edot",
+              "kd": 0.88,
+              "overall": 75
+            },
+            {
+              "player": "Secret",
+              "kd": 0.55,
+              "overall": 63
+            },
+            {
+              "player": "Poh",
+              "kd": 0.0,
+              "overall": null
+            },
+            {
+              "player": "Nuance",
+              "kd": 0.0,
+              "overall": null
+            }
+          ],
+          "runnerUp": false
         }
       ]
     },
@@ -6098,7 +7086,7 @@
         {
           "player": "Ephrisy",
           "displayName": "Ephrisy",
-          "team": "HOU",
+          "team": "Houston Havoc",
           "kills": 804,
           "deaths": 547,
           "kd": 1.47,
@@ -6118,7 +7106,7 @@
         {
           "player": "Hype",
           "displayName": "Hype",
-          "team": "CHI",
+          "team": "Chicago Syndicate",
           "kills": 809,
           "deaths": 643,
           "kd": 1.26,
@@ -6138,7 +7126,7 @@
         {
           "player": "Aj",
           "displayName": "AJ",
-          "team": "NSH",
+          "team": "Nashville Mighty Ducks",
           "kills": 901,
           "deaths": 749,
           "kd": 1.2,
@@ -6157,7 +7145,7 @@
         {
           "player": "Inkster",
           "displayName": "Inkster",
-          "team": "DET",
+          "team": "Detroit Dirty Dogs",
           "kills": 698,
           "deaths": 549,
           "kd": 1.27,
@@ -6176,7 +7164,7 @@
         {
           "player": "Habibi",
           "displayName": "Habibi",
-          "team": "HOU",
+          "team": "Houston Havoc",
           "kills": 608,
           "deaths": 520,
           "kd": 1.17,
@@ -6195,7 +7183,7 @@
         {
           "player": "Lurkens",
           "displayName": "Lurkens",
-          "team": "CHI",
+          "team": "Chicago Syndicate",
           "kills": 706,
           "deaths": 636,
           "kd": 1.11,
@@ -6215,7 +7203,7 @@
         {
           "player": "Renicide",
           "displayName": "Renicide",
-          "team": "NOLA",
+          "team": "NOLA Knights",
           "kills": 665,
           "deaths": 574,
           "kd": 1.16,
@@ -6234,7 +7222,7 @@
         {
           "player": "Acro Ace",
           "displayName": "Acro_Ace",
-          "team": "NSH",
+          "team": "Nashville Mighty Ducks",
           "kills": 742,
           "deaths": 721,
           "kd": 1.03,
@@ -6251,7 +7239,7 @@
         {
           "player": "Godofwarfare",
           "displayName": "Godofwarfare",
-          "team": "DET",
+          "team": "Detroit Dirty Dogs",
           "kills": 492,
           "deaths": 448,
           "kd": 1.1,
@@ -6268,7 +7256,7 @@
         {
           "player": "Aurora",
           "displayName": "Aurora",
-          "team": "OKC",
+          "team": "Oklahoma City Spartans",
           "kills": 389,
           "deaths": 324,
           "kd": 1.2,
@@ -6287,7 +7275,7 @@
         {
           "player": "Andrix",
           "displayName": "Andrix",
-          "team": "HOU",
+          "team": "Houston Havoc",
           "kills": 625,
           "deaths": 629,
           "kd": 0.99,
@@ -6304,7 +7292,7 @@
         {
           "player": "EJ",
           "displayName": "EJ",
-          "team": "BKN",
+          "team": "Brooklyn Empire",
           "kills": 339,
           "deaths": 291,
           "kd": 1.16,
@@ -6321,7 +7309,7 @@
         {
           "player": "Jealous",
           "displayName": "Jealous",
-          "team": "HOU",
+          "team": "Houston Havoc",
           "kills": 555,
           "deaths": 565,
           "kd": 0.98,
@@ -6338,7 +7326,7 @@
         {
           "player": "Leib",
           "displayName": "Leib",
-          "team": "CHI",
+          "team": "Chicago Syndicate",
           "kills": 685,
           "deaths": 704,
           "kd": 0.97,
@@ -6357,7 +7345,7 @@
         {
           "player": "Docsukii",
           "displayName": "Docsukii",
-          "team": "OKC",
+          "team": "Oklahoma City Spartans",
           "kills": 378,
           "deaths": 347,
           "kd": 1.09,
@@ -6374,7 +7362,7 @@
         {
           "player": "Nastyy",
           "displayName": "Nastyy",
-          "team": "NSH",
+          "team": "Nashville Mighty Ducks",
           "kills": 731,
           "deaths": 807,
           "kd": 0.91,
@@ -6391,7 +7379,7 @@
         {
           "player": "NickBoston",
           "displayName": "NickBoston",
-          "team": "DET",
+          "team": "Detroit Dirty Dogs",
           "kills": 440,
           "deaths": 431,
           "kd": 1.02,
@@ -6408,7 +7396,7 @@
         {
           "player": "Pablo",
           "displayName": "Pablo",
-          "team": "NOLA",
+          "team": "NOLA Knights",
           "kills": 357,
           "deaths": 353,
           "kd": 1.01,
@@ -6425,7 +7413,7 @@
         {
           "player": "Peach",
           "displayName": "Peach",
-          "team": "NSH",
+          "team": "Nashville Mighty Ducks",
           "kills": 716,
           "deaths": 821,
           "kd": 0.87,
@@ -6442,7 +7430,7 @@
         {
           "player": "Josh",
           "displayName": "Josh",
-          "team": "LA",
+          "team": "Los Angeles Nova",
           "kills": 277,
           "deaths": 230,
           "kd": 1.2,
@@ -6459,7 +7447,7 @@
         {
           "player": "Dragon",
           "displayName": "Dragon",
-          "team": "NOLA",
+          "team": "NOLA Knights",
           "kills": 438,
           "deaths": 463,
           "kd": 0.95,
@@ -6476,7 +7464,7 @@
         {
           "player": "Lewy",
           "displayName": "LeWy",
-          "team": "OKC",
+          "team": "Oklahoma City Spartans",
           "kills": 375,
           "deaths": 393,
           "kd": 0.95,
@@ -6493,7 +7481,7 @@
         {
           "player": "Trap",
           "displayName": "Trap",
-          "team": "CHI",
+          "team": "Chicago Syndicate",
           "kills": 498,
           "deaths": 572,
           "kd": 0.87,
@@ -6512,7 +7500,7 @@
         {
           "player": "Mythycall",
           "displayName": "Mythycall",
-          "team": "RUT",
+          "team": "Rutland Grizzlies",
           "kills": 323,
           "deaths": 348,
           "kd": 0.93,
@@ -6529,7 +7517,7 @@
         {
           "player": "Skapun",
           "displayName": "Skapun",
-          "team": "ATL",
+          "team": "Atlanta Reign",
           "kills": 190,
           "deaths": 153,
           "kd": 1.24,
@@ -6546,7 +7534,7 @@
         {
           "player": "Bleepa",
           "displayName": "Bleepa",
-          "team": "NOLA",
+          "team": "NOLA Knights",
           "kills": 378,
           "deaths": 435,
           "kd": 0.87,
@@ -6563,7 +7551,7 @@
         {
           "player": "Soup",
           "displayName": "Soup",
-          "team": "DET",
+          "team": "Detroit Dirty Dogs",
           "kills": 401,
           "deaths": 471,
           "kd": 0.85,
@@ -6580,7 +7568,7 @@
         {
           "player": "Proxzify",
           "displayName": "Proxzify",
-          "team": "RUT",
+          "team": "Rutland Grizzlies",
           "kills": 185,
           "deaths": 186,
           "kd": 0.99,
@@ -6597,7 +7585,7 @@
         {
           "player": "Tonychickenparm",
           "displayName": "Tonychickenparm",
-          "team": "DET",
+          "team": "Detroit Dirty Dogs",
           "kills": 438,
           "deaths": 540,
           "kd": 0.81,
@@ -6614,7 +7602,7 @@
         {
           "player": "Stim",
           "displayName": "Stim",
-          "team": "HOU",
+          "team": "Houston Havoc",
           "kills": 312,
           "deaths": 373,
           "kd": 0.84,
@@ -6631,7 +7619,7 @@
         {
           "player": "Horror",
           "displayName": "Horror",
-          "team": "FA",
+          "team": "Free Agent",
           "kills": 236,
           "deaths": 257,
           "kd": 0.92,
@@ -6648,7 +7636,7 @@
         {
           "player": "Realm",
           "displayName": "Realm",
-          "team": "NOLA",
+          "team": "NOLA Knights",
           "kills": 278,
           "deaths": 333,
           "kd": 0.83,
@@ -6665,7 +7653,7 @@
         {
           "player": "Edot",
           "displayName": "Edot",
-          "team": "DET",
+          "team": "Detroit Dirty Dogs",
           "kills": 238,
           "deaths": 266,
           "kd": 0.89,
@@ -6682,7 +7670,7 @@
         {
           "player": "Kai",
           "displayName": "Kai",
-          "team": "LA",
+          "team": "Los Angeles Nova",
           "kills": 188,
           "deaths": 200,
           "kd": 0.94,
@@ -6699,7 +7687,7 @@
         {
           "player": "Toremeant",
           "displayName": "Toremeant",
-          "team": "RUT",
+          "team": "Rutland Grizzlies",
           "kills": 182,
           "deaths": 194,
           "kd": 0.94,
@@ -6716,7 +7704,7 @@
         {
           "player": "Utopian",
           "displayName": "Utopian",
-          "team": "OKC",
+          "team": "Oklahoma City Spartans",
           "kills": 252,
           "deaths": 307,
           "kd": 0.82,
@@ -6733,7 +7721,7 @@
         {
           "player": "Luvfern",
           "displayName": "luvfern",
-          "team": "NSH",
+          "team": "Nashville Mighty Ducks",
           "kills": 141,
           "deaths": 149,
           "kd": 0.95,
@@ -6750,7 +7738,7 @@
         {
           "player": "Jmetree",
           "displayName": "Jmetree",
-          "team": "NSH",
+          "team": "Nashville Mighty Ducks",
           "kills": 92,
           "deaths": 73,
           "kd": 1.26,
@@ -6767,7 +7755,7 @@
         {
           "player": "Deceptions",
           "displayName": "Deceptions",
-          "team": "RUT",
+          "team": "Rutland Grizzlies",
           "kills": 98,
           "deaths": 91,
           "kd": 1.08,
@@ -6784,7 +7772,7 @@
         {
           "player": "Killfeed",
           "displayName": "Killfeed",
-          "team": "NY",
+          "team": "New York Ascend",
           "kills": 119,
           "deaths": 140,
           "kd": 0.85,
@@ -6801,7 +7789,7 @@
         {
           "player": "Shadow",
           "displayName": "Shadow",
-          "team": "RUT",
+          "team": "Rutland Grizzlies",
           "kills": 105,
           "deaths": 125,
           "kd": 0.84,
@@ -6818,7 +7806,7 @@
         {
           "player": "Versaii",
           "displayName": "Versaii",
-          "team": "LA",
+          "team": "Los Angeles Nova",
           "kills": 160,
           "deaths": 225,
           "kd": 0.71,
@@ -6835,7 +7823,7 @@
         {
           "player": "Anura",
           "displayName": "Anura",
-          "team": "FA",
+          "team": "Free Agent",
           "kills": 80,
           "deaths": 99,
           "kd": 0.81,
@@ -6852,7 +7840,7 @@
         {
           "player": "Duffie",
           "displayName": "Duffie",
-          "team": "OKC",
+          "team": "Oklahoma City Spartans",
           "kills": 64,
           "deaths": 78,
           "kd": 0.82,
@@ -6869,7 +7857,7 @@
         {
           "player": "Lazyy",
           "displayName": "Lazy",
-          "team": "FA",
+          "team": "Free Agent",
           "kills": 55,
           "deaths": 72,
           "kd": 0.76,
@@ -6886,7 +7874,7 @@
         {
           "player": "Jah",
           "displayName": "Jah",
-          "team": "LA",
+          "team": "Los Angeles Nova",
           "kills": 91,
           "deaths": 160,
           "kd": 0.57,
@@ -6903,7 +7891,7 @@
         {
           "player": "Kael",
           "displayName": "Kael",
-          "team": "FA",
+          "team": "Free Agent",
           "kills": 94,
           "deaths": 171,
           "kd": 0.55,
@@ -6920,7 +7908,7 @@
         {
           "player": "Kugo",
           "displayName": "Kugo",
-          "team": "CHI",
+          "team": "Chicago Syndicate",
           "kills": 56,
           "deaths": 97,
           "kd": 0.58,
@@ -6939,7 +7927,7 @@
         {
           "player": "Kelpmeltz",
           "displayName": "Kelpmeltz",
-          "team": "FA",
+          "team": "Free Agent",
           "kills": 44,
           "deaths": 83,
           "kd": 0.53,
@@ -6956,7 +7944,7 @@
         {
           "player": "Cholo",
           "displayName": "Cholo",
-          "team": "FA",
+          "team": "Free Agent",
           "kills": 22,
           "deaths": 24,
           "kd": 0.92,
@@ -6973,7 +7961,7 @@
         {
           "player": "Snapple",
           "displayName": "Snapple",
-          "team": "RUT",
+          "team": "Rutland Grizzlies",
           "kills": 32,
           "deaths": 55,
           "kd": 0.58,
@@ -6990,7 +7978,7 @@
         {
           "player": "Grimzey",
           "displayName": "Grimzey",
-          "team": "FA",
+          "team": "Free Agent",
           "kills": 41,
           "deaths": 90,
           "kd": 0.46,
@@ -7011,49 +7999,260 @@
           "team": "Chicago Syndicate",
           "manager": "",
           "champion": true,
-          "record": "8-1"
+          "record": "8-1",
+          "roster": [
+            {
+              "player": "Hype",
+              "kd": 1.26,
+              "overall": 92
+            },
+            {
+              "player": "Lurkens",
+              "kd": 1.11,
+              "overall": 85
+            },
+            {
+              "player": "Leib",
+              "kd": 0.97,
+              "overall": 79
+            },
+            {
+              "player": "Trap",
+              "kd": 0.87,
+              "overall": 72
+            },
+            {
+              "player": "Kugo",
+              "kd": 0.58,
+              "overall": 64
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 2,
           "team": "Nashville Mighty Ducks",
-          "manager": "",
+          "manager": "JMETREE",
           "champion": false,
-          "record": "8-3"
+          "record": "8-3",
+          "roster": [
+            {
+              "player": "Jmetree",
+              "kd": 1.26,
+              "overall": 77
+            },
+            {
+              "player": "Aj",
+              "kd": 1.2,
+              "overall": 90
+            },
+            {
+              "player": "Acro Ace",
+              "kd": 1.03,
+              "overall": 81
+            },
+            {
+              "player": "Luvfern",
+              "kd": 0.95,
+              "overall": 76
+            },
+            {
+              "player": "Nastyy",
+              "kd": 0.91,
+              "overall": 75
+            },
+            {
+              "player": "Peach",
+              "kd": 0.87,
+              "overall": 72
+            }
+          ],
+          "runnerUp": true
         },
         {
           "rank": 3,
           "team": "Houston Havoc",
-          "manager": "",
+          "manager": "Freese2k",
           "champion": false,
-          "record": "6-3"
+          "record": "6-3",
+          "roster": [
+            {
+              "player": "Ephrisy",
+              "kd": 1.47,
+              "overall": 99
+            },
+            {
+              "player": "Habibi",
+              "kd": 1.17,
+              "overall": 87
+            },
+            {
+              "player": "Andrix",
+              "kd": 0.99,
+              "overall": 79
+            },
+            {
+              "player": "Jealous",
+              "kd": 0.98,
+              "overall": 79
+            },
+            {
+              "player": "Stim",
+              "kd": 0.84,
+              "overall": 70
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 4,
           "team": "Detroit Dirty Dogs",
           "manager": "",
           "champion": false,
-          "record": "6-4"
+          "record": "6-4",
+          "roster": [
+            {
+              "player": "Inkster",
+              "kd": 1.27,
+              "overall": 93
+            },
+            {
+              "player": "Godofwarfare",
+              "kd": 1.1,
+              "overall": 84
+            },
+            {
+              "player": "NickBoston",
+              "kd": 1.02,
+              "overall": 80
+            },
+            {
+              "player": "Edot",
+              "kd": 0.89,
+              "overall": 76
+            },
+            {
+              "player": "Soup",
+              "kd": 0.85,
+              "overall": 72
+            },
+            {
+              "player": "Tonychickenparm",
+              "kd": 0.81,
+              "overall": 67
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 5,
           "team": "NOLA Knights",
-          "manager": "",
+          "manager": "Askiith",
           "champion": false,
-          "record": "5-4"
+          "record": "5-4",
+          "roster": [
+            {
+              "player": "Renicide",
+              "kd": 1.16,
+              "overall": 87
+            },
+            {
+              "player": "Pablo",
+              "kd": 1.01,
+              "overall": 79
+            },
+            {
+              "player": "Dragon",
+              "kd": 0.95,
+              "overall": 77
+            },
+            {
+              "player": "Bleepa",
+              "kd": 0.87,
+              "overall": 73
+            },
+            {
+              "player": "Realm",
+              "kd": 0.83,
+              "overall": 71
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 6,
           "team": "Rutland Grizzlies",
           "manager": "",
           "champion": false,
-          "record": "3-4"
+          "record": "3-4",
+          "roster": [
+            {
+              "player": "Deceptions",
+              "kd": 1.08,
+              "overall": 77
+            },
+            {
+              "player": "Proxzify",
+              "kd": 0.99,
+              "overall": 77
+            },
+            {
+              "player": "Toremeant",
+              "kd": 0.94,
+              "overall": 76
+            },
+            {
+              "player": "Mythycall",
+              "kd": 0.93,
+              "overall": 76
+            },
+            {
+              "player": "Shadow",
+              "kd": 0.84,
+              "overall": 75
+            },
+            {
+              "player": "Snapple",
+              "kd": 0.58,
+              "overall": 70
+            }
+          ],
+          "runnerUp": false
         },
         {
           "rank": 7,
           "team": "Oklahoma City Spartans",
           "manager": "",
           "champion": false,
-          "record": "2-5"
+          "record": "2-5",
+          "roster": [
+            {
+              "player": "Aurora",
+              "kd": 1.2,
+              "overall": 84
+            },
+            {
+              "player": "Docsukii",
+              "kd": 1.09,
+              "overall": 82
+            },
+            {
+              "player": "Lewy",
+              "kd": 0.95,
+              "overall": 77
+            },
+            {
+              "player": "Utopian",
+              "kd": 0.82,
+              "overall": 69
+            },
+            {
+              "player": "Duffie",
+              "kd": 0.82,
+              "overall": 75
+            }
+          ],
+          "runnerUp": false
         }
       ]
     }

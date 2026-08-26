@@ -89,7 +89,11 @@ export const standings = Object.fromEntries(
       team: s.team,
       manager: s.manager,
       champion: s.champion,
+      runnerUp: s.runnerUp || false,
       record: s.record,
+      winPct: s.winPct || null,
+      mapRecord: s.mapRecord || null,
+      roster: s.roster || [],
     })),
   ])
 );
@@ -189,6 +193,23 @@ function getSuperBurgerSeasons(name) {
 // G.O.A.T. badge — whoever sits at Hall of Fame rank #1
 export const goatPlayer = hallOfFame.find(h => h.rank === 1)?.player || null;
 
+export const tournamentWinners = [
+  {
+    name: '4v4 Cold War Variant (2024)',
+    team: 'Night City',
+    players: ['Ephrisy', 'Crooked', 'Renicide', 'Aj'],
+  },
+  {
+    name: '4v4 Variant Draft Tournament (2024)',
+    team: 'WCi',
+    players: ['Nastyy', 'Gunstahh', 'Bubbles', 'MVP'],
+  },
+];
+
+function isTournamentWinner(name) {
+  return tournamentWinners.some(t => t.players.some(p => p.toLowerCase() === (name || '').toLowerCase()));
+}
+
 export function getSpecialBadges(name) {
   const badges = [];
   if (name === goatPlayer) badges.push({ type: 'goat', label: 'G.O.A.T.' });
@@ -197,6 +218,7 @@ export function getSpecialBadges(name) {
     const seasonsList = getSuperBurgerSeasons(name);
     badges.push({ type: 'superburger', label: `Super Burger (${seasonsList.map(s => `S${s}`).join(', ')})` });
   }
+  if (isTournamentWinner(name)) badges.push({ type: 'tournament', label: 'Tournament Winner' });
   return badges;
 }
 

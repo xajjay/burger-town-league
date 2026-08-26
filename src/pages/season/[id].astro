@@ -83,19 +83,46 @@ const currentPath = Astro.url.pathname;
         <h2 class="section-title">Final Standings</h2>
         <div class="table-scroll">
           <table class="stat-table">
-            <thead><tr><th>#</th><th>Team</th><th>Record</th><th>Manager</th></tr></thead>
+            <thead><tr><th>#</th><th>Team</th><th>Record</th><th>Win %</th><th>Map Record</th><th>Manager</th></tr></thead>
             <tbody>
               {seasonStandings.map(s => (
                 <tr>
                   <td class={s.rank === 1 ? 'rank-1' : ''}>{s.rank}</td>
-                  <td>{s.team} {s.champion && <span class="badge badge-gold">Champion</span>}</td>
-                  <td>{s.record}</td>
-                  <td>{s.manager}</td>
+                  <td>
+                    {s.team}
+                    {s.champion && <span class="badge badge-gold">Champion</span>}
+                    {s.runnerUp && <span class="badge badge-red">Runner-Up</span>}
+                  </td>
+                  <td>{s.record || 'N/A'}</td>
+                  <td>{s.winPct || 'N/A'}</td>
+                  <td>{s.mapRecord || 'N/A'}</td>
+                  <td>{s.manager || 'N/A'}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        <h3 style="font-family: var(--font-body); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.04em; color: var(--paper-dim); margin: 28px 0 12px;">Team Rosters</h3>
+        {seasonStandings.filter(s => s.roster && s.roster.length > 0).map(s => (
+          <details class="roster-details">
+            <summary>{s.team} <span style="color: var(--paper-dim); font-weight: 400;">({s.roster.length} players)</span></summary>
+            <div class="table-scroll">
+              <table class="stat-table">
+                <thead><tr><th>Player</th><th>K/D</th><th>OVR</th></tr></thead>
+                <tbody>
+                  {s.roster.map(r => (
+                    <tr>
+                      <td><a href={`/players/${encodeURIComponent(r.player)}`} class={`${isHofPlayer(r.player) ? 'hof-name' : ''} ${hasSuperBurger(r.player) ? 'superburger-name' : ''}`}>{r.player}</a></td>
+                      <td>{r.kd != null ? r.kd.toFixed(2) : 'N/A'}</td>
+                      <td style="color: var(--gold); font-weight: 700;">{r.overall ?? 'N/A'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        ))}
       </div>
     </section>
   )}
