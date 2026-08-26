@@ -11,16 +11,23 @@ const seasonId = Number(id);
 const season = seasons.find(s => s.id === seasonId);
 const stats = [...(seasonStats[seasonId] || [])].sort((a, b) => b.kd - a.kd);
 const seasonStandings = standings[seasonId] || [];
+
+const historyTabs = [
+  { href: "/history", label: "Draft League History" },
+  ...seasons.map(s => ({ href: `/season/${s.id}`, label: s.name })),
+  { href: "/history/all-seasons", label: "All Seasons" },
+];
+const currentPath = Astro.url.pathname;
 ---
 <Base title={`${season.name} — Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
     <div class="wrap">
       <div class="season-pills">
-        {seasons.map(s => (
-          <a class={`season-pill ${s.id === seasonId ? 'active' : ''}`} href={`/season/${s.id}`}>{s.name}</a>
+        {historyTabs.map(t => (
+          <a class={`season-pill ${currentPath === t.href ? 'active' : ''}`} href={t.href}>{t.label}</a>
         ))}
       </div>
-      <span class="eyebrow">{season.status}</span>
+      <span class="eyebrow">{season.status} · {season.league}</span>
       <h1 class="script-heading">{season.name}</h1>
       <p style="color: var(--paper-dim); max-width: 60ch;">
         Champion: <strong style="color: var(--gold);">{season.champion}</strong>

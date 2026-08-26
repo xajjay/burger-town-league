@@ -187,8 +187,8 @@ h2.script-heading { font-size: clamp(1.8rem, 4vw, 2.6rem); }
 
 .hero-copy p {
   color: var(--paper-dim);
-  font-size: 1.05rem;
-  max-width: 46ch;
+  font-size: 1.02rem;
+  max-width: 58ch;
 }
 
 .hero-actions {

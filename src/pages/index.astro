@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { seasons, seasonStats, standings, social } from '../data/leagueData.js';
+import { seasons, seasonStats, standings, social, foundedYear, homeDescription } from '../data/leagueData.js';
 
 const latestSeason = seasons[seasons.length - 1];
 const topPlayers = [...seasonStats[latestSeason.id]].sort((a, b) => b.kd - a.kd).slice(0, 5);
@@ -10,11 +10,11 @@ const currentStandings = (standings[latestSeason.id] || []).slice(0, 5);
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <span class="eyebrow">Est. Season 1</span>
+        <span class="eyebrow">Est. {foundedYear}</span>
         <h1 class="script-heading">Burger Town Leagues</h1>
-        <p>The home of the Cold War Draft League — every season's stats, standings, and history, updated as new matches wrap up.</p>
+        <p>{homeDescription}</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href={`/season/${latestSeason.id}`}>View Season {latestSeason.id}</a>
+          <a class="btn btn-primary" href="/current-season">View Current Season</a>
           <a class="btn btn-ghost" href={social.youtube} target="_blank" rel="noopener">Watch on YouTube</a>
         </div>
       </div>
@@ -26,7 +26,7 @@ const currentStandings = (standings[latestSeason.id] || []).slice(0, 5);
 
   <section>
     <div class="wrap">
-      <h2 class="section-title">Season {latestSeason.id} — Top K/D</h2>
+      <h2 class="section-title">Most Recent Season (History) — Season {latestSeason.id} Top K/D</h2>
       <div class="table-scroll">
         <table class="stat-table">
           <thead>
@@ -50,7 +50,7 @@ const currentStandings = (standings[latestSeason.id] || []).slice(0, 5);
 
   <section>
     <div class="wrap">
-      <h2 class="section-title">Current Standings</h2>
+      <h2 class="section-title">Season {latestSeason.id} Final Standings</h2>
       <div class="table-scroll">
         <table class="stat-table">
           <thead><tr><th>#</th><th>Team</th><th>Record</th></tr></thead>

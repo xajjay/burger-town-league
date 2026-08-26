@@ -5,12 +5,18 @@
 // "Publish to web" CSV links.
 // ============================================================================
 
+export const foundedYear = 2024;
+
+export const homeDescription = "Burger Town is the new home for Cold War Draft Leagues and Call of Duty tournaments. Built for an established competitive community, BTL brings a new league experience while preserving the history players have built across different leagues over the years. Explore historical records, player statistics, standings, and everything leading into the next chapter of Cold War Draft League competition.";
+
+// Legacy seasons, played under prior league ownership before BTL — history is
+// preserved here, but these are NOT BurgerTown's own numbered seasons.
 export const seasons = [
-  { id: 1, name: "Season 1", champion: "Renegades", mvp: "Aj", status: "Complete" },
-  { id: 2, name: "Season 2", champion: "Havoc", mvp: "CrazieViews", status: "Complete" },
-  { id: 3, name: "Season 3", champion: "Syndicate", mvp: "Jmetree", status: "Complete" },
-  { id: 4, name: "Season 4", champion: "Nova", mvp: "Hype", status: "Complete" },
-  { id: 5, name: "Season 5", champion: "Houston Havoc", mvp: "TBD", status: "Complete" },
+  { id: 1, name: "Season 1", league: "CTRL League", champion: "Renegades", mvp: "Aj", status: "Complete" },
+  { id: 2, name: "Season 2", league: "CTRL League", champion: "Havoc", mvp: "CrazieViews", status: "Complete" },
+  { id: 3, name: "Season 3", league: "Z Star League", champion: "Syndicate", mvp: "Jmetree", status: "Complete" },
+  { id: 4, name: "Season 4", league: "Z Star League", champion: "Nova", mvp: "Hype", status: "Complete" },
+  { id: 5, name: "Season 5", league: "Z Star League", champion: "Houston Havoc", mvp: "TBD", status: "Complete" },
 ];
 
 // One row per player per season — mirrors your "Season N" tabs
