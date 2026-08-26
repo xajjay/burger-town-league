@@ -1,12 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
-import { seasons, seasonStats, standings, social, foundedYear, homeDescription } from '../data/leagueData.js';
+import { hallOfFame, social, foundedYear, homeDescription, signupFormUrl, upcomingSeasonId, seasonYears } from '../data/leagueData.js';
 
-const latestSeason = seasons[seasons.length - 1];
-const topPlayers = [...seasonStats[latestSeason.id]].sort((a, b) => b.kd - a.kd).slice(0, 5);
-const currentStandings = (standings[latestSeason.id] || []).slice(0, 5);
+const top5 = hallOfFame.slice(0, 5);
 ---
-<Base title="Burger Town Leagues — Cold War Draft League">
+<Base title="Burger Town Leagues | Cold War Draft League">
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
@@ -26,45 +24,36 @@ const currentStandings = (standings[latestSeason.id] || []).slice(0, 5);
 
   <section>
     <div class="wrap">
-      <h2 class="section-title">Most Recent Season (History) — Season {latestSeason.id} Top K/D</h2>
-      <div class="table-scroll">
-        <table class="stat-table">
-          <thead>
-            <tr><th>#</th><th>Player</th><th>Team</th><th>K/D</th><th>Maps</th></tr>
-          </thead>
-          <tbody>
-            {topPlayers.map((p, i) => (
-              <tr>
-                <td class={i === 0 ? 'rank-1' : ''}>{i + 1}</td>
-                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
-                <td>{p.team}</td>
-                <td>{p.kd.toFixed(2)}</td>
-                <td>{p.maps}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div class="pixel-card" style="text-align: center; padding: 40px 24px;">
+        <span class="eyebrow">Sign Ups Open</span>
+        <h2 class="script-heading" style="font-size: 2rem; margin-bottom: 12px;">Join Season {upcomingSeasonId} ({seasonYears[upcomingSeasonId]})</h2>
+        <p style="color: var(--paper-dim); max-width: 50ch; margin: 0 auto 20px;">
+          Burger Town's first official season is forming now. Sign up to be drafted onto a team and join the next chapter of the Cold War Draft League.
+        </p>
+        <a class="btn btn-primary" href={signupFormUrl} target="_blank" rel="noopener">Sign Up Now</a>
       </div>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <h2 class="section-title">Season {latestSeason.id} Final Standings</h2>
+      <h2 class="section-title">Hall of Fame: Top 5</h2>
       <div class="table-scroll">
         <table class="stat-table">
-          <thead><tr><th>#</th><th>Team</th><th>Record</th></tr></thead>
+          <thead><tr><th>#</th><th>Player</th><th>Career K/D</th><th>Legacy Score</th></tr></thead>
           <tbody>
-            {currentStandings.map(s => (
+            {top5.map(p => (
               <tr>
-                <td class={s.rank === 1 ? 'rank-1' : ''}>{s.rank}</td>
-                <td>{s.team}</td>
-                <td>{s.record}</td>
+                <td class={p.rank === 1 ? 'rank-1' : ''}>{p.rank}</td>
+                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
+                <td>{p.kd.toFixed(2)}</td>
+                <td style="color: var(--gold); font-weight: 700;">{p.legacyScore.toFixed(1)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <p style="margin-top: 16px;"><a class="btn btn-ghost" href="/hall-of-fame">View Full Hall of Fame</a></p>
     </div>
   </section>
 
@@ -79,7 +68,7 @@ const currentStandings = (standings[latestSeason.id] || []).slice(0, 5);
         </div>
         <div class="pixel-card">
           <span class="eyebrow">Twitter / X</span>
-          <p>Live updates, standings, and announcements — @burgrtown.</p>
+          <p>Live updates, standings, and announcements. Follow @burgrtown.</p>
           <a class="btn btn-primary" href={social.twitter} target="_blank" rel="noopener">Follow</a>
         </div>
         <div class="pixel-card">

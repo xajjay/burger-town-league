@@ -11,6 +11,12 @@ export const social = {
   email: "burgertownleagues@gmail.com",
 };
 
+export const signupFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd7tkxczxplrqFmBzXphCzQNQWONYlR2EXZDfsj4YzTcbUsFQ/viewform?pli=1&pli=1";
+export const rulebookUrl = "https://docs.google.com/document/d/1yFZNfyt_Fgq2tdFr63N2HR-z9iS_tohesAoDdQuprwM/edit?tab=t.0";
+
+export const seasonYears = { 1: 2023, 2: 2023, 3: 2024, 4: 2024, 5: 2026, 6: 2026 };
+export const upcomingSeasonId = 6;
+
 function norm(s) {
   return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 }
@@ -25,6 +31,7 @@ const mvpBySeason = Object.fromEntries(raw.mvps.map(m => [m.season, resolveName(
 export const seasons = ['1', '2', '3', '4', '5'].map(sid => ({
   id: Number(sid),
   name: `Season ${sid}`,
+  year: seasonYears[Number(sid)],
   league: championBySeason[sid]?.league || '',
   champion: championBySeason[sid]?.team || 'TBD',
   championManager: championBySeason[sid]?.manager || '',
@@ -42,6 +49,7 @@ export const seasonStats = Object.fromEntries(
       deaths: p.deaths,
       kd: p.kd,
       maps: p.maps,
+      overall: p.overall,
       allStar: p.allStar,
       honors: p.honors,
     })),
@@ -61,6 +69,8 @@ export const standings = Object.fromEntries(
   ])
 );
 
+export const seasonRecords = raw.seasonRecords || {};
+
 export const careerStats = raw.career.map(c => ({
   player: c.player,
   seasons: Object.keys(c.seasonKD).map(Number).sort((a, b) => a - b),
@@ -69,6 +79,8 @@ export const careerStats = raw.career.map(c => ({
   deaths: c.deaths,
   kd: c.kd,
   maps: c.maps,
+  avgSeasonOverall: c.avgSeasonOverall,
+  overall: c.playerOverall,
   accolades: c.accolades,
 }));
 

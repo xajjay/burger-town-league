@@ -5,11 +5,11 @@ import { seasons, isKnownPlayer } from '../../data/leagueData.js';
 const currentPath = Astro.url.pathname;
 const historyTabs = [
   { href: "/history", label: "Draft League History" },
-  ...seasons.map(s => ({ href: `/season/${s.id}`, label: s.name })),
+  ...seasons.map(s => ({ href: `/season/${s.id}`, label: `${s.name} (${s.year})` })),
   { href: "/history/all-seasons", label: "All Seasons" },
 ];
 ---
-<Base title="History — Burger Town Leagues">
+<Base title="History | Burger Town Leagues">
   <section style="padding-bottom: 0;">
     <div class="wrap">
       <div class="season-pills">
@@ -34,7 +34,7 @@ const historyTabs = [
           <tbody>
             {seasons.map(s => (
               <tr>
-                <td><a href={`/season/${s.id}`}>{s.name}</a></td>
+                <td><a href={`/season/${s.id}`}>{s.name} ({s.year})</a></td>
                 <td>{s.league}</td>
                 <td>{s.champion}</td>
                 <td>{isKnownPlayer(s.mvp) ? <a href={`/players/${encodeURIComponent(s.mvp)}`}>{s.mvp}</a> : s.mvp}</td>

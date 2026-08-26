@@ -336,6 +336,33 @@ section + section { border-top: 1px solid var(--line); }
 .footer-links a { text-decoration: none; color: var(--paper-dim); }
 .footer-links a:hover { color: var(--paper); }
 
+/* --- Player Overall rating badge --- */
+.ovr-badge {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 88px;
+  background: linear-gradient(160deg, var(--gold) 0%, var(--gold-dim) 100%);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  color: var(--black);
+}
+.ovr-badge .ovr-number {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.ovr-badge .ovr-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
 /* --- Season nav pills --- */
 .season-pills {
   display: flex;

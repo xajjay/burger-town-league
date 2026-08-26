@@ -2,33 +2,17 @@
 import Base from '../layouts/Base.astro';
 import { seasons, hallOfFame, isKnownPlayer } from '../data/leagueData.js';
 ---
-<Base title="Hall of Fame — Burger Town Leagues">
+<Base title="Hall of Fame | Burger Town Leagues">
   <section>
     <div class="wrap">
       <span class="eyebrow">Since Season 1</span>
       <h1 class="script-heading" style="margin-bottom: 8px;">Hall of Fame</h1>
       <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 32px;">
-        Eligibility: 3+ seasons played and at least one All-Star selection. Ranked by Legacy Score — a blend of accolades, career K/D, and longevity.
+        Eligibility: 3+ seasons played and at least one All-Star selection. Ranked by Legacy Score, a blend of accolades, career K/D, and longevity.
       </p>
 
-      <h2 class="section-title">Champions &amp; MVPs</h2>
-      <div class="table-scroll" style="margin-bottom: 40px;">
-        <table class="stat-table">
-          <thead><tr><th>Season</th><th>Champion</th><th>MVP</th></tr></thead>
-          <tbody>
-            {seasons.map(s => (
-              <tr>
-                <td><a href={`/season/${s.id}`}>{s.name}</a></td>
-                <td>{s.champion}</td>
-                <td>{isKnownPlayer(s.mvp) ? <a href={`/players/${encodeURIComponent(s.mvp)}`}>{s.mvp}</a> : s.mvp}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
       <h2 class="section-title">Legacy Rankings</h2>
-      <div class="table-scroll">
+      <div class="table-scroll" style="margin-bottom: 40px;">
         <table class="stat-table">
           <thead>
             <tr><th>#</th><th>Player</th><th>Career K/D</th><th>Seasons</th><th>MVPs</th><th>Titles</th><th>All-Stars</th><th>Legacy Score</th></tr>
@@ -44,6 +28,22 @@ import { seasons, hallOfFame, isKnownPlayer } from '../data/leagueData.js';
                 <td>{p.championships}</td>
                 <td>{p.allStar1}× 1st, {p.allStar2}× 2nd</td>
                 <td style="color: var(--gold); font-weight: 700;">{p.legacyScore.toFixed(1)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">Champions &amp; MVPs</h2>
+      <div class="table-scroll">
+        <table class="stat-table">
+          <thead><tr><th>Season</th><th>Champion</th><th>MVP</th></tr></thead>
+          <tbody>
+            {seasons.map(s => (
+              <tr>
+                <td><a href={`/season/${s.id}`}>{s.name} ({s.year})</a></td>
+                <td>{s.champion}</td>
+                <td>{isKnownPlayer(s.mvp) ? <a href={`/players/${encodeURIComponent(s.mvp)}`}>{s.mvp}</a> : s.mvp}</td>
               </tr>
             ))}
           </tbody>

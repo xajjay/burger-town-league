@@ -6,14 +6,16 @@
       "numSeasons": 3,
       "kills": 1877,
       "deaths": 1426,
-      "kd": 1.316,
+      "kd": 1.32,
       "seasonKD": {
         "2": 1.32,
         "4": 1.03,
         "5": 1.47
       },
       "maps": 81,
-      "accolades": "5 accolades \u2014 2x MVP (S2, S5); 1x Champion (S2); 2x All-Star (S2 First Team, S5 First Team)"
+      "avgSeasonOverall": 93.7,
+      "playerOverall": 96,
+      "accolades": "5 accolades: 2x MVP (S2, S5); 1x Champion (S2); 2x All-Star (S2 First Team, S5 First Team)"
     },
     {
       "player": "CrazieViews",
@@ -21,13 +23,15 @@
       "numSeasons": 2,
       "kills": 1061,
       "deaths": 812,
-      "kd": 1.307,
+      "kd": 1.31,
       "seasonKD": {
         "2": 1.38,
         "4": 1.21
       },
       "maps": 47,
-      "accolades": "2 accolades \u2014 2x All-Star (S2 First Team, S4 First Team)"
+      "avgSeasonOverall": 92.6,
+      "playerOverall": 91,
+      "accolades": "2 accolades: 2x All-Star (S2 First Team, S4 First Team)"
     },
     {
       "player": "Crooked",
@@ -35,13 +39,15 @@
       "numSeasons": 2,
       "kills": 738,
       "deaths": 569,
-      "kd": 1.297,
+      "kd": 1.3,
       "seasonKD": {
         "1": 1.57,
         "3": 1.11
       },
       "maps": 29,
-      "accolades": "2 accolades \u2014 2x All-Star (S1 First Team, S3 Second Team)"
+      "avgSeasonOverall": 85.0,
+      "playerOverall": 85,
+      "accolades": "2 accolades: 2x All-Star (S1 First Team, S3 Second Team)"
     },
     {
       "player": "Inkster",
@@ -49,13 +55,15 @@
       "numSeasons": 2,
       "kills": 1048,
       "deaths": 835,
-      "kd": 1.255,
+      "kd": 1.26,
       "seasonKD": {
         "2": 1.22,
         "5": 1.27
       },
       "maps": 47,
-      "accolades": "1 accolade \u2014 1x All-Star (S5 First Team)"
+      "avgSeasonOverall": 89.9,
+      "playerOverall": 89,
+      "accolades": "1 accolade: 1x All-Star (S5 First Team)"
     },
     {
       "player": "Skapun",
@@ -63,11 +71,13 @@
       "numSeasons": 1,
       "kills": 190,
       "deaths": 153,
-      "kd": 1.242,
+      "kd": 1.24,
       "seasonKD": {
         "5": 1.24
       },
       "maps": 8,
+      "avgSeasonOverall": 80.0,
+      "playerOverall": 78,
       "accolades": ""
     },
     {
@@ -76,11 +86,13 @@
       "numSeasons": 1,
       "kills": 294,
       "deaths": 237,
-      "kd": 1.241,
+      "kd": 1.24,
       "seasonKD": {
         "2": 1.24
       },
       "maps": 15,
+      "avgSeasonOverall": 84.0,
+      "playerOverall": 81,
       "accolades": ""
     },
     {
@@ -89,7 +101,7 @@
       "numSeasons": 5,
       "kills": 2592,
       "deaths": 2094,
-      "kd": 1.238,
+      "kd": 1.24,
       "seasonKD": {
         "1": 1.17,
         "2": 1.16,
@@ -98,7 +110,9 @@
         "5": 1.26
       },
       "maps": 111,
-      "accolades": "7 accolades \u2014 1x MVP (S4); 1x Champion (S5); 5x All-Star (S1 First Team, S2 First Team, S3 First Team, S4 First Team, S5 First Team)"
+      "avgSeasonOverall": 88.6,
+      "playerOverall": 97,
+      "accolades": "7 accolades: 1x MVP (S4); 1x Champion (S5); 5x All-Star (S1 First Team, S2 First Team, S3 First Team, S4 First Team, S5 First Team)"
     },
     {
       "player": "Purp",
@@ -106,12 +120,14 @@
       "numSeasons": 1,
       "kills": 663,
       "deaths": 537,
-      "kd": 1.235,
+      "kd": 1.23,
       "seasonKD": {
         "4": 1.23
       },
       "maps": 29,
-      "accolades": "2 accolades \u2014 1x Champion (S4); 1x All-Star (S4 First Team)"
+      "avgSeasonOverall": 91.0,
+      "playerOverall": 86,
+      "accolades": "2 accolades: 1x Champion (S4); 1x All-Star (S4 First Team)"
     },
     {
       "player": "Jmetree",
@@ -119,7 +135,7 @@
       "numSeasons": 4,
       "kills": 1141,
       "deaths": 936,
-      "kd": 1.219,
+      "kd": 1.22,
       "seasonKD": {
         "1": 1.23,
         "3": 1.33,
@@ -127,7 +143,9 @@
         "5": 1.26
       },
       "maps": 57,
-      "accolades": "4 accolades \u2014 1x MVP (S3); 1x Champion (S1); 2x All-Star (S3 First Team, S1 Second Team)"
+      "avgSeasonOverall": 85.1,
+      "playerOverall": 91,
+      "accolades": "4 accolades: 1x MVP (S3); 1x Champion (S1); 2x All-Star (S3 First Team, S1 Second Team)"
     },
     {
       "player": "Josh",
@@ -135,11 +153,13 @@
       "numSeasons": 1,
       "kills": 277,
       "deaths": 230,
-      "kd": 1.204,
+      "kd": 1.2,
       "seasonKD": {
         "5": 1.2
       },
       "maps": 11,
+      "avgSeasonOverall": 81.0,
+      "playerOverall": 79,
       "accolades": ""
     },
     {
@@ -148,12 +168,14 @@
       "numSeasons": 1,
       "kills": 608,
       "deaths": 520,
-      "kd": 1.169,
+      "kd": 1.17,
       "seasonKD": {
         "5": 1.17
       },
       "maps": 30,
-      "accolades": "1 accolade \u2014 1x All-Star (S5 Second Team)"
+      "avgSeasonOverall": 87.0,
+      "playerOverall": 83,
+      "accolades": "1 accolade: 1x All-Star (S5 Second Team)"
     },
     {
       "player": "Aj",
@@ -161,7 +183,7 @@
       "numSeasons": 5,
       "kills": 3055,
       "deaths": 2619,
-      "kd": 1.166,
+      "kd": 1.17,
       "seasonKD": {
         "1": 1.31,
         "2": 1.09,
@@ -170,7 +192,9 @@
         "5": 1.2
       },
       "maps": 145,
-      "accolades": "7 accolades \u2014 1x MVP (S1); 1x Champion (S1); 5x All-Star (S1 First Team, S4 First Team, S5 First Team, S2 Second Team, S3 Second Team)"
+      "avgSeasonOverall": 86.5,
+      "playerOverall": 95,
+      "accolades": "7 accolades: 1x MVP (S1); 1x Champion (S1); 5x All-Star (S1 First Team, S4 First Team, S5 First Team, S2 Second Team, S3 Second Team)"
     },
     {
       "player": "Waly",
@@ -178,13 +202,15 @@
       "numSeasons": 2,
       "kills": 1386,
       "deaths": 1189,
-      "kd": 1.166,
+      "kd": 1.17,
       "seasonKD": {
         "2": 1.23,
         "4": 1.06
       },
       "maps": 71,
-      "accolades": "1 accolade \u2014 1x All-Star (S2 First Team)"
+      "avgSeasonOverall": 87.5,
+      "playerOverall": 87,
+      "accolades": "1 accolade: 1x All-Star (S2 First Team)"
     },
     {
       "player": "EJ",
@@ -192,11 +218,13 @@
       "numSeasons": 1,
       "kills": 339,
       "deaths": 291,
-      "kd": 1.165,
+      "kd": 1.16,
       "seasonKD": {
         "5": 1.16
       },
       "maps": 18,
+      "avgSeasonOverall": 83.0,
+      "playerOverall": 80,
       "accolades": ""
     },
     {
@@ -205,7 +233,7 @@
       "numSeasons": 4,
       "kills": 2465,
       "deaths": 2167,
-      "kd": 1.138,
+      "kd": 1.14,
       "seasonKD": {
         "2": 1.22,
         "3": 1.26,
@@ -213,7 +241,9 @@
         "5": 1.03
       },
       "maps": 127,
-      "accolades": "3 accolades \u2014 3x All-Star (S3 First Team, S2 Second Team, S4 Second Team)"
+      "avgSeasonOverall": 85.4,
+      "playerOverall": 91,
+      "accolades": "3 accolades: 3x All-Star (S3 First Team, S2 Second Team, S4 Second Team)"
     },
     {
       "player": "Dez",
@@ -221,11 +251,13 @@
       "numSeasons": 1,
       "kills": 253,
       "deaths": 224,
-      "kd": 1.129,
+      "kd": 1.13,
       "seasonKD": {
         "1": 1.13
       },
       "maps": 9,
+      "avgSeasonOverall": 79.0,
+      "playerOverall": 78,
       "accolades": ""
     },
     {
@@ -234,11 +266,13 @@
       "numSeasons": 1,
       "kills": 469,
       "deaths": 417,
-      "kd": 1.125,
+      "kd": 1.12,
       "seasonKD": {
         "2": 1.12
       },
       "maps": 21,
+      "avgSeasonOverall": 84.0,
+      "playerOverall": 81,
       "accolades": ""
     },
     {
@@ -247,11 +281,13 @@
       "numSeasons": 1,
       "kills": 361,
       "deaths": 321,
-      "kd": 1.125,
+      "kd": 1.12,
       "seasonKD": {
         "4": 1.12
       },
       "maps": 17,
+      "avgSeasonOverall": 82.0,
+      "playerOverall": 80,
       "accolades": ""
     },
     {
@@ -260,12 +296,14 @@
       "numSeasons": 1,
       "kills": 716,
       "deaths": 644,
-      "kd": 1.112,
+      "kd": 1.11,
       "seasonKD": {
         "2": 1.11
       },
       "maps": 39,
-      "accolades": "1 accolade \u2014 1x All-Star (S2 Second Team)"
+      "avgSeasonOverall": 85.0,
+      "playerOverall": 82,
+      "accolades": "1 accolade: 1x All-Star (S2 Second Team)"
     },
     {
       "player": "Collision",
@@ -273,11 +311,13 @@
       "numSeasons": 1,
       "kills": 719,
       "deaths": 647,
-      "kd": 1.111,
+      "kd": 1.11,
       "seasonKD": {
         "2": 1.11
       },
       "maps": 39,
+      "avgSeasonOverall": 85.0,
+      "playerOverall": 82,
       "accolades": ""
     },
     {
@@ -291,7 +331,9 @@
         "5": 1.11
       },
       "maps": 36,
-      "accolades": "2 accolades \u2014 1x Champion (S5); 1x All-Star (S5 Second Team)"
+      "avgSeasonOverall": 85.0,
+      "playerOverall": 82,
+      "accolades": "2 accolades: 1x Champion (S5); 1x All-Star (S5 Second Team)"
     },
     {
       "player": "Nuance",
@@ -299,11 +341,13 @@
       "numSeasons": 2,
       "kills": 669,
       "deaths": 606,
-      "kd": 1.104,
+      "kd": 1.1,
       "seasonKD": {
         "2": 1.1
       },
       "maps": 35,
+      "avgSeasonOverall": 85.0,
+      "playerOverall": 84,
       "accolades": ""
     },
     {
@@ -312,11 +356,13 @@
       "numSeasons": 1,
       "kills": 130,
       "deaths": 118,
-      "kd": 1.102,
+      "kd": 1.1,
       "seasonKD": {
         "1": 1.1
       },
       "maps": 6,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -325,11 +371,13 @@
       "numSeasons": 1,
       "kills": 492,
       "deaths": 448,
-      "kd": 1.098,
+      "kd": 1.1,
       "seasonKD": {
         "5": 1.1
       },
       "maps": 25,
+      "avgSeasonOverall": 84.0,
+      "playerOverall": 81,
       "accolades": ""
     },
     {
@@ -338,7 +386,7 @@
       "numSeasons": 5,
       "kills": 2604,
       "deaths": 2386,
-      "kd": 1.091,
+      "kd": 1.09,
       "seasonKD": {
         "1": 1.14,
         "2": 1.04,
@@ -347,7 +395,9 @@
         "5": 1.16
       },
       "maps": 117,
-      "accolades": "6 accolades \u2014 1x Champion (S3); 5x All-Star (S1 First Team, S2 Second Team, S3 Second Team, S4 Second Team, S5 Second Team)"
+      "avgSeasonOverall": 82.9,
+      "playerOverall": 91,
+      "accolades": "6 accolades: 1x Champion (S3); 5x All-Star (S1 First Team, S2 Second Team, S3 Second Team, S4 Second Team, S5 Second Team)"
     },
     {
       "player": "Docsukii",
@@ -355,11 +405,13 @@
       "numSeasons": 1,
       "kills": 378,
       "deaths": 347,
-      "kd": 1.089,
+      "kd": 1.09,
       "seasonKD": {
         "5": 1.09
       },
       "maps": 21,
+      "avgSeasonOverall": 82.0,
+      "playerOverall": 80,
       "accolades": ""
     },
     {
@@ -368,7 +420,7 @@
       "numSeasons": 5,
       "kills": 1332,
       "deaths": 1224,
-      "kd": 1.088,
+      "kd": 1.09,
       "seasonKD": {
         "1": 1.12,
         "2": 0.95,
@@ -377,7 +429,9 @@
         "5": 1.2
       },
       "maps": 65,
-      "accolades": "4 accolades \u2014 1x Champion (S3); 3x All-Star (S3 First Team, S1 Second Team, S5 Second Team)"
+      "avgSeasonOverall": 79.8,
+      "playerOverall": 87,
+      "accolades": "4 accolades: 1x Champion (S3); 3x All-Star (S3 First Team, S1 Second Team, S5 Second Team)"
     },
     {
       "player": "Deceptions",
@@ -385,11 +439,13 @@
       "numSeasons": 1,
       "kills": 98,
       "deaths": 91,
-      "kd": 1.077,
+      "kd": 1.08,
       "seasonKD": {
         "5": 1.08
       },
       "maps": 5,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -398,11 +454,13 @@
       "numSeasons": 1,
       "kills": 142,
       "deaths": 135,
-      "kd": 1.052,
+      "kd": 1.05,
       "seasonKD": {
         "4": 1.05
       },
       "maps": 7,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -411,11 +469,13 @@
       "numSeasons": 1,
       "kills": 491,
       "deaths": 469,
-      "kd": 1.047,
+      "kd": 1.05,
       "seasonKD": {
         "4": 1.05
       },
       "maps": 25,
+      "avgSeasonOverall": 82.0,
+      "playerOverall": 80,
       "accolades": ""
     },
     {
@@ -424,14 +484,16 @@
       "numSeasons": 3,
       "kills": 958,
       "deaths": 917,
-      "kd": 1.045,
+      "kd": 1.04,
       "seasonKD": {
         "1": 1.01,
         "3": 0.96,
         "4": 1.14
       },
       "maps": 47,
-      "accolades": "1 accolade \u2014 1x All-Star (S4 Second Team)"
+      "avgSeasonOverall": 80.4,
+      "playerOverall": 83,
+      "accolades": "1 accolade: 1x All-Star (S4 Second Team)"
     },
     {
       "player": "TrapEU",
@@ -439,11 +501,13 @@
       "numSeasons": 1,
       "kills": 152,
       "deaths": 146,
-      "kd": 1.041,
+      "kd": 1.04,
       "seasonKD": {
         "4": 1.04
       },
       "maps": 7,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -452,7 +516,7 @@
       "numSeasons": 4,
       "kills": 1619,
       "deaths": 1560,
-      "kd": 1.038,
+      "kd": 1.04,
       "seasonKD": {
         "2": 1.03,
         "3": 1.03,
@@ -460,6 +524,8 @@
         "5": 0.99
       },
       "maps": 92,
+      "avgSeasonOverall": 80.4,
+      "playerOverall": 85,
       "accolades": ""
     },
     {
@@ -468,13 +534,15 @@
       "numSeasons": 2,
       "kills": 332,
       "deaths": 324,
-      "kd": 1.025,
+      "kd": 1.02,
       "seasonKD": {
         "1": 1.14,
         "2": 0.86
       },
       "maps": 18,
-      "accolades": "1 accolade \u2014 1x All-Star (S1 Second Team)"
+      "avgSeasonOverall": 78.1,
+      "playerOverall": 79,
+      "accolades": "1 accolade: 1x All-Star (S1 Second Team)"
     },
     {
       "player": "NickBoston",
@@ -482,11 +550,13 @@
       "numSeasons": 1,
       "kills": 440,
       "deaths": 431,
-      "kd": 1.021,
+      "kd": 1.02,
       "seasonKD": {
         "5": 1.02
       },
       "maps": 21,
+      "avgSeasonOverall": 80.0,
+      "playerOverall": 78,
       "accolades": ""
     },
     {
@@ -495,11 +565,13 @@
       "numSeasons": 1,
       "kills": 161,
       "deaths": 158,
-      "kd": 1.019,
+      "kd": 1.02,
       "seasonKD": {
         "2": 1.02
       },
       "maps": 9,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -508,14 +580,16 @@
       "numSeasons": 3,
       "kills": 1237,
       "deaths": 1224,
-      "kd": 1.011,
+      "kd": 1.01,
       "seasonKD": {
         "2": 1.06,
         "4": 0.97,
         "5": 0.94
       },
       "maps": 61,
-      "accolades": "2 accolades \u2014 2x Champion (S2, S4)"
+      "avgSeasonOverall": 80.3,
+      "playerOverall": 83,
+      "accolades": "2 accolades: 2x Champion (S2, S4)"
     },
     {
       "player": "Casperfy",
@@ -523,13 +597,15 @@
       "numSeasons": 2,
       "kills": 899,
       "deaths": 894,
-      "kd": 1.006,
+      "kd": 1.01,
       "seasonKD": {
         "2": 0.95,
         "4": 1.09
       },
       "maps": 49,
-      "accolades": "1 accolade \u2014 1x Champion (S2)"
+      "avgSeasonOverall": 79.0,
+      "playerOverall": 80,
+      "accolades": "1 accolade: 1x Champion (S2)"
     },
     {
       "player": "Lewy",
@@ -537,13 +613,15 @@
       "numSeasons": 3,
       "kills": 1039,
       "deaths": 1034,
-      "kd": 1.005,
+      "kd": 1.0,
       "seasonKD": {
         "2": 1.09,
         "3": 1.01,
         "5": 0.95
       },
       "maps": 56,
+      "avgSeasonOverall": 78.3,
+      "playerOverall": 81,
       "accolades": ""
     },
     {
@@ -557,6 +635,8 @@
         "4": 1.0
       },
       "maps": 3,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -565,13 +645,15 @@
       "numSeasons": 2,
       "kills": 625,
       "deaths": 627,
-      "kd": 0.997,
+      "kd": 1.0,
       "seasonKD": {
         "3": 0.99,
         "4": 1.0
       },
       "maps": 30,
-      "accolades": "2 accolades \u2014 2x Champion (S3, S4)"
+      "avgSeasonOverall": 78.6,
+      "playerOverall": 80,
+      "accolades": "2 accolades: 2x Champion (S3, S4)"
     },
     {
       "player": "Elive",
@@ -579,7 +661,7 @@
       "numSeasons": 4,
       "kills": 977,
       "deaths": 981,
-      "kd": 0.996,
+      "kd": 1.0,
       "seasonKD": {
         "1": 1.11,
         "2": 0.95,
@@ -587,6 +669,8 @@
         "4": 0.99
       },
       "maps": 54,
+      "avgSeasonOverall": 77.6,
+      "playerOverall": 82,
       "accolades": ""
     },
     {
@@ -595,7 +679,7 @@
       "numSeasons": 5,
       "kills": 2767,
       "deaths": 2782,
-      "kd": 0.995,
+      "kd": 0.99,
       "seasonKD": {
         "1": 1.14,
         "2": 1.02,
@@ -604,7 +688,9 @@
         "5": 0.91
       },
       "maps": 139,
-      "accolades": "3 accolades \u2014 1x Champion (S4); 2x All-Star (S1 Second Team, S4 Second Team)"
+      "avgSeasonOverall": 79.2,
+      "playerOverall": 86,
+      "accolades": "3 accolades: 1x Champion (S4); 2x All-Star (S1 Second Team, S4 Second Team)"
     },
     {
       "player": "Utopian",
@@ -612,7 +698,7 @@
       "numSeasons": 5,
       "kills": 1293,
       "deaths": 1313,
-      "kd": 0.985,
+      "kd": 0.98,
       "seasonKD": {
         "1": 0.81,
         "2": 0.91,
@@ -621,7 +707,9 @@
         "5": 0.82
       },
       "maps": 74,
-      "accolades": "1 accolade \u2014 1x All-Star (S3 Second Team)"
+      "avgSeasonOverall": 78.0,
+      "playerOverall": 84,
+      "accolades": "1 accolade: 1x All-Star (S3 Second Team)"
     },
     {
       "player": "Jealous",
@@ -629,11 +717,13 @@
       "numSeasons": 1,
       "kills": 555,
       "deaths": 565,
-      "kd": 0.982,
+      "kd": 0.98,
       "seasonKD": {
         "5": 0.98
       },
       "maps": 34,
+      "avgSeasonOverall": 79.0,
+      "playerOverall": 78,
       "accolades": ""
     },
     {
@@ -642,12 +732,14 @@
       "numSeasons": 2,
       "kills": 801,
       "deaths": 820,
-      "kd": 0.977,
+      "kd": 0.98,
       "seasonKD": {
         "4": 0.92,
         "5": 0.99
       },
       "maps": 44,
+      "avgSeasonOverall": 78.3,
+      "playerOverall": 79,
       "accolades": ""
     },
     {
@@ -656,11 +748,13 @@
       "numSeasons": 1,
       "kills": 118,
       "deaths": 121,
-      "kd": 0.975,
+      "kd": 0.98,
       "seasonKD": {
         "4": 0.98
       },
       "maps": 7,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -669,14 +763,16 @@
       "numSeasons": 3,
       "kills": 1119,
       "deaths": 1148,
-      "kd": 0.975,
+      "kd": 0.97,
       "seasonKD": {
         "2": 0.95,
         "3": 0.96,
         "5": 1.01
       },
       "maps": 61,
-      "accolades": "1 accolade \u2014 1x Champion (S2) \u2014 competed as \"Hoeings\" in Season 2"
+      "avgSeasonOverall": 78.1,
+      "playerOverall": 81,
+      "accolades": "1 accolade: 1x Champion (S2): competed as \"Hoeings\" in Season 2"
     },
     {
       "player": "Killfeed",
@@ -684,12 +780,14 @@
       "numSeasons": 2,
       "kills": 225,
       "deaths": 231,
-      "kd": 0.974,
+      "kd": 0.97,
       "seasonKD": {
         "4": 1.16,
         "5": 0.85
       },
       "maps": 12,
+      "avgSeasonOverall": 75.8,
+      "playerOverall": 77,
       "accolades": ""
     },
     {
@@ -698,11 +796,13 @@
       "numSeasons": 1,
       "kills": 766,
       "deaths": 787,
-      "kd": 0.973,
+      "kd": 0.97,
       "seasonKD": {
         "2": 0.97
       },
       "maps": 43,
+      "avgSeasonOverall": 78.0,
+      "playerOverall": 77,
       "accolades": ""
     },
     {
@@ -711,12 +811,14 @@
       "numSeasons": 1,
       "kills": 685,
       "deaths": 704,
-      "kd": 0.973,
+      "kd": 0.97,
       "seasonKD": {
         "5": 0.97
       },
       "maps": 35,
-      "accolades": "1 accolade \u2014 1x Champion (S5)"
+      "avgSeasonOverall": 79.0,
+      "playerOverall": 78,
+      "accolades": "1 accolade: 1x Champion (S5)"
     },
     {
       "player": "Boogey",
@@ -724,13 +826,15 @@
       "numSeasons": 3,
       "kills": 473,
       "deaths": 489,
-      "kd": 0.967,
+      "kd": 0.97,
       "seasonKD": {
         "1": 1.06,
         "2": 0.98,
         "4": 0.92
       },
       "maps": 28,
+      "avgSeasonOverall": 76.2,
+      "playerOverall": 79,
       "accolades": ""
     },
     {
@@ -739,11 +843,13 @@
       "numSeasons": 1,
       "kills": 326,
       "deaths": 342,
-      "kd": 0.953,
+      "kd": 0.95,
       "seasonKD": {
         "4": 0.95
       },
       "maps": 19,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -752,12 +858,14 @@
       "numSeasons": 2,
       "kills": 812,
       "deaths": 854,
-      "kd": 0.951,
+      "kd": 0.95,
       "seasonKD": {
         "2": 1.01,
         "4": 0.76
       },
       "maps": 47,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 78,
       "accolades": ""
     },
     {
@@ -766,13 +874,15 @@
       "numSeasons": 2,
       "kills": 442,
       "deaths": 465,
-      "kd": 0.951,
+      "kd": 0.95,
       "seasonKD": {
         "3": 1.0,
         "4": 0.91
       },
       "maps": 21,
-      "accolades": "2 accolades \u2014 2x Champion (S3, S4)"
+      "avgSeasonOverall": 76.5,
+      "playerOverall": 78,
+      "accolades": "2 accolades: 2x Champion (S3, S4)"
     },
     {
       "player": "Iconz",
@@ -786,6 +896,8 @@
         "4": 0.99
       },
       "maps": 29,
+      "avgSeasonOverall": 78.4,
+      "playerOverall": 79,
       "accolades": ""
     },
     {
@@ -794,11 +906,13 @@
       "numSeasons": 1,
       "kills": 141,
       "deaths": 149,
-      "kd": 0.946,
+      "kd": 0.95,
       "seasonKD": {
         "5": 0.95
       },
       "maps": 8,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -807,11 +921,13 @@
       "numSeasons": 1,
       "kills": 299,
       "deaths": 316,
-      "kd": 0.946,
+      "kd": 0.95,
       "seasonKD": {
         "2": 0.95
       },
       "maps": 17,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -820,11 +936,13 @@
       "numSeasons": 1,
       "kills": 438,
       "deaths": 463,
-      "kd": 0.946,
+      "kd": 0.95,
       "seasonKD": {
         "5": 0.95
       },
       "maps": 22,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -833,11 +951,13 @@
       "numSeasons": 1,
       "kills": 383,
       "deaths": 405,
-      "kd": 0.946,
+      "kd": 0.95,
       "seasonKD": {
         "4": 0.95
       },
       "maps": 20,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -846,12 +966,14 @@
       "numSeasons": 2,
       "kills": 599,
       "deaths": 634,
-      "kd": 0.945,
+      "kd": 0.94,
       "seasonKD": {
         "2": 0.83,
         "4": 1.05
       },
       "maps": 33,
+      "avgSeasonOverall": 76.4,
+      "playerOverall": 78,
       "accolades": ""
     },
     {
@@ -860,11 +982,13 @@
       "numSeasons": 1,
       "kills": 270,
       "deaths": 286,
-      "kd": 0.944,
+      "kd": 0.94,
       "seasonKD": {
         "4": 0.94
       },
       "maps": 14,
+      "avgSeasonOverall": 77.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -873,13 +997,15 @@
       "numSeasons": 3,
       "kills": 604,
       "deaths": 641,
-      "kd": 0.942,
+      "kd": 0.94,
       "seasonKD": {
         "1": 1.13,
         "2": 1.07,
         "3": 0.83
       },
       "maps": 33,
+      "avgSeasonOverall": 74.2,
+      "playerOverall": 77,
       "accolades": ""
     },
     {
@@ -888,11 +1014,13 @@
       "numSeasons": 1,
       "kills": 323,
       "deaths": 348,
-      "kd": 0.928,
+      "kd": 0.93,
       "seasonKD": {
         "5": 0.93
       },
       "maps": 18,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -901,11 +1029,13 @@
       "numSeasons": 1,
       "kills": 191,
       "deaths": 206,
-      "kd": 0.927,
+      "kd": 0.93,
       "seasonKD": {
         "1": 0.93
       },
       "maps": 11,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -914,11 +1044,13 @@
       "numSeasons": 1,
       "kills": 305,
       "deaths": 329,
-      "kd": 0.927,
+      "kd": 0.93,
       "seasonKD": {
         "3": 0.93
       },
       "maps": 16,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -927,11 +1059,13 @@
       "numSeasons": 1,
       "kills": 279,
       "deaths": 301,
-      "kd": 0.927,
+      "kd": 0.93,
       "seasonKD": {
         "4": 0.93
       },
       "maps": 16,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -940,12 +1074,14 @@
       "numSeasons": 3,
       "kills": 809,
       "deaths": 878,
-      "kd": 0.921,
+      "kd": 0.92,
       "seasonKD": {
         "1": 0.98,
         "2": 0.9
       },
       "maps": 41,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 79,
       "accolades": ""
     },
     {
@@ -954,11 +1090,13 @@
       "numSeasons": 1,
       "kills": 236,
       "deaths": 257,
-      "kd": 0.918,
+      "kd": 0.92,
       "seasonKD": {
         "5": 0.92
       },
       "maps": 13,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -967,13 +1105,15 @@
       "numSeasons": 3,
       "kills": 851,
       "deaths": 928,
-      "kd": 0.917,
+      "kd": 0.92,
       "seasonKD": {
         "3": 0.9,
         "4": 0.96,
         "5": 0.82
       },
       "maps": 48,
+      "avgSeasonOverall": 76.4,
+      "playerOverall": 79,
       "accolades": ""
     },
     {
@@ -982,7 +1122,7 @@
       "numSeasons": 5,
       "kills": 966,
       "deaths": 1063,
-      "kd": 0.909,
+      "kd": 0.91,
       "seasonKD": {
         "1": 1.08,
         "2": 0.89,
@@ -991,6 +1131,8 @@
         "5": 0.76
       },
       "maps": 59,
+      "avgSeasonOverall": 75.6,
+      "playerOverall": 82,
       "accolades": ""
     },
     {
@@ -999,13 +1141,15 @@
       "numSeasons": 2,
       "kills": 436,
       "deaths": 483,
-      "kd": 0.903,
+      "kd": 0.9,
       "seasonKD": {
         "1": 1.02,
         "2": 0.8
       },
       "maps": 25,
-      "accolades": "1 accolade \u2014 1x Champion (S1)"
+      "avgSeasonOverall": 73.8,
+      "playerOverall": 76,
+      "accolades": "1 accolade: 1x Champion (S1)"
     },
     {
       "player": "Seno",
@@ -1013,11 +1157,13 @@
       "numSeasons": 1,
       "kills": 802,
       "deaths": 899,
-      "kd": 0.892,
+      "kd": 0.89,
       "seasonKD": {
         "2": 0.89
       },
       "maps": 45,
+      "avgSeasonOverall": 74.0,
+      "playerOverall": 74,
       "accolades": ""
     },
     {
@@ -1032,6 +1178,8 @@
         "5": 0.89
       },
       "maps": 18,
+      "avgSeasonOverall": 75.7,
+      "playerOverall": 77,
       "accolades": ""
     },
     {
@@ -1040,14 +1188,16 @@
       "numSeasons": 3,
       "kills": 709,
       "deaths": 798,
-      "kd": 0.888,
+      "kd": 0.89,
       "seasonKD": {
         "3": 0.89,
         "4": 0.86,
         "5": 0.94
       },
       "maps": 42,
-      "accolades": "1 accolade \u2014 1x Champion (S3)"
+      "avgSeasonOverall": 74.3,
+      "playerOverall": 78,
+      "accolades": "1 accolade: 1x Champion (S3)"
     },
     {
       "player": "Python",
@@ -1062,6 +1212,8 @@
         "3": 0.88
       },
       "maps": 40,
+      "avgSeasonOverall": 73.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -1075,6 +1227,8 @@
         "1": 0.88
       },
       "maps": 3,
+      "avgSeasonOverall": 76.0,
+      "playerOverall": 76,
       "accolades": ""
     },
     {
@@ -1083,12 +1237,14 @@
       "numSeasons": 2,
       "kills": 218,
       "deaths": 249,
-      "kd": 0.876,
+      "kd": 0.88,
       "seasonKD": {
         "1": 1.46,
         "2": 0.74
       },
       "maps": 14,
+      "avgSeasonOverall": 68.4,
+      "playerOverall": 70,
       "accolades": ""
     },
     {
@@ -1097,11 +1253,13 @@
       "numSeasons": 1,
       "kills": 716,
       "deaths": 821,
-      "kd": 0.872,
+      "kd": 0.87,
       "seasonKD": {
         "5": 0.87
       },
       "maps": 39,
+      "avgSeasonOverall": 72.0,
+      "playerOverall": 72,
       "accolades": ""
     },
     {
@@ -1110,12 +1268,14 @@
       "numSeasons": 2,
       "kills": 498,
       "deaths": 572,
-      "kd": 0.871,
+      "kd": 0.87,
       "seasonKD": {
         "5": 0.87
       },
       "maps": 30,
-      "accolades": "1 accolade \u2014 1x Champion (S5)"
+      "avgSeasonOverall": 72.0,
+      "playerOverall": 74,
+      "accolades": "1 accolade: 1x Champion (S5)"
     },
     {
       "player": "Hyper",
@@ -1128,6 +1288,8 @@
         "4": 0.87
       },
       "maps": 19,
+      "avgSeasonOverall": 73.0,
+      "playerOverall": 73,
       "accolades": ""
     },
     {
@@ -1136,12 +1298,14 @@
       "numSeasons": 2,
       "kills": 701,
       "deaths": 808,
-      "kd": 0.868,
+      "kd": 0.87,
       "seasonKD": {
         "2": 0.91,
         "4": 0.78
       },
       "maps": 40,
+      "avgSeasonOverall": 73.6,
+      "playerOverall": 75,
       "accolades": ""
     },
     {
@@ -1150,12 +1314,14 @@
       "numSeasons": 2,
       "kills": 669,
       "deaths": 777,
-      "kd": 0.861,
+      "kd": 0.86,
       "seasonKD": {
         "4": 0.88,
         "5": 0.84
       },
       "maps": 43,
+      "avgSeasonOverall": 72.0,
+      "playerOverall": 74,
       "accolades": ""
     },
     {
@@ -1164,11 +1330,13 @@
       "numSeasons": 1,
       "kills": 138,
       "deaths": 161,
-      "kd": 0.857,
+      "kd": 0.86,
       "seasonKD": {
         "2": 0.86
       },
       "maps": 8,
+      "avgSeasonOverall": 75.0,
+      "playerOverall": 75,
       "accolades": ""
     },
     {
@@ -1177,7 +1345,7 @@
       "numSeasons": 4,
       "kills": 1410,
       "deaths": 1649,
-      "kd": 0.855,
+      "kd": 0.86,
       "seasonKD": {
         "2": 0.86,
         "3": 0.86,
@@ -1185,6 +1353,8 @@
         "5": 0.87
       },
       "maps": 83,
+      "avgSeasonOverall": 72.2,
+      "playerOverall": 77,
       "accolades": ""
     },
     {
@@ -1193,11 +1363,13 @@
       "numSeasons": 1,
       "kills": 401,
       "deaths": 471,
-      "kd": 0.851,
+      "kd": 0.85,
       "seasonKD": {
         "5": 0.85
       },
       "maps": 23,
+      "avgSeasonOverall": 72.0,
+      "playerOverall": 72,
       "accolades": ""
     },
     {
@@ -1206,14 +1378,16 @@
       "numSeasons": 3,
       "kills": 655,
       "deaths": 778,
-      "kd": 0.842,
+      "kd": 0.84,
       "seasonKD": {
         "1": 1.01,
         "3": 0.85,
         "4": 0.8
       },
       "maps": 42,
-      "accolades": "1 accolade \u2014 1x Champion (S1)"
+      "avgSeasonOverall": 69.9,
+      "playerOverall": 73,
+      "accolades": "1 accolade: 1x Champion (S1)"
     },
     {
       "player": "Shadow",
@@ -1226,6 +1400,8 @@
         "5": 0.84
       },
       "maps": 7,
+      "avgSeasonOverall": 75.0,
+      "playerOverall": 75,
       "accolades": ""
     },
     {
@@ -1234,14 +1410,16 @@
       "numSeasons": 3,
       "kills": 536,
       "deaths": 639,
-      "kd": 0.839,
+      "kd": 0.84,
       "seasonKD": {
         "1": 0.73,
         "4": 0.97,
         "5": 0.58
       },
       "maps": 32,
-      "accolades": "1 accolade \u2014 1x Champion (S5)"
+      "avgSeasonOverall": 73.0,
+      "playerOverall": 76,
+      "accolades": "1 accolade: 1x Champion (S5)"
     },
     {
       "player": "Realm",
@@ -1249,11 +1427,13 @@
       "numSeasons": 1,
       "kills": 278,
       "deaths": 333,
-      "kd": 0.835,
+      "kd": 0.83,
       "seasonKD": {
         "5": 0.83
       },
       "maps": 18,
+      "avgSeasonOverall": 71.0,
+      "playerOverall": 71,
       "accolades": ""
     },
     {
@@ -1262,11 +1442,13 @@
       "numSeasons": 1,
       "kills": 94,
       "deaths": 113,
-      "kd": 0.832,
+      "kd": 0.83,
       "seasonKD": {
         "4": 0.83
       },
       "maps": 6,
+      "avgSeasonOverall": 75.0,
+      "playerOverall": 75,
       "accolades": ""
     },
     {
@@ -1275,12 +1457,14 @@
       "numSeasons": 2,
       "kills": 351,
       "deaths": 426,
-      "kd": 0.824,
+      "kd": 0.82,
       "seasonKD": {
         "1": 0.97,
         "2": 0.8
       },
       "maps": 22,
+      "avgSeasonOverall": 68.2,
+      "playerOverall": 70,
       "accolades": ""
     },
     {
@@ -1289,11 +1473,13 @@
       "numSeasons": 1,
       "kills": 188,
       "deaths": 230,
-      "kd": 0.817,
+      "kd": 0.82,
       "seasonKD": {
         "3": 0.82
       },
       "maps": 12,
+      "avgSeasonOverall": 71.0,
+      "playerOverall": 71,
       "accolades": ""
     },
     {
@@ -1302,11 +1488,13 @@
       "numSeasons": 1,
       "kills": 114,
       "deaths": 140,
-      "kd": 0.814,
+      "kd": 0.81,
       "seasonKD": {
         "4": 0.81
       },
       "maps": 7,
+      "avgSeasonOverall": 74.0,
+      "playerOverall": 74,
       "accolades": ""
     },
     {
@@ -1315,11 +1503,13 @@
       "numSeasons": 1,
       "kills": 438,
       "deaths": 540,
-      "kd": 0.811,
+      "kd": 0.81,
       "seasonKD": {
         "5": 0.81
       },
       "maps": 26,
+      "avgSeasonOverall": 67.0,
+      "playerOverall": 67,
       "accolades": ""
     },
     {
@@ -1333,6 +1523,8 @@
         "4": 0.81
       },
       "maps": 12,
+      "avgSeasonOverall": 71.0,
+      "playerOverall": 71,
       "accolades": ""
     },
     {
@@ -1341,12 +1533,14 @@
       "numSeasons": 1,
       "kills": 80,
       "deaths": 99,
-      "kd": 0.808,
+      "kd": 0.81,
       "seasonKD": {
         "5": 0.81
       },
       "maps": 5,
-      "accolades": "Departed \u2014 left the league"
+      "avgSeasonOverall": 75.0,
+      "playerOverall": 75,
+      "accolades": "Departed: left the league"
     },
     {
       "player": "Ryanreplays",
@@ -1354,12 +1548,14 @@
       "numSeasons": 2,
       "kills": 246,
       "deaths": 314,
-      "kd": 0.783,
+      "kd": 0.78,
       "seasonKD": {
         "1": 0.83,
         "2": 0.66
       },
       "maps": 13,
+      "avgSeasonOverall": 73.8,
+      "playerOverall": 75,
       "accolades": ""
     },
     {
@@ -1368,12 +1564,14 @@
       "numSeasons": 2,
       "kills": 173,
       "deaths": 221,
-      "kd": 0.783,
+      "kd": 0.78,
       "seasonKD": {
         "1": 0.77,
         "2": 0.79
       },
       "maps": 12,
+      "avgSeasonOverall": 73.4,
+      "playerOverall": 75,
       "accolades": ""
     },
     {
@@ -1382,14 +1580,16 @@
       "numSeasons": 3,
       "kills": 271,
       "deaths": 348,
-      "kd": 0.779,
+      "kd": 0.78,
       "seasonKD": {
         "1": 0.87,
         "2": 0.55,
         "3": 0.81
       },
       "maps": 15,
-      "accolades": "1 accolade \u2014 1x Champion (S1)"
+      "avgSeasonOverall": 73.1,
+      "playerOverall": 77,
+      "accolades": "1 accolade: 1x Champion (S1)"
     },
     {
       "player": "AGF",
@@ -1397,11 +1597,13 @@
       "numSeasons": 1,
       "kills": 122,
       "deaths": 158,
-      "kd": 0.772,
+      "kd": 0.77,
       "seasonKD": {
         "1": 0.77
       },
       "maps": 13,
+      "avgSeasonOverall": 66.0,
+      "playerOverall": 66,
       "accolades": ""
     },
     {
@@ -1410,11 +1612,13 @@
       "numSeasons": 1,
       "kills": 111,
       "deaths": 144,
-      "kd": 0.771,
+      "kd": 0.77,
       "seasonKD": {
         "2": 0.77
       },
       "maps": 8,
+      "avgSeasonOverall": 70.0,
+      "playerOverall": 70,
       "accolades": ""
     },
     {
@@ -1423,12 +1627,14 @@
       "numSeasons": 2,
       "kills": 45,
       "deaths": 59,
-      "kd": 0.763,
+      "kd": 0.76,
       "seasonKD": {
         "1": 0.76
       },
       "maps": 3,
-      "accolades": "1 accolade \u2014 1x Champion (S4)"
+      "avgSeasonOverall": 75.0,
+      "playerOverall": 77,
+      "accolades": "1 accolade: 1x Champion (S4)"
     },
     {
       "player": "huxx",
@@ -1436,11 +1642,13 @@
       "numSeasons": 1,
       "kills": 331,
       "deaths": 438,
-      "kd": 0.756,
+      "kd": 0.76,
       "seasonKD": {
         "2": 0.76
       },
       "maps": 21,
+      "avgSeasonOverall": 63.0,
+      "playerOverall": 63,
       "accolades": ""
     },
     {
@@ -1449,11 +1657,13 @@
       "numSeasons": 1,
       "kills": 46,
       "deaths": 61,
-      "kd": 0.754,
+      "kd": 0.75,
       "seasonKD": {
         "1": 0.75
       },
       "maps": 3,
+      "avgSeasonOverall": 75.0,
+      "playerOverall": 75,
       "accolades": ""
     },
     {
@@ -1462,11 +1672,13 @@
       "numSeasons": 1,
       "kills": 104,
       "deaths": 138,
-      "kd": 0.754,
+      "kd": 0.75,
       "seasonKD": {
         "4": 0.75
       },
       "maps": 7,
+      "avgSeasonOverall": 70.0,
+      "playerOverall": 70,
       "accolades": ""
     },
     {
@@ -1475,11 +1687,13 @@
       "numSeasons": 1,
       "kills": 118,
       "deaths": 157,
-      "kd": 0.752,
+      "kd": 0.75,
       "seasonKD": {
         "2": 0.75
       },
       "maps": 7,
+      "avgSeasonOverall": 71.0,
+      "playerOverall": 71,
       "accolades": ""
     },
     {
@@ -1488,12 +1702,14 @@
       "numSeasons": 2,
       "kills": 286,
       "deaths": 389,
-      "kd": 0.735,
+      "kd": 0.74,
       "seasonKD": {
         "1": 0.82,
         "2": 0.67
       },
       "maps": 18,
+      "avgSeasonOverall": 66.4,
+      "playerOverall": 68,
       "accolades": ""
     },
     {
@@ -1502,11 +1718,13 @@
       "numSeasons": 3,
       "kills": 360,
       "deaths": 494,
-      "kd": 0.729,
+      "kd": 0.73,
       "seasonKD": {
         "2": 0.73
       },
       "maps": 23,
+      "avgSeasonOverall": 61.0,
+      "playerOverall": 64,
       "accolades": ""
     },
     {
@@ -1515,12 +1733,14 @@
       "numSeasons": 2,
       "kills": 90,
       "deaths": 124,
-      "kd": 0.726,
+      "kd": 0.73,
       "seasonKD": {
         "4": 0.68,
         "5": 0.92
       },
       "maps": 7,
+      "avgSeasonOverall": 70.7,
+      "playerOverall": 72,
       "accolades": ""
     },
     {
@@ -1529,11 +1749,13 @@
       "numSeasons": 1,
       "kills": 154,
       "deaths": 216,
-      "kd": 0.713,
+      "kd": 0.71,
       "seasonKD": {
         "1": 0.71
       },
       "maps": 11,
+      "avgSeasonOverall": 65.0,
+      "playerOverall": 65,
       "accolades": ""
     },
     {
@@ -1542,11 +1764,13 @@
       "numSeasons": 1,
       "kills": 160,
       "deaths": 225,
-      "kd": 0.711,
+      "kd": 0.71,
       "seasonKD": {
         "5": 0.71
       },
       "maps": 11,
+      "avgSeasonOverall": 64.0,
+      "playerOverall": 64,
       "accolades": ""
     },
     {
@@ -1555,11 +1779,13 @@
       "numSeasons": 1,
       "kills": 49,
       "deaths": 72,
-      "kd": 0.681,
+      "kd": 0.68,
       "seasonKD": {
         "1": 0.68
       },
       "maps": 5,
+      "avgSeasonOverall": 69.0,
+      "playerOverall": 69,
       "accolades": ""
     },
     {
@@ -1573,6 +1799,8 @@
         "4": 0.67
       },
       "maps": 4,
+      "avgSeasonOverall": 71.0,
+      "playerOverall": 71,
       "accolades": ""
     },
     {
@@ -1581,14 +1809,16 @@
       "numSeasons": 3,
       "kills": 147,
       "deaths": 229,
-      "kd": 0.642,
+      "kd": 0.64,
       "seasonKD": {
         "1": 0.78,
         "2": 0.66,
         "4": 0.55
       },
       "maps": 12,
-      "accolades": "1 accolade \u2014 1x Champion (S2)"
+      "avgSeasonOverall": 68.3,
+      "playerOverall": 72,
+      "accolades": "1 accolade: 1x Champion (S2)"
     },
     {
       "player": "Robi",
@@ -1596,11 +1826,13 @@
       "numSeasons": 1,
       "kills": 53,
       "deaths": 86,
-      "kd": 0.616,
+      "kd": 0.62,
       "seasonKD": {
         "4": 0.62
       },
       "maps": 4,
+      "avgSeasonOverall": 69.0,
+      "playerOverall": 69,
       "accolades": ""
     },
     {
@@ -1609,11 +1841,13 @@
       "numSeasons": 1,
       "kills": 32,
       "deaths": 55,
-      "kd": 0.582,
+      "kd": 0.58,
       "seasonKD": {
         "5": 0.58
       },
       "maps": 3,
+      "avgSeasonOverall": 70.0,
+      "playerOverall": 70,
       "accolades": ""
     },
     {
@@ -1622,11 +1856,13 @@
       "numSeasons": 1,
       "kills": 91,
       "deaths": 160,
-      "kd": 0.569,
+      "kd": 0.57,
       "seasonKD": {
         "5": 0.57
       },
       "maps": 8,
+      "avgSeasonOverall": 58.0,
+      "playerOverall": 58,
       "accolades": ""
     },
     {
@@ -1635,11 +1871,13 @@
       "numSeasons": 1,
       "kills": 33,
       "deaths": 59,
-      "kd": 0.559,
+      "kd": 0.56,
       "seasonKD": {
         "3": 0.56
       },
       "maps": 3,
+      "avgSeasonOverall": 69.0,
+      "playerOverall": 69,
       "accolades": ""
     },
     {
@@ -1653,6 +1891,8 @@
         "5": 0.55
       },
       "maps": 7,
+      "avgSeasonOverall": 60.0,
+      "playerOverall": 60,
       "accolades": ""
     },
     {
@@ -1666,6 +1906,8 @@
         "5": 0.53
       },
       "maps": 4,
+      "avgSeasonOverall": 65.0,
+      "playerOverall": 65,
       "accolades": ""
     },
     {
@@ -1674,12 +1916,14 @@
       "numSeasons": 2,
       "kills": 89,
       "deaths": 174,
-      "kd": 0.511,
+      "kd": 0.51,
       "seasonKD": {
         "1": 0.55,
         "2": 0.49
       },
       "maps": 8,
+      "avgSeasonOverall": 64.1,
+      "playerOverall": 66,
       "accolades": ""
     },
     {
@@ -1688,11 +1932,13 @@
       "numSeasons": 1,
       "kills": 41,
       "deaths": 90,
-      "kd": 0.456,
+      "kd": 0.46,
       "seasonKD": {
         "5": 0.46
       },
       "maps": 4,
+      "avgSeasonOverall": 62.0,
+      "playerOverall": 62,
       "accolades": ""
     },
     {
@@ -1701,11 +1947,13 @@
       "numSeasons": 1,
       "kills": 18,
       "deaths": 64,
-      "kd": 0.281,
+      "kd": 0.28,
       "seasonKD": {
         "2": 0.28
       },
       "maps": 4,
+      "avgSeasonOverall": 54.0,
+      "playerOverall": 54,
       "accolades": ""
     },
     {
@@ -1717,6 +1965,8 @@
       "kd": 0.0,
       "seasonKD": {},
       "maps": 0,
+      "avgSeasonOverall": null,
+      "playerOverall": null,
       "accolades": ""
     },
     {
@@ -1728,6 +1978,8 @@
       "kd": 0.0,
       "seasonKD": {},
       "maps": 0,
+      "avgSeasonOverall": null,
+      "playerOverall": null,
       "accolades": ""
     },
     {
@@ -1739,6 +1991,8 @@
       "kd": 0.0,
       "seasonKD": {},
       "maps": 0,
+      "avgSeasonOverall": null,
+      "playerOverall": null,
       "accolades": ""
     },
     {
@@ -1750,6 +2004,8 @@
       "kd": 0.0,
       "seasonKD": {},
       "maps": 0,
+      "avgSeasonOverall": null,
+      "playerOverall": null,
       "accolades": ""
     },
     {
@@ -1761,6 +2017,8 @@
       "kd": 0.0,
       "seasonKD": {},
       "maps": 0,
+      "avgSeasonOverall": null,
+      "playerOverall": null,
       "accolades": ""
     },
     {
@@ -1772,6 +2030,8 @@
       "kd": 0.0,
       "seasonKD": {},
       "maps": 0,
+      "avgSeasonOverall": null,
+      "playerOverall": null,
       "accolades": ""
     },
     {
@@ -1783,6 +2043,8 @@
       "kd": 0.0,
       "seasonKD": {},
       "maps": 0,
+      "avgSeasonOverall": null,
+      "playerOverall": null,
       "accolades": ""
     },
     {
@@ -1794,6 +2056,8 @@
       "kd": 0.0,
       "seasonKD": {},
       "maps": 0,
+      "avgSeasonOverall": null,
+      "playerOverall": null,
       "accolades": ""
     }
   ],
@@ -1955,7 +2219,7 @@
       "allStar1": 2,
       "allStar2": 0,
       "legacyScore": 109.29,
-      "accolades": "5 accolades \u2014 2x MVP (S2, S5); 1x Champion (S2); 2x All-Star (S2 First Team, S5 First Team)"
+      "accolades": "5 accolades: 2x MVP (S2, S5); 1x Champion (S2); 2x All-Star (S2 First Team, S5 First Team)"
     },
     {
       "rank": 2,
@@ -1971,7 +2235,7 @@
       "allStar1": 5,
       "allStar2": 0,
       "legacyScore": 106.55,
-      "accolades": "7 accolades \u2014 1x MVP (S4); 1x Champion (S5); 5x All-Star (S1 First Team, S2 First Team, S3 First Team, S4 First Team, S5 First Team)"
+      "accolades": "7 accolades: 1x MVP (S4); 1x Champion (S5); 5x All-Star (S1 First Team, S2 First Team, S3 First Team, S4 First Team, S5 First Team)"
     },
     {
       "rank": 3,
@@ -1987,7 +2251,7 @@
       "allStar1": 3,
       "allStar2": 2,
       "legacyScore": 93.56,
-      "accolades": "7 accolades \u2014 1x MVP (S1); 1x Champion (S1); 5x All-Star (S1 First Team, S4 First Team, S5 First Team, S2 Second Team, S3 Second Team)"
+      "accolades": "7 accolades: 1x MVP (S1); 1x Champion (S1); 5x All-Star (S1 First Team, S4 First Team, S5 First Team, S2 Second Team, S3 Second Team)"
     },
     {
       "rank": 4,
@@ -2003,7 +2267,7 @@
       "allStar1": 1,
       "allStar2": 1,
       "legacyScore": 76.23,
-      "accolades": "4 accolades \u2014 1x MVP (S3); 1x Champion (S1); 2x All-Star (S3 First Team, S1 Second Team)"
+      "accolades": "4 accolades: 1x MVP (S3); 1x Champion (S1); 2x All-Star (S3 First Team, S1 Second Team)"
     },
     {
       "rank": 5,
@@ -2019,7 +2283,7 @@
       "allStar1": 1,
       "allStar2": 4,
       "legacyScore": 60.96,
-      "accolades": "6 accolades \u2014 1x Champion (S3); 5x All-Star (S1 First Team, S2 Second Team, S3 Second Team, S4 Second Team, S5 Second Team)"
+      "accolades": "6 accolades: 1x Champion (S3); 5x All-Star (S1 First Team, S2 Second Team, S3 Second Team, S4 Second Team, S5 Second Team)"
     },
     {
       "rank": 6,
@@ -2035,7 +2299,7 @@
       "allStar1": 1,
       "allStar2": 2,
       "legacyScore": 51.93,
-      "accolades": "4 accolades \u2014 1x Champion (S3); 3x All-Star (S3 First Team, S1 Second Team, S5 Second Team)"
+      "accolades": "4 accolades: 1x Champion (S3); 3x All-Star (S3 First Team, S1 Second Team, S5 Second Team)"
     },
     {
       "rank": 7,
@@ -2051,7 +2315,7 @@
       "allStar1": 1,
       "allStar2": 2,
       "legacyScore": 47.86,
-      "accolades": "3 accolades \u2014 3x All-Star (S3 First Team, S2 Second Team, S4 Second Team)"
+      "accolades": "3 accolades: 3x All-Star (S3 First Team, S2 Second Team, S4 Second Team)"
     },
     {
       "rank": 8,
@@ -2067,7 +2331,7 @@
       "allStar1": 0,
       "allStar2": 2,
       "legacyScore": 41.64,
-      "accolades": "3 accolades \u2014 1x Champion (S4); 2x All-Star (S1 Second Team, S4 Second Team)"
+      "accolades": "3 accolades: 1x Champion (S4); 2x All-Star (S1 Second Team, S4 Second Team)"
     },
     {
       "rank": 9,
@@ -2083,7 +2347,7 @@
       "allStar1": 0,
       "allStar2": 1,
       "legacyScore": 29.57,
-      "accolades": "1 accolade \u2014 1x All-Star (S4 Second Team)"
+      "accolades": "1 accolade: 1x All-Star (S4 Second Team)"
     },
     {
       "rank": 10,
@@ -2099,12 +2363,13 @@
       "allStar1": 0,
       "allStar2": 1,
       "legacyScore": 27.04,
-      "accolades": "1 accolade \u2014 1x All-Star (S3 Second Team)"
+      "accolades": "1 accolade: 1x All-Star (S3 Second Team)"
     }
   ],
   "champions": [
     {
       "season": "1",
+      "year": "2023",
       "league": "CTRL League",
       "team": "Phoenix Hurrah",
       "players": "Kirchy, AJ, Jmetree, Verbalization, Dayz",
@@ -2112,6 +2377,7 @@
     },
     {
       "season": "2",
+      "year": "2023",
       "league": "CTRL League",
       "team": "Buffalo Body Building Brutes",
       "players": "Ephrisy, KaiDMDL, Casperfy, Pablo",
@@ -2119,6 +2385,7 @@
     },
     {
       "season": "3",
+      "year": "2024",
       "league": "Z Star League",
       "team": "New Orleans No Legs Academy",
       "players": "Renicide, Toremeant, Aurora, Mvp, Bubbles",
@@ -2126,6 +2393,7 @@
     },
     {
       "season": "4",
+      "year": "2024",
       "league": "Z Star League",
       "team": "WCi Los Angeles",
       "players": "Nasty, Superpurp, KaiDMDL, Mvp, Bubbles, Angelina",
@@ -2133,6 +2401,7 @@
     },
     {
       "season": "5",
+      "year": "2026",
       "league": "Z Star League",
       "team": "Chicago Syndicate",
       "players": "Hype, Lurkens, Leib, Trap, Kugo",
@@ -2147,7 +2416,7 @@
     },
     {
       "season": "2",
-      "mvp": "Ephrisy",
+      "mvp": "Ephrishy",
       "team": "Buffalo Body Building Brutes"
     },
     {
@@ -2393,7 +2662,8 @@
           "sndKd": 1.27,
           "ctlKd": 1.33,
           "interactionsPerMap": 46,
-          "allStarScore": 1.2692,
+          "allStarScore": 1.27,
+          "overall": 90,
           "honors": [
             "All-Star First Team"
           ],
@@ -2411,7 +2681,8 @@
           "sndKd": 1.5,
           "ctlKd": 1.17,
           "interactionsPerMap": 37.67,
-          "allStarScore": 0.8713,
+          "allStarScore": 0.87,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -2427,7 +2698,8 @@
           "sndKd": 1.65,
           "ctlKd": 1.28,
           "interactionsPerMap": 39.08,
-          "allStarScore": 1.1307,
+          "allStarScore": 1.13,
+          "overall": 83,
           "honors": [
             "All-Star First Team",
             "League MVP",
@@ -2447,7 +2719,8 @@
           "sndKd": 1.76,
           "ctlKd": 1.26,
           "interactionsPerMap": 36,
-          "allStarScore": 1.094,
+          "allStarScore": 1.09,
+          "overall": 82,
           "honors": [
             "All-Star Second Team",
             "Season Champion"
@@ -2466,7 +2739,8 @@
           "sndKd": 1.0,
           "ctlKd": 1.26,
           "interactionsPerMap": 39.22,
-          "allStarScore": 1.0119,
+          "allStarScore": 1.01,
+          "overall": 79,
           "honors": [
             "All-Star First Team"
           ],
@@ -2484,7 +2758,8 @@
           "sndKd": 1.35,
           "ctlKd": 1.24,
           "interactionsPerMap": 36.45,
-          "allStarScore": 1.0413,
+          "allStarScore": 1.04,
+          "overall": 80,
           "honors": [
             "All-Star Second Team"
           ],
@@ -2502,7 +2777,8 @@
           "sndKd": 1.55,
           "ctlKd": 1.11,
           "interactionsPerMap": 38.75,
-          "allStarScore": 1.0571,
+          "allStarScore": 1.06,
+          "overall": 80,
           "honors": [
             "All-Star Second Team"
           ],
@@ -2520,7 +2796,8 @@
           "sndKd": 1.26,
           "ctlKd": 1.13,
           "interactionsPerMap": 42.64,
-          "allStarScore": 1.0401,
+          "allStarScore": 1.04,
+          "overall": 80,
           "honors": [
             "All-Star First Team"
           ],
@@ -2538,7 +2815,8 @@
           "sndKd": 0.73,
           "ctlKd": 1.28,
           "interactionsPerMap": 38,
-          "allStarScore": 0.9311,
+          "allStarScore": 0.93,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -2554,7 +2832,8 @@
           "sndKd": 1.0,
           "ctlKd": 0.9,
           "interactionsPerMap": 53,
-          "allStarScore": 0.9991,
+          "allStarScore": 1.0,
+          "overall": 79,
           "honors": [],
           "allStar": ""
         },
@@ -2570,7 +2849,8 @@
           "sndKd": 1.24,
           "ctlKd": 0.5,
           "interactionsPerMap": 35.75,
-          "allStarScore": 0.9751,
+          "allStarScore": 0.98,
+          "overall": 78,
           "honors": [
             "All-Star Second Team"
           ],
@@ -2588,7 +2868,8 @@
           "sndKd": 0.96,
           "ctlKd": 1.15,
           "interactionsPerMap": 37.92,
-          "allStarScore": 1.0411,
+          "allStarScore": 1.04,
+          "overall": 80,
           "honors": [],
           "allStar": ""
         },
@@ -2604,7 +2885,8 @@
           "sndKd": 1.38,
           "ctlKd": 1.23,
           "interactionsPerMap": 41.33,
-          "allStarScore": 0.9237,
+          "allStarScore": 0.92,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -2620,7 +2902,8 @@
           "sndKd": 0.81,
           "ctlKd": 1.13,
           "interactionsPerMap": 35.88,
-          "allStarScore": 0.9625,
+          "allStarScore": 0.96,
+          "overall": 78,
           "honors": [],
           "allStar": ""
         },
@@ -2636,7 +2919,8 @@
           "sndKd": 1.0,
           "ctlKd": 1.12,
           "interactionsPerMap": 35.33,
-          "allStarScore": 0.9126,
+          "allStarScore": 0.91,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -2652,7 +2936,8 @@
           "sndKd": 0.79,
           "ctlKd": 1.03,
           "interactionsPerMap": 35.77,
-          "allStarScore": 1.0204,
+          "allStarScore": 1.02,
+          "overall": 78,
           "honors": [],
           "allStar": ""
         },
@@ -2668,7 +2953,8 @@
           "sndKd": 0.54,
           "ctlKd": 1.14,
           "interactionsPerMap": 37.83,
-          "allStarScore": 1.0022,
+          "allStarScore": 1.0,
+          "overall": 78,
           "honors": [
             "Season Champion"
           ],
@@ -2686,7 +2972,8 @@
           "sndKd": 1.0,
           "ctlKd": 0.68,
           "interactionsPerMap": 34.5,
-          "allStarScore": 0.9415,
+          "allStarScore": 0.94,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -2702,7 +2989,8 @@
           "sndKd": 0.83,
           "ctlKd": 1.22,
           "interactionsPerMap": 32.2,
-          "allStarScore": 0.8767,
+          "allStarScore": 0.88,
+          "overall": 76,
           "honors": [
             "Season Champion"
           ],
@@ -2720,7 +3008,8 @@
           "sndKd": 0.81,
           "ctlKd": 1.24,
           "interactionsPerMap": 43.15,
-          "allStarScore": 0.9947,
+          "allStarScore": 0.99,
+          "overall": 78,
           "honors": [],
           "allStar": ""
         },
@@ -2736,7 +3025,8 @@
           "sndKd": 1.25,
           "ctlKd": 0.0,
           "interactionsPerMap": 41.33,
-          "allStarScore": 0.806,
+          "allStarScore": 0.81,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -2752,7 +3042,8 @@
           "sndKd": 0.93,
           "ctlKd": 0.92,
           "interactionsPerMap": 36.09,
-          "allStarScore": 0.9517,
+          "allStarScore": 0.95,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -2768,7 +3059,8 @@
           "sndKd": 1.29,
           "ctlKd": 1.21,
           "interactionsPerMap": 47,
-          "allStarScore": 0.7942,
+          "allStarScore": 0.79,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -2784,7 +3076,8 @@
           "sndKd": 0.81,
           "ctlKd": 0.86,
           "interactionsPerMap": 43,
-          "allStarScore": 0.8807,
+          "allStarScore": 0.88,
+          "overall": 76,
           "honors": [
             "Season Champion"
           ],
@@ -2802,7 +3095,8 @@
           "sndKd": 0.95,
           "ctlKd": 0.69,
           "interactionsPerMap": 46.33,
-          "allStarScore": 0.8924,
+          "allStarScore": 0.89,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -2818,7 +3112,8 @@
           "sndKd": 1.13,
           "ctlKd": 0.87,
           "interactionsPerMap": 44.57,
-          "allStarScore": 0.8676,
+          "allStarScore": 0.87,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -2834,7 +3129,8 @@
           "sndKd": 0.63,
           "ctlKd": 0.47,
           "interactionsPerMap": 32.63,
-          "allStarScore": 0.8761,
+          "allStarScore": 0.88,
+          "overall": 73,
           "honors": [],
           "allStar": ""
         },
@@ -2850,7 +3146,8 @@
           "sndKd": 0.63,
           "ctlKd": 0.79,
           "interactionsPerMap": 32.67,
-          "allStarScore": 0.7811,
+          "allStarScore": 0.78,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -2866,7 +3163,8 @@
           "sndKd": 0.6,
           "ctlKd": 1.15,
           "interactionsPerMap": 21.54,
-          "allStarScore": 0.9004,
+          "allStarScore": 0.9,
+          "overall": 66,
           "honors": [],
           "allStar": ""
         },
@@ -2882,7 +3180,8 @@
           "sndKd": 1.44,
           "ctlKd": 0.69,
           "interactionsPerMap": 30.8,
-          "allStarScore": 0.8242,
+          "allStarScore": 0.82,
+          "overall": 74,
           "honors": [],
           "allStar": ""
         },
@@ -2898,7 +3197,8 @@
           "sndKd": 0.83,
           "ctlKd": 0.96,
           "interactionsPerMap": 34.67,
-          "allStarScore": 0.7785,
+          "allStarScore": 0.78,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -2914,7 +3214,8 @@
           "sndKd": 1.17,
           "ctlKd": 0.56,
           "interactionsPerMap": 35.67,
-          "allStarScore": 0.7774,
+          "allStarScore": 0.78,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -2930,7 +3231,8 @@
           "sndKd": 0.71,
           "ctlKd": 0.86,
           "interactionsPerMap": 40.75,
-          "allStarScore": 0.7986,
+          "allStarScore": 0.8,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -2946,7 +3248,8 @@
           "sndKd": 0.95,
           "ctlKd": 0.77,
           "interactionsPerMap": 36.22,
-          "allStarScore": 0.8588,
+          "allStarScore": 0.86,
+          "overall": 68,
           "honors": [],
           "allStar": ""
         },
@@ -2962,7 +3265,8 @@
           "sndKd": 1.0,
           "ctlKd": 0.61,
           "interactionsPerMap": 33.64,
-          "allStarScore": 0.8633,
+          "allStarScore": 0.86,
+          "overall": 65,
           "honors": [],
           "allStar": ""
         },
@@ -2978,7 +3282,8 @@
           "sndKd": 0.6,
           "ctlKd": 0.75,
           "interactionsPerMap": 24.2,
-          "allStarScore": 0.8047,
+          "allStarScore": 0.8,
+          "overall": 69,
           "honors": [],
           "allStar": ""
         },
@@ -2994,7 +3299,8 @@
           "sndKd": 0.33,
           "ctlKd": 0.33,
           "interactionsPerMap": 34.67,
-          "allStarScore": 0.7504,
+          "allStarScore": 0.75,
+          "overall": 71,
           "honors": [],
           "allStar": ""
         }
@@ -3072,7 +3378,8 @@
           "sndKd": 1.07,
           "ctlKd": 1.25,
           "interactionsPerMap": 40.39,
-          "allStarScore": 1.1514,
+          "allStarScore": 1.15,
+          "overall": 97,
           "honors": [
             "All-Star First Team"
           ],
@@ -3090,7 +3397,8 @@
           "sndKd": 2.12,
           "ctlKd": 1.31,
           "interactionsPerMap": 41.69,
-          "allStarScore": 1.1493,
+          "allStarScore": 1.15,
+          "overall": 95,
           "honors": [
             "All-Star First Team",
             "League MVP",
@@ -3110,7 +3418,8 @@
           "sndKd": 1.32,
           "ctlKd": 1.43,
           "interactionsPerMap": 35.4,
-          "allStarScore": 0.9434,
+          "allStarScore": 0.94,
+          "overall": 84,
           "honors": [],
           "allStar": ""
         },
@@ -3126,7 +3435,8 @@
           "sndKd": 1.24,
           "ctlKd": 1.29,
           "interactionsPerMap": 37.72,
-          "allStarScore": 1.1555,
+          "allStarScore": 1.16,
+          "overall": 91,
           "honors": [
             "All-Star First Team"
           ],
@@ -3144,7 +3454,8 @@
           "sndKd": 1.93,
           "ctlKd": 1.29,
           "interactionsPerMap": 39.75,
-          "allStarScore": 0.9485,
+          "allStarScore": 0.95,
+          "overall": 84,
           "honors": [],
           "allStar": ""
         },
@@ -3160,7 +3471,8 @@
           "sndKd": 1.23,
           "ctlKd": 1.31,
           "interactionsPerMap": 35.43,
-          "allStarScore": 1.1665,
+          "allStarScore": 1.17,
+          "overall": 90,
           "honors": [
             "All-Star Second Team"
           ],
@@ -3178,7 +3490,8 @@
           "sndKd": 1.18,
           "ctlKd": 1.12,
           "interactionsPerMap": 41.45,
-          "allStarScore": 1.029,
+          "allStarScore": 1.03,
+          "overall": 87,
           "honors": [
             "All-Star First Team"
           ],
@@ -3196,7 +3509,8 @@
           "sndKd": 1.1,
           "ctlKd": 1.37,
           "interactionsPerMap": 42.19,
-          "allStarScore": 0.9502,
+          "allStarScore": 0.95,
+          "overall": 84,
           "honors": [],
           "allStar": ""
         },
@@ -3212,7 +3526,8 @@
           "sndKd": 0.75,
           "ctlKd": 1.05,
           "interactionsPerMap": 34.87,
-          "allStarScore": 1.0506,
+          "allStarScore": 1.05,
+          "overall": 85,
           "honors": [
             "All-Star Second Team"
           ],
@@ -3230,7 +3545,8 @@
           "sndKd": 0.81,
           "ctlKd": 1.0,
           "interactionsPerMap": 35.03,
-          "allStarScore": 1.0502,
+          "allStarScore": 1.05,
+          "overall": 85,
           "honors": [],
           "allStar": ""
         },
@@ -3246,7 +3562,8 @@
           "sndKd": 1.14,
           "ctlKd": 0.91,
           "interactionsPerMap": 36.43,
-          "allStarScore": 1.026,
+          "allStarScore": 1.03,
+          "overall": 85,
           "honors": [],
           "allStar": ""
         },
@@ -3262,7 +3579,8 @@
           "sndKd": 1.1,
           "ctlKd": 1.26,
           "interactionsPerMap": 37.02,
-          "allStarScore": 1.069,
+          "allStarScore": 1.07,
+          "overall": 84,
           "honors": [
             "All-Star Second Team"
           ],
@@ -3280,7 +3598,8 @@
           "sndKd": 1.28,
           "ctlKd": 1.15,
           "interactionsPerMap": 35.62,
-          "allStarScore": 0.8569,
+          "allStarScore": 0.86,
+          "overall": 79,
           "honors": [],
           "allStar": ""
         },
@@ -3296,7 +3615,8 @@
           "sndKd": 1.33,
           "ctlKd": 1.33,
           "interactionsPerMap": 34.9,
-          "allStarScore": 0.8129,
+          "allStarScore": 0.81,
+          "overall": 78,
           "honors": [],
           "allStar": ""
         },
@@ -3312,7 +3632,8 @@
           "sndKd": 1.34,
           "ctlKd": 1.0,
           "interactionsPerMap": 40.47,
-          "allStarScore": 0.9793,
+          "allStarScore": 0.98,
+          "overall": 83,
           "honors": [
             "Season Champion"
           ],
@@ -3330,7 +3651,8 @@
           "sndKd": 1.35,
           "ctlKd": 1.04,
           "interactionsPerMap": 40.12,
-          "allStarScore": 1.007,
+          "allStarScore": 1.01,
+          "overall": 82,
           "honors": [
             "All-Star Second Team"
           ],
@@ -3348,7 +3670,8 @@
           "sndKd": 0.9,
           "ctlKd": 1.04,
           "interactionsPerMap": 36.45,
-          "allStarScore": 0.9996,
+          "allStarScore": 1.0,
+          "overall": 81,
           "honors": [],
           "allStar": ""
         },
@@ -3364,7 +3687,8 @@
           "sndKd": 0.87,
           "ctlKd": 0.99,
           "interactionsPerMap": 39.12,
-          "allStarScore": 0.9939,
+          "allStarScore": 0.99,
+          "overall": 81,
           "honors": [],
           "allStar": ""
         },
@@ -3380,7 +3704,8 @@
           "sndKd": 0.75,
           "ctlKd": 1.15,
           "interactionsPerMap": 35.44,
-          "allStarScore": 0.7854,
+          "allStarScore": 0.79,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -3396,7 +3721,8 @@
           "sndKd": 0.91,
           "ctlKd": 1.06,
           "interactionsPerMap": 36.25,
-          "allStarScore": 0.9678,
+          "allStarScore": 0.97,
+          "overall": 80,
           "honors": [],
           "allStar": ""
         },
@@ -3412,7 +3738,8 @@
           "sndKd": 0.94,
           "ctlKd": 1.05,
           "interactionsPerMap": 34.29,
-          "allStarScore": 0.747,
+          "allStarScore": 0.75,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -3428,7 +3755,8 @@
           "sndKd": 0.59,
           "ctlKd": 0.98,
           "interactionsPerMap": 36.12,
-          "allStarScore": 0.9669,
+          "allStarScore": 0.97,
+          "overall": 78,
           "honors": [],
           "allStar": ""
         },
@@ -3444,7 +3772,8 @@
           "sndKd": 1.02,
           "ctlKd": 0.93,
           "interactionsPerMap": 38,
-          "allStarScore": 0.8835,
+          "allStarScore": 0.88,
+          "overall": 78,
           "honors": [
             "Season Champion"
           ],
@@ -3462,7 +3791,8 @@
           "sndKd": 0.84,
           "ctlKd": 0.96,
           "interactionsPerMap": 32.29,
-          "allStarScore": 0.8619,
+          "allStarScore": 0.86,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -3478,7 +3808,8 @@
           "sndKd": 0.98,
           "ctlKd": 0.97,
           "interactionsPerMap": 36.55,
-          "allStarScore": 0.9004,
+          "allStarScore": 0.9,
+          "overall": 77,
           "honors": [
             "Season Champion"
           ],
@@ -3496,7 +3827,8 @@
           "sndKd": 0.66,
           "ctlKd": 1.07,
           "interactionsPerMap": 36.18,
-          "allStarScore": 0.8335,
+          "allStarScore": 0.83,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -3512,7 +3844,8 @@
           "sndKd": 0.91,
           "ctlKd": 0.86,
           "interactionsPerMap": 39.09,
-          "allStarScore": 0.8685,
+          "allStarScore": 0.87,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -3528,7 +3861,8 @@
           "sndKd": 0.85,
           "ctlKd": 0.88,
           "interactionsPerMap": 38.63,
-          "allStarScore": 0.7415,
+          "allStarScore": 0.74,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -3544,7 +3878,8 @@
           "sndKd": 0.97,
           "ctlKd": 1.02,
           "interactionsPerMap": 36.17,
-          "allStarScore": 0.8729,
+          "allStarScore": 0.87,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -3560,7 +3895,8 @@
           "sndKd": 1.05,
           "ctlKd": 0.97,
           "interactionsPerMap": 40.21,
-          "allStarScore": 0.862,
+          "allStarScore": 0.86,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -3576,7 +3912,8 @@
           "sndKd": 0.87,
           "ctlKd": 0.87,
           "interactionsPerMap": 37.8,
-          "allStarScore": 0.9128,
+          "allStarScore": 0.91,
+          "overall": 74,
           "honors": [],
           "allStar": ""
         },
@@ -3592,7 +3929,8 @@
           "sndKd": 1.1,
           "ctlKd": 0.68,
           "interactionsPerMap": 35.17,
-          "allStarScore": 0.8382,
+          "allStarScore": 0.84,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -3608,7 +3946,8 @@
           "sndKd": 1.05,
           "ctlKd": 0.78,
           "interactionsPerMap": 38.19,
-          "allStarScore": 0.8396,
+          "allStarScore": 0.84,
+          "overall": 72,
           "honors": [],
           "allStar": ""
         },
@@ -3624,7 +3963,8 @@
           "sndKd": 0.8,
           "ctlKd": 0.98,
           "interactionsPerMap": 36.43,
-          "allStarScore": 0.7178,
+          "allStarScore": 0.72,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -3640,7 +3980,8 @@
           "sndKd": 1.0,
           "ctlKd": 0.88,
           "interactionsPerMap": 37.38,
-          "allStarScore": 0.7281,
+          "allStarScore": 0.73,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -3656,7 +3997,8 @@
           "sndKd": 0.84,
           "ctlKd": 0.79,
           "interactionsPerMap": 37.67,
-          "allStarScore": 0.7723,
+          "allStarScore": 0.77,
+          "overall": 72,
           "honors": [],
           "allStar": ""
         },
@@ -3672,7 +4014,8 @@
           "sndKd": 0.87,
           "ctlKd": 0.8,
           "interactionsPerMap": 35.77,
-          "allStarScore": 0.7485,
+          "allStarScore": 0.75,
+          "overall": 70,
           "honors": [],
           "allStar": ""
         },
@@ -3688,7 +4031,8 @@
           "sndKd": 0.8,
           "ctlKd": 0.85,
           "interactionsPerMap": 34.37,
-          "allStarScore": 0.7744,
+          "allStarScore": 0.77,
+          "overall": 67,
           "honors": [],
           "allStar": ""
         },
@@ -3704,7 +4048,8 @@
           "sndKd": 0.92,
           "ctlKd": 0.75,
           "interactionsPerMap": 34.29,
-          "allStarScore": 0.701,
+          "allStarScore": 0.7,
+          "overall": 73,
           "honors": [],
           "allStar": ""
         },
@@ -3720,7 +4065,8 @@
           "sndKd": 0.67,
           "ctlKd": 0.63,
           "interactionsPerMap": 31.88,
-          "allStarScore": 0.705,
+          "allStarScore": 0.71,
+          "overall": 70,
           "honors": [],
           "allStar": ""
         },
@@ -3736,7 +4082,8 @@
           "sndKd": 0.9,
           "ctlKd": 0.76,
           "interactionsPerMap": 36.62,
-          "allStarScore": 0.7595,
+          "allStarScore": 0.76,
+          "overall": 63,
           "honors": [],
           "allStar": ""
         },
@@ -3752,7 +4099,8 @@
           "sndKd": 0.56,
           "ctlKd": 0.61,
           "interactionsPerMap": 39.29,
-          "allStarScore": 0.6915,
+          "allStarScore": 0.69,
+          "overall": 71,
           "honors": [],
           "allStar": ""
         },
@@ -3768,7 +4116,8 @@
           "sndKd": 0.65,
           "ctlKd": 0.68,
           "interactionsPerMap": 32.18,
-          "allStarScore": 0.7166,
+          "allStarScore": 0.72,
+          "overall": 66,
           "honors": [],
           "allStar": ""
         },
@@ -3784,7 +4133,8 @@
           "sndKd": 0.73,
           "ctlKd": 0.68,
           "interactionsPerMap": 37.13,
-          "allStarScore": 0.7504,
+          "allStarScore": 0.75,
+          "overall": 61,
           "honors": [],
           "allStar": ""
         },
@@ -3800,7 +4150,8 @@
           "sndKd": 0.67,
           "ctlKd": 0.84,
           "interactionsPerMap": 34,
-          "allStarScore": 0.7069,
+          "allStarScore": 0.71,
+          "overall": 64,
           "honors": [],
           "allStar": ""
         },
@@ -3816,7 +4167,8 @@
           "sndKd": 1.05,
           "ctlKd": 0.62,
           "interactionsPerMap": 33,
-          "allStarScore": 0.6898,
+          "allStarScore": 0.69,
+          "overall": 61,
           "honors": [],
           "allStar": ""
         },
@@ -3832,7 +4184,8 @@
           "sndKd": 0.57,
           "ctlKd": 0.52,
           "interactionsPerMap": 35.75,
-          "allStarScore": 0.6413,
+          "allStarScore": 0.64,
+          "overall": 71,
           "honors": [],
           "allStar": ""
         },
@@ -3848,7 +4201,8 @@
           "sndKd": 0.5,
           "ctlKd": 0.6,
           "interactionsPerMap": 30.25,
-          "allStarScore": 0.6406,
+          "allStarScore": 0.64,
+          "overall": 70,
           "honors": [
             "Season Champion"
           ],
@@ -3866,7 +4220,8 @@
           "sndKd": 0.33,
           "ctlKd": 0.26,
           "interactionsPerMap": 31,
-          "allStarScore": 0.6249,
+          "allStarScore": 0.62,
+          "overall": 66,
           "honors": [],
           "allStar": ""
         },
@@ -3882,7 +4237,8 @@
           "sndKd": 1.33,
           "ctlKd": 0.28,
           "interactionsPerMap": 31.8,
-          "allStarScore": 0.6221,
+          "allStarScore": 0.62,
+          "overall": 60,
           "honors": [],
           "allStar": ""
         },
@@ -3898,7 +4254,8 @@
           "sndKd": 0.33,
           "ctlKd": 0.29,
           "interactionsPerMap": 20.5,
-          "allStarScore": 0.5858,
+          "allStarScore": 0.59,
+          "overall": 54,
           "honors": [],
           "allStar": ""
         },
@@ -3915,6 +4272,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -3931,6 +4289,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -3947,6 +4306,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -3963,6 +4323,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         }
@@ -4040,7 +4401,8 @@
           "sndKd": 1.36,
           "ctlKd": 1.31,
           "interactionsPerMap": 35.73,
-          "allStarScore": 1.1943,
+          "allStarScore": 1.19,
+          "overall": 91,
           "honors": [
             "All-Star First Team",
             "League MVP"
@@ -4059,7 +4421,8 @@
           "sndKd": 1.33,
           "ctlKd": 1.22,
           "interactionsPerMap": 49.75,
-          "allStarScore": 1.0956,
+          "allStarScore": 1.1,
+          "overall": 86,
           "honors": [
             "All-Star First Team"
           ],
@@ -4077,7 +4440,8 @@
           "sndKd": 1.15,
           "ctlKd": 1.22,
           "interactionsPerMap": 37.06,
-          "allStarScore": 1.0838,
+          "allStarScore": 1.08,
+          "overall": 85,
           "honors": [
             "All-Star First Team"
           ],
@@ -4095,7 +4459,8 @@
           "sndKd": 1.11,
           "ctlKd": 1.23,
           "interactionsPerMap": 41.08,
-          "allStarScore": 1.016,
+          "allStarScore": 1.02,
+          "overall": 82,
           "honors": [
             "All-Star First Team",
             "Season Champion"
@@ -4114,7 +4479,8 @@
           "sndKd": 1.44,
           "ctlKd": 1.09,
           "interactionsPerMap": 34.68,
-          "allStarScore": 1.0788,
+          "allStarScore": 1.08,
+          "overall": 84,
           "honors": [
             "All-Star Second Team"
           ],
@@ -4132,7 +4498,8 @@
           "sndKd": 1.58,
           "ctlKd": 1.1,
           "interactionsPerMap": 44.31,
-          "allStarScore": 1.0084,
+          "allStarScore": 1.01,
+          "overall": 81,
           "honors": [
             "All-Star Second Team"
           ],
@@ -4150,7 +4517,8 @@
           "sndKd": 1.47,
           "ctlKd": 0.93,
           "interactionsPerMap": 40.39,
-          "allStarScore": 1.028,
+          "allStarScore": 1.03,
+          "overall": 82,
           "honors": [
             "All-Star Second Team"
           ],
@@ -4168,7 +4536,8 @@
           "sndKd": 1.0,
           "ctlKd": 1.13,
           "interactionsPerMap": 43.41,
-          "allStarScore": 1.0063,
+          "allStarScore": 1.01,
+          "overall": 81,
           "honors": [
             "All-Star Second Team",
             "Season Champion"
@@ -4187,7 +4556,8 @@
           "sndKd": 0.94,
           "ctlKd": 1.12,
           "interactionsPerMap": 33.31,
-          "allStarScore": 0.9712,
+          "allStarScore": 0.97,
+          "overall": 79,
           "honors": [],
           "allStar": ""
         },
@@ -4203,7 +4573,8 @@
           "sndKd": 1.1,
           "ctlKd": 1.01,
           "interactionsPerMap": 38.27,
-          "allStarScore": 1.0065,
+          "allStarScore": 1.01,
+          "overall": 79,
           "honors": [],
           "allStar": ""
         },
@@ -4219,7 +4590,8 @@
           "sndKd": 1.08,
           "ctlKd": 0.89,
           "interactionsPerMap": 43.4,
-          "allStarScore": 0.8895,
+          "allStarScore": 0.89,
+          "overall": 77,
           "honors": [
             "Season Champion"
           ],
@@ -4237,7 +4609,8 @@
           "sndKd": 1.08,
           "ctlKd": 0.9,
           "interactionsPerMap": 45.25,
-          "allStarScore": 0.9096,
+          "allStarScore": 0.91,
+          "overall": 78,
           "honors": [
             "Season Champion"
           ],
@@ -4255,7 +4628,8 @@
           "sndKd": 0.58,
           "ctlKd": 1.16,
           "interactionsPerMap": 40,
-          "allStarScore": 0.9391,
+          "allStarScore": 0.94,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -4271,7 +4645,8 @@
           "sndKd": 0.86,
           "ctlKd": 0.99,
           "interactionsPerMap": 37.94,
-          "allStarScore": 0.9367,
+          "allStarScore": 0.94,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -4287,7 +4662,8 @@
           "sndKd": 0.92,
           "ctlKd": 0.99,
           "interactionsPerMap": 41.32,
-          "allStarScore": 0.9586,
+          "allStarScore": 0.96,
+          "overall": 78,
           "honors": [],
           "allStar": ""
         },
@@ -4303,7 +4679,8 @@
           "sndKd": 1.06,
           "ctlKd": 1.05,
           "interactionsPerMap": 39.63,
-          "allStarScore": 0.9184,
+          "allStarScore": 0.92,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -4319,7 +4696,8 @@
           "sndKd": 0.88,
           "ctlKd": 0.9,
           "interactionsPerMap": 38.78,
-          "allStarScore": 0.9248,
+          "allStarScore": 0.92,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -4335,7 +4713,8 @@
           "sndKd": 1.11,
           "ctlKd": 0.97,
           "interactionsPerMap": 34.94,
-          "allStarScore": 0.9089,
+          "allStarScore": 0.91,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -4351,7 +4730,8 @@
           "sndKd": 0.86,
           "ctlKd": 0.95,
           "interactionsPerMap": 37.32,
-          "allStarScore": 0.939,
+          "allStarScore": 0.94,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -4367,7 +4747,8 @@
           "sndKd": 0.87,
           "ctlKd": 0.94,
           "interactionsPerMap": 37.8,
-          "allStarScore": 0.8504,
+          "allStarScore": 0.85,
+          "overall": 75,
           "honors": [
             "Season Champion"
           ],
@@ -4385,7 +4766,8 @@
           "sndKd": 0.71,
           "ctlKd": 0.94,
           "interactionsPerMap": 40.75,
-          "allStarScore": 0.8974,
+          "allStarScore": 0.9,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -4401,7 +4783,8 @@
           "sndKd": 0.89,
           "ctlKd": 0.81,
           "interactionsPerMap": 36.67,
-          "allStarScore": 0.9153,
+          "allStarScore": 0.92,
+          "overall": 73,
           "honors": [],
           "allStar": ""
         },
@@ -4417,7 +4800,8 @@
           "sndKd": 0.9,
           "ctlKd": 0.75,
           "interactionsPerMap": 37.19,
-          "allStarScore": 0.8822,
+          "allStarScore": 0.88,
+          "overall": 73,
           "honors": [],
           "allStar": ""
         },
@@ -4433,7 +4817,8 @@
           "sndKd": 0.66,
           "ctlKd": 0.7,
           "interactionsPerMap": 39.29,
-          "allStarScore": 0.8761,
+          "allStarScore": 0.88,
+          "overall": 71,
           "honors": [],
           "allStar": ""
         },
@@ -4450,6 +4835,7 @@
           "ctlKd": 0.86,
           "interactionsPerMap": 34.83,
           "allStarScore": 0.84,
+          "overall": 71,
           "honors": [],
           "allStar": ""
         },
@@ -4465,7 +4851,8 @@
           "sndKd": 0.88,
           "ctlKd": 0.91,
           "interactionsPerMap": 48.5,
-          "allStarScore": 0.7451,
+          "allStarScore": 0.75,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -4481,7 +4868,8 @@
           "sndKd": 0.44,
           "ctlKd": 0.56,
           "interactionsPerMap": 30.67,
-          "allStarScore": 0.6884,
+          "allStarScore": 0.69,
+          "overall": 69,
           "honors": [],
           "allStar": ""
         },
@@ -4498,6 +4886,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -4514,6 +4903,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -4530,6 +4920,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         }
@@ -4594,6 +4985,7 @@
           "ctlKd": 1.19,
           "interactionsPerMap": 40.14,
           "allStarScore": 1.13,
+          "overall": 91,
           "honors": [
             "All-Star First Team",
             "League MVP"
@@ -4612,7 +5004,8 @@
           "sndKd": 1.3,
           "ctlKd": 1.2,
           "interactionsPerMap": 41.38,
-          "allStarScore": 1.155,
+          "allStarScore": 1.15,
+          "overall": 91,
           "honors": [
             "All-Star First Team",
             "Season Champion"
@@ -4631,7 +5024,8 @@
           "sndKd": 0.98,
           "ctlKd": 1.12,
           "interactionsPerMap": 37.52,
-          "allStarScore": 1.145,
+          "allStarScore": 1.15,
+          "overall": 90,
           "honors": [
             "All-Star First Team"
           ],
@@ -4649,7 +5043,8 @@
           "sndKd": 1.63,
           "ctlKd": 1.29,
           "interactionsPerMap": 39.05,
-          "allStarScore": 1.048,
+          "allStarScore": 1.05,
+          "overall": 86,
           "honors": [
             "All-Star First Team"
           ],
@@ -4668,6 +5063,7 @@
           "ctlKd": 1.0,
           "interactionsPerMap": 39.4,
           "allStarScore": 0.8,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -4683,7 +5079,8 @@
           "sndKd": 1.12,
           "ctlKd": 1.13,
           "interactionsPerMap": 40.7,
-          "allStarScore": 1.023,
+          "allStarScore": 1.02,
+          "overall": 84,
           "honors": [
             "All-Star Second Team"
           ],
@@ -4701,7 +5098,8 @@
           "sndKd": 1.1,
           "ctlKd": 1.16,
           "interactionsPerMap": 40.12,
-          "allStarScore": 0.984,
+          "allStarScore": 0.98,
+          "overall": 82,
           "honors": [],
           "allStar": ""
         },
@@ -4717,7 +5115,8 @@
           "sndKd": 0.82,
           "ctlKd": 1.19,
           "interactionsPerMap": 36.44,
-          "allStarScore": 1.039,
+          "allStarScore": 1.04,
+          "overall": 84,
           "honors": [
             "All-Star Second Team"
           ],
@@ -4735,7 +5134,8 @@
           "sndKd": 1.36,
           "ctlKd": 1.06,
           "interactionsPerMap": 36.53,
-          "allStarScore": 0.989,
+          "allStarScore": 0.99,
+          "overall": 82,
           "honors": [],
           "allStar": ""
         },
@@ -4751,7 +5151,8 @@
           "sndKd": 0.95,
           "ctlKd": 0.9,
           "interactionsPerMap": 36.65,
-          "allStarScore": 0.994,
+          "allStarScore": 0.99,
+          "overall": 82,
           "honors": [],
           "allStar": ""
         },
@@ -4767,7 +5168,8 @@
           "sndKd": 1.26,
           "ctlKd": 1.04,
           "interactionsPerMap": 37.58,
-          "allStarScore": 0.985,
+          "allStarScore": 0.98,
+          "overall": 82,
           "honors": [],
           "allStar": ""
         },
@@ -4784,6 +5186,7 @@
           "ctlKd": 1.06,
           "interactionsPerMap": 44.95,
           "allStarScore": 0.99,
+          "overall": 82,
           "honors": [
             "All-Star Second Team"
           ],
@@ -4801,7 +5204,8 @@
           "sndKd": 1.58,
           "ctlKd": 1.09,
           "interactionsPerMap": 42.9,
-          "allStarScore": 1.051,
+          "allStarScore": 1.05,
+          "overall": 84,
           "honors": [
             "All-Star Second Team",
             "Season Champion"
@@ -4820,7 +5224,8 @@
           "sndKd": 1.11,
           "ctlKd": 1.16,
           "interactionsPerMap": 34.04,
-          "allStarScore": 1.013,
+          "allStarScore": 1.01,
+          "overall": 82,
           "honors": [],
           "allStar": ""
         },
@@ -4836,7 +5241,8 @@
           "sndKd": 1.09,
           "ctlKd": 0.91,
           "interactionsPerMap": 34.04,
-          "allStarScore": 1.036,
+          "allStarScore": 1.04,
+          "overall": 82,
           "honors": [],
           "allStar": ""
         },
@@ -4852,7 +5258,8 @@
           "sndKd": 0.95,
           "ctlKd": 1.0,
           "interactionsPerMap": 39.57,
-          "allStarScore": 0.822,
+          "allStarScore": 0.82,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -4868,7 +5275,8 @@
           "sndKd": 1.21,
           "ctlKd": 1.11,
           "interactionsPerMap": 37.11,
-          "allStarScore": 0.956,
+          "allStarScore": 0.96,
+          "overall": 80,
           "honors": [],
           "allStar": ""
         },
@@ -4884,7 +5292,8 @@
           "sndKd": 0.86,
           "ctlKd": 1.08,
           "interactionsPerMap": 38.4,
-          "allStarScore": 1.007,
+          "allStarScore": 1.01,
+          "overall": 82,
           "honors": [],
           "allStar": ""
         },
@@ -4900,7 +5309,8 @@
           "sndKd": 1.11,
           "ctlKd": 0.86,
           "interactionsPerMap": 42.57,
-          "allStarScore": 0.819,
+          "allStarScore": 0.82,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -4916,7 +5326,8 @@
           "sndKd": 1.32,
           "ctlKd": 0.9,
           "interactionsPerMap": 41.2,
-          "allStarScore": 0.921,
+          "allStarScore": 0.92,
+          "overall": 79,
           "honors": [],
           "allStar": ""
         },
@@ -4932,7 +5343,8 @@
           "sndKd": 1.32,
           "ctlKd": 0.97,
           "interactionsPerMap": 39.39,
-          "allStarScore": 0.933,
+          "allStarScore": 0.93,
+          "overall": 79,
           "honors": [
             "Season Champion"
           ],
@@ -4950,7 +5362,8 @@
           "sndKd": 1.0,
           "ctlKd": 0.95,
           "interactionsPerMap": 36,
-          "allStarScore": 0.712,
+          "allStarScore": 0.71,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -4966,7 +5379,8 @@
           "sndKd": 0.84,
           "ctlKd": 1.13,
           "interactionsPerMap": 40.04,
-          "allStarScore": 0.972,
+          "allStarScore": 0.97,
+          "overall": 79,
           "honors": [],
           "allStar": ""
         },
@@ -4982,7 +5396,8 @@
           "sndKd": 0.85,
           "ctlKd": 0.7,
           "interactionsPerMap": 37,
-          "allStarScore": 0.766,
+          "allStarScore": 0.77,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -4998,7 +5413,8 @@
           "sndKd": 1.29,
           "ctlKd": 0.9,
           "interactionsPerMap": 34.14,
-          "allStarScore": 0.802,
+          "allStarScore": 0.8,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -5014,7 +5430,8 @@
           "sndKd": 0.93,
           "ctlKd": 1.05,
           "interactionsPerMap": 43.22,
-          "allStarScore": 0.918,
+          "allStarScore": 0.92,
+          "overall": 78,
           "honors": [
             "Season Champion"
           ],
@@ -5032,7 +5449,8 @@
           "sndKd": 1.03,
           "ctlKd": 1.0,
           "interactionsPerMap": 38.67,
-          "allStarScore": 0.914,
+          "allStarScore": 0.91,
+          "overall": 78,
           "honors": [],
           "allStar": ""
         },
@@ -5048,7 +5466,8 @@
           "sndKd": 0.88,
           "ctlKd": 0.96,
           "interactionsPerMap": 33,
-          "allStarScore": 0.762,
+          "allStarScore": 0.76,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -5064,7 +5483,8 @@
           "sndKd": 0.82,
           "ctlKd": 0.98,
           "interactionsPerMap": 37.09,
-          "allStarScore": 0.935,
+          "allStarScore": 0.93,
+          "overall": 78,
           "honors": [],
           "allStar": ""
         },
@@ -5080,7 +5500,8 @@
           "sndKd": 1.3,
           "ctlKd": 0.94,
           "interactionsPerMap": 35.16,
-          "allStarScore": 0.914,
+          "allStarScore": 0.91,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -5096,7 +5517,8 @@
           "sndKd": 0.69,
           "ctlKd": 0.93,
           "interactionsPerMap": 39.4,
-          "allStarScore": 0.917,
+          "allStarScore": 0.92,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -5112,7 +5534,8 @@
           "sndKd": 0.54,
           "ctlKd": 0.9,
           "interactionsPerMap": 39.71,
-          "allStarScore": 0.872,
+          "allStarScore": 0.87,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -5129,6 +5552,7 @@
           "ctlKd": 1.02,
           "interactionsPerMap": 36.25,
           "allStarScore": 0.88,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -5144,7 +5568,8 @@
           "sndKd": 1.03,
           "ctlKd": 1.04,
           "interactionsPerMap": 34,
-          "allStarScore": 0.872,
+          "allStarScore": 0.87,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -5160,7 +5585,8 @@
           "sndKd": 1.13,
           "ctlKd": 0.94,
           "interactionsPerMap": 36.7,
-          "allStarScore": 0.826,
+          "allStarScore": 0.83,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -5176,7 +5602,8 @@
           "sndKd": 0.71,
           "ctlKd": 0.85,
           "interactionsPerMap": 43,
-          "allStarScore": 0.831,
+          "allStarScore": 0.83,
+          "overall": 76,
           "honors": [
             "Season Champion"
           ],
@@ -5194,7 +5621,8 @@
           "sndKd": 0.87,
           "ctlKd": 0.93,
           "interactionsPerMap": 34.59,
-          "allStarScore": 0.893,
+          "allStarScore": 0.89,
+          "overall": 74,
           "honors": [],
           "allStar": ""
         },
@@ -5210,7 +5638,8 @@
           "sndKd": 0.83,
           "ctlKd": 1.0,
           "interactionsPerMap": 36,
-          "allStarScore": 0.744,
+          "allStarScore": 0.74,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -5226,7 +5655,8 @@
           "sndKd": 0.8,
           "ctlKd": 0.83,
           "interactionsPerMap": 30.88,
-          "allStarScore": 0.788,
+          "allStarScore": 0.79,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -5242,7 +5672,8 @@
           "sndKd": 0.9,
           "ctlKd": 0.87,
           "interactionsPerMap": 31.79,
-          "allStarScore": 0.871,
+          "allStarScore": 0.87,
+          "overall": 73,
           "honors": [],
           "allStar": ""
         },
@@ -5258,7 +5689,8 @@
           "sndKd": 0.92,
           "ctlKd": 0.91,
           "interactionsPerMap": 35.86,
-          "allStarScore": 0.877,
+          "allStarScore": 0.88,
+          "overall": 73,
           "honors": [],
           "allStar": ""
         },
@@ -5274,7 +5706,8 @@
           "sndKd": 1.2,
           "ctlKd": 0.88,
           "interactionsPerMap": 34.5,
-          "allStarScore": 0.752,
+          "allStarScore": 0.75,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -5291,6 +5724,7 @@
           "ctlKd": 0.74,
           "interactionsPerMap": 36.29,
           "allStarScore": 0.76,
+          "overall": 74,
           "honors": [],
           "allStar": ""
         },
@@ -5306,7 +5740,8 @@
           "sndKd": 1.28,
           "ctlKd": 0.76,
           "interactionsPerMap": 38.92,
-          "allStarScore": 0.802,
+          "allStarScore": 0.8,
+          "overall": 71,
           "honors": [],
           "allStar": ""
         },
@@ -5322,7 +5757,8 @@
           "sndKd": 0.74,
           "ctlKd": 0.84,
           "interactionsPerMap": 32.24,
-          "allStarScore": 0.839,
+          "allStarScore": 0.84,
+          "overall": 66,
           "honors": [],
           "allStar": ""
         },
@@ -5338,7 +5774,8 @@
           "sndKd": 1.1,
           "ctlKd": 0.82,
           "interactionsPerMap": 37.08,
-          "allStarScore": 0.796,
+          "allStarScore": 0.8,
+          "overall": 70,
           "honors": [],
           "allStar": ""
         },
@@ -5354,7 +5791,8 @@
           "sndKd": 0.7,
           "ctlKd": 0.83,
           "interactionsPerMap": 41.82,
-          "allStarScore": 0.785,
+          "allStarScore": 0.79,
+          "overall": 70,
           "honors": [],
           "allStar": ""
         },
@@ -5370,7 +5808,8 @@
           "sndKd": 0.52,
           "ctlKd": 1.07,
           "interactionsPerMap": 32.82,
-          "allStarScore": 0.777,
+          "allStarScore": 0.78,
+          "overall": 67,
           "honors": [],
           "allStar": ""
         },
@@ -5386,7 +5825,8 @@
           "sndKd": 0.93,
           "ctlKd": 0.59,
           "interactionsPerMap": 34.57,
-          "allStarScore": 0.745,
+          "allStarScore": 0.74,
+          "overall": 70,
           "honors": [],
           "allStar": ""
         },
@@ -5402,7 +5842,8 @@
           "sndKd": 0.69,
           "ctlKd": 0.66,
           "interactionsPerMap": 33.6,
-          "allStarScore": 0.707,
+          "allStarScore": 0.71,
+          "overall": 69,
           "honors": [],
           "allStar": ""
         },
@@ -5418,7 +5859,8 @@
           "sndKd": 0.73,
           "ctlKd": 0.83,
           "interactionsPerMap": 36.75,
-          "allStarScore": 0.692,
+          "allStarScore": 0.69,
+          "overall": 71,
           "honors": [],
           "allStar": ""
         },
@@ -5434,7 +5876,8 @@
           "sndKd": 0.0,
           "ctlKd": 0.7,
           "interactionsPerMap": 34.75,
-          "allStarScore": 0.683,
+          "allStarScore": 0.68,
+          "overall": 69,
           "honors": [],
           "allStar": ""
         },
@@ -5450,7 +5893,8 @@
           "sndKd": 0.43,
           "ctlKd": 0.64,
           "interactionsPerMap": 31.4,
-          "allStarScore": 0.683,
+          "allStarScore": 0.68,
+          "overall": 63,
           "honors": [],
           "allStar": ""
         },
@@ -5467,6 +5911,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -5483,6 +5928,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -5499,6 +5945,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -5515,6 +5962,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -5531,6 +5979,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [
             "Season Champion"
           ],
@@ -5549,6 +5998,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         },
@@ -5565,6 +6015,7 @@
           "ctlKd": 0.0,
           "interactionsPerMap": 0,
           "allStarScore": 0.0,
+          "overall": null,
           "honors": [],
           "allStar": ""
         }
@@ -5656,7 +6107,8 @@
           "sndKd": 1.77,
           "ctlKd": 1.5,
           "interactionsPerMap": 39.74,
-          "allStarScore": 1.299,
+          "allStarScore": 1.3,
+          "overall": 99,
           "honors": [
             "All-Star First Team",
             "League MVP"
@@ -5675,7 +6127,8 @@
           "sndKd": 1.24,
           "ctlKd": 1.19,
           "interactionsPerMap": 41.49,
-          "allStarScore": 1.162,
+          "allStarScore": 1.16,
+          "overall": 92,
           "honors": [
             "All-Star First Team",
             "Season Champion"
@@ -5694,7 +6147,8 @@
           "sndKd": 1.17,
           "ctlKd": 1.25,
           "interactionsPerMap": 42.31,
-          "allStarScore": 1.147,
+          "allStarScore": 1.15,
+          "overall": 90,
           "honors": [
             "All-Star First Team"
           ],
@@ -5712,7 +6166,8 @@
           "sndKd": 1.93,
           "ctlKd": 1.14,
           "interactionsPerMap": 40.23,
-          "allStarScore": 1.143,
+          "allStarScore": 1.14,
+          "overall": 93,
           "honors": [
             "All-Star First Team"
           ],
@@ -5731,6 +6186,7 @@
           "ctlKd": 1.06,
           "interactionsPerMap": 37.6,
           "allStarScore": 1.07,
+          "overall": 87,
           "honors": [
             "All-Star Second Team"
           ],
@@ -5748,7 +6204,8 @@
           "sndKd": 1.08,
           "ctlKd": 1.06,
           "interactionsPerMap": 37.28,
-          "allStarScore": 1.065,
+          "allStarScore": 1.07,
+          "overall": 85,
           "honors": [
             "All-Star Second Team",
             "Season Champion"
@@ -5768,6 +6225,7 @@
           "ctlKd": 1.26,
           "interactionsPerMap": 44.25,
           "allStarScore": 1.05,
+          "overall": 87,
           "honors": [
             "All-Star Second Team"
           ],
@@ -5785,7 +6243,8 @@
           "sndKd": 0.74,
           "ctlKd": 1.12,
           "interactionsPerMap": 37.51,
-          "allStarScore": 1.021,
+          "allStarScore": 1.02,
+          "overall": 81,
           "honors": [],
           "allStar": ""
         },
@@ -5801,7 +6260,8 @@
           "sndKd": 0.79,
           "ctlKd": 1.13,
           "interactionsPerMap": 37.6,
-          "allStarScore": 0.993,
+          "allStarScore": 0.99,
+          "overall": 84,
           "honors": [],
           "allStar": ""
         },
@@ -5817,7 +6277,8 @@
           "sndKd": 1.18,
           "ctlKd": 1.16,
           "interactionsPerMap": 41.94,
-          "allStarScore": 0.977,
+          "allStarScore": 0.98,
+          "overall": 84,
           "honors": [
             "All-Star Second Team"
           ],
@@ -5835,7 +6296,8 @@
           "sndKd": 0.91,
           "ctlKd": 1.02,
           "interactionsPerMap": 36.88,
-          "allStarScore": 0.976,
+          "allStarScore": 0.98,
+          "overall": 79,
           "honors": [],
           "allStar": ""
         },
@@ -5851,7 +6313,8 @@
           "sndKd": 1.13,
           "ctlKd": 0.94,
           "interactionsPerMap": 35.0,
-          "allStarScore": 0.971,
+          "allStarScore": 0.97,
+          "overall": 83,
           "honors": [],
           "allStar": ""
         },
@@ -5867,7 +6330,8 @@
           "sndKd": 0.85,
           "ctlKd": 1.06,
           "interactionsPerMap": 32.94,
-          "allStarScore": 0.968,
+          "allStarScore": 0.97,
+          "overall": 79,
           "honors": [],
           "allStar": ""
         },
@@ -5883,7 +6347,8 @@
           "sndKd": 0.85,
           "ctlKd": 1.0,
           "interactionsPerMap": 39.69,
-          "allStarScore": 0.966,
+          "allStarScore": 0.97,
+          "overall": 79,
           "honors": [
             "Season Champion"
           ],
@@ -5901,7 +6366,8 @@
           "sndKd": 1.09,
           "ctlKd": 1.07,
           "interactionsPerMap": 34.52,
-          "allStarScore": 0.959,
+          "allStarScore": 0.96,
+          "overall": 82,
           "honors": [],
           "allStar": ""
         },
@@ -5917,7 +6383,8 @@
           "sndKd": 0.98,
           "ctlKd": 0.92,
           "interactionsPerMap": 39.44,
-          "allStarScore": 0.932,
+          "allStarScore": 0.93,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -5933,7 +6400,8 @@
           "sndKd": 0.86,
           "ctlKd": 1.04,
           "interactionsPerMap": 41.48,
-          "allStarScore": 0.923,
+          "allStarScore": 0.92,
+          "overall": 80,
           "honors": [],
           "allStar": ""
         },
@@ -5949,7 +6417,8 @@
           "sndKd": 0.87,
           "ctlKd": 1.11,
           "interactionsPerMap": 35.5,
-          "allStarScore": 0.911,
+          "allStarScore": 0.91,
+          "overall": 79,
           "honors": [],
           "allStar": ""
         },
@@ -5965,7 +6434,8 @@
           "sndKd": 0.99,
           "ctlKd": 0.88,
           "interactionsPerMap": 39.41,
-          "allStarScore": 0.908,
+          "allStarScore": 0.91,
+          "overall": 72,
           "honors": [],
           "allStar": ""
         },
@@ -5981,7 +6451,8 @@
           "sndKd": 2.0,
           "ctlKd": 1.13,
           "interactionsPerMap": 46.09,
-          "allStarScore": 0.899,
+          "allStarScore": 0.9,
+          "overall": 81,
           "honors": [],
           "allStar": ""
         },
@@ -5997,7 +6468,8 @@
           "sndKd": 1.26,
           "ctlKd": 0.95,
           "interactionsPerMap": 40.95,
-          "allStarScore": 0.889,
+          "allStarScore": 0.89,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -6013,7 +6485,8 @@
           "sndKd": 0.88,
           "ctlKd": 0.94,
           "interactionsPerMap": 36.57,
-          "allStarScore": 0.887,
+          "allStarScore": 0.89,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -6029,7 +6502,8 @@
           "sndKd": 0.88,
           "ctlKd": 0.91,
           "interactionsPerMap": 35.67,
-          "allStarScore": 0.879,
+          "allStarScore": 0.88,
+          "overall": 72,
           "honors": [
             "Season Champion"
           ],
@@ -6047,7 +6521,8 @@
           "sndKd": 1.16,
           "ctlKd": 0.69,
           "interactionsPerMap": 37.28,
-          "allStarScore": 0.856,
+          "allStarScore": 0.86,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -6063,7 +6538,8 @@
           "sndKd": 1.23,
           "ctlKd": 1.23,
           "interactionsPerMap": 42.88,
-          "allStarScore": 0.855,
+          "allStarScore": 0.86,
+          "overall": 80,
           "honors": [],
           "allStar": ""
         },
@@ -6079,7 +6555,8 @@
           "sndKd": 1.02,
           "ctlKd": 0.93,
           "interactionsPerMap": 35.35,
-          "allStarScore": 0.851,
+          "allStarScore": 0.85,
+          "overall": 73,
           "honors": [],
           "allStar": ""
         },
@@ -6095,7 +6572,8 @@
           "sndKd": 0.83,
           "ctlKd": 0.93,
           "interactionsPerMap": 37.91,
-          "allStarScore": 0.841,
+          "allStarScore": 0.84,
+          "overall": 72,
           "honors": [],
           "allStar": ""
         },
@@ -6111,7 +6589,8 @@
           "sndKd": 1.25,
           "ctlKd": 0.96,
           "interactionsPerMap": 30.92,
-          "allStarScore": 0.836,
+          "allStarScore": 0.84,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -6127,7 +6606,8 @@
           "sndKd": 0.7,
           "ctlKd": 0.82,
           "interactionsPerMap": 37.62,
-          "allStarScore": 0.829,
+          "allStarScore": 0.83,
+          "overall": 67,
           "honors": [],
           "allStar": ""
         },
@@ -6143,7 +6623,8 @@
           "sndKd": 0.77,
           "ctlKd": 0.75,
           "interactionsPerMap": 32.62,
-          "allStarScore": 0.825,
+          "allStarScore": 0.82,
+          "overall": 70,
           "honors": [],
           "allStar": ""
         },
@@ -6159,7 +6640,8 @@
           "sndKd": 1.04,
           "ctlKd": 0.94,
           "interactionsPerMap": 37.92,
-          "allStarScore": 0.816,
+          "allStarScore": 0.82,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -6175,7 +6657,8 @@
           "sndKd": 0.74,
           "ctlKd": 0.74,
           "interactionsPerMap": 33.94,
-          "allStarScore": 0.811,
+          "allStarScore": 0.81,
+          "overall": 71,
           "honors": [],
           "allStar": ""
         },
@@ -6191,7 +6674,8 @@
           "sndKd": 0.87,
           "ctlKd": 1.01,
           "interactionsPerMap": 38.77,
-          "allStarScore": 0.807,
+          "allStarScore": 0.81,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -6207,7 +6691,8 @@
           "sndKd": 0.47,
           "ctlKd": 1.03,
           "interactionsPerMap": 35.27,
-          "allStarScore": 0.806,
+          "allStarScore": 0.81,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -6223,7 +6708,8 @@
           "sndKd": 0.72,
           "ctlKd": 0.98,
           "interactionsPerMap": 34.18,
-          "allStarScore": 0.806,
+          "allStarScore": 0.81,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -6239,7 +6725,8 @@
           "sndKd": 0.52,
           "ctlKd": 0.77,
           "interactionsPerMap": 32.88,
-          "allStarScore": 0.799,
+          "allStarScore": 0.8,
+          "overall": 69,
           "honors": [],
           "allStar": ""
         },
@@ -6255,7 +6742,8 @@
           "sndKd": 0.73,
           "ctlKd": 0.86,
           "interactionsPerMap": 36.25,
-          "allStarScore": 0.774,
+          "allStarScore": 0.77,
+          "overall": 76,
           "honors": [],
           "allStar": ""
         },
@@ -6272,6 +6760,7 @@
           "ctlKd": 1.52,
           "interactionsPerMap": 41.25,
           "allStarScore": 0.75,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -6287,7 +6776,8 @@
           "sndKd": 3.83,
           "ctlKd": 0.85,
           "interactionsPerMap": 37.8,
-          "allStarScore": 0.749,
+          "allStarScore": 0.75,
+          "overall": 77,
           "honors": [],
           "allStar": ""
         },
@@ -6303,7 +6793,8 @@
           "sndKd": 0.93,
           "ctlKd": 0.86,
           "interactionsPerMap": 37.0,
-          "allStarScore": 0.736,
+          "allStarScore": 0.74,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -6319,7 +6810,8 @@
           "sndKd": 0.73,
           "ctlKd": 1.09,
           "interactionsPerMap": 32.86,
-          "allStarScore": 0.734,
+          "allStarScore": 0.73,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -6335,7 +6827,8 @@
           "sndKd": 0.67,
           "ctlKd": 0.68,
           "interactionsPerMap": 35.0,
-          "allStarScore": 0.726,
+          "allStarScore": 0.73,
+          "overall": 64,
           "honors": [],
           "allStar": ""
         },
@@ -6352,6 +6845,7 @@
           "ctlKd": 1.03,
           "interactionsPerMap": 35.8,
           "allStarScore": 0.7,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -6367,7 +6861,8 @@
           "sndKd": 0.6,
           "ctlKd": 0.82,
           "interactionsPerMap": 35.5,
-          "allStarScore": 0.684,
+          "allStarScore": 0.68,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -6383,7 +6878,8 @@
           "sndKd": 0.8,
           "ctlKd": 1.0,
           "interactionsPerMap": 31.75,
-          "allStarScore": 0.676,
+          "allStarScore": 0.68,
+          "overall": 74,
           "honors": [],
           "allStar": ""
         },
@@ -6399,7 +6895,8 @@
           "sndKd": 0.42,
           "ctlKd": 0.56,
           "interactionsPerMap": 31.38,
-          "allStarScore": 0.671,
+          "allStarScore": 0.67,
+          "overall": 58,
           "honors": [],
           "allStar": ""
         },
@@ -6415,7 +6912,8 @@
           "sndKd": 0.53,
           "ctlKd": 0.51,
           "interactionsPerMap": 37.86,
-          "allStarScore": 0.663,
+          "allStarScore": 0.66,
+          "overall": 60,
           "honors": [],
           "allStar": ""
         },
@@ -6431,7 +6929,8 @@
           "sndKd": 1.0,
           "ctlKd": 0.75,
           "interactionsPerMap": 30.6,
-          "allStarScore": 0.658,
+          "allStarScore": 0.66,
+          "overall": 64,
           "honors": [
             "Season Champion"
           ],
@@ -6449,7 +6948,8 @@
           "sndKd": 0.0,
           "ctlKd": 0.67,
           "interactionsPerMap": 31.75,
-          "allStarScore": 0.641,
+          "allStarScore": 0.64,
+          "overall": 65,
           "honors": [],
           "allStar": ""
         },
@@ -6465,7 +6965,8 @@
           "sndKd": 0.0,
           "ctlKd": 0.0,
           "interactionsPerMap": 23.0,
-          "allStarScore": 0.635,
+          "allStarScore": 0.63,
+          "overall": 75,
           "honors": [],
           "allStar": ""
         },
@@ -6481,7 +6982,8 @@
           "sndKd": 1.17,
           "ctlKd": 0.65,
           "interactionsPerMap": 29.0,
-          "allStarScore": 0.634,
+          "allStarScore": 0.63,
+          "overall": 70,
           "honors": [],
           "allStar": ""
         },
@@ -6498,6 +7000,7 @@
           "ctlKd": 0.39,
           "interactionsPerMap": 32.75,
           "allStarScore": 0.63,
+          "overall": 62,
           "honors": [],
           "allStar": ""
         }
@@ -6571,6 +7074,552 @@
     "5": {
       "realName": "Season 5 Cold War (2026"
     }
+  },
+  "seasonRecords": {
+    "1": [
+      {
+        "category": "Kill Record",
+        "modes": {
+          "Series": {
+            "holder": "Crooked",
+            "value": 141
+          }
+        }
+      },
+      {
+        "category": "Death Low",
+        "modes": {
+          "Series": {
+            "holder": "Tubby",
+            "value": 38
+          }
+        }
+      },
+      {
+        "category": "KD Record",
+        "modes": {
+          "Series": {
+            "holder": "Crooked",
+            "value": 1.88
+          }
+        }
+      },
+      {
+        "category": "Death Record",
+        "modes": {
+          "Series": {
+            "holder": "iBlades",
+            "value": 100
+          }
+        }
+      },
+      {
+        "category": "Kill Low",
+        "modes": {
+          "Series": {
+            "holder": "Jumpz",
+            "value": 37
+          }
+        }
+      },
+      {
+        "category": "KD Low",
+        "modes": {
+          "Series": {
+            "holder": "Jumpz",
+            "value": 0.55
+          }
+        }
+      }
+    ],
+    "2": [
+      {
+        "category": "Kill Record",
+        "modes": {
+          "HP": {
+            "holder": "Karnij",
+            "value": 42
+          },
+          "SnD": {
+            "holder": "inkster",
+            "value": 19
+          },
+          "Control": {
+            "holder": "Noti",
+            "value": 47
+          },
+          "Series": {
+            "holder": "DessieLoso",
+            "value": 130
+          }
+        }
+      },
+      {
+        "category": "Death Low",
+        "modes": {
+          "HP": {
+            "holder": "Thermo",
+            "value": 5
+          },
+          "SnD": {
+            "holder": "Renicide",
+            "value": 0
+          },
+          "Control": {
+            "holder": "Elive",
+            "value": 7
+          },
+          "Series": {
+            "holder": "Ephrisy",
+            "value": 34
+          }
+        }
+      },
+      {
+        "category": "KD Record",
+        "modes": {
+          "HP": {
+            "holder": "CrazieViews",
+            "value": 3.28
+          },
+          "SnD": {
+            "holder": "Waly",
+            "value": 5.67
+          },
+          "Control": {
+            "holder": "DessieLoso",
+            "value": 3.5
+          },
+          "Series": {
+            "holder": "CrazieViews",
+            "value": 2.72
+          }
+        }
+      },
+      {
+        "category": "Death Record",
+        "modes": {
+          "HP": {
+            "holder": "Acro_Ace",
+            "value": 38
+          },
+          "SnD": {
+            "holder": "Nacho",
+            "value": 10
+          },
+          "Control": {
+            "holder": "Seno",
+            "value": 42
+          },
+          "Series": {
+            "holder": "Seno",
+            "value": 116
+          }
+        }
+      },
+      {
+        "category": "Kill Low",
+        "modes": {
+          "HP": {
+            "holder": "N8DOGG",
+            "value": 3
+          },
+          "SnD": {
+            "holder": "Seno",
+            "value": 1
+          },
+          "Control": {
+            "holder": "N8DOGG",
+            "value": 5
+          },
+          "Series": {
+            "holder": "N8DOGG",
+            "value": 18
+          }
+        }
+      },
+      {
+        "category": "KD Low",
+        "modes": {
+          "HP": {
+            "holder": "N8DOGG",
+            "value": 0.27
+          },
+          "SnD": {
+            "holder": "CrazieViews",
+            "value": 0.14
+          },
+          "Control": {
+            "holder": "Verb",
+            "value": 0.26
+          },
+          "Series": {
+            "holder": "N8DOGG",
+            "value": 0.28
+          }
+        }
+      }
+    ],
+    "3": [
+      {
+        "category": "Kill Record",
+        "modes": {
+          "HP": {
+            "holder": "Hype",
+            "value": 46
+          },
+          "SnD": {
+            "holder": "Hype",
+            "value": 15
+          },
+          "Control": {
+            "holder": "Renicide",
+            "value": 48
+          },
+          "Series": {
+            "holder": "Hype",
+            "value": 146
+          }
+        }
+      },
+      {
+        "category": "Death Low",
+        "modes": {
+          "HP": {
+            "holder": "Acro Ace",
+            "value": 10
+          },
+          "SnD": {
+            "holder": "Jmetree",
+            "value": 1
+          },
+          "Control": {
+            "holder": "Lewy",
+            "value": 8
+          }
+        }
+      },
+      {
+        "category": "KD Record",
+        "modes": {
+          "HP": {
+            "holder": "Acro Ace",
+            "value": 1.77
+          },
+          "SnD": {
+            "holder": "Utopian",
+            "value": 3.5
+          },
+          "Control": {
+            "holder": "Lewy",
+            "value": 2.38
+          },
+          "Series": {
+            "holder": "Jmetree",
+            "value": 1.51
+          }
+        }
+      },
+      {
+        "category": "Death Record",
+        "modes": {
+          "HP": {
+            "holder": "Starry",
+            "value": 41
+          },
+          "SnD": {
+            "holder": "Duffie",
+            "value": 11
+          },
+          "Control": {
+            "holder": "Tubby",
+            "value": 40
+          }
+        }
+      },
+      {
+        "category": "Kill Low",
+        "modes": {
+          "HP": {
+            "holder": "Proxzify",
+            "value": 9
+          },
+          "SnD": {
+            "holder": "Nastyy",
+            "value": 1
+          },
+          "Control": {
+            "holder": "Poob",
+            "value": 7
+          }
+        }
+      },
+      {
+        "category": "KD Low",
+        "modes": {
+          "HP": {
+            "holder": "Poob",
+            "value": 0.53
+          },
+          "SnD": {
+            "holder": "Elive",
+            "value": 0.19
+          },
+          "Control": {
+            "holder": "Tubby",
+            "value": 0.35
+          },
+          "Series": {
+            "holder": "Zico",
+            "value": 0.56
+          }
+        }
+      }
+    ],
+    "4": [
+      {
+        "category": "Kill Record",
+        "modes": {
+          "HP": {
+            "holder": "Wrihs",
+            "value": 42
+          },
+          "SnD": {
+            "holder": "Waly",
+            "value": 15
+          },
+          "Control": {
+            "holder": "Starry",
+            "value": 47
+          },
+          "Series": {
+            "holder": "Renicide",
+            "value": 123
+          }
+        }
+      },
+      {
+        "category": "Death Low",
+        "modes": {
+          "HP": {
+            "holder": "Aj",
+            "value": 11
+          },
+          "SnD": {
+            "holder": "AimKun",
+            "value": 0
+          },
+          "Control": {
+            "holder": "IconZ",
+            "value": 12
+          }
+        }
+      },
+      {
+        "category": "KD Record",
+        "modes": {
+          "HP": {
+            "holder": "Utopian",
+            "value": 2.14
+          },
+          "SnD": {
+            "holder": "Bubbles",
+            "value": 10.0
+          },
+          "Control": {
+            "holder": "CrazieViews",
+            "value": 2.5
+          },
+          "Series": {
+            "holder": "Hype",
+            "value": 1.62
+          }
+        }
+      },
+      {
+        "category": "Death Record",
+        "modes": {
+          "HP": {
+            "holder": "Mvp",
+            "value": 36
+          },
+          "SnD": {
+            "holder": "Sybil",
+            "value": 11
+          },
+          "Control": {
+            "holder": "Renicide",
+            "value": 38
+          }
+        }
+      },
+      {
+        "category": "Kill Low",
+        "modes": {
+          "HP": {
+            "holder": "Hyper",
+            "value": 9
+          },
+          "SnD": {
+            "holder": "Robi",
+            "value": 0
+          },
+          "Control": {
+            "holder": "Jmetree",
+            "value": 9
+          }
+        }
+      },
+      {
+        "category": "KD Low",
+        "modes": {
+          "HP": {
+            "holder": "Poobs",
+            "value": 0.45
+          },
+          "SnD": {
+            "holder": "Robi",
+            "value": 0.0
+          },
+          "Control": {
+            "holder": "Zylix",
+            "value": 0.45
+          },
+          "Series": {
+            "holder": "Nada",
+            "value": 0.48
+          }
+        }
+      }
+    ],
+    "5": [
+      {
+        "category": "Kill Record",
+        "modes": {
+          "HP": {
+            "holder": "Skapun",
+            "value": 44
+          },
+          "SnD": {
+            "holder": "Renicide",
+            "value": 14
+          },
+          "Control": {
+            "holder": "AJ",
+            "value": 45
+          },
+          "Series": {
+            "holder": "Hype",
+            "value": 143
+          }
+        }
+      },
+      {
+        "category": "Death Low",
+        "modes": {
+          "HP": {
+            "holder": "Stim",
+            "value": 11
+          },
+          "SnD": {
+            "holder": "Cholo",
+            "value": 0
+          },
+          "Control": {
+            "holder": "Kai",
+            "value": 7
+          },
+          "Series": {
+            "holder": "Stim",
+            "value": 22
+          }
+        }
+      },
+      {
+        "category": "KD Record",
+        "modes": {
+          "HP": {
+            "holder": "Hype",
+            "value": 2.58
+          },
+          "SnD": {
+            "holder": "Ephrisy",
+            "value": 13.0
+          },
+          "Control": {
+            "holder": "Ephrisy",
+            "value": 3.0
+          },
+          "Series": {
+            "holder": "Ephrisy",
+            "value": 2.28
+          }
+        }
+      },
+      {
+        "category": "Death Record",
+        "modes": {
+          "HP": {
+            "holder": "Peach",
+            "value": 41
+          },
+          "SnD": {
+            "holder": "Nastyy",
+            "value": 10
+          },
+          "Control": {
+            "holder": "Trap",
+            "value": 39
+          },
+          "Series": {
+            "holder": "Peach",
+            "value": 134
+          }
+        }
+      },
+      {
+        "category": "Kill Low",
+        "modes": {
+          "HP": {
+            "holder": "Soup",
+            "value": 7
+          },
+          "SnD": {
+            "holder": "Kelpmeltz",
+            "value": 0
+          },
+          "Control": {
+            "holder": "Godofwarfare",
+            "value": 4
+          },
+          "Series": {
+            "holder": "Stim",
+            "value": 15
+          }
+        }
+      },
+      {
+        "category": "KD Low",
+        "modes": {
+          "HP": {
+            "holder": "Soup",
+            "value": 0.29
+          },
+          "SnD": {
+            "holder": "Kelpmeltz",
+            "value": 0.0
+          },
+          "Control": {
+            "holder": "Kael",
+            "value": 0.26
+          },
+          "Series": {
+            "holder": "Kael",
+            "value": 0.43
+          }
+        }
+      }
+    ]
   },
   "perPlayerSeasonHonors": {
     "Crooked": {
@@ -7747,7 +8796,7 @@
         }
       ],
       "slug": "chicago-syndicate-vs-detroit-dirty-dogs",
-      "displayName": "Chicago Syndicate vs Detroit Dirty Dogs \u2014 Match 1",
+      "displayName": "Chicago Syndicate vs Detroit Dirty Dogs (Match 1)",
       "teams": [
         {
           "team": "Chicago Syndicate",
@@ -8734,7 +9783,7 @@
         }
       ],
       "slug": "nashville-mighty-ducks-vs-oklahoma-city-spartans",
-      "displayName": "Nashville Mighty Ducks vs Oklahoma City Spartans \u2014 Match 1",
+      "displayName": "Nashville Mighty Ducks vs Oklahoma City Spartans (Match 1)",
       "teams": [
         {
           "team": "Nashville Mighty Ducks",
@@ -9286,7 +10335,7 @@
         }
       ],
       "slug": "nola-knights-vs-nashville-mighty-ducks",
-      "displayName": "NOLA Knights vs Nashville Mighty Ducks \u2014 Match 1",
+      "displayName": "NOLA Knights vs Nashville Mighty Ducks (Match 1)",
       "teams": [
         {
           "team": "NOLA Knights",
@@ -9574,7 +10623,7 @@
         }
       ],
       "slug": "houston-havoc-vs-nola-knights",
-      "displayName": "Houston Havoc vs NOLA Knights \u2014 Match 1",
+      "displayName": "Houston Havoc vs NOLA Knights (Match 1)",
       "teams": [
         {
           "team": "Houston Havoc",
@@ -10446,7 +11495,7 @@
         }
       ],
       "slug": "nashville-mighty-ducks-vs-detroit-dirty-dogs",
-      "displayName": "Nashville Mighty Ducks vs Detroit Dirty Dogs \u2014 Match 1",
+      "displayName": "Nashville Mighty Ducks vs Detroit Dirty Dogs (Match 1)",
       "teams": [
         {
           "team": "Nashville Mighty Ducks",
@@ -10741,7 +11790,7 @@
         }
       ],
       "slug": "houston-havoc-vs-nola-knights-2",
-      "displayName": "Houston Havoc vs NOLA Knights \u2014 Match 2",
+      "displayName": "Houston Havoc vs NOLA Knights (Match 2)",
       "teams": [
         {
           "team": "Houston Havoc",
@@ -10881,7 +11930,7 @@
         }
       ],
       "slug": "nashville-mighty-ducks-vs-oklahoma-city-spartans-2",
-      "displayName": "Nashville Mighty Ducks vs Oklahoma City Spartans \u2014 Match 2",
+      "displayName": "Nashville Mighty Ducks vs Oklahoma City Spartans (Match 2)",
       "teams": [
         {
           "team": "Nashville Mighty Ducks",
@@ -11013,7 +12062,7 @@
         }
       ],
       "slug": "chicago-syndicate-vs-detroit-dirty-dogs-2",
-      "displayName": "Chicago Syndicate vs Detroit Dirty Dogs \u2014 Match 2",
+      "displayName": "Chicago Syndicate vs Detroit Dirty Dogs (Match 2)",
       "teams": [
         {
           "team": "Chicago Syndicate",
@@ -11153,7 +12202,7 @@
         }
       ],
       "slug": "nola-knights-vs-nashville-mighty-ducks-2",
-      "displayName": "NOLA Knights vs Nashville Mighty Ducks \u2014 Match 2",
+      "displayName": "NOLA Knights vs Nashville Mighty Ducks (Match 2)",
       "teams": [
         {
           "team": "NOLA Knights",
@@ -11285,7 +12334,7 @@
         }
       ],
       "slug": "nashville-mighty-ducks-vs-detroit-dirty-dogs-2",
-      "displayName": "Nashville Mighty Ducks vs Detroit Dirty Dogs \u2014 Match 2",
+      "displayName": "Nashville Mighty Ducks vs Detroit Dirty Dogs (Match 2)",
       "teams": [
         {
           "team": "Nashville Mighty Ducks",
@@ -11309,7 +12358,7 @@
           "displayName": "Hype",
           "kills": 143,
           "deaths": 116,
-          "seriesKd": 1.232758621,
+          "seriesKd": 1.23,
           "maps": 6,
           "mapsList": [
             "Checkmate",
@@ -11326,7 +12375,7 @@
           "displayName": "Leib",
           "kills": 130,
           "deaths": 118,
-          "seriesKd": 1.101694915,
+          "seriesKd": 1.1,
           "maps": 6,
           "mapsList": [
             "Checkmate",
@@ -11343,7 +12392,7 @@
           "displayName": "Lurkens",
           "kills": 134,
           "deaths": 107,
-          "seriesKd": 1.252336449,
+          "seriesKd": 1.25,
           "maps": 6,
           "mapsList": [
             "Checkmate",
@@ -11360,7 +12409,7 @@
           "displayName": "Trap",
           "kills": 100,
           "deaths": 109,
-          "seriesKd": 0.917431193,
+          "seriesKd": 0.92,
           "maps": 6,
           "mapsList": [
             "Checkmate",
@@ -11377,7 +12426,7 @@
           "displayName": "Acro_Ace",
           "kills": 123,
           "deaths": 121,
-          "seriesKd": 1.016528926,
+          "seriesKd": 1.02,
           "maps": 6,
           "mapsList": [
             "Checkmate",
@@ -11394,7 +12443,7 @@
           "displayName": "AJ",
           "kills": 121,
           "deaths": 122,
-          "seriesKd": 0.991803279,
+          "seriesKd": 0.99,
           "maps": 6,
           "mapsList": [
             "Checkmate",
@@ -11411,7 +12460,7 @@
           "displayName": "Nastyy",
           "kills": 113,
           "deaths": 130,
-          "seriesKd": 0.869230769,
+          "seriesKd": 0.87,
           "maps": 6,
           "mapsList": [
             "Checkmate",
@@ -11428,7 +12477,7 @@
           "displayName": "Peach",
           "kills": 92,
           "deaths": 134,
-          "seriesKd": 0.686567164,
+          "seriesKd": 0.69,
           "maps": 6,
           "mapsList": [
             "Checkmate",

@@ -22,7 +22,7 @@ const totals = teamNames.map(t => ({
 }));
 const mapsPlayed = series.players[0]?.mapsList || [];
 ---
-<Base title={`${series.name} — Burger Town Leagues`}>
+<Base title={`${series.name} | Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
     <div class="wrap">
       <a href={`/season/${series.season}`} class="btn btn-ghost" style="margin-bottom: 20px; display: inline-flex;">← Back to Season {series.season}</a>
@@ -41,7 +41,7 @@ const mapsPlayed = series.players[0]?.mapsList || [];
           <div class="pixel-card">
             <span class="eyebrow">{t.team}</span>
             <p style="font-family: var(--font-mono); font-size: 1.3rem; color: var(--gold); margin: 4px 0;">
-              {t.kills}<span style="color: var(--paper-dim); font-size: 0.9rem;"> K</span> — {t.deaths}<span style="color: var(--paper-dim); font-size: 0.9rem;"> D</span>
+              {t.kills}<span style="color: var(--paper-dim); font-size: 0.9rem;"> Kills</span> · {t.deaths}<span style="color: var(--paper-dim); font-size: 0.9rem;"> Deaths</span>
             </p>
           </div>
         ))}

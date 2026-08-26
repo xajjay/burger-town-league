@@ -5,13 +5,13 @@ import { seasons, careerStats } from '../../data/leagueData.js';
 const currentPath = Astro.url.pathname;
 const historyTabs = [
   { href: "/history", label: "Draft League History" },
-  ...seasons.map(s => ({ href: `/season/${s.id}`, label: s.name })),
+  ...seasons.map(s => ({ href: `/season/${s.id}`, label: `${s.name} (${s.year})` })),
   { href: "/history/all-seasons", label: "All Seasons" },
 ];
 
 const sorted = [...careerStats].sort((a, b) => b.kd - a.kd);
 ---
-<Base title="All Seasons — Burger Town Leagues">
+<Base title="All Seasons | Burger Town Leagues">
   <section style="padding-bottom: 0;">
     <div class="wrap">
       <div class="season-pills">

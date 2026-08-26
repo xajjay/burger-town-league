@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
+import { rulebookUrl } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return currentSeasonTabs
@@ -12,7 +13,7 @@ const { tab } = Astro.params;
 const { label } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
-<Base title={`${label} — Current Season — Burger Town Leagues`}>
+<Base title={`${label} | Current Season | Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
     <div class="wrap">
       <div class="season-pills">
@@ -20,11 +21,24 @@ const currentPath = Astro.url.pathname;
           <a class={`season-pill ${currentPath === `/current-season/${t.slug}` ? 'active' : ''}`} href={`/current-season/${t.slug}`}>{t.label}</a>
         ))}
       </div>
-      <span class="eyebrow">Coming Soon</span>
-      <h1 class="script-heading">{label}</h1>
-      <p style="color: var(--paper-dim); max-width: 60ch;">
-        {label} for Burger Town's first season will show up here once the season is underway.
-      </p>
+      {tab === 'rulebook' ? (
+        <>
+          <span class="eyebrow">Official Rules</span>
+          <h1 class="script-heading">Rulebook</h1>
+          <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 20px;">
+            The full Burger Town Leagues rulebook, covering match formats, roster rules, and league policy.
+          </p>
+          <a class="btn btn-primary" href={rulebookUrl} target="_blank" rel="noopener">View Rulebook</a>
+        </>
+      ) : (
+        <>
+          <span class="eyebrow">Coming Soon</span>
+          <h1 class="script-heading">{label}</h1>
+          <p style="color: var(--paper-dim); max-width: 60ch;">
+            {label} for Burger Town's first season will show up here once the season is underway.
+          </p>
+        </>
+      )}
     </div>
   </section>
 </Base>

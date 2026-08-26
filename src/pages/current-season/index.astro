@@ -1,10 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
+import { upcomingSeasonId, seasonYears, signupFormUrl, social } from '../../data/leagueData.js';
 
 const currentPath = Astro.url.pathname;
 ---
-<Base title="Current Season — Burger Town Leagues">
+<Base title="Current Season | Burger Town Leagues">
   <section style="padding-bottom: 0;">
     <div class="wrap">
       <div class="season-pills">
@@ -13,9 +14,9 @@ const currentPath = Astro.url.pathname;
         ))}
       </div>
       <span class="eyebrow">Coming Soon</span>
-      <h1 class="script-heading">Burger Town's First Season</h1>
+      <h1 class="script-heading">Season {upcomingSeasonId} ({seasonYears[upcomingSeasonId]})</h1>
       <p style="color: var(--paper-dim); max-width: 60ch;">
-        We're building out rosters, standings, and schedule now. Check back soon — or join the Discord to be the first to know when the draft goes live.
+        Burger Town's first official season. We're building out rosters, standings, and schedule now. Check back soon, or join the Discord to be the first to know when the draft goes live.
       </p>
     </div>
   </section>
@@ -24,8 +25,11 @@ const currentPath = Astro.url.pathname;
     <div class="wrap">
       <div class="pixel-card" style="max-width: 560px;">
         <span class="eyebrow">Status</span>
-        <p style="color: var(--paper); font-size: 1.1rem; margin: 4px 0 16px;">Season details are on the way.</p>
-        <a class="btn btn-primary" href="https://discord.gg/G2kdxeGkZ" target="_blank" rel="noopener">Join the Discord</a>
+        <p style="color: var(--paper); font-size: 1.1rem; margin: 4px 0 16px;">Season details are on the way. Sign up now to be drafted onto a team.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a class="btn btn-primary" href={signupFormUrl} target="_blank" rel="noopener">Sign Up</a>
+          <a class="btn btn-ghost" href={social.discord} target="_blank" rel="noopener">Join the Discord</a>
+        </div>
       </div>
     </div>
   </section>

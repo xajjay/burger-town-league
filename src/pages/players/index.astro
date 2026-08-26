@@ -1,10 +1,26 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { careerStats } from '../../data/leagueData.js';
+import { careerStats, perPlayerSeasonHonors } from '../../data/leagueData.js';
 
 const sorted = [...careerStats].sort((a, b) => b.kd - a.kd);
+
+function awardsFor(player) {
+  const bySeason = perPlayerSeasonHonors[player] || {};
+  const counts = {};
+  for (const honors of Object.values(bySeason)) {
+    for (const h of honors) {
+      let key = h;
+      if (h.includes('MVP')) key = 'MVP';
+      else if (h.includes('Champion')) key = 'Champion';
+      else if (h.includes('First Team')) key = '1st Team';
+      else if (h.includes('Second Team')) key = '2nd Team';
+      counts[key] = (counts[key] || 0) + 1;
+    }
+  }
+  return Object.entries(counts).map(([label, n]) => `${n}x ${label}`);
+}
 ---
-<Base title="Players — Burger Town Leagues">
+<Base title="Players | Burger Town Leagues">
   <section style="padding-bottom: 0;">
     <div class="wrap">
       <span class="eyebrow">{sorted.length} Players</span>
@@ -22,13 +38,14 @@ const sorted = [...careerStats].sort((a, b) => b.kd - a.kd);
     <div class="wrap">
       <div class="table-scroll">
         <table class="stat-table" id="player-table">
-          <thead><tr><th>Player</th><th>Career K/D</th><th>Seasons</th></tr></thead>
+          <thead><tr><th>Player</th><th>Career K/D</th><th>Seasons</th><th>Awards</th></tr></thead>
           <tbody>
             {sorted.map(p => (
               <tr class="player-row" data-name={p.player.toLowerCase()}>
                 <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
                 <td>{p.kd.toFixed(2)}</td>
                 <td>{p.seasons.map(s => `S${s}`).join(', ')}</td>
+                <td>{awardsFor(p.player).map(a => <span class="badge badge-gold">{a}</span>)}</td>
               </tr>
             ))}
           </tbody>

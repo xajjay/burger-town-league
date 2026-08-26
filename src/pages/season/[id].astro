@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { seasons, seasonStats, standings, seriesList } from '../../data/leagueData.js';
+import { seasons, seasonStats, standings, seriesList, seasonRecords } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return seasons.map(s => ({ params: { id: String(s.id) } }));
@@ -12,15 +12,16 @@ const season = seasons.find(s => s.id === seasonId);
 const stats = [...(seasonStats[seasonId] || [])].sort((a, b) => b.kd - a.kd);
 const seasonStandings = standings[seasonId] || [];
 const seasonSeries = seriesList.filter(s => s.season === seasonId);
+const records = seasonRecords[String(seasonId)] || [];
 
 const historyTabs = [
   { href: "/history", label: "Draft League History" },
-  ...seasons.map(s => ({ href: `/season/${s.id}`, label: s.name })),
+  ...seasons.map(s => ({ href: `/season/${s.id}`, label: `${s.name} (${s.year})` })),
   { href: "/history/all-seasons", label: "All Seasons" },
 ];
 const currentPath = Astro.url.pathname;
 ---
-<Base title={`${season.name} — Burger Town Leagues`}>
+<Base title={`${season.name} | Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
     <div class="wrap">
       <div class="season-pills">
@@ -29,7 +30,7 @@ const currentPath = Astro.url.pathname;
         ))}
       </div>
       <span class="eyebrow">{season.status} · {season.league}</span>
-      <h1 class="script-heading">{season.name}</h1>
+      <h1 class="script-heading">{season.name} ({season.year})</h1>
       <p style="color: var(--paper-dim); max-width: 60ch;">
         Champion: <strong style="color: var(--gold);">{season.champion}</strong>
         {season.mvp !== 'TBD' && <> · MVP: <strong style="color: var(--gold);">{season.mvp}</strong></>}
@@ -43,7 +44,7 @@ const currentPath = Astro.url.pathname;
       <div class="table-scroll">
         <table class="stat-table">
           <thead>
-            <tr><th>#</th><th>Player</th><th>Team</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Maps</th><th>Honors</th></tr>
+            <tr><th>#</th><th>Player</th><th>Team</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Maps</th><th>OVR</th><th>Honors</th></tr>
           </thead>
           <tbody>
             {stats.map((p, i) => (
@@ -55,6 +56,7 @@ const currentPath = Astro.url.pathname;
                 <td>{p.deaths}</td>
                 <td>{p.kd.toFixed(2)}</td>
                 <td>{p.maps}</td>
+                <td style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
                 <td>{p.allStar && <span class="badge badge-gold">{p.allStar}</span>}</td>
               </tr>
             ))}
@@ -78,6 +80,34 @@ const currentPath = Astro.url.pathname;
                   <td>{s.team} {s.champion && <span class="badge badge-gold">Champion</span>}</td>
                   <td>{s.record}</td>
                   <td>{s.manager}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {records.length > 0 && (
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Season Records</h2>
+        <div class="table-scroll">
+          <table class="stat-table">
+            <thead><tr><th>Record</th><th>Hardpoint</th><th>Search &amp; Destroy</th><th>Control</th><th>Series</th></tr></thead>
+            <tbody>
+              {records.map(r => (
+                <tr>
+                  <td>{r.category}</td>
+                  {['HP', 'SnD', 'Control', 'Series'].map(mode => (
+                    r.modes[mode] ? (
+                      <td>
+                        {r.modes[mode].holder && <a href={`/players/${encodeURIComponent(r.modes[mode].holder)}`}>{r.modes[mode].holder}</a>}
+                        {r.modes[mode].value !== null && r.modes[mode].value !== undefined && <span style="color: var(--gold); margin-left: 4px;">({r.modes[mode].value})</span>}
+                      </td>
+                    ) : <td>N/A</td>
+                  ))}
                 </tr>
               ))}
             </tbody>
