@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { careerStats, perPlayerSeasonHonors, seasonStats, getPlayerPhoto } from '../../data/leagueData.js';
+import { careerStats, perPlayerSeasonHonors, seasonStats, getPlayerPhoto, getHofEntry, getAllStarCount, getSpecialBadges } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return careerStats.map(p => ({ params: { name: p.player } }));
@@ -42,11 +42,13 @@ const tags = Object.entries(tagGroups).map(([label, seasonsList]) => ({
 
 const overall = player?.overall;
 let tier = 'basic';
-let tierLabel = '';
-if (overall >= 95) { tier = 'legend'; tierLabel = 'LEGENDARY'; }
-else if (overall >= 90) { tier = 'elite'; tierLabel = 'ELITE'; }
+if (overall >= 95) tier = 'legend';
+else if (overall >= 90) tier = 'elite';
 
 const photo = player ? getPlayerPhoto(player.player) : null;
+const hofEntry = player ? getHofEntry(player.player) : null;
+const allStarCount = player ? getAllStarCount(player.player) : 0;
+const specialBadges = player ? getSpecialBadges(player.player) : [];
 ---
 <Base title={player ? `${player.player} | Burger Town Leagues` : 'Player not found'}>
   <section>
@@ -55,7 +57,11 @@ const photo = player ? getPlayerPhoto(player.player) : null;
         <>
           <span class="eyebrow">Player Card</span>
           <div class={`player-card tier-${tier}`}>
-            {tierLabel && <div class="player-card-tier-label">{tierLabel}</div>}
+            {allStarCount > 0 && (
+              <div class="player-card-star-stripe" title={`${allStarCount} All-Star selection${allStarCount !== 1 ? 's' : ''}`}>
+                {'★'.repeat(Math.min(allStarCount, 6))}
+              </div>
+            )}
             <div class="player-card-top">
               {overall != null && (
                 <div class="player-card-ovr">
@@ -90,6 +96,25 @@ const photo = player ? getPlayerPhoto(player.player) : null;
                 <span class="player-card-stat-label">Season{player.seasons.length !== 1 ? 's' : ''}</span>
               </div>
             </div>
+            {specialBadges.length > 0 && (
+              <div class="special-badges">
+                {specialBadges.map(b => (
+                  <span
+                    class={`special-badge special-badge-${b.type}`}
+                    title={
+                      b.type === 'goat' ? 'Hall of Fame Rank #1 — Greatest Of All Time' :
+                      b.type === 'hof' ? 'Hall of Fame member' :
+                      'Awarded to the player with the lowest career Overall rating'
+                    }
+                  >
+                    {b.type === 'goat' && '🐐'}
+                    {b.type === 'hof' && '🏆'}
+                    {b.type === 'superburger' && <img src="/images/badges/super-burger.jpg" alt="" />}
+                    {b.type === 'hof' && hofEntry ? `${b.label} #${hofEntry.rank}` : b.label}
+                  </span>
+                ))}
+              </div>
+            )}
             {tags.length > 0 && (
               <div class="player-card-tags">
                 {tags.map(t => (

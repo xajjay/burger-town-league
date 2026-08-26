@@ -396,6 +396,33 @@ section + section { border-top: 1px solid var(--line); }
 .footer-links a { text-decoration: none; color: var(--paper-dim); }
 .footer-links a:hover { color: var(--paper); }
 
+.sortable-th {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 20px !important;
+}
+.sortable-th:hover { color: var(--paper); }
+.sortable-th::after {
+  content: '⇅';
+  position: absolute;
+  right: 6px;
+  opacity: 0.4;
+  font-size: 0.7rem;
+}
+.sortable-th.sorted-asc::after { content: '↑'; opacity: 1; color: var(--gold); }
+.sortable-th.sorted-desc::after { content: '↓'; opacity: 1; color: var(--gold); }
+
+/* --- Hall of Fame name highlight, used across stat tables --- */
+.hof-name {
+  color: var(--gold) !important;
+  text-shadow: 0 0 8px rgba(242, 169, 0, 0.4);
+}
+.hof-name::after {
+  content: ' 🏆';
+  font-size: 0.75em;
+}
+
 /* --- Player Card (trading card) --- */
 .player-card {
   position: relative;
@@ -407,20 +434,21 @@ section + section { border-top: 1px solid var(--line); }
   clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
 }
 
-.player-card-tier-label {
+.player-card-star-stripe {
   position: absolute;
   top: 12px;
   right: -34px;
   transform: rotate(45deg);
   width: 140px;
   text-align: center;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 0.62rem;
-  letter-spacing: 0.06em;
-  padding: 3px 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 4px 0;
   color: var(--black);
   background: var(--gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .player-card.tier-elite {
@@ -429,13 +457,74 @@ section + section { border-top: 1px solid var(--line); }
 }
 
 .player-card.tier-legend {
-  border-color: var(--gold);
-  box-shadow: 0 0 32px rgba(242, 169, 0, 0.35), 0 0 60px rgba(226, 35, 26, 0.15);
-  background: linear-gradient(160deg, #201a10 0%, var(--panel-raised) 100%);
+  border-color: #ff5a2e;
+  box-shadow: 0 0 32px rgba(255, 90, 46, 0.4), 0 0 60px rgba(226, 35, 26, 0.2);
+  background: linear-gradient(160deg, #241209 0%, var(--panel-raised) 100%);
 }
 
-.player-card.tier-legend .player-card-tier-label {
-  background: linear-gradient(90deg, var(--gold), var(--red));
+.player-card.tier-legend .player-card-star-stripe {
+  background: linear-gradient(90deg, #ff5a2e, var(--red));
+  color: #fff;
+}
+
+.player-card.tier-legend .player-card-ovr {
+  background: linear-gradient(160deg, #ff5a2e 0%, var(--red) 100%);
+  border-color: #ff5a2e;
+}
+.player-card.tier-legend .player-card-ovr-number { color: #fff; }
+.player-card.tier-legend .player-card-ovr-label { color: rgba(255,255,255,0.75); }
+.player-card.tier-legend .player-card-photo { border-color: #ff5a2e; }
+
+.player-card-hof-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 6px 10px;
+  background: rgba(242, 169, 0, 0.12);
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.special-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.special-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.special-badge img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.special-badge-goat {
+  background: linear-gradient(90deg, var(--gold), #ff5a2e);
+  color: var(--black);
+}
+.special-badge-hof {
+  background: rgba(242, 169, 0, 0.15);
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+}
+.special-badge-superburger {
+  background: rgba(120, 80, 200, 0.18);
+  border: 1px solid #8a6fd6;
+  color: #c9b6ff;
 }
 
 .player-card-top {
@@ -457,8 +546,7 @@ section + section { border-top: 1px solid var(--line); }
   border: 1px solid var(--line);
   clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
 }
-.tier-elite .player-card-ovr,
-.tier-legend .player-card-ovr {
+.tier-elite .player-card-ovr {
   background: linear-gradient(160deg, var(--gold) 0%, var(--gold-dim) 100%);
   border-color: var(--gold);
 }
@@ -469,8 +557,7 @@ section + section { border-top: 1px solid var(--line); }
   line-height: 1;
   color: var(--paper);
 }
-.tier-elite .player-card-ovr-number,
-.tier-legend .player-card-ovr-number {
+.tier-elite .player-card-ovr-number {
   color: var(--black);
 }
 .player-card-ovr-label {
@@ -481,8 +568,7 @@ section + section { border-top: 1px solid var(--line); }
   color: var(--paper-dim);
   margin-top: 2px;
 }
-.tier-elite .player-card-ovr-label,
-.tier-legend .player-card-ovr-label {
+.tier-elite .player-card-ovr-label {
   color: rgba(0,0,0,0.6);
 }
 
@@ -494,8 +580,7 @@ section + section { border-top: 1px solid var(--line); }
   border: 2px solid var(--line);
   flex-shrink: 0;
 }
-.tier-elite .player-card-photo,
-.tier-legend .player-card-photo {
+.tier-elite .player-card-photo {
   border-color: var(--gold);
 }
 

@@ -1,8 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import { hallOfFame, social, foundedYear, homeDescription, signupFormUrl, upcomingSeasonLabel, upcomingSeasonYear } from '../data/leagueData.js';
+import { hallOfFame, careerStats, social, foundedYear, homeDescription, signupFormUrl, upcomingSeasonLabel, upcomingSeasonYear } from '../data/leagueData.js';
 
-const top5 = hallOfFame.slice(0, 5);
+const top5 = hallOfFame.slice(0, 5).map(p => ({
+  ...p,
+  overall: careerStats.find(c => c.player === p.player)?.overall ?? null,
+}));
 ---
 <Base title="Burger Town Leagues | Cold War Draft League">
   <section class="hero">
@@ -40,13 +43,14 @@ const top5 = hallOfFame.slice(0, 5);
       <h2 class="section-title">Hall of Fame: Top 5</h2>
       <div class="table-scroll">
         <table class="stat-table">
-          <thead><tr><th>#</th><th>Player</th><th>Career K/D</th><th>Legacy Score</th></tr></thead>
+          <thead><tr><th>#</th><th>Player</th><th>Career K/D</th><th>Lifetime OVR</th><th>Legacy Score</th></tr></thead>
           <tbody>
             {top5.map(p => (
               <tr>
                 <td class={p.rank === 1 ? 'rank-1' : ''}>{p.rank}</td>
                 <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
                 <td>{p.kd.toFixed(2)}</td>
+                <td style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
                 <td style="color: var(--gold); font-weight: 700;">{p.legacyScore.toFixed(1)}</td>
               </tr>
             ))}

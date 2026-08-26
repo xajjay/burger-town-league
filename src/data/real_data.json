@@ -4334,14 +4334,14 @@
           "team": "Buffalo",
           "manager": "Mekso",
           "champion": true,
-          "record": ""
+          "record": "8-3"
         },
         {
           "rank": 2,
           "team": "Tampa Bay",
           "manager": "",
           "champion": false,
-          "record": ""
+          "record": "8-4"
         },
         {
           "rank": 3,
@@ -4931,14 +4931,14 @@
           "team": "New York G Pieces",
           "manager": "",
           "champion": false,
-          "record": ""
+          "record": "3-2"
         },
         {
           "rank": 2,
           "team": "Boston Excane",
           "manager": "",
           "champion": false,
-          "record": ""
+          "record": "3-1"
         },
         {
           "rank": 3,
@@ -4959,7 +4959,7 @@
           "team": "Nashville Whiskey",
           "manager": "",
           "champion": false,
-          "record": ""
+          "record": "2-3"
         },
         {
           "rank": 6,

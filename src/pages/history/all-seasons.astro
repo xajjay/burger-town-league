@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { seasons, careerStats } from '../../data/leagueData.js';
+import { seasons, careerStats, isHofPlayer } from '../../data/leagueData.js';
 
 const currentPath = Astro.url.pathname;
 const historyTabs = [
@@ -9,7 +9,7 @@ const historyTabs = [
   { href: "/history/all-seasons", label: "All Seasons" },
 ];
 
-const sorted = [...careerStats].sort((a, b) => b.kd - a.kd);
+const sorted = [...careerStats].sort((a, b) => (b.overall ?? -1) - (a.overall ?? -1));
 ---
 <Base title="All Seasons | Burger Town Leagues">
   <section style="padding-bottom: 0;">
@@ -29,20 +29,25 @@ const sorted = [...careerStats].sort((a, b) => b.kd - a.kd);
 
   <section>
     <div class="wrap">
+      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Click any column header to sort. Sorted by Overall by default.</p>
       <div class="table-scroll">
-        <table class="stat-table">
+        <table class="stat-table sortable-table">
           <thead>
-            <tr><th>#</th><th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Seasons</th><th>Accolades</th></tr>
+            <tr>
+              <th data-sort="text">Player</th>
+              <th data-sort="num">K/D</th>
+              <th data-sort="num" data-dir="desc" class="sorted-desc">Overall</th>
+              <th data-sort="num">Seasons Played</th>
+              <th>Accolades</th>
+            </tr>
           </thead>
           <tbody>
-            {sorted.map((p, i) => (
+            {sorted.map((p) => (
               <tr>
-                <td class={i === 0 ? 'rank-1' : ''}>{i + 1}</td>
-                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
-                <td>{p.kills}</td>
-                <td>{p.deaths}</td>
-                <td>{p.kd.toFixed(2)}</td>
-                <td>{p.seasons.map(s => `S${s}`).join(', ')}</td>
+                <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={isHofPlayer(p.player) ? 'hof-name' : ''}>{p.player}</a></td>
+                <td data-value={p.kd}>{p.kd.toFixed(2)}</td>
+                <td data-value={p.overall ?? ''} style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
+                <td data-value={p.seasons.length}>{p.seasons.map(s => `S${s}`).join(', ')}</td>
                 <td style="white-space: normal; min-width: 260px; font-family: var(--font-body); font-size: 0.8rem; color: var(--paper-dim);">{p.accolades}</td>
               </tr>
             ))}

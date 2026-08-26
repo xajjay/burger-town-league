@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { seasons, seasonStats, standings, seriesList, seasonRecords } from '../../data/leagueData.js';
+import { seasons, seasonStats, standings, seriesList, seasonRecords, isHofPlayer } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return seasons.map(s => ({ params: { id: String(s.id) } }));
@@ -9,7 +9,7 @@ export function getStaticPaths() {
 const { id } = Astro.params;
 const seasonId = Number(id);
 const season = seasons.find(s => s.id === seasonId);
-const stats = [...(seasonStats[seasonId] || [])].sort((a, b) => b.kd - a.kd);
+const stats = [...(seasonStats[seasonId] || [])].sort((a, b) => (b.overall ?? -1) - (a.overall ?? -1));
 const seasonStandings = standings[seasonId] || [];
 const seasonSeries = seriesList.filter(s => s.season === seasonId);
 const records = seasonRecords[String(seasonId)] || [];
@@ -41,23 +41,34 @@ const currentPath = Astro.url.pathname;
   <section>
     <div class="wrap">
       <h2 class="section-title">Player Stats</h2>
+      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Click any column header to sort. Sorted by Overall by default.</p>
       <div class="table-scroll">
-        <table class="stat-table">
+        <table class="stat-table sortable-table">
           <thead>
-            <tr><th>#</th><th>Player</th><th>Team</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Maps</th><th>OVR</th><th>Honors</th></tr>
+            <tr>
+              <th data-sort="text">Player</th>
+              <th data-sort="text">Team</th>
+              <th data-sort="num">K/D</th>
+              <th data-sort="num">Respawn KD</th>
+              <th data-sort="num">SnD KD</th>
+              <th data-sort="num">Interactions</th>
+              <th data-sort="num">Maps</th>
+              <th data-sort="num" data-dir="desc" class="sorted-desc">OVR</th>
+              <th>Honors</th>
+            </tr>
           </thead>
           <tbody>
-            {stats.map((p, i) => (
+            {stats.map((p) => (
               <tr>
-                <td class={i === 0 ? 'rank-1' : ''}>{i + 1}</td>
-                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
+                <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={isHofPlayer(p.player) ? 'hof-name' : ''}>{p.player}</a></td>
                 <td>{p.team}</td>
-                <td>{p.kills}</td>
-                <td>{p.deaths}</td>
-                <td>{p.kd.toFixed(2)}</td>
-                <td>{p.maps}</td>
-                <td style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
-                <td>{p.allStar && <span class="badge badge-gold">{p.allStar}</span>}</td>
+                <td data-value={p.kd}>{p.kd.toFixed(2)}</td>
+                <td data-value={p.respawnKd ?? ''}>{p.respawnKd != null ? p.respawnKd.toFixed(2) : 'N/A'}</td>
+                <td data-value={p.sndKd ?? ''}>{p.sndKd != null ? p.sndKd.toFixed(2) : 'N/A'}</td>
+                <td data-value={p.interactionsPerMap ?? ''}>{p.interactionsPerMap != null ? p.interactionsPerMap.toFixed(1) : 'N/A'}</td>
+                <td data-value={p.maps}>{p.maps}</td>
+                <td data-value={p.overall ?? ''} style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
+                <td>{p.honors.map(h => <span class="badge badge-gold">{h}</span>)}</td>
               </tr>
             ))}
           </tbody>

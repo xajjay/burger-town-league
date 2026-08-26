@@ -65,6 +65,11 @@ export const seasonStats = Object.fromEntries(
       kd: p.kd,
       maps: p.maps,
       overall: p.overall,
+      hpKd: p.hpKd,
+      sndKd: p.sndKd,
+      ctlKd: p.ctlKd,
+      respawnKd: (p.hpKd != null && p.ctlKd != null) ? (p.hpKd + p.ctlKd) / 2 : null,
+      interactionsPerMap: p.interactionsPerMap,
       allStar: p.allStar,
       honors: p.honors,
     })),
@@ -115,10 +120,44 @@ export const seriesList = raw.series.map((s) => ({
   players: s.players,
 }));
 
+export function getAllStarCount(name) {
+  const bySeason = perPlayerSeasonHonors[name] || {};
+  let count = 0;
+  for (const honors of Object.values(bySeason)) {
+    for (const h of honors) {
+      if (h.includes('All-Star')) count++;
+    }
+  }
+  return count;
+}
+
+// "Super Burger" — a tongue-in-cheek honor for whoever has the lowest career Overall rating
+const _ranked = careerStats.filter(p => p.overall != null).sort((a, b) => a.overall - b.overall);
+export const superBurgerPlayer = _ranked.length ? _ranked[0].player : null;
+
+// G.O.A.T. badge — whoever sits at Hall of Fame rank #1
+export const goatPlayer = hallOfFame.find(h => h.rank === 1)?.player || null;
+
+export function getSpecialBadges(name) {
+  const badges = [];
+  if (name === goatPlayer) badges.push({ type: 'goat', label: 'G.O.A.T.' });
+  if (isHofPlayer(name)) badges.push({ type: 'hof', label: 'Hall of Fame' });
+  if (name === superBurgerPlayer) badges.push({ type: 'superburger', label: 'Super Burger' });
+  return badges;
+}
+
 export function findPlayer(name) {
   return careerStats.find(p => p.player.toLowerCase() === decodeURIComponent(name).toLowerCase());
 }
 
 export function isKnownPlayer(name) {
   return careerStats.some(p => p.player.toLowerCase() === (name || '').toLowerCase());
+}
+
+export function getHofEntry(name) {
+  return hallOfFame.find(h => h.player.toLowerCase() === (name || '').toLowerCase()) || null;
+}
+
+export function isHofPlayer(name) {
+  return getHofEntry(name) !== null;
 }

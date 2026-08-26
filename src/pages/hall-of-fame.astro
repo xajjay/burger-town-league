@@ -12,22 +12,30 @@ import { seasons, hallOfFame, isKnownPlayer } from '../data/leagueData.js';
       </p>
 
       <h2 class="section-title">Legacy Rankings</h2>
+      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Click any column header to sort. Sorted by Legacy Score by default.</p>
       <div class="table-scroll" style="margin-bottom: 40px;">
-        <table class="stat-table">
+        <table class="stat-table sortable-table">
           <thead>
-            <tr><th>#</th><th>Player</th><th>Career K/D</th><th>Seasons</th><th>MVPs</th><th>Titles</th><th>All-Stars</th><th>Legacy Score</th></tr>
+            <tr>
+              <th data-sort="text">Player</th>
+              <th data-sort="num">Career K/D</th>
+              <th data-sort="num">Seasons</th>
+              <th data-sort="num">MVPs</th>
+              <th data-sort="num">Titles</th>
+              <th data-sort="num">All-Stars</th>
+              <th data-sort="num" data-dir="desc" class="sorted-desc">Legacy Score</th>
+            </tr>
           </thead>
           <tbody>
             {hallOfFame.map(p => (
               <tr>
-                <td class={p.rank === 1 ? 'rank-1' : ''}>{p.rank}</td>
-                <td><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
-                <td>{p.kd.toFixed(2)}</td>
-                <td>{p.numSeasons}</td>
-                <td>{p.mvps}</td>
-                <td>{p.championships}</td>
-                <td>{p.allStar1}× 1st, {p.allStar2}× 2nd</td>
-                <td style="color: var(--gold); font-weight: 700;">{p.legacyScore.toFixed(1)}</td>
+                <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`}>{p.player}</a></td>
+                <td data-value={p.kd}>{p.kd.toFixed(2)}</td>
+                <td data-value={p.numSeasons}>{p.numSeasons}</td>
+                <td data-value={p.mvps}>{p.mvps}</td>
+                <td data-value={p.championships}>{p.championships}</td>
+                <td data-value={p.allStar1 + p.allStar2}>{p.allStar1}× 1st, {p.allStar2}× 2nd</td>
+                <td data-value={p.legacyScore} style="color: var(--gold); font-weight: 700;">{p.legacyScore.toFixed(1)}</td>
               </tr>
             ))}
           </tbody>
