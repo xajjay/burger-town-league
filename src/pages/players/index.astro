@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { careerStats, perPlayerSeasonHonors, isHofPlayer } from '../../data/leagueData.js';
+import { careerStats, perPlayerSeasonHonors, isHofPlayer, hasSuperBurger } from '../../data/leagueData.js';
 
 const sorted = [...careerStats].sort((a, b) => (b.overall ?? -1) - (a.overall ?? -1));
 
@@ -51,7 +51,7 @@ function awardsFor(player) {
           <tbody>
             {sorted.map(p => (
               <tr class="player-row" data-name={p.player.toLowerCase()}>
-                <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={isHofPlayer(p.player) ? 'hof-name' : ''}>{p.player}</a></td>
+                <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={`${isHofPlayer(p.player) ? 'hof-name' : ''} ${hasSuperBurger(p.player) ? 'superburger-name' : ''}`}>{p.player}</a></td>
                 <td data-value={p.overall ?? ''} style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
                 <td data-value={p.kd}>{p.kd.toFixed(2)}</td>
                 <td data-value={p.seasons.length}>{p.seasons.map(s => `S${s}`).join(', ')}</td>

@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { seasons, careerStats, isHofPlayer } from '../../data/leagueData.js';
+import { seasons, careerStats, isHofPlayer, hasSuperBurger, allTimeRecords } from '../../data/leagueData.js';
 
 const currentPath = Astro.url.pathname;
 const historyTabs = [
@@ -44,7 +44,7 @@ const sorted = [...careerStats].sort((a, b) => (b.overall ?? -1) - (a.overall ??
           <tbody>
             {sorted.map((p) => (
               <tr>
-                <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={isHofPlayer(p.player) ? 'hof-name' : ''}>{p.player}</a></td>
+                <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={`${isHofPlayer(p.player) ? 'hof-name' : ''} ${hasSuperBurger(p.player) ? 'superburger-name' : ''}`}>{p.player}</a></td>
                 <td data-value={p.kd}>{p.kd.toFixed(2)}</td>
                 <td data-value={p.overall ?? ''} style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
                 <td data-value={p.seasons.length}>{p.seasons.map(s => `S${s}`).join(', ')}</td>
@@ -56,4 +56,34 @@ const sorted = [...careerStats].sort((a, b) => (b.overall ?? -1) - (a.overall ??
       </div>
     </div>
   </section>
+
+  {allTimeRecords.length > 0 && (
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">All-Time Records</h2>
+        <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">The best (or lowest, for "Low" categories) value ever recorded per category, across Seasons 1–5.</p>
+        <div class="table-scroll">
+          <table class="stat-table">
+            <thead><tr><th>Record</th><th>Hardpoint</th><th>Search &amp; Destroy</th><th>Control</th><th>Series</th></tr></thead>
+            <tbody>
+              {allTimeRecords.map(r => (
+                <tr>
+                  <td>{r.category}</td>
+                  {['HP', 'SnD', 'Control', 'Series'].map(mode => (
+                    r.modes[mode] ? (
+                      <td>
+                        {r.modes[mode].holder && <a href={`/players/${encodeURIComponent(r.modes[mode].holder)}`}>{r.modes[mode].holder}</a>}
+                        {r.modes[mode].value !== null && r.modes[mode].value !== undefined && <span style="color: var(--gold); margin-left: 4px;">({r.modes[mode].value})</span>}
+                        <span style="color: var(--paper-dim); font-size: 0.75rem; margin-left: 4px;">S{r.modes[mode].season}</span>
+                      </td>
+                    ) : <td>N/A</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
 </Base>

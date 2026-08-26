@@ -43,6 +43,8 @@ export function getPlayerPhoto(name) {
 const championBySeason = Object.fromEntries(raw.champions.map(c => [c.season, c]));
 const mvpBySeason = Object.fromEntries(raw.mvps.map(m => [m.season, resolveName(m.mvp)]));
 
+const REMOVED_PLAYERS = new Set(['anura']); // left the league; excluded entirely per request
+
 export const seasons = ['1', '2', '3', '4', '5'].map(sid => ({
   id: Number(sid),
   name: `Season ${sid}`,
@@ -57,22 +59,25 @@ export const seasons = ['1', '2', '3', '4', '5'].map(sid => ({
 export const seasonStats = Object.fromEntries(
   Object.entries(raw.seasons).map(([sid, data]) => [
     Number(sid),
-    data.players.map(p => ({
-      player: p.player,
-      team: p.team,
-      kills: p.kills,
-      deaths: p.deaths,
-      kd: p.kd,
-      maps: p.maps,
-      overall: p.overall,
-      hpKd: p.hpKd,
-      sndKd: p.sndKd,
-      ctlKd: p.ctlKd,
-      respawnKd: (p.hpKd != null && p.ctlKd != null) ? (p.hpKd + p.ctlKd) / 2 : null,
-      interactionsPerMap: p.interactionsPerMap,
-      allStar: p.allStar,
-      honors: p.honors,
-    })),
+    data.players
+      .filter(p => !(p.kd === 0 && p.kills === 0 && p.deaths === 0))
+      .filter(p => !REMOVED_PLAYERS.has(norm(p.player)))
+      .map(p => ({
+        player: p.player,
+        team: p.team,
+        kills: p.kills,
+        deaths: p.deaths,
+        kd: p.kd,
+        maps: p.maps,
+        overall: p.overall,
+        hpKd: p.hpKd,
+        sndKd: p.sndKd,
+        ctlKd: p.ctlKd,
+        respawnKd: (p.hpKd != null && p.ctlKd != null) ? (p.hpKd + p.ctlKd) / 2 : null,
+        interactionsPerMap: p.interactionsPerMap,
+        allStar: p.allStar,
+        honors: [...p.honors],
+      })),
   ])
 );
 
@@ -91,18 +96,42 @@ export const standings = Object.fromEntries(
 
 export const seasonRecords = raw.seasonRecords || {};
 
-export const careerStats = raw.career.map(c => ({
-  player: c.player,
-  seasons: Object.keys(c.seasonKD).map(Number).sort((a, b) => a - b),
-  seasonKD: c.seasonKD,
-  kills: c.kills,
-  deaths: c.deaths,
-  kd: c.kd,
-  maps: c.maps,
-  avgSeasonOverall: c.avgSeasonOverall,
-  overall: c.playerOverall,
-  accolades: c.accolades,
-}));
+// All-Time Records — the best (or, for "...Low" categories, worst/lowest) value
+// per category+mode across every season's Season Records table.
+export const allTimeRecords = (() => {
+  const categories = {};
+  for (const [sid, groups] of Object.entries(seasonRecords)) {
+    for (const g of groups) {
+      const cat = (categories[g.category] ||= { category: g.category, modes: {} });
+      const isLow = /Low$/.test(g.category);
+      for (const [mode, data] of Object.entries(g.modes)) {
+        if (!data || data.value == null) continue;
+        const current = cat.modes[mode];
+        const better = !current || (isLow ? data.value < current.value : data.value > current.value);
+        if (better) {
+          cat.modes[mode] = { holder: data.holder, value: data.value, season: sid };
+        }
+      }
+    }
+  }
+  return Object.values(categories);
+})();
+
+export const careerStats = raw.career
+  .filter(c => !(c.kd === 0 && c.kills === 0 && c.deaths === 0))
+  .filter(c => !REMOVED_PLAYERS.has(norm(c.player)))
+  .map(c => ({
+    player: c.player,
+    seasons: Object.keys(c.seasonKD).map(Number).sort((a, b) => a - b),
+    seasonKD: c.seasonKD,
+    kills: c.kills,
+    deaths: c.deaths,
+    kd: c.kd,
+    maps: c.maps,
+    avgSeasonOverall: c.avgSeasonOverall,
+    overall: c.playerOverall,
+    accolades: c.accolades,
+  }));
 
 export const hallOfFame = raw.hallOfFame;
 
@@ -131,9 +160,31 @@ export function getAllStarCount(name) {
   return count;
 }
 
-// "Super Burger" — a tongue-in-cheek honor for whoever has the lowest career Overall rating
-const _ranked = careerStats.filter(p => p.overall != null).sort((a, b) => a.overall - b.overall);
-export const superBurgerPlayer = _ranked.length ? _ranked[0].player : null;
+// "Super Burger" — a tongue-in-cheek honor for whoever has the LOWEST Overall in each season.
+// Injected directly into that season's honors + the player's per-season honors map.
+for (const [sid, players] of Object.entries(seasonStats)) {
+  const withOverall = players.filter(p => p.overall != null);
+  if (!withOverall.length) continue;
+  const minOverall = Math.min(...withOverall.map(p => p.overall));
+  for (const p of withOverall) {
+    if (p.overall !== minOverall) continue;
+    p.honors.push('Super Burger');
+    (perPlayerSeasonHonors[p.player] ||= {});
+    const existing = perPlayerSeasonHonors[p.player][sid] || [];
+    if (!existing.includes('Super Burger')) {
+      perPlayerSeasonHonors[p.player][sid] = [...existing, 'Super Burger'];
+    }
+  }
+}
+
+export function hasSuperBurger(name) {
+  const bySeason = perPlayerSeasonHonors[name] || {};
+  return Object.values(bySeason).some(h => h.includes('Super Burger'));
+}
+function getSuperBurgerSeasons(name) {
+  const bySeason = perPlayerSeasonHonors[name] || {};
+  return Object.entries(bySeason).filter(([, h]) => h.includes('Super Burger')).map(([s]) => s);
+}
 
 // G.O.A.T. badge — whoever sits at Hall of Fame rank #1
 export const goatPlayer = hallOfFame.find(h => h.rank === 1)?.player || null;
@@ -142,7 +193,10 @@ export function getSpecialBadges(name) {
   const badges = [];
   if (name === goatPlayer) badges.push({ type: 'goat', label: 'G.O.A.T.' });
   if (isHofPlayer(name)) badges.push({ type: 'hof', label: 'Hall of Fame' });
-  if (name === superBurgerPlayer) badges.push({ type: 'superburger', label: 'Super Burger' });
+  if (hasSuperBurger(name)) {
+    const seasonsList = getSuperBurgerSeasons(name);
+    badges.push({ type: 'superburger', label: `Super Burger (${seasonsList.map(s => `S${s}`).join(', ')})` });
+  }
   return badges;
 }
 

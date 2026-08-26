@@ -413,14 +413,14 @@ section + section { border-top: 1px solid var(--line); }
 .sortable-th.sorted-asc::after { content: '↑'; opacity: 1; color: var(--gold); }
 .sortable-th.sorted-desc::after { content: '↓'; opacity: 1; color: var(--gold); }
 
-/* --- Hall of Fame name highlight, used across stat tables --- */
+/* --- Hall of Fame / Super Burger name highlights, used across stat tables --- */
 .hof-name {
-  color: var(--gold) !important;
-  text-shadow: 0 0 8px rgba(242, 169, 0, 0.4);
+  color: var(--paper) !important;
+  text-shadow: 0 0 6px rgba(242, 169, 0, 0.55);
 }
-.hof-name::after {
-  content: ' 🏆';
-  font-size: 0.75em;
+.superburger-name {
+  color: var(--paper) !important;
+  text-shadow: 0 0 6px rgba(160, 120, 230, 0.55);
 }
 
 /* --- Player Card (trading card) --- */

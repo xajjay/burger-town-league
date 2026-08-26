@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { seasons, seasonStats, standings, seriesList, seasonRecords, isHofPlayer } from '../../data/leagueData.js';
+import { seasons, seasonStats, standings, seriesList, seasonRecords, isHofPlayer, hasSuperBurger } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return seasons.map(s => ({ params: { id: String(s.id) } }));
@@ -60,7 +60,7 @@ const currentPath = Astro.url.pathname;
           <tbody>
             {stats.map((p) => (
               <tr>
-                <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={isHofPlayer(p.player) ? 'hof-name' : ''}>{p.player}</a></td>
+                <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={`${isHofPlayer(p.player) ? 'hof-name' : ''} ${hasSuperBurger(p.player) ? 'superburger-name' : ''}`}>{p.player}</a></td>
                 <td>{p.team}</td>
                 <td data-value={p.kd}>{p.kd.toFixed(2)}</td>
                 <td data-value={p.respawnKd ?? ''}>{p.respawnKd != null ? p.respawnKd.toFixed(2) : 'N/A'}</td>
