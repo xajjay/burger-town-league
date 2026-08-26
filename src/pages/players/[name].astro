@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { careerStats, perPlayerSeasonHonors, seasonStats } from '../../data/leagueData.js';
+import { careerStats, perPlayerSeasonHonors, seasonStats, getPlayerPhoto } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return careerStats.map(p => ({ params: { name: p.player } }));
@@ -39,32 +39,62 @@ const tags = Object.entries(tagGroups).map(([label, seasonsList]) => ({
   label,
   seasons: seasonsList,
 }));
+
+const overall = player?.overall;
+let tier = 'basic';
+let tierLabel = '';
+if (overall >= 95) { tier = 'legend'; tierLabel = 'LEGENDARY'; }
+else if (overall >= 90) { tier = 'elite'; tierLabel = 'ELITE'; }
+
+const photo = player ? getPlayerPhoto(player.player) : null;
 ---
 <Base title={player ? `${player.player} | Burger Town Leagues` : 'Player not found'}>
   <section>
     <div class="wrap">
       {player ? (
         <>
-          <div class="pixel-card" style="max-width: 560px; margin-bottom: 40px; display: flex; gap: 24px; align-items: flex-start;">
-            <div style="flex: 1;">
-              <span class="eyebrow">Service Record</span>
-              <h1 class="script-heading" style="font-size: 2.4rem;">{player.player}</h1>
-              <p style="font-family: var(--font-mono); font-size: 1.4rem; color: var(--gold); margin: 8px 0;">
-                {player.kd.toFixed(2)} <span style="font-size: 0.7rem; color: var(--paper-dim); font-family: var(--font-body);">CAREER K/D</span>
-              </p>
-              <p style="color: var(--paper-dim); margin: 4px 0;">{player.kills.toLocaleString()} kills · {player.deaths.toLocaleString()} deaths · {player.seasons.length} season{player.seasons.length !== 1 ? 's' : ''} played</p>
-              {tags.length > 0 && (
-                <div style="margin-top: 12px;">
-                  {tags.map(t => (
-                    <span class="badge badge-red" title={`Season ${t.seasons.join(', ')}`}>{t.label} ({t.seasons.map(s => `S${s}`).join(', ')})</span>
-                  ))}
+          <span class="eyebrow">Player Card</span>
+          <div class={`player-card tier-${tier}`}>
+            {tierLabel && <div class="player-card-tier-label">{tierLabel}</div>}
+            <div class="player-card-top">
+              {overall != null && (
+                <div class="player-card-ovr">
+                  <span class="player-card-ovr-number">{overall}</span>
+                  <span class="player-card-ovr-label">OVR</span>
+                </div>
+              )}
+              {photo ? (
+                <img class="player-card-photo" src={photo} alt={player.player} />
+              ) : (
+                <div class="player-card-name-only">
+                  <span class="script-heading">{player.player}</span>
                 </div>
               )}
             </div>
-            {player.overall != null && (
-              <div class="ovr-badge">
-                <span class="ovr-number">{player.overall}</span>
-                <span class="ovr-label">OVR</span>
+            {photo && <h1 class="script-heading player-card-name">{player.player}</h1>}
+            <div class="player-card-stats">
+              <div class="player-card-stat">
+                <span class="player-card-stat-value">{player.kd.toFixed(2)}</span>
+                <span class="player-card-stat-label">Career K/D</span>
+              </div>
+              <div class="player-card-stat">
+                <span class="player-card-stat-value">{player.kills.toLocaleString()}</span>
+                <span class="player-card-stat-label">Kills</span>
+              </div>
+              <div class="player-card-stat">
+                <span class="player-card-stat-value">{player.deaths.toLocaleString()}</span>
+                <span class="player-card-stat-label">Deaths</span>
+              </div>
+              <div class="player-card-stat">
+                <span class="player-card-stat-value">{player.seasons.length}</span>
+                <span class="player-card-stat-label">Season{player.seasons.length !== 1 ? 's' : ''}</span>
+              </div>
+            </div>
+            {tags.length > 0 && (
+              <div class="player-card-tags">
+                {tags.map(t => (
+                  <span class="badge badge-red" title={`Season ${t.seasons.join(', ')}`}>{t.label} ({t.seasons.map(s => `S${s}`).join(', ')})</span>
+                ))}
               </div>
             )}
           </div>

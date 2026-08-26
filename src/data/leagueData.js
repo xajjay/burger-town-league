@@ -14,15 +14,30 @@ export const social = {
 export const signupFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd7tkxczxplrqFmBzXphCzQNQWONYlR2EXZDfsj4YzTcbUsFQ/viewform?pli=1&pli=1";
 export const rulebookUrl = "https://docs.google.com/document/d/1yFZNfyt_Fgq2tdFr63N2HR-z9iS_tohesAoDdQuprwM/edit?tab=t.0";
 
-export const seasonYears = { 1: 2023, 2: 2023, 3: 2024, 4: 2024, 5: 2026, 6: 2026 };
-export const upcomingSeasonId = 6;
+export const seasonYears = { 1: 2023, 2: 2023, 3: 2024, 4: 2024, 5: 2026 };
+export const upcomingSeasonLabel = "BTL Season 1";
+export const upcomingSeasonYear = 2026;
 
 function norm(s) {
   return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 const aliasMap = raw.aliasMap || {};
+const KNOWN_NAME_FIXES = { ephrishy: 'Ephrisy' };
 function resolveName(name) {
-  return aliasMap[norm(name)] || name;
+  const n = norm(name);
+  if (KNOWN_NAME_FIXES[n]) return KNOWN_NAME_FIXES[n];
+  return aliasMap[n] || name;
+}
+
+// Player profile photos — add an entry here (filename must exist in /public/images/players/)
+// to give a player a photo on their card. Players without an entry just show their name.
+export const playerPhotos = {
+  'aj': '/images/players/aj.jpg',
+  'renicide': '/images/players/renicide.png',
+  'lewy': '/images/players/lewy.jpg',
+};
+export function getPlayerPhoto(name) {
+  return playerPhotos[norm(name)] || null;
 }
 
 const championBySeason = Object.fromEntries(raw.champions.map(c => [c.season, c]));

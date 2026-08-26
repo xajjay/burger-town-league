@@ -97,6 +97,32 @@ h2.script-heading { font-size: clamp(1.8rem, 4vw, 2.6rem); }
   align-items: center;
   justify-content: space-between;
   height: 68px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.nav-toggle-checkbox {
+  display: none;
+}
+
+.nav-toggle-label {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+.nav-toggle-label span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--paper);
+}
+
+.nav-cta-mobile {
+  display: none;
 }
 
 .brand {
@@ -212,7 +238,41 @@ h2.script-heading { font-size: clamp(1.8rem, 4vw, 2.6rem); }
   .hero-grid { grid-template-columns: 1fr; text-align: center; }
   .hero-copy p { margin-left: auto; margin-right: auto; }
   .hero-actions { justify-content: center; }
-  .nav-links { display: none; }
+
+  .brand { order: 1; }
+  .nav-cta { display: none; }
+  .nav-toggle-label { display: flex; order: 2; }
+
+  .nav-links {
+    display: none;
+    order: 3;
+    flex-basis: 100%;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    background: var(--black);
+    border-top: 1px solid var(--line);
+    padding: 8px 0;
+  }
+  .nav-toggle-checkbox:checked ~ .nav-links {
+    display: flex;
+  }
+  .nav-links li {
+    width: 100%;
+  }
+  .nav-links a {
+    display: block;
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--line);
+    border-bottom-width: 1px;
+  }
+  .nav-cta-mobile {
+    display: block;
+  }
+  .nav-cta-mobile a {
+    color: var(--red);
+    font-weight: 700;
+  }
 }
 
 /* --- Pixel-corner card (signature element) --- */
@@ -336,31 +396,155 @@ section + section { border-top: 1px solid var(--line); }
 .footer-links a { text-decoration: none; color: var(--paper-dim); }
 .footer-links a:hover { color: var(--paper); }
 
-/* --- Player Overall rating badge --- */
-.ovr-badge {
-  flex-shrink: 0;
+/* --- Player Card (trading card) --- */
+.player-card {
+  position: relative;
+  max-width: 360px;
+  margin-bottom: 40px;
+  padding: 24px;
+  background: linear-gradient(160deg, var(--panel) 0%, var(--panel-raised) 100%);
+  border: 2px solid var(--line);
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+}
+
+.player-card-tier-label {
+  position: absolute;
+  top: 12px;
+  right: -34px;
+  transform: rotate(45deg);
+  width: 140px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  padding: 3px 0;
+  color: var(--black);
+  background: var(--gold);
+}
+
+.player-card.tier-elite {
+  border-color: var(--gold-dim);
+  box-shadow: 0 0 24px rgba(242, 169, 0, 0.15);
+}
+
+.player-card.tier-legend {
+  border-color: var(--gold);
+  box-shadow: 0 0 32px rgba(242, 169, 0, 0.35), 0 0 60px rgba(226, 35, 26, 0.15);
+  background: linear-gradient(160deg, #201a10 0%, var(--panel-raised) 100%);
+}
+
+.player-card.tier-legend .player-card-tier-label {
+  background: linear-gradient(90deg, var(--gold), var(--red));
+}
+
+.player-card-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.player-card-ovr {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 88px;
-  height: 88px;
-  background: linear-gradient(160deg, var(--gold) 0%, var(--gold-dim) 100%);
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  background: var(--panel-raised);
+  border: 1px solid var(--line);
   clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-  color: var(--black);
 }
-.ovr-badge .ovr-number {
+.tier-elite .player-card-ovr,
+.tier-legend .player-card-ovr {
+  background: linear-gradient(160deg, var(--gold) 0%, var(--gold-dim) 100%);
+  border-color: var(--gold);
+}
+.player-card-ovr-number {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   line-height: 1;
+  color: var(--paper);
 }
-.ovr-badge .ovr-label {
+.tier-elite .player-card-ovr-number,
+.tier-legend .player-card-ovr-number {
+  color: var(--black);
+}
+.player-card-ovr-label {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   letter-spacing: 0.05em;
+  color: var(--paper-dim);
   margin-top: 2px;
+}
+.tier-elite .player-card-ovr-label,
+.tier-legend .player-card-ovr-label {
+  color: rgba(0,0,0,0.6);
+}
+
+.player-card-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--line);
+  flex-shrink: 0;
+}
+.tier-elite .player-card-photo,
+.tier-legend .player-card-photo {
+  border-color: var(--gold);
+}
+
+.player-card-name-only {
+  flex: 1;
+  min-width: 0;
+}
+.player-card-name-only .script-heading {
+  font-size: 1.9rem;
+  word-break: break-word;
+}
+
+.player-card-name {
+  font-size: 1.7rem;
+  margin: 4px 0 16px;
+}
+
+.player-card-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.player-card-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.player-card-stat-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--gold);
+}
+.player-card-stat-label {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--paper-dim);
+  margin-top: 2px;
+}
+
+.player-card-tags {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
 }
 
 /* --- Season nav pills --- */

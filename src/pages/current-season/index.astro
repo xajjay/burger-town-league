@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
-import { upcomingSeasonId, seasonYears, signupFormUrl, social } from '../../data/leagueData.js';
+import { upcomingSeasonLabel, upcomingSeasonYear, signupFormUrl, social } from '../../data/leagueData.js';
 
 const currentPath = Astro.url.pathname;
 ---
@@ -14,7 +14,7 @@ const currentPath = Astro.url.pathname;
         ))}
       </div>
       <span class="eyebrow">Coming Soon</span>
-      <h1 class="script-heading">Season {upcomingSeasonId} ({seasonYears[upcomingSeasonId]})</h1>
+      <h1 class="script-heading">{upcomingSeasonLabel} ({upcomingSeasonYear})</h1>
       <p style="color: var(--paper-dim); max-width: 60ch;">
         Burger Town's first official season. We're building out rosters, standings, and schedule now. Check back soon, or join the Discord to be the first to know when the draft goes live.
       </p>

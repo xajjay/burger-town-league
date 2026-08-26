@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { hallOfFame, social, foundedYear, homeDescription, signupFormUrl, upcomingSeasonId, seasonYears } from '../data/leagueData.js';
+import { hallOfFame, social, foundedYear, homeDescription, signupFormUrl, upcomingSeasonLabel, upcomingSeasonYear } from '../data/leagueData.js';
 
 const top5 = hallOfFame.slice(0, 5);
 ---
@@ -26,7 +26,7 @@ const top5 = hallOfFame.slice(0, 5);
     <div class="wrap">
       <div class="pixel-card" style="text-align: center; padding: 40px 24px;">
         <span class="eyebrow">Sign Ups Open</span>
-        <h2 class="script-heading" style="font-size: 2rem; margin-bottom: 12px;">Join Season {upcomingSeasonId} ({seasonYears[upcomingSeasonId]})</h2>
+        <h2 class="script-heading" style="font-size: 2rem; margin-bottom: 12px;">Join {upcomingSeasonLabel} ({upcomingSeasonYear})</h2>
         <p style="color: var(--paper-dim); max-width: 50ch; margin: 0 auto 20px;">
           Burger Town's first official season is forming now. Sign up to be drafted onto a team and join the next chapter of the Cold War Draft League.
         </p>
