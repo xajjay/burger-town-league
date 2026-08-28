@@ -1,0 +1,27 @@
+name: BTL Daily Report
+
+on:
+  schedule:
+    # Runs at 9:00 AM Eastern (13:00 UTC during EDT, 14:00 UTC during EST).
+    # GitHub Actions cron is UTC only, so adjust this if the time drifts with
+    # daylight saving — 13:00 UTC covers EDT (roughly March-November).
+    - cron: '0 13 * * *'
+  workflow_dispatch: {} # lets you manually trigger a run from the Actions tab, for testing
+
+jobs:
+  daily-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate and post today's report
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: node scripts/daily-report/generate-report.mjs

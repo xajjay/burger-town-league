@@ -1,0 +1,40 @@
+{
+  "storylines": [
+    {
+      "title": "The Berlin-Phoenix Photo Finish",
+      "seasons": ["1"],
+      "players": ["Aj", "Crooked"],
+      "teams": ["Phoenix Hurrah", "Berlin KAOS"],
+      "summary": "Berlin KAOS actually posted the better regular-season record in Season 1, but Phoenix Hurrah held the #1 seed and the title on tiebreakers. Berlin fans still bring it up to this day.",
+      "tags": ["rivalry", "close-finish", "tiebreaker"],
+      "weight": "high"
+    },
+    {
+      "title": "Ephrisy's Two-Time MVP Run",
+      "seasons": ["2", "5"],
+      "players": ["Ephrisy"],
+      "teams": [],
+      "summary": "Ephrisy won League MVP in Season 2 and again in Season 5 — three whole years apart — and finished with the highest Legacy Score of anyone in league history. Quiet, lethal, and let the stats do the talking.",
+      "tags": ["dynasty", "goat", "mvp"],
+      "weight": "high"
+    },
+    {
+      "title": "The Super Burger Curse",
+      "seasons": ["2"],
+      "players": ["N8DOGG"],
+      "teams": [],
+      "summary": "Every season, whoever posts the league's single worst Overall rating gets branded with the 'Super Burger' — a purple planet-burger badge nobody wants. It's all in good fun, but nobody's ever fully lived it down.",
+      "tags": ["fun-fact", "lore"],
+      "weight": "medium"
+    },
+    {
+      "title": "Hype's Five-Season All-Star Streak",
+      "seasons": ["1", "2", "3", "4", "5"],
+      "players": ["Hype"],
+      "teams": [],
+      "summary": "Hype made an All-Star team in every single season the league has played — the only player with that distinction. Five different rosters, five different years, one constant.",
+      "tags": ["consistency", "legacy"],
+      "weight": "high"
+    }
+  ]
+}
