@@ -35,6 +35,13 @@ export const playerPhotos = {
   'aj': '/images/players/aj.jpg',
   'renicide': '/images/players/renicide.png',
   'lewy': '/images/players/lewy.jpg',
+  'waly': '/images/players/waly.jpg',
+  'jmetree': '/images/players/jmetree.jpg',
+  'nastyy': '/images/players/nastyy.jpg',
+  'aurora': '/images/players/aurora.jpg',
+  'crazieviews': '/images/players/crazieviews.jpg',
+  'shadow': '/images/players/shadow.jpg',
+  'acroace': '/images/players/acroace.jpg',
 };
 export function getPlayerPhoto(name) {
   return playerPhotos[norm(name)] || null;
@@ -90,6 +97,7 @@ export const standings = Object.fromEntries(
       manager: s.manager,
       champion: s.champion,
       runnerUp: s.runnerUp || false,
+      officialFinish: s.officialFinish || '',
       record: s.record,
       winPct: s.winPct || null,
       mapRecord: s.mapRecord || null,
@@ -146,8 +154,8 @@ export const perPlayerSeasonHonors = raw.perPlayerSeasonHonors;
 // Series/match-level data — currently only recorded for Season 5
 export const seriesList = raw.series.map((s) => ({
   slug: s.slug,
-  season: 5,
-  name: s.displayName,
+  season: s.season || 5,
+  name: s.name,
   isPlayoff: s.isPlayoff,
   teams: s.teams,
   players: s.players,
