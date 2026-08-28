@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { careerStats, perPlayerSeasonHonors, seasonStats, getPlayerPhoto, getHofEntry, getAllStarCount, getSpecialBadges, tournamentWinners } from '../../data/leagueData.js';
+import { careerStats, perPlayerSeasonHonors, seasonStats, getPlayerPhoto, getHofEntry, getAllStarCount, getSpecialBadges, tournamentWinners, getPlayerRole } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return careerStats.map(p => ({ params: { name: p.player } }));
@@ -60,6 +60,7 @@ const photo = player ? getPlayerPhoto(player.player) : null;
 const hofEntry = player ? getHofEntry(player.player) : null;
 const allStarCount = player ? getAllStarCount(player.player) : 0;
 const specialBadges = player ? getSpecialBadges(player.player) : [];
+const role = player ? getPlayerRole(player.player) : null;
 ---
 <Base title={player ? `${player.player} | Burger Town Leagues` : 'Player not found'}>
   <section>
@@ -85,10 +86,11 @@ const specialBadges = player ? getSpecialBadges(player.player) : [];
               ) : (
                 <div class="player-card-name-only">
                   <span class="script-heading">{player.player}</span>
+                  {role && <span class="badge badge-gold" style="margin-left: 8px; vertical-align: middle;">{role}</span>}
                 </div>
               )}
             </div>
-            {photo && <h1 class="script-heading player-card-name">{player.player}</h1>}
+            {photo && <h1 class="script-heading player-card-name">{player.player} {role && <span class="badge badge-gold" style="vertical-align: middle;">{role}</span>}</h1>}
             <div class="player-card-stats">
               <div class="player-card-stat">
                 <span class="player-card-stat-value">{player.kd.toFixed(2)}</span>

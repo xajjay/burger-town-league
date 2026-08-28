@@ -31,6 +31,38 @@ function resolveName(name) {
 
 // Player profile photos — add an entry here (filename must exist in /public/images/players/)
 // to give a player a photo on their card. Players without an entry just show their name.
+// Player weapon-class role (AR or SMG), shown as a badge on player cards and tables
+export const playerRoles = {
+  "Ephrisy": "AR", "CrazieViews": "AR", "Crooked": "SMG", "Inkster": "AR", "Skapun": "SMG",
+  "Karnij": "AR", "Hype": "AR", "Purp": "AR", "Jmetree": "AR", "Josh": "AR",
+  "Habibi": "SMG", "Aj": "SMG", "Waly": "AR", "EJ": "SMG", "Acro Ace": "AR",
+  "Dez": "AR", "DessieLoso": "SMG", "AimKun": "SMG", "Thermo": "SMG", "Collision": "AR",
+  "Lurkens": "AR", "Nuance": "AR", "Mayan": "AR", "Godofwarfare": "SMG", "Renicide": "SMG",
+  "Docsukii": "AR", "Aurora": "SMG", "Deceptions": "SMG", "Phanatic": "SMG", "Hums": "AR",
+  "Starry": "SMG", "TrapEU": "SMG", "Proxzify": "AR", "Nej": "AR", "NickBoston": "AR",
+  "JayDash": "AR", "Kai": "AR", "Casperfy": "AR", "Lewy": "AR", "Zirow": "SMG",
+  "Bubbles": "AR", "Elive": "AR", "Nastyy": "SMG", "Utopian": "SMG", "Jealous": "AR",
+  "Andrix": "SMG", "Freak": "AR", "Pablo": "SMG", "Killfeed": "AR", "Hazier": "SMG",
+  "Leib": "AR", "Boogey": "AR", "Kelp": "SMG", "Nada": "AR", "MVP": "SMG",
+  "Iconz": "AR", "Luvfern": "AR", "Nacho": "AR", "Dragon": "SMG", "Wrihs": "SMG",
+  "Grihmey": "AR", "Roll": "AR", "Tubby": "AR", "Mythycall": "AR", "Kfrankess": "AR",
+  "NickyB": "AR", "User": "SMG", "Noti": "SMG", "Horror": "AR", "Duffie": "SMG",
+  "Lazyy": "AR", "Dayz": "SMG", "Seno": "SMG", "Edot": "SMG", "Toremeant": "AR",
+  "Python": "SMG", "Xylow": "AR", "Chemwreck": "AR", "Peach": "AR", "Trap": "SMG",
+  "Hyper": "AR", "Sergio": "SMG", "Stim": "SMG", "IBO": "AR", "Bleepa": "AR",
+  "Soup": "AR", "Kirchy": "SMG", "Shadow": "AR", "Kugo": "SMG", "Realm": "SMG",
+  "Stunless": "SMG", "Bebo": "AR", "Cold": "AR", "Dreamy": "AR", "Tonychickenparm": "AR",
+  "Scare": "AR", "Anura": "AR", "Ryanreplays": "AR", "Underwrld": "AR", "Verb": "AR",
+  "AGF": "AR", "i2Dreamy": "AR", "Angelina": "AR", "huxx": "SMG", "LT7": "AR",
+  "Zylix": "SMG", "Luke B": "SMG", "2fly": "AR", "Shasta": "SMG", "Cholo": "AR",
+  "AlexthekillahH": "SMG", "Versaii": "AR", "Avecti": "AR", "Sybil": "SMG", "Secret": "AR",
+  "Robi": "SMG", "Snapple": "AR", "Jah": "AR", "Zico": "AR", "Kael": "SMG",
+  "Kelpmeltz": "SMG", "Jumpz": "AR", "Grimzey": "AR", "N8DOGG": "AR",
+};
+export function getPlayerRole(name) {
+  return playerRoles[name] || null;
+}
+
 export const playerPhotos = {
   'aj': '/images/players/aj.jpg',
   'renicide': '/images/players/renicide.png',

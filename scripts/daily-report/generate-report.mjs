@@ -28,6 +28,7 @@ if (!ANTHROPIC_API_KEY || !DISCORD_WEBHOOK_URL) {
 const data = JSON.parse(readFileSync(join(__dirname, '../../src/data/real_data.json'), 'utf-8'));
 const storylinesFile = JSON.parse(readFileSync(join(__dirname, 'storylines.json'), 'utf-8'));
 const storylines = storylinesFile.storylines || [];
+const playerNotes = storylinesFile.playerNotes || [];
 
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -54,8 +55,10 @@ if (angle === 'player_spotlight') {
   const candidates = data.hallOfFame.slice(0, 10);
   const p = pick(candidates);
   const career = data.career.find(c => c.player === p.player);
+  const note = playerNotes.find(n => n.player.toLowerCase() === p.player.toLowerCase());
   context.player = p;
   context.career = career;
+  if (note) context.playerNote = note;
 } else if (angle === 'historical_matchup') {
   context.series = pick(data.series || []);
 } else if (angle === 'legacy_rankings') {

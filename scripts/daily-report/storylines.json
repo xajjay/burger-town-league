@@ -1,40 +1,283 @@
 {
   "storylines": [
     {
-      "title": "The Berlin-Phoenix Photo Finish",
+      "title": "The Birth of the CTRL League",
       "seasons": ["1"],
-      "players": ["Aj", "Crooked"],
-      "teams": ["Phoenix Hurrah", "Berlin KAOS"],
-      "summary": "Berlin KAOS actually posted the better regular-season record in Season 1, but Phoenix Hurrah held the #1 seed and the title on tiebreakers. Berlin fans still bring it up to this day.",
-      "tags": ["rivalry", "close-finish", "tiebreaker"],
+      "players": [],
+      "teams": [],
+      "summary": "Season 1 (2023) was the very first Cold War draft league, called CTRL League, run by owner/commissioner Zlurpio (Zlurp). It was the pioneer that every later league was modeled on. Managers who didn't always know the player pool well picked team captains, which led to wildly unbalanced rosters right out of the gate.",
+      "tags": ["origin", "lore", "season-1"],
       "weight": "high"
     },
     {
-      "title": "Ephrisy's Two-Time MVP Run",
-      "seasons": ["2", "5"],
-      "players": ["Ephrisy"],
-      "teams": [],
-      "summary": "Ephrisy won League MVP in Season 2 and again in Season 5 — three whole years apart — and finished with the highest Legacy Score of anyone in league history. Quiet, lethal, and let the stats do the talking.",
-      "tags": ["dynasty", "goat", "mvp"],
-      "weight": "high"
-    },
-    {
-      "title": "The Super Burger Curse",
-      "seasons": ["2"],
-      "players": ["N8DOGG"],
-      "teams": [],
-      "summary": "Every season, whoever posts the league's single worst Overall rating gets branded with the 'Super Burger' — a purple planet-burger badge nobody wants. It's all in good fun, but nobody's ever fully lived it down.",
-      "tags": ["fun-fact", "lore"],
+      "title": "Houston's Historically Bad Season",
+      "seasons": ["1"],
+      "players": [],
+      "teams": ["Houston Spartans"],
+      "summary": "Houston Spartans are remembered as maybe the worst team in draft league history — every pick was a disappointment, and they didn't win a single real series all season, only forfeit wins.",
+      "tags": ["futility", "season-1", "fun-fact"],
       "weight": "medium"
     },
     {
-      "title": "Hype's Five-Season All-Star Streak",
-      "seasons": ["1", "2", "3", "4", "5"],
-      "players": ["Hype"],
-      "teams": [],
-      "summary": "Hype made an All-Star team in every single season the league has played — the only player with that distinction. Five different rosters, five different years, one constant.",
-      "tags": ["consistency", "legacy"],
+      "title": "Boston Excane's 6-0 Start and Total Collapse",
+      "seasons": ["1"],
+      "players": ["Starry", "Lazyy", "Aurora", "Utopian"],
+      "teams": ["Boston Excane"],
+      "summary": "Boston Excane looked like the best team in the league early in Season 1, starting 6-0 with a balanced roster of Starry, Lazyy, Aurora, and Utopian. Then it completely fell apart — they didn't win another series the rest of the season, going 0-3 in the regular season and 0-2 in the playoffs. One of the biggest collapses in league history.",
+      "tags": ["collapse", "season-1", "storyline"],
       "weight": "high"
+    },
+    {
+      "title": "The Jmetree Trade That Changed Everything",
+      "seasons": ["1"],
+      "players": ["Jmetree"],
+      "teams": ["Phoenix Hurrah", "Boston Excane"],
+      "summary": "After losing their season opener to Boston Excane, Phoenix Hurrah traded away Ruidoso and Kawa for a then-unknown player named Jmetree. People called it a rigged trade since Jmetree was playing well under the radar, but both captains agreed to it, so it stood. Phoenix went undefeated for the rest of the season after making the move. The backlash from this trade led directly to the 'Jmetree Rule' — all trades now require commissioner approval before becoming official.",
+      "tags": ["trade", "controversy", "season-1", "rule-change"],
+      "weight": "high"
+    },
+    {
+      "title": "The Chicago NewLook Ringer Scandal",
+      "seasons": ["1"],
+      "players": [],
+      "teams": [],
+      "summary": "One of the wildest scandals in league history. Chicago NewLook's manager Ysaid filled in for a missing player and dropped a shockingly good performance — over a 2.0 K/D. Investigators later found Twitch VOD evidence that someone else was actually playing on the account: KyleAspect, a player from another team. The real Ysaid was reportedly found working at Wawa during a voice call meant to confirm he was the one playing. Chicago NewLook's roster, manager Ysaid, and KyleAspect were all banned from the league.",
+      "tags": ["scandal", "ringing", "ban", "season-1", "lore"],
+      "weight": "high"
+    },
+    {
+      "title": "Renicide's Mid-Season Arrival With Seattle Skies",
+      "seasons": ["1"],
+      "players": ["Renicide", "Nej", "Kfrankess"],
+      "teams": ["Seattle Skies"],
+      "summary": "When another team disbanded, Seattle Skies joined the league mid-season and Renicide came in as team captain — one of the only times in league history a player entered as a captain outside the original draft pool. Seattle looked dead in the water but Renicide and Nej dragged them all the way to winners finals, before losing Kfrankess, who was secretly caught playing Modern Warfare 2 instead of showing up.",
+      "tags": ["underdog", "season-1", "fun-fact"],
+      "weight": "medium"
+    },
+    {
+      "title": "Kirch's Finals MVP Return",
+      "seasons": ["1"],
+      "players": ["Kirch", "Jmetree"],
+      "teams": ["Phoenix Hurrah"],
+      "summary": "Phoenix Hurrah went undefeated after acquiring Jmetree, but had to make their playoff run without captain Kirch, who missed three series. He returned for Grand Finals and delivered a huge performance, winning Finals MVP.",
+      "tags": ["comeback", "season-1", "mvp"],
+      "weight": "medium"
+    },
+    {
+      "title": "Berlin KAOS: The One-Man Show That Almost Won It All",
+      "seasons": ["1"],
+      "players": ["Crooked", "Renicide"],
+      "teams": ["Berlin KAOS", "Seattle Skies"],
+      "summary": "Berlin KAOS entered the Season 1 playoffs as the 1 seed, carried almost entirely by superstar Crooked, with real doubts about the rest of the roster. They were upset in Winners Round 2 by Renicide's Seattle Skies in a game 5 on the final map, dropped to losers, then fought all the way back to eliminate Seattle in Losers Finals to reach Grand Finals.",
+      "tags": ["playoffs", "season-1", "storyline"],
+      "weight": "medium"
+    },
+    {
+      "title": "The Handcam Request That Ended a Friendship",
+      "seasons": ["1"],
+      "players": ["Crooked", "Renicide"],
+      "teams": [],
+      "summary": "Ahead of a Season 1 playoff series, Crooked demanded that his good friend Renicide stream a handcam (his controller, on Twitch) during the match. Whether it was suspicion of cheating or a psychological play to slow Renicide down with extra internet load, it shocked the community and put real strain on their friendship.",
+      "tags": ["drama", "season-1", "rivalry"],
+      "weight": "medium"
+    },
+    {
+      "title": "Python's Guarantee That Backfired",
+      "seasons": ["1"],
+      "players": ["Python"],
+      "teams": ["Berlin KAOS", "Phoenix Hurrah"],
+      "summary": "Before Season 1 Grand Finals, Python famously guaranteed a Berlin KAOS championship. Phoenix Hurrah won the series anyway, making it one of the league's classic bulletin-board-material fails.",
+      "tags": ["fun-fact", "season-1", "grand-finals"],
+      "weight": "medium"
+    },
+    {
+      "title": "Season 2: A More Balanced League",
+      "seasons": ["2"],
+      "players": ["Aj"],
+      "teams": [],
+      "summary": "For Season 2, commissioners selected captains directly from the league's best players to try to balance the teams. Aj, who'd been deeply involved as a player in Season 1, stepped up as co-commissioner, taking on more day-to-day league operations while Zlurp shifted to handling prize money.",
+      "tags": ["origin", "season-2", "lore"],
+      "weight": "medium"
+    },
+    {
+      "title": "Lewy's Debut, Heartbreak, and Season-Ending Ban",
+      "seasons": ["2"],
+      "players": ["Lewy", "Verb", "Bleepa"],
+      "teams": ["Charlotte SYG", "Minneapolis Mighty Ducks"],
+      "summary": "Lewy made his league debut in Season 2 on a talented Charlotte roster. Midway through the season, Charlotte lost a heartbreaker to Minneapolis Mighty Ducks in a game 5, final-round-11 nailbiter on Moscow. Right after that, Charlotte's proposed trade for Bleepa (in exchange for sub Verb) got blocked by commissioners as unfair. Lewy refused to play the next match with Verb subbing in and told his team to forfeit instead — his teammates wanted to play, but he shut it down anyway. He was banned for the rest of the season as a result.",
+      "tags": ["drama", "ban", "season-2", "storyline"],
+      "weight": "high"
+    },
+    {
+      "title": "The Casperfy Trade Controversy",
+      "seasons": ["2"],
+      "players": ["Casperfy", "Ephrisy"],
+      "teams": ["Buffalo Body Building Brutes"],
+      "summary": "Buffalo traded away Luke B and Shasta to acquire Casperfy — a deal that looked lopsided on paper, since Casperfy was considered much better than what Buffalo gave up. Commissioners approved it after public pressure against too much trade-blocking, drawing even more criticism about fairness. Buffalo went on to win the Season 2 championship, with Ephrisy taking home MVP and the ring.",
+      "tags": ["trade", "controversy", "season-2", "champion"],
+      "weight": "high"
+    },
+    {
+      "title": "Waly's Legendary VC Meltdown",
+      "seasons": ["2"],
+      "players": ["Waly"],
+      "teams": ["Tampa Red Wolves"],
+      "summary": "A clip that's stuck around in league lore: Waly screaming at a Tampa teammate mid-match to shut up over redundant, unnecessary callouts. The team was loaded with talent, but struggled at Search & Destroy and famously didn't enjoy playing with each other.",
+      "tags": ["fun-fact", "season-2", "lore"],
+      "weight": "medium"
+    },
+    {
+      "title": "Season 3's Biggest Choke Ever",
+      "seasons": ["3"],
+      "players": ["Acro Ace", "Renicide"],
+      "teams": ["Seattle Aces", "New Orleans No Legs Academy"],
+      "summary": "Acro Ace's Seattle Aces were up 3-1 in a best-of-7 against Renicide's New Orleans squad, and even led 5-1 in the deciding game 5 Search & Destroy map — needing just one more round to close it out. They blew it, lost that map, and lost the series in a full game 7. Widely considered the biggest choke in league history.",
+      "tags": ["choke", "season-3", "playoffs"],
+      "weight": "high"
+    },
+    {
+      "title": "Jmetree's MVP Season That Ended Early",
+      "seasons": ["3"],
+      "players": ["Jmetree"],
+      "teams": ["New York G Pieces"],
+      "summary": "Jmetree had an incredible Season 3, winning league MVP, and his New York squad finished as the 1 seed — but the team couldn't close it out in the playoffs.",
+      "tags": ["mvp", "season-3"],
+      "weight": "medium"
+    },
+    {
+      "title": "Renicide's First Championship",
+      "seasons": ["3"],
+      "players": ["Renicide"],
+      "teams": [],
+      "summary": "Renicide won his first league championship in Season 3, doing it without a lot of roster turnover — unlike most previous champions, who'd made big trades to get there.",
+      "tags": ["champion", "season-3"],
+      "weight": "medium"
+    },
+    {
+      "title": "The Freak/Maj Fake Alias Scandal",
+      "seasons": ["4"],
+      "players": ["Freak"],
+      "teams": ["New York Freaky D's", "WCi LA"],
+      "summary": "One of the most controversial moments in league history. A relatively unknown player called 'Freak' had a strong playoff run alongside established stars Ephrisy, Jmetree, and Utopian, helping New York upset Nashville. Mid-Grand-Finals, it came out that 'Freak' was a fake alias — his real gamertag was Maj, and he'd signed up under a fresh account specifically to manipulate his draft positioning. The series was halted while commissioners sorted it out; Freak was banned from playing, and New York was forced to finish with a sub who didn't even know who 'Freak' really was.",
+      "tags": ["scandal", "controversy", "season-4", "grand-finals"],
+      "weight": "high"
+    },
+    {
+      "title": "Waly's Playoff Walkout and the Aj Beef",
+      "seasons": ["4"],
+      "players": ["Waly", "Aj"],
+      "teams": ["Nashville Iron Boots"],
+      "summary": "After Nashville lost a playoff series to a New York team that got a shock contribution from Freak (see the Freak scandal), Waly declared he was done playing for the rest of the playoffs, leaving Nashville to face WCi in Losers Finals without him. Nashville lost despite a huge performance from captain Aj. The fallout between Aj and Waly reportedly lasted hours.",
+      "tags": ["drama", "season-4", "rivalry"],
+      "weight": "high"
+    },
+    {
+      "title": "The Grand Finals Restart That Split the League",
+      "seasons": ["4"],
+      "players": ["Aj"],
+      "teams": ["WCi LA", "New York Freaky D's", "Nashville Iron Boots"],
+      "summary": "After the Freak scandal broke during Season 4 Grand Finals, Nashville and New York both agreed their earlier playoff series (which New York had won partly thanks to the fraudulent Freak) should be replayed. Commissioner Zlurp overruled that and instead just restarted the WCi vs New York Grand Finals with a substitute for New York. Co-commissioner Aj was furious about the decision, and it kicked off a long-running grudge between the two commissioners. WCi went on to beat New York for the title, and both New York and Nashville felt cheated by how it played out. The league didn't run another season for a full year afterward.",
+      "tags": ["controversy", "season-4", "commissioner-drama", "grand-finals"],
+      "weight": "high"
+    },
+    {
+      "title": "The League's Return After a Year Away",
+      "seasons": ["5"],
+      "players": ["Aj"],
+      "teams": [],
+      "summary": "After Season 4's grand finals controversy caused a rift, Aj and Zlurp eventually made up, and Z Star Cold War returned for Season 5 with a lot of familiar faces. Aj stepped back from any staff role entirely to focus purely on playing, while Zlurp brought in his own staff.",
+      "tags": ["origin", "season-5", "lore"],
+      "weight": "medium"
+    },
+    {
+      "title": "Inkster Drafts His Own Cousins",
+      "seasons": ["5"],
+      "players": ["Inkster"],
+      "teams": ["Detroit Dirty Dogs"],
+      "summary": "Detroit captain Inkster made a shocking move in the Season 5 draft — picking his own cousins onto his roster.",
+      "tags": ["fun-fact", "draft", "season-5"],
+      "weight": "medium"
+    },
+    {
+      "title": "The Season 5 Team Implosion Wave",
+      "seasons": ["5"],
+      "players": ["Killfeed", "Skapun", "Renicide"],
+      "teams": ["New York Ascend", "Atlanta Reign", "NOLA Knights", "Brooklyn Empire", "Los Angeles Nova"],
+      "summary": "Season 5 had an unusual number of teams blow themselves up mid-season. Killfeed dissolved his New York roster, sending everyone to free agency. Separately, Renicide and Skapun (captains of NOLA and Atlanta) agreed to a trade that commissioner Zlurp never actually approved — Atlanta was forced to forfeit their match as a result, and Skapun blew up his own team in protest, getting himself removed from the league. Brooklyn and LA also blew up later in the season, and Illinois's team rebranded into Rutland. All of this fed a stronger-than-usual free agent pool for the teams that stuck around.",
+      "tags": ["chaos", "season-5", "controversy"],
+      "weight": "high"
+    },
+    {
+      "title": "The 'Mailbox' Trade",
+      "seasons": ["5"],
+      "players": ["Acro Ace", "Verb", "Lewy"],
+      "teams": ["Oklahoma City Spartans", "Nashville Mighty Ducks"],
+      "summary": "OKC benched Hall of Fame member and former All-Star Acro Ace, with captain Lewy reportedly calling him too slow on the map — a 'mailbox.' Nashville swooped in and traded Verb for Acro Ace, a deal Zlurp approved despite a lot of confused, frustrated reactions across the league. To make it stranger, Lewy immediately released Verb (referred to as 'Fern' in the aftermath) straight to free agency after getting him.",
+      "tags": ["trade", "controversy", "season-5", "fun-fact"],
+      "weight": "medium"
+    },
+    {
+      "title": "Houston Havoc's Historic Collapse",
+      "seasons": ["5"],
+      "players": ["Ephrisy", "Habibi"],
+      "teams": ["Houston Havoc"],
+      "summary": "Houston Havoc went undefeated and held the #1 seed heading into the last week of the regular season before finally losing to Hype's Chicago squad. Houston was widely seen as the league's most ethical team, having made zero roster moves all season, and had Ephrisy putting up the best individual season in league history. Then disaster struck right before playoffs: Rookie of the Year Habibi's roof caved in over his gaming setup, limiting him to half of Houston's second series. Houston went 1-2 in the playoffs and finished 5th-6th — voted by the community as the most disappointing team in league history.",
+      "tags": ["collapse", "season-5", "bad-luck"],
+      "weight": "high"
+    },
+    {
+      "title": "Nashville's Revenge Run to Grand Finals",
+      "seasons": ["5"],
+      "players": ["Inkster"],
+      "teams": ["Nashville Mighty Ducks", "Detroit Dirty Dogs"],
+      "summary": "Nashville finished the Season 5 regular season as the 1 seed after winning every match following an opening loss to Atlanta/Skapun. They were shockingly upset by Inkster's Detroit squad and sent to the losers bracket, but fought all the way back, got their revenge on Detroit, and advanced to Grand Finals.",
+      "tags": ["comeback", "season-5", "playoffs"],
+      "weight": "medium"
+    },
+    {
+      "title": "Hype's First Championship",
+      "seasons": ["5"],
+      "players": ["Hype"],
+      "teams": ["Chicago Syndicate", "Nashville Mighty Ducks"],
+      "summary": "Hype and Chicago proved too much for Nashville in Season 5 Grand Finals, winning 6 games out of 7 to secure Hype's first-ever championship — a huge milestone for a player long considered the league's best skill-wise but previously unable to finish the job.",
+      "tags": ["champion", "season-5", "milestone"],
+      "weight": "high"
+    },
+    {
+      "title": "Burger Town Leagues: The Next Chapter",
+      "seasons": [],
+      "players": [],
+      "teams": [],
+      "summary": "After five seasons split across CTRL League and Z Star League, the community's history and player base now continues under a new banner: Burger Town Leagues. BTL Season 1 brings back plenty of familiar faces for a fresh start while preserving everything that came before.",
+      "tags": ["origin", "btl", "upcoming"],
+      "weight": "high"
+    }
+  ],
+  "playerNotes": [
+    {
+      "player": "Ephrisy",
+      "nickname": "The GOAT of BTL",
+      "notes": "Widely regarded as the greatest player in league history. Won League MVP in two separate seasons three years apart and put up the best individual season anyone's seen in Season 5. Quiet and lets his stats do the talking."
+    },
+    {
+      "player": "Hype",
+      "nickname": "Mr. Consistency",
+      "notes": "Probably the most skilled player the league has ever seen. Spent years carrying rosters that couldn't finish the job before finally breaking through with his first championship in Season 5. Made an All-Star team in every single season the league has played."
+    },
+    {
+      "player": "Renicide",
+      "nickname": "The best shot in the league",
+      "notes": "His raw stats don't tell the full story — he's constantly flying around the map making plays that don't always show up in K/D, which drags his numbers down relative to his actual impact. Widely considered the best pure shot at SMG the league has had."
+    },
+    {
+      "player": "Lewy",
+      "nickname": "Iron Man",
+      "notes": "Has played in almost every season the league has run, but doesn't have a championship or major individual accolade to his name despite the longevity."
+    },
+    {
+      "player": "Aj",
+      "nickname": "The League Itself",
+      "notes": "Wears every hat imaginable — league owner, team captain, active player, and the league's stat keeper. Was deeply involved in Season 1 as a player, became co-commissioner in Seasons 2 and 4, and stepped back to focus purely on playing when Z Star returned for Season 5."
     }
   ]
 }
