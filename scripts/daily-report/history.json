@@ -4,6 +4,11 @@
       "date": "2026-08-29",
       "angle": "all_time_teams",
       "subject": null
+    },
+    {
+      "date": "2026-08-29",
+      "angle": "top10_kd_alltime",
+      "subject": null
     }
   ]
 }
