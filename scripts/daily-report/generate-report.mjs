@@ -20,6 +20,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
+const DISCORD_ROLE_ID = process.env.DISCORD_ROLE_ID; // optional — pings this role if set
 
 if (!ANTHROPIC_API_KEY || !DISCORD_WEBHOOK_URL) {
   console.error('Missing ANTHROPIC_API_KEY or DISCORD_WEBHOOK_URL environment variable.');
@@ -34,6 +35,7 @@ const storylinesFile = JSON.parse(readFileSync(join(__dirname, 'storylines.json'
 const storylines = storylinesFile.storylines || [];
 const playerNotes = storylinesFile.playerNotes || [];
 const upcomingSeason = JSON.parse(readFileSync(join(__dirname, 'upcoming-signups.json'), 'utf-8'));
+const playerRoles = JSON.parse(readFileSync(join(__dirname, 'player-roles.json'), 'utf-8'));
 
 const HISTORY_PATH = join(__dirname, 'history.json');
 const HISTORY_LIMIT = 20; // how many past picks we remember, to avoid repeats
@@ -99,6 +101,39 @@ for (const sid of ['1', '3', '4', '5']) {
 allTimeTeamRecords.sort((a, b) => parseInt(b.winPct) - parseInt(a.winPct));
 const topAllTimeTeams = allTimeTeamRecords.slice(0, 10);
 
+// Raw real_data.json career entries store per-season K/D as an object keyed by
+// season id (seasonKD), not a "seasons" array — that array is only derived on
+// the website's JS layer. Derive it here the same way.
+function seasonCount(careerEntry) {
+  return Object.keys(careerEntry.seasonKD || {}).length;
+}
+
+// Top players by weapon-class role, ranked by career Overall (min 2 seasons
+// played so one-off cameo stats don't skew the list)
+function topByRole(role) {
+  return data.career
+    .filter(c => playerRoles[c.player] === role && c.playerOverall != null && seasonCount(c) >= 2)
+    .sort((a, b) => b.playerOverall - a.playerOverall)
+    .slice(0, 10)
+    .map(c => ({ player: c.player, role, overall: c.playerOverall, kd: c.kd, seasons: seasonCount(c) }));
+}
+const topARPlayers = topByRole('AR');
+const topSMGPlayers = topByRole('SMG');
+
+// Top 10 by pure career K/D (minimum sample size so small cameo stats don't dominate)
+const topKdAllTime = [...data.career]
+  .filter(c => c.maps >= 30)
+  .sort((a, b) => b.kd - a.kd)
+  .slice(0, 10)
+  .map(c => ({ player: c.player, kd: c.kd, maps: c.maps, seasons: seasonCount(c) }));
+
+// A brief (title-only) storyline callback for flavor, if one exists for a given player —
+// used as a passing mention, never the main subject of a post
+function storylineFlavorFor(playerName) {
+  const match = storylines.find(s => (s.players || []).some(p => p.toLowerCase() === playerName.toLowerCase()));
+  return match ? { title: match.title, oneLiner: match.summary.split('.')[0] + '.' } : null;
+}
+
 // ---------------------------------------------------------------------------
 // Manual topic override — if someone runs this by hand from the Actions tab
 // and fills in a topic, skip the random angle and report on that instead.
@@ -117,7 +152,7 @@ if (MANUAL_TOPIC) {
     hallOfFameTop10: data.hallOfFame.slice(0, 10),
     champions: data.champions,
     mvps: data.mvps,
-    storylines,
+    storylinesForReferenceOnly: storylines,
     playerNotes,
     careerLeaders: [...data.career].sort((a, b) => (b.playerOverall ?? 0) - (a.playerOverall ?? 0)).slice(0, 20),
   };
@@ -128,11 +163,11 @@ if (MANUAL_TOPIC) {
   const hasLiveSeason = false;
 
   const angles = hasLiveSeason
-    ? ['match_recap', 'upcoming_schedule', 'power_rankings', 'player_spotlight', 'storyline']
+    ? ['match_recap', 'upcoming_schedule', 'power_rankings', 'player_spotlight', 'top10_ar', 'top10_smg']
     : [
-        'player_spotlight', 'historical_matchup', 'power_rankings_alltime', 'storyline',
-        'season_recap', 'season_preview', 'awards_chase', 'all_time_teams',
-        'underrated_players', 'best_individual_seasons',
+        'player_spotlight', 'power_rankings_alltime', 'season_preview', 'awards_chase',
+        'all_time_teams', 'underrated_players', 'best_individual_seasons',
+        'top10_ar', 'top10_smg', 'top10_kd_alltime',
       ];
 
   // Avoid repeating the exact same angle as the last run
@@ -145,27 +180,15 @@ if (MANUAL_TOPIC) {
     const p = pickFresh(data.hallOfFame.slice(0, 15), angle, x => x.player);
     const career = data.career.find(c => c.player === p.player);
     const note = playerNotes.find(n => n.player.toLowerCase() === p.player.toLowerCase());
+    const flavor = storylineFlavorFor(p.player);
     context.player = p;
     context.career = career;
+    context.role = playerRoles[p.player] || null;
     if (note) context.playerNote = note;
+    if (flavor) context.briefHistoricalFlavor = flavor; // mention only in passing, not the main story
     subjectId = p.player;
-  } else if (angle === 'historical_matchup') {
-    const s = pickFresh(data.series || [], angle, x => x.slug);
-    context.series = s;
-    subjectId = s?.slug;
   } else if (angle === 'power_rankings_alltime') {
     context.top10 = data.hallOfFame.slice(0, 10);
-  } else if (angle === 'storyline') {
-    const s = pickFresh(storylines, angle, x => x.title);
-    context.storyline = s;
-    subjectId = s?.title;
-  } else if (angle === 'season_recap') {
-    const sid = pickFresh(['1', '2', '3', '4', '5'], angle, x => x);
-    context.season = data.seasonMeta[sid];
-    context.champion = data.champions.find(c => c.season === sid);
-    context.mvp = data.mvps.find(m => m.season === sid);
-    context.standings = data.seasons[sid].standings.slice(0, 3);
-    subjectId = sid;
   } else if (angle === 'season_preview') {
     context.upcomingSeason = upcomingSeason;
     context.notablePlayers = upcomingSeason.players
@@ -185,17 +208,25 @@ if (MANUAL_TOPIC) {
     context.candidates = underratedCandidates.slice(0, 12);
   } else if (angle === 'best_individual_seasons') {
     context.leaderboard = bestIndividualSeasons;
+  } else if (angle === 'top10_ar') {
+    context.top10 = topARPlayers;
+  } else if (angle === 'top10_smg') {
+    context.top10 = topSMGPlayers;
+  } else if (angle === 'top10_kd_alltime') {
+    context.top10 = topKdAllTime;
   }
 }
 
 // ---------------------------------------------------------------------------
 // Build the prompt
 // ---------------------------------------------------------------------------
-const systemPrompt = `You are the official beat reporter for Burger Town Leagues (BTL), a competitive Call of Duty: Black Ops Cold War draft league. Your job is to write a short daily post for the league's Discord channel.
+const systemPrompt = `You are Stephen A. Sizzle, the official beat reporter for Burger Town Leagues (BTL), a competitive Call of Duty: Black Ops Cold War draft league. Your job is to write a short daily post for the league's Discord channel. Your name is a nod to sports media's bigger personalities, but don't overplay it — no need to reference your own name or lean into shtick, just let a little personality show through naturally in the writing.
 
-Voice: think real sports media — ESPN, The Athletic, an esports desk. Vary your energy: sometimes a punchy, entertaining take (rivalries, records, bold claims), sometimes calmer and more analytical (stat breakdowns, objective rankings). Never force the hype — confident and a little playful is good, try-hard is not. Use real names and real numbers from the data given. You may draw your own original observations and connections from the stats provided (a quiet streak, an underappreciated pattern, a fair comparison between eras) as long as they're genuinely supported by the numbers you were given — never invent stats, records, or events that aren't in the data.
+Voice: think real sports media — ESPN, The Athletic, an esports desk. Vary your energy: sometimes a punchy, entertaining take (bold rankings, hot takes on a top 10 list), sometimes calmer and more analytical (stat breakdowns, objective rankings). Never force the hype — confident and a little playful is good, try-hard is not. Use real names and real numbers from the data given. You may draw your own original observations and connections from the stats provided (a quiet streak, an underappreciated pattern, a fair comparison between eras) as long as they're genuinely supported by the numbers you were given — never invent stats, records, or events that aren't in the data.
 
-The league's upcoming season hasn't started yet, so most content should read like offseason sports coverage: retrospectives, season previews, "best of" lists, power rankings, players to watch. Formats real sports media uses are great here — top-5 lists, "X players who could break out," "the case for Y as the greatest team ever," etc.
+Editorial direction: favor forward-looking content — season previews, players to watch, power rankings, top-10 lists by role or stat, award-chase storylines, "greatest ever" debates. When history comes up, use it the way sports media uses records and legacy (a player's résumé, a team's dominant stretch, a rivalry in stats) rather than retelling old drama as the headline. If a "briefHistoricalFlavor" field is present, you may drop it in as a single passing line for color — do not make it the focus of the piece.
+
+The league's upcoming season hasn't started yet, so lean into offseason-style formats: top-10 lists (by role, by stat, by era), "players to watch this season," "the case for X as the greatest Y ever," award-chase storylines. Ranked lists are a great default format here.
 
 Format: a punchy one-line headline, then 2-3 short paragraphs (120-220 words total). No markdown headers, just plain text with the headline as the first line.
 
@@ -240,21 +271,31 @@ async function postToDiscord(reportText) {
   const headline = lines[0];
   const body = lines.slice(1).join('\n\n');
 
+  const payload = {
+    username: 'Stephen A. Sizzle',
+    avatar_url: 'https://burgertownleagues.com/images/burger-icon.png',
+    embeds: [
+      {
+        title: headline.slice(0, 256),
+        description: body.slice(0, 4000),
+        color: 0xe2231a,
+        footer: { text: 'Burger Town Leagues' },
+        timestamp: new Date().toISOString(),
+      },
+    ],
+  };
+
+  // A role mention only pings if it's in the top-level "content" field (embeds
+  // never ping), and only if allowed_mentions explicitly permits that role.
+  if (DISCORD_ROLE_ID) {
+    payload.content = `<@&${DISCORD_ROLE_ID}>`;
+    payload.allowed_mentions = { roles: [DISCORD_ROLE_ID] };
+  }
+
   const res = await fetch(DISCORD_WEBHOOK_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      username: 'BTL Daily Report',
-      embeds: [
-        {
-          title: headline.slice(0, 256),
-          description: body.slice(0, 4000),
-          color: 0xe2231a,
-          footer: { text: 'Burger Town Leagues' },
-          timestamp: new Date().toISOString(),
-        },
-      ],
-    }),
+    body: JSON.stringify(payload),
   });
 
   if (!res.ok) {
