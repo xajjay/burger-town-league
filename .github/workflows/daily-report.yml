@@ -2,11 +2,21 @@ name: BTL Daily Report
 
 on:
   schedule:
-    # Runs at 9:00 AM Eastern (13:00 UTC during EDT, 14:00 UTC during EST).
-    # GitHub Actions cron is UTC only, so adjust this if the time drifts with
-    # daylight saving — 13:00 UTC covers EDT (roughly March-November).
-    - cron: '0 13 * * *'
-  workflow_dispatch: {} # lets you manually trigger a run from the Actions tab, for testing
+    # Runs at 8:00 PM Eastern. GitHub Actions cron is UTC only:
+    # 00:00 UTC = 8:00 PM EDT (roughly March-November, covers now)
+    # 01:00 UTC = 8:00 PM EST (roughly November-March)
+    # This is set for EDT — once clocks fall back to EST in November, this will
+    # fire at 7:00 PM Eastern instead unless you change it to '0 1 * * *'.
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Optional: tell the bot exactly what to report on (leave blank for a random daily pick)'
+        required: false
+        type: string
+
+permissions:
+  contents: write # needed so the bot can commit its own history.json updates
 
 jobs:
   daily-report:
@@ -24,4 +34,14 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          MANUAL_TOPIC: ${{ github.event.inputs.topic }}
         run: node scripts/daily-report/generate-report.mjs
+
+      - name: Save updated history
+        run: |
+          git config user.name "btl-daily-report-bot"
+          git config user.email "actions@github.com"
+          git add scripts/daily-report/history.json
+          git diff --quiet --cached || git commit -m "Update daily report history [skip ci]"
+          git push
+
