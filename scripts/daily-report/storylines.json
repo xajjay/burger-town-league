@@ -2,245 +2,536 @@
   "storylines": [
     {
       "title": "The Birth of the CTRL League",
-      "seasons": ["1"],
+      "seasons": [
+        "1"
+      ],
       "players": [],
       "teams": [],
       "summary": "Season 1 (2023) was the very first Cold War draft league, called CTRL League, run by owner/commissioner Zlurpio (Zlurp). It was the pioneer that every later league was modeled on. Managers who didn't always know the player pool well picked team captains, which led to wildly unbalanced rosters right out of the gate.",
-      "tags": ["origin", "lore", "season-1"],
+      "tags": [
+        "origin",
+        "lore",
+        "season-1"
+      ],
       "weight": "high"
     },
     {
       "title": "Houston's Historically Bad Season",
-      "seasons": ["1"],
+      "seasons": [
+        "1"
+      ],
       "players": [],
-      "teams": ["Houston Spartans"],
-      "summary": "Houston Spartans are remembered as maybe the worst team in draft league history — every pick was a disappointment, and they didn't win a single real series all season, only forfeit wins.",
-      "tags": ["futility", "season-1", "fun-fact"],
+      "teams": [
+        "Houston Spartans"
+      ],
+      "summary": "Houston Spartans are remembered as maybe the worst team in draft league history \u2014 every pick was a disappointment, and they didn't win a single real series all season, only forfeit wins.",
+      "tags": [
+        "futility",
+        "season-1",
+        "fun-fact"
+      ],
       "weight": "medium"
     },
     {
       "title": "Boston Excane's 6-0 Start and Total Collapse",
-      "seasons": ["1"],
-      "players": ["Starry", "Lazyy", "Aurora", "Utopian"],
-      "teams": ["Boston Excane"],
-      "summary": "Boston Excane looked like the best team in the league early in Season 1, starting 6-0 with a balanced roster of Starry, Lazyy, Aurora, and Utopian. Then it completely fell apart — they didn't win another series the rest of the season, going 0-3 in the regular season and 0-2 in the playoffs. One of the biggest collapses in league history.",
-      "tags": ["collapse", "season-1", "storyline"],
+      "seasons": [
+        "1"
+      ],
+      "players": [
+        "Starry",
+        "Lazyy",
+        "Aurora",
+        "Utopian"
+      ],
+      "teams": [
+        "Boston Excane"
+      ],
+      "summary": "Boston Excane looked like the best team in the league early in Season 1, starting 6-0 with a balanced roster of Starry, Lazyy, Aurora, and Utopian. Then it completely fell apart \u2014 they didn't win another series the rest of the season, going 0-3 in the regular season and 0-2 in the playoffs. One of the biggest collapses in league history.",
+      "tags": [
+        "collapse",
+        "season-1",
+        "storyline"
+      ],
       "weight": "high"
     },
     {
       "title": "The Jmetree Trade That Changed Everything",
-      "seasons": ["1"],
-      "players": ["Jmetree"],
-      "teams": ["Phoenix Hurrah", "Boston Excane"],
-      "summary": "After losing their season opener to Boston Excane, Phoenix Hurrah traded away Ruidoso and Kawa for a then-unknown player named Jmetree. People called it a rigged trade since Jmetree was playing well under the radar, but both captains agreed to it, so it stood. Phoenix went undefeated for the rest of the season after making the move. The backlash from this trade led directly to the 'Jmetree Rule' — all trades now require commissioner approval before becoming official.",
-      "tags": ["trade", "controversy", "season-1", "rule-change"],
+      "seasons": [
+        "1"
+      ],
+      "players": [
+        "Jmetree"
+      ],
+      "teams": [
+        "Phoenix Hurrah",
+        "Boston Excane"
+      ],
+      "summary": "After losing their season opener to Boston Excane, Phoenix Hurrah traded away Ruidoso and Kawa for a then-unknown player named Jmetree. People called it a rigged trade since Jmetree was playing well under the radar, but both captains agreed to it, so it stood. Phoenix went undefeated for the rest of the season after making the move. The backlash from this trade led directly to the 'Jmetree Rule' \u2014 all trades now require commissioner approval before becoming official.",
+      "tags": [
+        "trade",
+        "controversy",
+        "season-1",
+        "rule-change"
+      ],
       "weight": "high"
     },
     {
       "title": "The Chicago NewLook Ringer Scandal",
-      "seasons": ["1"],
+      "seasons": [
+        "1"
+      ],
       "players": [],
       "teams": [],
-      "summary": "One of the wildest scandals in league history. Chicago NewLook's manager Ysaid filled in for a missing player and dropped a shockingly good performance — over a 2.0 K/D. Investigators later found Twitch VOD evidence that someone else was actually playing on the account: KyleAspect, a player from another team. The real Ysaid was reportedly found working at Wawa during a voice call meant to confirm he was the one playing. Chicago NewLook's roster, manager Ysaid, and KyleAspect were all banned from the league.",
-      "tags": ["scandal", "ringing", "ban", "season-1", "lore"],
+      "summary": "One of the wildest scandals in league history. Chicago NewLook's manager Ysaid filled in for a missing player and dropped a shockingly good performance \u2014 over a 2.0 K/D. Investigators later found Twitch VOD evidence that someone else was actually playing on the account: KyleAspect, a player from another team. The real Ysaid was reportedly found working at Wawa during a voice call meant to confirm he was the one playing. Chicago NewLook's roster, manager Ysaid, and KyleAspect were all banned from the league.",
+      "tags": [
+        "scandal",
+        "ringing",
+        "ban",
+        "season-1",
+        "lore"
+      ],
       "weight": "high"
     },
     {
       "title": "Renicide's Mid-Season Arrival With Seattle Skies",
-      "seasons": ["1"],
-      "players": ["Renicide", "Nej", "Kfrankess"],
-      "teams": ["Seattle Skies"],
-      "summary": "When another team disbanded, Seattle Skies joined the league mid-season and Renicide came in as team captain — one of the only times in league history a player entered as a captain outside the original draft pool. Seattle looked dead in the water but Renicide and Nej dragged them all the way to winners finals, before losing Kfrankess, who was secretly caught playing Modern Warfare 2 instead of showing up.",
-      "tags": ["underdog", "season-1", "fun-fact"],
+      "seasons": [
+        "1"
+      ],
+      "players": [
+        "Renicide",
+        "Nej",
+        "Kfrankess"
+      ],
+      "teams": [
+        "Seattle Skies"
+      ],
+      "summary": "When another team disbanded, Seattle Skies joined the league mid-season and Renicide came in as team captain \u2014 one of the only times in league history a player entered as a captain outside the original draft pool. Seattle looked dead in the water but Renicide and Nej dragged them all the way to winners finals, before losing Kfrankess, who was secretly caught playing Modern Warfare 2 instead of showing up.",
+      "tags": [
+        "underdog",
+        "season-1",
+        "fun-fact"
+      ],
       "weight": "medium"
     },
     {
       "title": "Kirch's Finals MVP Return",
-      "seasons": ["1"],
-      "players": ["Kirch", "Jmetree"],
-      "teams": ["Phoenix Hurrah"],
+      "seasons": [
+        "1"
+      ],
+      "players": [
+        "Kirch",
+        "Jmetree"
+      ],
+      "teams": [
+        "Phoenix Hurrah"
+      ],
       "summary": "Phoenix Hurrah went undefeated after acquiring Jmetree, but had to make their playoff run without captain Kirch, who missed three series. He returned for Grand Finals and delivered a huge performance, winning Finals MVP.",
-      "tags": ["comeback", "season-1", "mvp"],
+      "tags": [
+        "comeback",
+        "season-1",
+        "mvp"
+      ],
       "weight": "medium"
     },
     {
       "title": "Berlin KAOS: The One-Man Show That Almost Won It All",
-      "seasons": ["1"],
-      "players": ["Crooked", "Renicide"],
-      "teams": ["Berlin KAOS", "Seattle Skies"],
+      "seasons": [
+        "1"
+      ],
+      "players": [
+        "Crooked",
+        "Renicide"
+      ],
+      "teams": [
+        "Berlin KAOS",
+        "Seattle Skies"
+      ],
       "summary": "Berlin KAOS entered the Season 1 playoffs as the 1 seed, carried almost entirely by superstar Crooked, with real doubts about the rest of the roster. They were upset in Winners Round 2 by Renicide's Seattle Skies in a game 5 on the final map, dropped to losers, then fought all the way back to eliminate Seattle in Losers Finals to reach Grand Finals.",
-      "tags": ["playoffs", "season-1", "storyline"],
+      "tags": [
+        "playoffs",
+        "season-1",
+        "storyline"
+      ],
       "weight": "medium"
     },
     {
       "title": "The Handcam Request That Ended a Friendship",
-      "seasons": ["1"],
-      "players": ["Crooked", "Renicide"],
+      "seasons": [
+        "1"
+      ],
+      "players": [
+        "Crooked",
+        "Renicide"
+      ],
       "teams": [],
       "summary": "Ahead of a Season 1 playoff series, Crooked demanded that his good friend Renicide stream a handcam (his controller, on Twitch) during the match. Whether it was suspicion of cheating or a psychological play to slow Renicide down with extra internet load, it shocked the community and put real strain on their friendship.",
-      "tags": ["drama", "season-1", "rivalry"],
+      "tags": [
+        "drama",
+        "season-1",
+        "rivalry"
+      ],
       "weight": "medium"
     },
     {
       "title": "Python's Guarantee That Backfired",
-      "seasons": ["1"],
-      "players": ["Python"],
-      "teams": ["Berlin KAOS", "Phoenix Hurrah"],
+      "seasons": [
+        "1"
+      ],
+      "players": [
+        "Python"
+      ],
+      "teams": [
+        "Berlin KAOS",
+        "Phoenix Hurrah"
+      ],
       "summary": "Before Season 1 Grand Finals, Python famously guaranteed a Berlin KAOS championship. Phoenix Hurrah won the series anyway, making it one of the league's classic bulletin-board-material fails.",
-      "tags": ["fun-fact", "season-1", "grand-finals"],
+      "tags": [
+        "fun-fact",
+        "season-1",
+        "grand-finals"
+      ],
       "weight": "medium"
     },
     {
       "title": "Season 2: A More Balanced League",
-      "seasons": ["2"],
-      "players": ["Aj"],
+      "seasons": [
+        "2"
+      ],
+      "players": [
+        "Aj"
+      ],
       "teams": [],
       "summary": "For Season 2, commissioners selected captains directly from the league's best players to try to balance the teams. Aj, who'd been deeply involved as a player in Season 1, stepped up as co-commissioner, taking on more day-to-day league operations while Zlurp shifted to handling prize money.",
-      "tags": ["origin", "season-2", "lore"],
+      "tags": [
+        "origin",
+        "season-2",
+        "lore"
+      ],
       "weight": "medium"
     },
     {
       "title": "Lewy's Debut, Heartbreak, and Season-Ending Ban",
-      "seasons": ["2"],
-      "players": ["Lewy", "Verb", "Bleepa"],
-      "teams": ["Charlotte SYG", "Minneapolis Mighty Ducks"],
-      "summary": "Lewy made his league debut in Season 2 on a talented Charlotte roster. Midway through the season, Charlotte lost a heartbreaker to Minneapolis Mighty Ducks in a game 5, final-round-11 nailbiter on Moscow. Right after that, Charlotte's proposed trade for Bleepa (in exchange for sub Verb) got blocked by commissioners as unfair. Lewy refused to play the next match with Verb subbing in and told his team to forfeit instead — his teammates wanted to play, but he shut it down anyway. He was banned for the rest of the season as a result.",
-      "tags": ["drama", "ban", "season-2", "storyline"],
+      "seasons": [
+        "2"
+      ],
+      "players": [
+        "Lewy",
+        "Verb",
+        "Bleepa"
+      ],
+      "teams": [
+        "Charlotte SYG",
+        "Minneapolis Mighty Ducks"
+      ],
+      "summary": "Lewy made his league debut in Season 2 on a talented Charlotte roster. Midway through the season, Charlotte lost a heartbreaker to Minneapolis Mighty Ducks in a game 5, final-round-11 nailbiter on Moscow. Right after that, Charlotte's proposed trade for Bleepa (in exchange for sub Verb) got blocked by commissioners as unfair. Lewy refused to play the next match with Verb subbing in and told his team to forfeit instead \u2014 his teammates wanted to play, but he shut it down anyway. He was banned for the rest of the season as a result.",
+      "tags": [
+        "drama",
+        "ban",
+        "season-2",
+        "storyline"
+      ],
       "weight": "high"
     },
     {
       "title": "The Casperfy Trade Controversy",
-      "seasons": ["2"],
-      "players": ["Casperfy", "Ephrisy"],
-      "teams": ["Buffalo Body Building Brutes"],
-      "summary": "Buffalo traded away Luke B and Shasta to acquire Casperfy — a deal that looked lopsided on paper, since Casperfy was considered much better than what Buffalo gave up. Commissioners approved it after public pressure against too much trade-blocking, drawing even more criticism about fairness. Buffalo went on to win the Season 2 championship, with Ephrisy taking home MVP and the ring.",
-      "tags": ["trade", "controversy", "season-2", "champion"],
+      "seasons": [
+        "2"
+      ],
+      "players": [
+        "Casperfy",
+        "Ephrisy"
+      ],
+      "teams": [
+        "Buffalo Body Building Brutes"
+      ],
+      "summary": "Buffalo traded away Luke B and Shasta to acquire Casperfy \u2014 a deal that looked lopsided on paper, since Casperfy was considered much better than what Buffalo gave up. Commissioners approved it after public pressure against too much trade-blocking, drawing even more criticism about fairness. Buffalo went on to win the Season 2 championship, with Ephrisy taking home MVP and the ring.",
+      "tags": [
+        "trade",
+        "controversy",
+        "season-2",
+        "champion"
+      ],
       "weight": "high"
     },
     {
       "title": "Waly's Legendary VC Meltdown",
-      "seasons": ["2"],
-      "players": ["Waly"],
-      "teams": ["Tampa Red Wolves"],
+      "seasons": [
+        "2"
+      ],
+      "players": [
+        "Waly"
+      ],
+      "teams": [
+        "Tampa Red Wolves"
+      ],
       "summary": "A clip that's stuck around in league lore: Waly screaming at a Tampa teammate mid-match to shut up over redundant, unnecessary callouts. The team was loaded with talent, but struggled at Search & Destroy and famously didn't enjoy playing with each other.",
-      "tags": ["fun-fact", "season-2", "lore"],
+      "tags": [
+        "fun-fact",
+        "season-2",
+        "lore"
+      ],
       "weight": "medium"
     },
     {
       "title": "Season 3's Biggest Choke Ever",
-      "seasons": ["3"],
-      "players": ["Acro Ace", "Renicide"],
-      "teams": ["Seattle Aces", "New Orleans No Legs Academy"],
-      "summary": "Acro Ace's Seattle Aces were up 3-1 in a best-of-7 against Renicide's New Orleans squad, and even led 5-1 in the deciding game 5 Search & Destroy map — needing just one more round to close it out. They blew it, lost that map, and lost the series in a full game 7. Widely considered the biggest choke in league history.",
-      "tags": ["choke", "season-3", "playoffs"],
+      "seasons": [
+        "3"
+      ],
+      "players": [
+        "Acro Ace",
+        "Renicide"
+      ],
+      "teams": [
+        "Seattle Aces",
+        "New Orleans No Legs Academy"
+      ],
+      "summary": "Acro Ace's Seattle Aces were up 3-1 in a best-of-7 against Renicide's New Orleans squad, and even led 5-1 in the deciding game 5 Search & Destroy map \u2014 needing just one more round to close it out. They blew it, lost that map, and lost the series in a full game 7. Widely considered the biggest choke in league history.",
+      "tags": [
+        "choke",
+        "season-3",
+        "playoffs"
+      ],
       "weight": "high"
     },
     {
       "title": "Jmetree's MVP Season That Ended Early",
-      "seasons": ["3"],
-      "players": ["Jmetree"],
-      "teams": ["New York G Pieces"],
-      "summary": "Jmetree had an incredible Season 3, winning league MVP, and his New York squad finished as the 1 seed — but the team couldn't close it out in the playoffs.",
-      "tags": ["mvp", "season-3"],
+      "seasons": [
+        "3"
+      ],
+      "players": [
+        "Jmetree"
+      ],
+      "teams": [
+        "New York G Pieces"
+      ],
+      "summary": "Jmetree had an incredible Season 3, winning league MVP, and his New York squad finished as the 1 seed \u2014 but the team couldn't close it out in the playoffs.",
+      "tags": [
+        "mvp",
+        "season-3"
+      ],
       "weight": "medium"
     },
     {
       "title": "Renicide's First Championship",
-      "seasons": ["3"],
-      "players": ["Renicide"],
+      "seasons": [
+        "3"
+      ],
+      "players": [
+        "Renicide"
+      ],
       "teams": [],
-      "summary": "Renicide won his first league championship in Season 3, doing it without a lot of roster turnover — unlike most previous champions, who'd made big trades to get there.",
-      "tags": ["champion", "season-3"],
+      "summary": "Renicide won his first league championship in Season 3, doing it without a lot of roster turnover \u2014 unlike most previous champions, who'd made big trades to get there.",
+      "tags": [
+        "champion",
+        "season-3"
+      ],
       "weight": "medium"
     },
     {
       "title": "The Freak/Maj Fake Alias Scandal",
-      "seasons": ["4"],
-      "players": ["Freak"],
-      "teams": ["New York Freaky D's", "WCi LA"],
-      "summary": "One of the most controversial moments in league history. A relatively unknown player called 'Freak' had a strong playoff run alongside established stars Ephrisy, Jmetree, and Utopian, helping New York upset Nashville. Mid-Grand-Finals, it came out that 'Freak' was a fake alias — his real gamertag was Maj, and he'd signed up under a fresh account specifically to manipulate his draft positioning. The series was halted while commissioners sorted it out; Freak was banned from playing, and New York was forced to finish with a sub who didn't even know who 'Freak' really was.",
-      "tags": ["scandal", "controversy", "season-4", "grand-finals"],
+      "seasons": [
+        "4"
+      ],
+      "players": [
+        "Freak"
+      ],
+      "teams": [
+        "New York Freaky D's",
+        "WCi LA"
+      ],
+      "summary": "One of the most controversial moments in league history. A relatively unknown player called 'Freak' had a strong playoff run alongside established stars Ephrisy, Jmetree, and Utopian, helping New York upset Nashville. Mid-Grand-Finals, it came out that 'Freak' was a fake alias \u2014 his real gamertag was Maj, and he'd signed up under a fresh account specifically to manipulate his draft positioning. The series was halted while commissioners sorted it out; Freak was banned from playing, and New York was forced to finish with a sub who didn't even know who 'Freak' really was.",
+      "tags": [
+        "scandal",
+        "controversy",
+        "season-4",
+        "grand-finals"
+      ],
       "weight": "high"
     },
     {
       "title": "Waly's Playoff Walkout and the Aj Beef",
-      "seasons": ["4"],
-      "players": ["Waly", "Aj"],
-      "teams": ["Nashville Iron Boots"],
+      "seasons": [
+        "4"
+      ],
+      "players": [
+        "Waly",
+        "Aj"
+      ],
+      "teams": [
+        "Nashville Iron Boots"
+      ],
       "summary": "After Nashville lost a playoff series to a New York team that got a shock contribution from Freak (see the Freak scandal), Waly declared he was done playing for the rest of the playoffs, leaving Nashville to face WCi in Losers Finals without him. Nashville lost despite a huge performance from captain Aj. The fallout between Aj and Waly reportedly lasted hours.",
-      "tags": ["drama", "season-4", "rivalry"],
+      "tags": [
+        "drama",
+        "season-4",
+        "rivalry"
+      ],
       "weight": "high"
     },
     {
       "title": "The Grand Finals Restart That Split the League",
-      "seasons": ["4"],
-      "players": ["Aj"],
-      "teams": ["WCi LA", "New York Freaky D's", "Nashville Iron Boots"],
+      "seasons": [
+        "4"
+      ],
+      "players": [
+        "Aj"
+      ],
+      "teams": [
+        "WCi LA",
+        "New York Freaky D's",
+        "Nashville Iron Boots"
+      ],
       "summary": "After the Freak scandal broke during Season 4 Grand Finals, Nashville and New York both agreed their earlier playoff series (which New York had won partly thanks to the fraudulent Freak) should be replayed. Commissioner Zlurp overruled that and instead just restarted the WCi vs New York Grand Finals with a substitute for New York. Co-commissioner Aj was furious about the decision, and it kicked off a long-running grudge between the two commissioners. WCi went on to beat New York for the title, and both New York and Nashville felt cheated by how it played out. The league didn't run another season for a full year afterward.",
-      "tags": ["controversy", "season-4", "commissioner-drama", "grand-finals"],
+      "tags": [
+        "controversy",
+        "season-4",
+        "commissioner-drama",
+        "grand-finals"
+      ],
       "weight": "high"
     },
     {
       "title": "The League's Return After a Year Away",
-      "seasons": ["5"],
-      "players": ["Aj"],
+      "seasons": [
+        "5"
+      ],
+      "players": [
+        "Aj"
+      ],
       "teams": [],
       "summary": "After Season 4's grand finals controversy caused a rift, Aj and Zlurp eventually made up, and Z Star Cold War returned for Season 5 with a lot of familiar faces. Aj stepped back from any staff role entirely to focus purely on playing, while Zlurp brought in his own staff.",
-      "tags": ["origin", "season-5", "lore"],
+      "tags": [
+        "origin",
+        "season-5",
+        "lore"
+      ],
       "weight": "medium"
     },
     {
       "title": "Inkster Drafts His Own Cousins",
-      "seasons": ["5"],
-      "players": ["Inkster"],
-      "teams": ["Detroit Dirty Dogs"],
-      "summary": "Detroit captain Inkster made a shocking move in the Season 5 draft — picking his own cousins onto his roster.",
-      "tags": ["fun-fact", "draft", "season-5"],
+      "seasons": [
+        "5"
+      ],
+      "players": [
+        "Inkster"
+      ],
+      "teams": [
+        "Detroit Dirty Dogs"
+      ],
+      "summary": "Detroit captain Inkster made a shocking move in the Season 5 draft \u2014 picking his own cousins onto his roster.",
+      "tags": [
+        "fun-fact",
+        "draft",
+        "season-5"
+      ],
       "weight": "medium"
     },
     {
       "title": "The Season 5 Team Implosion Wave",
-      "seasons": ["5"],
-      "players": ["Killfeed", "Skapun", "Renicide"],
-      "teams": ["New York Ascend", "Atlanta Reign", "NOLA Knights", "Brooklyn Empire", "Los Angeles Nova"],
-      "summary": "Season 5 had an unusual number of teams blow themselves up mid-season. Killfeed dissolved his New York roster, sending everyone to free agency. Separately, Renicide and Skapun (captains of NOLA and Atlanta) agreed to a trade that commissioner Zlurp never actually approved — Atlanta was forced to forfeit their match as a result, and Skapun blew up his own team in protest, getting himself removed from the league. Brooklyn and LA also blew up later in the season, and Illinois's team rebranded into Rutland. All of this fed a stronger-than-usual free agent pool for the teams that stuck around.",
-      "tags": ["chaos", "season-5", "controversy"],
+      "seasons": [
+        "5"
+      ],
+      "players": [
+        "Killfeed",
+        "Skapun",
+        "Renicide"
+      ],
+      "teams": [
+        "New York Ascend",
+        "Atlanta Reign",
+        "NOLA Knights",
+        "Brooklyn Empire",
+        "Los Angeles Nova"
+      ],
+      "summary": "Season 5 had an unusual number of teams blow themselves up mid-season. Killfeed dissolved his New York roster, sending everyone to free agency. Separately, Renicide and Skapun (captains of NOLA and Atlanta) agreed to a trade that commissioner Zlurp never actually approved \u2014 Atlanta was forced to forfeit their match as a result, and Skapun blew up his own team in protest, getting himself removed from the league. Brooklyn and LA also blew up later in the season, and Illinois's team rebranded into Rutland. All of this fed a stronger-than-usual free agent pool for the teams that stuck around.",
+      "tags": [
+        "chaos",
+        "season-5",
+        "controversy"
+      ],
       "weight": "high"
     },
     {
       "title": "The 'Mailbox' Trade",
-      "seasons": ["5"],
-      "players": ["Acro Ace", "Verb", "Lewy"],
-      "teams": ["Oklahoma City Spartans", "Nashville Mighty Ducks"],
-      "summary": "OKC benched Hall of Fame member and former All-Star Acro Ace, with captain Lewy reportedly calling him too slow on the map — a 'mailbox.' Nashville swooped in and traded Verb for Acro Ace, a deal Zlurp approved despite a lot of confused, frustrated reactions across the league. To make it stranger, Lewy immediately released Verb (referred to as 'Fern' in the aftermath) straight to free agency after getting him.",
-      "tags": ["trade", "controversy", "season-5", "fun-fact"],
+      "seasons": [
+        "5"
+      ],
+      "players": [
+        "Acro Ace",
+        "Verb",
+        "Lewy"
+      ],
+      "teams": [
+        "Oklahoma City Spartans",
+        "Nashville Mighty Ducks"
+      ],
+      "summary": "OKC benched Hall of Fame member and former All-Star Acro Ace, with captain Lewy reportedly calling him too slow on the map \u2014 a 'mailbox.' Nashville swooped in and traded Verb for Acro Ace, a deal Zlurp approved despite a lot of confused, frustrated reactions across the league. To make it stranger, Lewy immediately released Verb (referred to as 'Fern' in the aftermath) straight to free agency after getting him.",
+      "tags": [
+        "trade",
+        "controversy",
+        "season-5",
+        "fun-fact"
+      ],
       "weight": "medium"
     },
     {
       "title": "Houston Havoc's Historic Collapse",
-      "seasons": ["5"],
-      "players": ["Ephrisy", "Habibi"],
-      "teams": ["Houston Havoc"],
-      "summary": "Houston Havoc went undefeated and held the #1 seed heading into the last week of the regular season before finally losing to Hype's Chicago squad. Houston was widely seen as the league's most ethical team, having made zero roster moves all season, and had Ephrisy putting up the best individual season in league history. Then disaster struck right before playoffs: Rookie of the Year Habibi's roof caved in over his gaming setup, limiting him to half of Houston's second series. Houston went 1-2 in the playoffs and finished 5th-6th — voted by the community as the most disappointing team in league history.",
-      "tags": ["collapse", "season-5", "bad-luck"],
+      "seasons": [
+        "5"
+      ],
+      "players": [
+        "Ephrisy",
+        "Habibi"
+      ],
+      "teams": [
+        "Houston Havoc"
+      ],
+      "summary": "Houston Havoc went undefeated and held the #1 seed heading into the last week of the regular season before finally losing to Hype's Chicago squad. Houston was widely seen as the league's most ethical team, having made zero roster moves all season, and had Ephrisy putting up the best individual season in league history. Then disaster struck right before playoffs: Rookie of the Year Habibi's roof caved in over his gaming setup, limiting him to half of Houston's second series. Houston went 1-2 in the playoffs and finished 5th-6th \u2014 voted by the community as the most disappointing team in league history.",
+      "tags": [
+        "collapse",
+        "season-5",
+        "bad-luck"
+      ],
       "weight": "high"
     },
     {
       "title": "Nashville's Revenge Run to Grand Finals",
-      "seasons": ["5"],
-      "players": ["Inkster"],
-      "teams": ["Nashville Mighty Ducks", "Detroit Dirty Dogs"],
+      "seasons": [
+        "5"
+      ],
+      "players": [
+        "Inkster"
+      ],
+      "teams": [
+        "Nashville Mighty Ducks",
+        "Detroit Dirty Dogs"
+      ],
       "summary": "Nashville finished the Season 5 regular season as the 1 seed after winning every match following an opening loss to Atlanta/Skapun. They were shockingly upset by Inkster's Detroit squad and sent to the losers bracket, but fought all the way back, got their revenge on Detroit, and advanced to Grand Finals.",
-      "tags": ["comeback", "season-5", "playoffs"],
+      "tags": [
+        "comeback",
+        "season-5",
+        "playoffs"
+      ],
       "weight": "medium"
     },
     {
       "title": "Hype's First Championship",
-      "seasons": ["5"],
-      "players": ["Hype"],
-      "teams": ["Chicago Syndicate", "Nashville Mighty Ducks"],
-      "summary": "Hype and Chicago proved too much for Nashville in Season 5 Grand Finals, winning 6 games out of 7 to secure Hype's first-ever championship — a huge milestone for a player long considered the league's best skill-wise but previously unable to finish the job.",
-      "tags": ["champion", "season-5", "milestone"],
+      "seasons": [
+        "5"
+      ],
+      "players": [
+        "Hype"
+      ],
+      "teams": [
+        "Chicago Syndicate",
+        "Nashville Mighty Ducks"
+      ],
+      "summary": "Hype and Chicago proved too much for Nashville in Season 5 Grand Finals, winning 6 games out of 7 to secure Hype's first-ever championship \u2014 a huge milestone for a player long considered the league's best skill-wise but previously unable to finish the job.",
+      "tags": [
+        "champion",
+        "season-5",
+        "milestone"
+      ],
       "weight": "high"
     },
     {
@@ -249,35 +540,118 @@
       "players": [],
       "teams": [],
       "summary": "After five seasons split across CTRL League and Z Star League, the community's history and player base now continues under a new banner: Burger Town Leagues. BTL Season 1 brings back plenty of familiar faces for a fresh start while preserving everything that came before.",
-      "tags": ["origin", "btl", "upcoming"],
+      "tags": [
+        "origin",
+        "btl",
+        "upcoming"
+      ],
       "weight": "high"
     }
   ],
   "playerNotes": [
     {
-      "player": "Ephrisy",
-      "nickname": "The GOAT of BTL",
-      "notes": "Widely regarded as the greatest player in league history. Won League MVP in two separate seasons three years apart and put up the best individual season anyone's seen in Season 5. Quiet and lets his stats do the talking."
-    },
-    {
       "player": "Hype",
-      "nickname": "Mr. Consistency",
-      "notes": "Probably the most skilled player the league has ever seen. Spent years carrying rosters that couldn't finish the job before finally breaking through with his first championship in Season 5. Made an All-Star team in every single season the league has played."
+      "notes": "One of the best players ever in terms of skill, runs both SMG and AR at an elite level depending on what team needs most, High power slayer, great at all game modes. Always performed well just never had the wins and results to back it up, never really went far in playoffs until season 5, had his best team and broke through and won it all."
     },
     {
-      "player": "Renicide",
-      "nickname": "The best shot in the league",
-      "notes": "His raw stats don't tell the full story — he's constantly flying around the map making plays that don't always show up in K/D, which drags his numbers down relative to his actual impact. Widely considered the best pure shot at SMG the league has had."
-    },
-    {
-      "player": "Lewy",
-      "nickname": "Iron Man",
-      "notes": "Has played in almost every season the league has run, but doesn't have a championship or major individual accolade to his name despite the longevity."
+      "player": "Ephrisy",
+      "notes": "GOAT, greatest legacy and arguably best player ever in skill too. Prototype superstar AR player, more softspoken in coms, but consitstently great. Good in all modes and always a threat in SnD. Very straight shot, no need to grind, just shows up to matches without needing to warm up."
     },
     {
       "player": "Aj",
-      "nickname": "The League Itself",
-      "notes": "Wears every hat imaginable — league owner, team captain, active player, and the league's stat keeper. Was deeply involved in Season 1 as a player, became co-commissioner in Seasons 2 and 4, and stepped back to focus purely on playing when Z Star returned for Season 5."
+      "notes": "One of the OGs, played every season, been involved with promoting and running the league since the beginning. Fundamental SMG player that also is a great slayer when required, does the little things like rotate and collect hill time. Weaker in SnD compared to respawn game modes. Had issues with team cohesion ever since winning the first league championship."
+    },
+    {
+      "player": "Renicide",
+      "notes": "Staple player to the league, fast paced, electric SMG player that is a human highlight reel, one of the most entertaining POVs in the league. Pairs it with incredible talent, has the straightest SMG shot in the game. Mastermind in SnD, knows every angle and every timing. SnD is best game mode but still one of the better respawn players in the league, his fast paced unselfish nature to bait for his teammates and fly in first leads to him having a lower KD than it should be. Stats dont tell the whole story. Interaction machine, constantly in the action."
+    },
+    {
+      "player": "Acro Ace",
+      "notes": "Veteran AR player, great gunskill and frequently sets himself up in power positions and is consistent in maintaining great stats every season. Slower playstyle even for an AR player, but makes up with it by getting a lot of kills from range. Great vibes teammate and consistent. Excellent pair next to a star player."
+    },
+    {
+      "player": "CrazieViews",
+      "notes": "Hasn\u2019t played in the league in a while but making his return, when he plays consistently he can be one of if not the best players in the game. Highest IQ player in the league, knows what to do in every situatuion and where / what all of his teammates should be doing as well. Great leader and expects others to play correctly, could be an issue for players that can't handle critisicm. Great talent as well, top slayer potential while playing fundamental and strong at all game modes."
+    },
+    {
+      "player": "Jmetree",
+      "notes": "Consistently good AR, never had a bad season. Fundamental AR player that will play for the win first, but also happens to be a great talent as well. Great teammate and vibes. Typically elite second player to fit next to a captain/star player, but has the potential to be a star himself / MVP candidate if needed. Unselfish, solid at all game modes."
+    },
+    {
+      "player": "Inkster",
+      "notes": "One of the best talents in the league, has only played a couple of seasons, but has a huge impact. Best search and destroy player in the league and may not be very close. Still very good at other respawn game modes. Slaying AR but uses both roles / guns consistently similar to Hype. Hasn't ever had the best teams, so missing team winning and accolades."
+    },
+    {
+      "player": "Aurora",
+      "notes": "Extremely fast paces SMG player. Running around getting kills for his team similar playstyle to Reni (renicide) in respawn gamemodes. Sometimes can jeopardize his team with costly mistake plays but can also make up for them single handedly by doing things many others cant. Improved immensely over career, started as more of a solid 2nd player to a captain, but has turned into the main player on a team now."
+    },
+    {
+      "player": "Nastyy",
+      "notes": "Veteran SMG player. Fast paced, gets in to a lot of interactions. Older player but still manages to be extremely impactful despite a lower KD to other great subs and one of the better SMG SnD players ever. When he devotes the time to the game can be one of the best SMGs. As of now great secondary SMG on a good team."
+    },
+    {
+      "player": "Crooked",
+      "notes": "Hasn\u2019t played in the league in a while but making his return. When he played consistently was arguably the best player the league has ever seen. Extremely high IQ SMG player that may be the highest in the league in conversation with crazie. SnD is his expertise, in his prime is one of the best SND players ever. highest IQ snd player. Respawn gamemodes are great as well, true takeover potential every map, just has been a while since we have seen him so maybe a question mark at first, still a top 7-8 player regardless. Incredible leader, directs his team what to do, especially in SnD, truly gets the most out of his teammates."
+    },
+    {
+      "player": "Waly",
+      "notes": "Great AR player, slower pace, but high IQ and fundamental, always makes the winning plays no matter what. Doesn't always get along with all of his teammates but shows up and you know what you can expect from him. Used to be one of the Elite ARs in the game, more of a great secondary piece now."
+    },
+    {
+      "player": "Proxzify",
+      "notes": "Slower pace AR player, good gun skill, but sometimes can be too slow and out of the play. Good knowledge of the game, veteran player. Good 3rd / 4th piece on a team."
+    },
+    {
+      "player": "Utopian",
+      "notes": "Good player who can play both roles, whatever his team needs. Very selfless player, and great a great teammate, consistently good vibes and is a good glue guy on a winning team. Solid 3/4th man with secondary piece / borderline all star potential, just has consistency issues."
+    },
+    {
+      "player": "Habibi",
+      "notes": "Fundamental SMG player, had great stats in debut season, plays his life well, good contrast to a high flying smg player. Great teammate and has good vibes. Good secondary SMG on a team that has great potential playing next to good players."
+    },
+    {
+      "player": "Lewy",
+      "notes": "Veteran AR player, good gunskill and fast paced player, prone to making mistakes that can cost his team. Great talent but isn't the best teammate, gets into conflicts often and usually has bad team dynamics. One of the better SND players in the league, grinds and puts in the time to be great. Yet to win any awards or accolades, still looking to put together a good season that represents his true potential. good 2 man (2nd best player) on a team with potential to be all star"
+    },
+    {
+      "player": "Karnij",
+      "notes": "Only played 1 season and performed well, making his return this season. Good AR player, been a long time so question mark player."
+    },
+    {
+      "player": "Boogey",
+      "notes": "Solid AR player, good 3/4th man. Good teammate."
+    },
+    {
+      "player": "Docsukii",
+      "notes": "Slower paced AR player. SnD is his specialty, lewys duo. Good teammate and great vibes. 3/4th man."
+    },
+    {
+      "player": "Toremeant",
+      "notes": "Solid AR player, great gunskill, talent can bail him out of making mistakes. Rattier playstyle, frequently laying down or in spots you wouldn't expect. Solid 3rd man on a good team."
+    },
+    {
+      "player": "Bleepa",
+      "notes": "Solid AR Player, great teammate and extremely unselfish. Has consistency issues but can be really solid at times. Making winning plays rather than getting empty stats. Good 3/4th man on a team."
+    },
+    {
+      "player": "Shadow",
+      "notes": "Solid Main AR, slower pace but consistent AR player that will hold down lanes. Good teammate, Solid 4th man on a team."
+    },
+    {
+      "player": "Peach",
+      "notes": "New to the game but progressed a lot in his first season and first time playing the game. Good gunskill and good teammate. Solid 3/4th man."
+    },
+    {
+      "player": "Realm",
+      "notes": "Solid smg player, good 3/4th man."
+    },
+    {
+      "player": "aldo",
+      "notes": "Making his league debut, fast paced smg player, projects to be solid 3rd man."
+    },
+    {
+      "player": "Chadwick",
+      "notes": "Making his league debut, potentially underrated player, projects to be solid 3rd man."
     }
   ]
 }

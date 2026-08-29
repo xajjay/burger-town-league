@@ -3,7 +3,7 @@
     "Jmetree", "Aj", "Inkster", "Aurora", "Habibi", "Aldo", "Waly", "Docsukii",
     "Boogy", "Zico", "Renicide", "Bleepa", "Karnij", "Proxzify", "Realm", "Lewy",
     "Shasta", "Peach", "Hype", "Latinooo", "Chadwick", "Ephrisy", "Horror",
-    "Trap NA", "Toremeant", "Zylix", "Moon", "Scary", "Nastyy", "Crooked", "Crazie"
+    "Trap", "Toremeant", "Zylix", "Moon", "Scary", "Nastyy", "Crooked", "Crazie"
   ],
   "teamLeads": [
     { "player": "Jmetree", "manager": "Shadow", "staff": "Utopian" },
@@ -11,5 +11,5 @@
     { "player": "Inkster", "manager": "DBZKILLA", "staff": "Shadow" },
     { "player": "Aurora", "manager": null, "staff": "Acro Ace" }
   ],
-  "note": "Signups still in progress — this list will grow before the season starts."
+  "note": "Signups still in progress — this list will grow before the season starts. Chadwick is a brand-new name with no prior league stats."
 }

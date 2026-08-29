@@ -14,9 +14,14 @@ on:
         description: 'Optional: tell the bot exactly what to report on (leave blank for a random daily pick)'
         required: false
         type: string
+      queue_for_next_run:
+        description: 'Check this to SAVE the topic for the next scheduled run instead of posting right now'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
-  contents: write # needed so the bot can commit its own history.json updates
+  contents: write # needed so the bot can commit its own history.json / next-topic.txt updates
 
 jobs:
   daily-report:
@@ -34,15 +39,17 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL_GENERAL: ${{ secrets.DISCORD_WEBHOOK_URL_GENERAL }}
           DISCORD_ROLE_ID: ${{ secrets.DISCORD_ROLE_ID }}
           MANUAL_TOPIC: ${{ github.event.inputs.topic }}
+          QUEUE_FOR_NEXT_RUN: ${{ github.event.inputs.queue_for_next_run }}
         run: node scripts/daily-report/generate-report.mjs
 
-      - name: Save updated history
+      - name: Save updated history / queued topic
         run: |
           git config user.name "btl-daily-report-bot"
           git config user.email "actions@github.com"
-          git add scripts/daily-report/history.json
-          git diff --quiet --cached || git commit -m "Update daily report history [skip ci]"
+          git add scripts/daily-report/history.json scripts/daily-report/next-topic.txt
+          git diff --quiet --cached || git commit -m "Update daily report state [skip ci]"
           git push
 

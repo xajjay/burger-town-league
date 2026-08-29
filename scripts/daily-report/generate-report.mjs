@@ -19,13 +19,37 @@ import { dirname, join } from 'path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+// Your existing secret — the #league-news webhook. This one gets the role ping.
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
+// New, optional — a second webhook (e.g. #general) that gets the same report
+// posted to it, without a role ping (so people in both channels aren't pinged twice).
+const DISCORD_WEBHOOK_URL_GENERAL = process.env.DISCORD_WEBHOOK_URL_GENERAL;
 const DISCORD_ROLE_ID = process.env.DISCORD_ROLE_ID; // optional — pings this role if set
 
 if (!ANTHROPIC_API_KEY || !DISCORD_WEBHOOK_URL) {
   console.error('Missing ANTHROPIC_API_KEY or DISCORD_WEBHOOK_URL environment variable.');
   process.exit(1);
 }
+
+// ---------------------------------------------------------------------------
+// "Queue for next scheduled run" — if someone manually triggers this with a
+// topic AND checks the queue box, we save the topic to a file and stop, WITHOUT
+// posting anything. The next run (typically tonight's automatic scheduled run)
+// will pick it up, use it, then clear it and go back to normal random picks.
+// ---------------------------------------------------------------------------
+const NEXT_TOPIC_PATH = join(__dirname, 'next-topic.txt');
+const QUEUE_FOR_NEXT_RUN = (process.env.QUEUE_FOR_NEXT_RUN || '').trim().toLowerCase() === 'true';
+const RAW_MANUAL_TOPIC = (process.env.MANUAL_TOPIC || '').trim();
+
+if (RAW_MANUAL_TOPIC && QUEUE_FOR_NEXT_RUN) {
+  writeFileSync(NEXT_TOPIC_PATH, RAW_MANUAL_TOPIC + '\n');
+  console.log('Queued topic for the next scheduled run (nothing posted this time):', RAW_MANUAL_TOPIC);
+  process.exit(0);
+}
+
+// A topic queued by an earlier run, waiting to be used — empty string if none.
+const queuedTopic = existsSync(NEXT_TOPIC_PATH) ? readFileSync(NEXT_TOPIC_PATH, 'utf-8').trim() : '';
+let usedQueuedTopic = false;
 
 // ---------------------------------------------------------------------------
 // Load league data
@@ -135,20 +159,25 @@ function storylineFlavorFor(playerName) {
 }
 
 // ---------------------------------------------------------------------------
-// Manual topic override — if someone runs this by hand from the Actions tab
-// and fills in a topic, skip the random angle and report on that instead.
+// Topic override — either a direct manual topic this run, or a queued one
+// left over from an earlier "queue for next run" request. Direct manual
+// topics always take priority if somehow both are present.
 // ---------------------------------------------------------------------------
-const MANUAL_TOPIC = (process.env.MANUAL_TOPIC || '').trim();
+const effectiveTopic = RAW_MANUAL_TOPIC || queuedTopic;
+if (!RAW_MANUAL_TOPIC && queuedTopic) {
+  usedQueuedTopic = true;
+  console.log('Using queued topic from a previous request:', queuedTopic);
+}
 
 let context;
 let angle;
 let subjectId = null;
 
-if (MANUAL_TOPIC) {
+if (effectiveTopic) {
   angle = 'manual_topic';
   context = {
     angle,
-    requestedTopic: MANUAL_TOPIC,
+    requestedTopic: effectiveTopic,
     hallOfFameTop10: data.hallOfFame.slice(0, 10),
     champions: data.champions,
     mvps: data.mvps,
@@ -273,54 +302,78 @@ async function generateReport() {
 // ---------------------------------------------------------------------------
 // Post to Discord
 // ---------------------------------------------------------------------------
-async function postToDiscord(reportText) {
-  const trimmed = reportText.trim();
-  const firstNewline = trimmed.indexOf('\n');
-  const headline = firstNewline === -1 ? trimmed : trimmed.slice(0, firstNewline).trim();
-  const body = firstNewline === -1 ? '' : trimmed.slice(firstNewline + 1).trim();
-
-  const payload = {
-    username: 'Stephen A. Sizzle',
-    avatar_url: 'https://burgertownleagues.com/images/stephen-a-sizzle.jpg',
-    embeds: [
-      {
-        title: headline.slice(0, 256),
-        description: body.slice(0, 4000),
-        color: 0xe2231a,
-        footer: { text: 'Burger Town Leagues' },
-        timestamp: new Date().toISOString(),
-      },
-    ],
-  };
-
-  // A role mention only pings if it's in the top-level "content" field (embeds
-  // never ping), and only if allowed_mentions explicitly permits that role.
-  if (DISCORD_ROLE_ID) {
-    payload.content = `<@&${DISCORD_ROLE_ID}>`;
-    payload.allowed_mentions = { roles: [DISCORD_ROLE_ID] };
-  }
-
-  const res = await fetch(DISCORD_WEBHOOK_URL, {
+async function sendToWebhook(webhookUrl, payload) {
+  const res = await fetch(webhookUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Discord webhook error ${res.status}: ${text}`);
   }
 }
 
+async function postToDiscord(reportText) {
+  const trimmed = reportText.trim();
+  const firstNewline = trimmed.indexOf('\n');
+  const headline = firstNewline === -1 ? trimmed : trimmed.slice(0, firstNewline).trim();
+  const body = firstNewline === -1 ? '' : trimmed.slice(firstNewline + 1).trim();
+
+  const embed = {
+    title: headline.slice(0, 256),
+    description: body.slice(0, 4000),
+    color: 0xe2231a,
+    footer: { text: 'Burger Town Leagues' },
+    timestamp: new Date().toISOString(),
+  };
+
+  const basePayload = {
+    username: 'Stephen A. Sizzle',
+    avatar_url: 'https://burgertownleagues.com/images/stephen-a-sizzle.jpg',
+    embeds: [embed],
+  };
+
+  // Primary channel (#league-news) — gets the role ping, if one is configured.
+  const primaryPayload = { ...basePayload };
+  if (DISCORD_ROLE_ID) {
+    primaryPayload.content = `<@&${DISCORD_ROLE_ID}>`;
+    primaryPayload.allowed_mentions = { roles: [DISCORD_ROLE_ID] };
+  }
+
+  // Fire both channels at the same time — general (if configured) never gets
+  // a role ping, so nobody there is notified, and both posts show up under
+  // the same Stephen A. Sizzle name/avatar since they share basePayload.
+  const sends = [
+    sendToWebhook(DISCORD_WEBHOOK_URL, primaryPayload).then(() =>
+      console.log('Posted to primary channel (league-news).')
+    ),
+  ];
+  if (DISCORD_WEBHOOK_URL_GENERAL) {
+    sends.push(
+      sendToWebhook(DISCORD_WEBHOOK_URL_GENERAL, basePayload).then(() =>
+        console.log('Posted to secondary channel (general).')
+      )
+    );
+  }
+  await Promise.all(sends);
+}
+
 // ---------------------------------------------------------------------------
-// Update history (skipped for manual-topic runs, since those aren't part of
-// the "avoid repeats" rotation)
+// Update history (skipped for topic-driven runs, since those aren't part of
+// the "avoid repeats" rotation), and clear a used queued topic
 // ---------------------------------------------------------------------------
 function updateHistory() {
-  if (MANUAL_TOPIC) return;
+  if (effectiveTopic) return;
   const entry = { date: new Date().toISOString().slice(0, 10), angle, subject: subjectId };
   const updated = [...history, entry].slice(-HISTORY_LIMIT);
   writeFileSync(HISTORY_PATH, JSON.stringify({ recent: updated }, null, 2));
+}
+
+function clearQueuedTopicIfUsed() {
+  if (usedQueuedTopic) {
+    writeFileSync(NEXT_TOPIC_PATH, '');
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -335,6 +388,7 @@ try {
   console.log('Generated report:\n', report);
   await postToDiscord(report);
   updateHistory();
+  clearQueuedTopicIfUsed();
   console.log('Posted to Discord successfully.');
 } catch (err) {
   console.error('Failed to generate/post report:', err);
