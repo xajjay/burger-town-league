@@ -264,7 +264,10 @@ async function generateReport() {
 
   const json = await res.json();
   const block = json.content.find(b => b.type === 'text');
-  return block ? block.text.trim() : null;
+  if (!block) {
+    throw new Error(`Claude response had no text content. Full response: ${JSON.stringify(json)}`);
+  }
+  return block.text.trim();
 }
 
 // ---------------------------------------------------------------------------
@@ -326,6 +329,9 @@ function updateHistory() {
 try {
   console.log('Today\'s angle:', angle, subjectId ? `(${subjectId})` : '');
   const report = await generateReport();
+  if (!report) {
+    throw new Error('generateReport() returned empty content — nothing to post.');
+  }
   console.log('Generated report:\n', report);
   await postToDiscord(report);
   updateHistory();
