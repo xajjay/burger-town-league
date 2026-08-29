@@ -228,7 +228,11 @@ Editorial direction: favor forward-looking content — season previews, players 
 
 The league's upcoming season hasn't started yet, so lean into offseason-style formats: top-10 lists (by role, by stat, by era), "players to watch this season," "the case for X as the greatest Y ever," award-chase storylines. Ranked lists are a great default format here.
 
-Format: a punchy one-line headline, then 2-3 short paragraphs (120-220 words total). No markdown headers, just plain text with the headline as the first line.
+Format: a punchy one-line headline, then the body. Keep it well under the length limit so it never gets cut off mid-sentence — budget your words up front rather than running long and trailing off.
+
+For any ranked/Top-10 list: put a blank line between every single entry so it's easy to read as a list, not a wall of text. Keep each entry to one or two sentences — a quick stat, why they're ranked there, done. Do not add, remove, or reorder any names beyond exactly what's given to you in the data's list (e.g. "top10", "candidates", "leaderboard" fields) — those lists are already correctly filtered by role and stats; never include a player who isn't in the given list, even if you think they'd fit.
+
+No markdown headers.
 
 If the data includes a "requestedTopic" field, someone specifically asked for a report on that exact topic — write about that topic specifically, using the reference data provided to find real supporting facts. If the topic doesn't clearly match anything in the reference data, write the best honest piece you can and don't invent specifics you can't support.`;
 
@@ -247,7 +251,7 @@ async function generateReport() {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-5',
-      max_tokens: 700,
+      max_tokens: 1200,
       system: systemPrompt,
       messages: [{ role: 'user', content: userPrompt }],
     }),
@@ -267,13 +271,14 @@ async function generateReport() {
 // Post to Discord
 // ---------------------------------------------------------------------------
 async function postToDiscord(reportText) {
-  const lines = reportText.split('\n').filter(Boolean);
-  const headline = lines[0];
-  const body = lines.slice(1).join('\n\n');
+  const trimmed = reportText.trim();
+  const firstNewline = trimmed.indexOf('\n');
+  const headline = firstNewline === -1 ? trimmed : trimmed.slice(0, firstNewline).trim();
+  const body = firstNewline === -1 ? '' : trimmed.slice(firstNewline + 1).trim();
 
   const payload = {
     username: 'Stephen A. Sizzle',
-    avatar_url: 'https://burgertownleagues.com/images/burger-icon.png',
+    avatar_url: 'https://burgertownleagues.com/images/stephen-a-sizzle.jpg',
     embeds: [
       {
         title: headline.slice(0, 256),
