@@ -58,7 +58,7 @@ const data = JSON.parse(readFileSync(join(__dirname, '../../src/data/real_data.j
 const storylinesFile = JSON.parse(readFileSync(join(__dirname, 'storylines.json'), 'utf-8'));
 const storylines = storylinesFile.storylines || [];
 const playerNotes = storylinesFile.playerNotes || [];
-const upcomingSeason = JSON.parse(readFileSync(join(__dirname, 'upcoming-signups.json'), 'utf-8'));
+const season6 = JSON.parse(readFileSync(join(__dirname, '../../src/data/season6.json'), 'utf-8'));
 const playerRoles = JSON.parse(readFileSync(join(__dirname, 'player-roles.json'), 'utf-8'));
 
 const HISTORY_PATH = join(__dirname, 'history.json');
@@ -158,6 +158,33 @@ function storylineFlavorFor(playerName) {
   return match ? { title: match.title, oneLiner: match.summary.split('.')[0] + '.' } : null;
 }
 
+// --- Season 6 helpers ---
+const teamByCaptain = Object.fromEntries(season6.teams.map(t => [t.captain, t]));
+
+function lastSeasonInfo(name) {
+  const career = data.career.find(c => c.player.toLowerCase() === name.toLowerCase());
+  if (!career) return { rating: null, isNew: true, isHof: false };
+  const seasons = Object.keys(career.seasonKD || {}).map(Number).sort((a, b) => a - b);
+  const lastSid = seasons[seasons.length - 1];
+  const row = data.seasons[String(lastSid)]?.players.find(p => p.player.toLowerCase() === name.toLowerCase());
+  const isHof = data.hallOfFame.some(h => h.player.toLowerCase() === name.toLowerCase());
+  return { rating: row ? row.overall : null, isNew: false, isHof, lastSeason: lastSid };
+}
+
+function buildTeamSummary(captainName) {
+  const team = teamByCaptain[captainName];
+  if (!team) return null;
+  const allPlayers = [team.captain, ...team.players];
+  const roster = allPlayers.map(name => ({
+    name,
+    role: playerRoles[name] || null,
+    ...lastSeasonInfo(name),
+  }));
+  const rated = roster.filter(p => p.rating != null);
+  const avgRating = rated.length ? rated.reduce((s, p) => s + p.rating, 0) / rated.length : null;
+  return { name: team.name, abbrev: team.abbrev, captain: team.captain, roster, avgRating };
+}
+
 // ---------------------------------------------------------------------------
 // Topic override — either a direct manual topic this run, or a queued one
 // left over from an earlier "queue for next run" request. Direct manual
@@ -186,13 +213,17 @@ if (effectiveTopic) {
     careerLeaders: [...data.career].sort((a, b) => (b.playerOverall ?? 0) - (a.playerOverall ?? 0)).slice(0, 20),
   };
 } else {
-  // The current season (BTL Season 1) hasn't started yet, so this runs in
-  // "offseason" mode — mostly retrospective and preview content, the way real
-  // sports media covers an offseason. Flip hasLiveSeason once real matches exist.
-  const hasLiveSeason = false;
+  // BTL Season 1 (Season 6) has a real schedule now, so live-season content
+  // is available: match previews, the schedule itself, and stat angles that
+  // don't require results yet. Match recaps stay off until real results exist
+  // (flip on once scores start coming in — see the "results" field to add later).
+  const hasLiveSeason = true;
 
   const angles = hasLiveSeason
-    ? ['match_recap', 'upcoming_schedule', 'power_rankings', 'player_spotlight', 'top10_ar', 'top10_smg']
+    ? [
+        'match_preview', 'upcoming_schedule', 'power_rankings_alltime', 'player_spotlight',
+        'top10_ar', 'top10_smg', 'awards_chase', 'best_individual_seasons',
+      ]
     : [
         'player_spotlight', 'power_rankings_alltime', 'season_preview', 'awards_chase',
         'all_time_teams', 'underrated_players', 'best_individual_seasons',
@@ -219,8 +250,198 @@ if (effectiveTopic) {
   } else if (angle === 'power_rankings_alltime') {
     context.top10 = data.hallOfFame.slice(0, 10);
   } else if (angle === 'season_preview') {
-    const allNames = upcomingSeason.teams.flatMap(t => [t.captain, ...t.players]);
-    context.finalTeams = upcomingSeason.teams;
+    const allNames = season6.teams.flatMap(t => [t.captain, ...t.players]);
+    context.finalTeams = season6.teams;
     context.notablePlayers = allNames
-      .map(name => data.career.find(c => c.player.toLowerCase() === name.toLowerCase())) }
-   
+      .map(name => data.career.find(c => c.player.toLowerCase() === name.toLowerCase()))
+      .filter(Boolean)
+      .sort((a, b) => (b.playerOverall ?? 0) - (a.playerOverall ?? 0))
+      .slice(0, 10);
+  } else if (angle === 'match_preview') {
+    const allMatches = season6.schedule.weeks.flatMap(w => w.matches.map(m => ({ week: w.week, match: m })));
+    const upcoming = pickFresh(allMatches, angle, x => `${x.week}-${x.match.join('v')}`);
+    const [capA, capB] = upcoming.match;
+    context.week = upcoming.week;
+    context.matchFormat = season6.matchFormat;
+    context.matchFormatNote = season6.matchFormatNote;
+    context.teamA = buildTeamSummary(capA);
+    context.teamB = buildTeamSummary(capB);
+    subjectId = `${upcoming.week}-${upcoming.match.join('v')}`;
+  } else if (angle === 'upcoming_schedule') {
+    context.currentWeekMatches = season6.schedule.weeks.map(w => ({
+      week: w.week,
+      matches: w.matches.map(([a, b]) => `${teamByCaptain[a]?.name || a} vs ${teamByCaptain[b]?.name || b}`),
+    }));
+  } else if (angle === 'awards_chase') {
+    context.oneSeasonFromHOF = oneSeasonFromHOF;
+    context.allStarsChasingFirstRing = allStarsNoRing;
+    context.chasingTheGoat = chasingGoat;
+    context.currentGoat = data.hallOfFame[0];
+  } else if (angle === 'all_time_teams') {
+    context.topAllTimeTeams = topAllTimeTeams;
+    context.champions = data.champions;
+  } else if (angle === 'underrated_players') {
+    context.candidates = underratedCandidates.slice(0, 12);
+  } else if (angle === 'best_individual_seasons') {
+    context.leaderboard = bestIndividualSeasons;
+  } else if (angle === 'top10_ar') {
+    context.top10 = topARPlayers;
+  } else if (angle === 'top10_smg') {
+    context.top10 = topSMGPlayers;
+  } else if (angle === 'top10_kd_alltime') {
+    context.top10 = topKdAllTime;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Build the prompt
+// ---------------------------------------------------------------------------
+const systemPrompt = `You are Stephen A. Sizzle, the official beat reporter for Burger Town Leagues (BTL), a competitive Call of Duty: Black Ops Cold War draft league. Your job is to write a short daily post for the league's Discord channel. Your name is a nod to sports media's bigger personalities, but don't overplay it — no need to reference your own name or lean into shtick, just let a little personality show through naturally in the writing.
+
+Voice: think real sports media — ESPN, The Athletic, an esports desk. Vary your energy: sometimes a punchy, entertaining take (bold rankings, hot takes on a top 10 list), sometimes calmer and more analytical (stat breakdowns, objective rankings). Never force the hype — confident and a little playful is good, try-hard is not. Use real names and real numbers from the data given. You may draw your own original observations and connections from the stats provided (a quiet streak, an underappreciated pattern, a fair comparison between eras) as long as they're genuinely supported by the numbers you were given — never invent stats, records, or events that aren't in the data.
+
+Editorial direction: favor forward-looking content — season previews, players to watch, power rankings, top-10 lists by role or stat, award-chase storylines, "greatest ever" debates. When history comes up, use it the way sports media uses records and legacy (a player's résumé, a team's dominant stretch, a rivalry in stats) rather than retelling old drama as the headline. If a "briefHistoricalFlavor" field is present, you may drop it in as a single passing line for color — do not make it the focus of the piece.
+
+The league's upcoming season hasn't started yet, so lean into offseason-style formats: top-10 lists (by role, by stat, by era), "players to watch this season," "the case for X as the greatest Y ever," award-chase storylines. Ranked lists are a great default format here.
+
+If the data includes "teamA" and "teamB" (a match preview): this is a real upcoming series. Remember this is Call of Duty played 4v4 — each roster has 5 players (4 active + 1 who sits that series), so when picking standout performers, reason about which 4 are most likely playing rather than assuming every listed player is on the server. Compare the two rosters using the ratings and roles given, and make an actual prediction — pick a side and say why, referencing specific players. Also predict specific statlines for 2-3 standout players (a plausible K/D or kill count based on their real rating and role, clearly framed as a prediction, not a fact). Mention the match format if given (e.g. best of 5: Hardpoint, Search & Destroy, Control, Hardpoint, Search & Destroy). Don't hedge into "too close to call" — sports previews commit to a pick.
+
+If the data includes "currentWeekMatches" (a schedule rundown): list out the matchups clearly, organized by week, in a natural preview-desk tone.
+
+Format: a punchy one-line headline, then the body. Keep it well under the length limit so it never gets cut off mid-sentence — budget your words up front rather than running long and trailing off.
+
+For any ranked/Top-10 list: put a blank line between every single entry so it's easy to read as a list, not a wall of text. Keep each entry to one or two sentences — a quick stat, why they're ranked there, done. Do not add, remove, or reorder any names beyond exactly what's given to you in the data's list (e.g. "top10", "candidates", "leaderboard" fields) — those lists are already correctly filtered by role and stats; never include a player who isn't in the given list, even if you think they'd fit.
+
+No markdown headers.
+
+If the data includes a "requestedTopic" field, someone specifically asked for a report on that exact topic — write about that topic specifically, using the reference data provided to find real supporting facts. If the topic doesn't clearly match anything in the reference data, write the best honest piece you can and don't invent specifics you can't support.`;
+
+const userPrompt = `Write today's report. Here is the data to base it on:\n\n${JSON.stringify(context, null, 2)}`;
+
+// ---------------------------------------------------------------------------
+// Call Claude
+// ---------------------------------------------------------------------------
+async function generateReport() {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-5',
+      max_tokens: 4096,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userPrompt }],
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Anthropic API error ${res.status}: ${text}`);
+  }
+
+  const json = await res.json();
+  const block = json.content.find(b => b.type === 'text');
+  if (!block) {
+    throw new Error(`Claude response had no text content. Full response: ${JSON.stringify(json)}`);
+  }
+  return block.text.trim();
+}
+
+// ---------------------------------------------------------------------------
+// Post to Discord
+// ---------------------------------------------------------------------------
+async function sendToWebhook(webhookUrl, payload) {
+  const res = await fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Discord webhook error ${res.status}: ${text}`);
+  }
+}
+
+async function postToDiscord(reportText) {
+  const trimmed = reportText.trim();
+  const firstNewline = trimmed.indexOf('\n');
+  const headline = firstNewline === -1 ? trimmed : trimmed.slice(0, firstNewline).trim();
+  const body = firstNewline === -1 ? '' : trimmed.slice(firstNewline + 1).trim();
+
+  const embed = {
+    title: headline.slice(0, 256),
+    description: body.slice(0, 4000),
+    color: 0xe2231a,
+    footer: { text: 'Burger Town Leagues' },
+    timestamp: new Date().toISOString(),
+  };
+
+  const basePayload = {
+    username: 'Stephen A. Sizzle',
+    avatar_url: 'https://burgertownleagues.com/images/stephen-a-sizzle.jpg',
+    embeds: [embed],
+  };
+
+  // Primary channel (#league-news) — gets the role ping, if one is configured.
+  const primaryPayload = { ...basePayload };
+  if (DISCORD_ROLE_ID) {
+    primaryPayload.content = `<@&${DISCORD_ROLE_ID}>`;
+    primaryPayload.allowed_mentions = { roles: [DISCORD_ROLE_ID] };
+  }
+
+  // Fire both channels at the same time — general (if configured) never gets
+  // a role ping, so nobody there is notified, and both posts show up under
+  // the same Stephen A. Sizzle name/avatar since they share basePayload.
+  const sends = [
+    sendToWebhook(DISCORD_WEBHOOK_URL, primaryPayload).then(() =>
+      console.log('Posted to primary channel (league-news).')
+    ),
+  ];
+  if (DISCORD_WEBHOOK_URL_GENERAL) {
+    sends.push(
+      sendToWebhook(DISCORD_WEBHOOK_URL_GENERAL, basePayload).then(() =>
+        console.log('Posted to secondary channel (general).')
+      )
+    );
+  }
+  await Promise.all(sends);
+}
+
+// ---------------------------------------------------------------------------
+// Update history (skipped for topic-driven runs, since those aren't part of
+// the "avoid repeats" rotation), and clear a used queued topic
+// ---------------------------------------------------------------------------
+function updateHistory() {
+  if (effectiveTopic) return;
+  const entry = { date: new Date().toISOString().slice(0, 10), angle, subject: subjectId };
+  const updated = [...history, entry].slice(-HISTORY_LIMIT);
+  writeFileSync(HISTORY_PATH, JSON.stringify({ recent: updated }, null, 2));
+}
+
+function clearQueuedTopicIfUsed() {
+  if (usedQueuedTopic) {
+    writeFileSync(NEXT_TOPIC_PATH, '');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Run
+// ---------------------------------------------------------------------------
+try {
+  console.log('Today\'s angle:', angle, subjectId ? `(${subjectId})` : '');
+  const report = await generateReport();
+  if (!report) {
+    throw new Error('generateReport() returned empty content — nothing to post.');
+  }
+  console.log('Generated report:\n', report);
+  await postToDiscord(report);
+  updateHistory();
+  clearQueuedTopicIfUsed();
+  console.log('Posted to Discord successfully.');
+} catch (err) {
+  console.error('Failed to generate/post report:', err);
+  process.exit(1);
+}

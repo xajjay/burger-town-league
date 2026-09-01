@@ -3,6 +3,8 @@
   "year": 2026,
   "leagueName": "Burger Town Leagues Season 1",
   "status": "Draft complete — season starting soon",
+  "matchFormat": ["Hardpoint", "Search & Destroy", "Control", "Hardpoint", "Search & Destroy"],
+  "matchFormatNote": "Best of 5",
   "teams": [
     { "name": "Nashville Mighty Ducks", "abbrev": "NSH", "captain": "Aj", "players": ["Jmetree", "Acro Ace", "Chadwick", "Moon"] },
     { "name": "San Jose Cougars", "abbrev": "SJ", "captain": "Aurora", "players": ["Waly", "Proxzify", "Toremeant", "Trap"] },
