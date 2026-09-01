@@ -1,7 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
-import { upcomingSeasonLabel, upcomingSeasonYear, signupFormUrl, social } from '../../data/leagueData.js';
+import { upcomingSeasonLabel, upcomingSeasonYear, social } from '../../data/leagueData.js';
+import season6 from '../../data/season6.json';
 
 const currentPath = Astro.url.pathname;
 ---
@@ -13,23 +14,36 @@ const currentPath = Astro.url.pathname;
           <a class={`season-pill ${currentPath === `/current-season/${t.slug}` || (t.slug === '' && currentPath === '/current-season') || (t.slug === '' && currentPath === '/current-season/') ? 'active' : ''}`} href={`/current-season/${t.slug}`}>{t.label}</a>
         ))}
       </div>
-      <span class="eyebrow">Coming Soon</span>
+      <span class="eyebrow">{season6.status}</span>
       <h1 class="script-heading">{upcomingSeasonLabel} ({upcomingSeasonYear})</h1>
       <p style="color: var(--paper-dim); max-width: 60ch;">
-        Burger Town's first official season. We're building out rosters, standings, and schedule now. Check back soon, or join the Discord to be the first to know when the draft goes live.
+        The draft is done — 6 teams, 5 players each, ready to go. Check the Rosters and Schedule tabs for the full breakdown, or join the Discord for match updates.
       </p>
     </div>
   </section>
 
   <section>
     <div class="wrap">
+      <h2 class="section-title">The Six Teams</h2>
+      <div class="grid grid-3">
+        {season6.teams.map(team => (
+          <div class="pixel-card">
+            <span class="eyebrow">{team.abbrev}</span>
+            <p style="font-weight: 700; color: var(--paper); margin: 4px 0 8px; font-size: 1.05rem;">{team.name}</p>
+            <p style="color: var(--paper-dim); font-size: 0.85rem;">Captain: <a href={`/players/${encodeURIComponent(team.captain)}`} style="color: var(--gold);">{team.captain}</a></p>
+          </div>
+        ))}
+      </div>
+      <p style="margin-top: 20px;"><a class="btn btn-ghost" href="/current-season/rosters">View Full Rosters</a> <a class="btn btn-ghost" href="/current-season/schedule">View Schedule</a></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
       <div class="pixel-card" style="max-width: 560px;">
-        <span class="eyebrow">Status</span>
-        <p style="color: var(--paper); font-size: 1.1rem; margin: 4px 0 16px;">Season details are on the way. Sign up now to be drafted onto a team.</p>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <a class="btn btn-primary" href={signupFormUrl} target="_blank" rel="noopener">Sign Up</a>
-          <a class="btn btn-ghost" href={social.discord} target="_blank" rel="noopener">Join the Discord</a>
-        </div>
+        <span class="eyebrow">Get Notified</span>
+        <p style="color: var(--paper); font-size: 1.1rem; margin: 4px 0 16px;">Follow along in Discord for match schedules and results as the season kicks off.</p>
+        <a class="btn btn-primary" href={social.discord} target="_blank" rel="noopener">Join the Discord</a>
       </div>
     </div>
   </section>

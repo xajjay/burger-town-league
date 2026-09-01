@@ -1,0 +1,12 @@
+{
+  "draftComplete": true,
+  "teams": [
+    { "captain": "Aurora", "captainRole": "SMG", "players": ["Waly", "Proxzify", "Toremeant", "Trap"] },
+    { "captain": "Aj", "captainRole": "SMG", "players": ["Jmetree", "Acro Ace", "Chadwick", "Moon"] },
+    { "captain": "CrazieViews", "captainRole": "AR", "players": ["Lewy", "Utopian", "Noti", "Zylix"] },
+    { "captain": "Renicide", "captainRole": "SMG", "players": ["Nastyy", "Karnij", "Horror", "Scary"] },
+    { "captain": "Inkster", "captainRole": "AR", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"] },
+    { "captain": "Hype", "captainRole": "AR", "players": ["Aldo", "Realm", "Zico", "Shasta"] }
+  ],
+  "note": "Draft complete as of the 6-captain snake draft. Each team has 5 players (captain + 4)."
+}

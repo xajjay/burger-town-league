@@ -1,7 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
-import { rulebookUrl } from '../../data/leagueData.js';
+import { rulebookUrl, isHofPlayer, hasSuperBurger } from '../../data/leagueData.js';
+import season6 from '../../data/season6.json';
 
 export function getStaticPaths() {
   return currentSeasonTabs
@@ -12,6 +13,8 @@ export function getStaticPaths() {
 const { tab } = Astro.params;
 const { label } = Astro.props;
 const currentPath = Astro.url.pathname;
+
+const teamByCaptain = Object.fromEntries(season6.teams.map(t => [t.captain, t]));
 ---
 <Base title={`${label} | Current Season | Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
@@ -21,7 +24,8 @@ const currentPath = Astro.url.pathname;
           <a class={`season-pill ${currentPath === `/current-season/${t.slug}` ? 'active' : ''}`} href={`/current-season/${t.slug}`}>{t.label}</a>
         ))}
       </div>
-      {tab === 'rulebook' ? (
+
+      {tab === 'rulebook' && (
         <>
           <span class="eyebrow">Official Rules</span>
           <h1 class="script-heading">Rulebook</h1>
@@ -30,15 +34,120 @@ const currentPath = Astro.url.pathname;
           </p>
           <a class="btn btn-primary" href={rulebookUrl} target="_blank" rel="noopener">View Rulebook</a>
         </>
-      ) : (
+      )}
+
+      {tab === 'rosters' && (
+        <>
+          <span class="eyebrow">{season6.status}</span>
+          <h1 class="script-heading" style="margin-bottom: 24px;">Team Rosters</h1>
+        </>
+      )}
+
+      {tab === 'standings' && (
+        <>
+          <span class="eyebrow">{season6.status}</span>
+          <h1 class="script-heading" style="margin-bottom: 8px;">Standings</h1>
+          <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 24px;">
+            All teams start even — real standings will populate once matches begin.
+          </p>
+        </>
+      )}
+
+      {tab === 'schedule' && (
+        <>
+          <span class="eyebrow">{season6.status}</span>
+          <h1 class="script-heading" style="margin-bottom: 24px;">Schedule</h1>
+        </>
+      )}
+
+      {(tab === 'player-stats') && (
         <>
           <span class="eyebrow">Coming Soon</span>
           <h1 class="script-heading">{label}</h1>
           <p style="color: var(--paper-dim); max-width: 60ch;">
-            {label} for Burger Town's first season will show up here once the season is underway.
+            {label} will show up here once real matches are played.
           </p>
         </>
       )}
     </div>
   </section>
+
+  {tab === 'rosters' && (
+    <section>
+      <div class="wrap">
+        <div class="teams-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;">
+          {season6.teams.map(team => (
+            <div class="pixel-card">
+              <span class="eyebrow">{team.abbrev}</span>
+              <h2 style="font-family: var(--font-body); font-weight: 700; margin: 4px 0 12px; color: var(--paper);">{team.name}</h2>
+              <table class="stat-table">
+                <tbody>
+                  <tr>
+                    <td><a href={`/players/${encodeURIComponent(team.captain)}`} class={`${isHofPlayer(team.captain) ? 'hof-name' : ''}`}>{team.captain}</a></td>
+                    <td><span class="badge badge-gold">Captain</span></td>
+                  </tr>
+                  {team.players.map(p => (
+                    <tr>
+                      <td><a href={`/players/${encodeURIComponent(p)}`} class={`${isHofPlayer(p) ? 'hof-name' : ''} ${hasSuperBurger(p) ? 'superburger-name' : ''}`}>{p}</a></td>
+                      <td></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+        {season6.freeAgents.length > 0 && (
+          <p style="color: var(--paper-dim); margin-top: 24px;">Unrostered free agents: {season6.freeAgents.join(', ')}</p>
+        )}
+      </div>
+    </section>
+  )}
+
+  {tab === 'standings' && (
+    <section>
+      <div class="wrap">
+        <div class="table-scroll">
+          <table class="stat-table">
+            <thead><tr><th>Team</th><th>Captain</th><th>Record</th></tr></thead>
+            <tbody>
+              {season6.teams.map(team => (
+                <tr>
+                  <td>{team.name}</td>
+                  <td><a href={`/players/${encodeURIComponent(team.captain)}`}>{team.captain}</a></td>
+                  <td>0-0</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {tab === 'schedule' && (
+    <section>
+      <div class="wrap">
+        {season6.schedule.weeks.map(week => (
+          <>
+            <h2 class="section-title">Week {week.week}</h2>
+            <div class="table-scroll" style="margin-bottom: 32px;">
+              <table class="stat-table">
+                <thead><tr><th>Matchup</th></tr></thead>
+                <tbody>
+                  {week.matches.map(([a, b]) => (
+                    <tr>
+                      <td>
+                        {teamByCaptain[a]?.name || a} <span style="color: var(--paper-dim);">vs</span> {teamByCaptain[b]?.name || b}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ))}
+      </div>
+    </section>
+  )}
 </Base>

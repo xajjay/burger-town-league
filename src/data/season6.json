@@ -1,0 +1,43 @@
+{
+  "seasonNumber": 6,
+  "year": 2026,
+  "leagueName": "Burger Town Leagues Season 1",
+  "status": "Draft complete — season starting soon",
+  "teams": [
+    { "name": "Nashville Mighty Ducks", "abbrev": "NSH", "captain": "Aj", "players": ["Jmetree", "Acro Ace", "Chadwick", "Moon"] },
+    { "name": "San Jose Cougars", "abbrev": "SJ", "captain": "Aurora", "players": ["Waly", "Proxzify", "Toremeant", "Trap"] },
+    { "name": "Miami Reapers", "abbrev": "MIA", "captain": "Renicide", "players": ["Nastyy", "Karnij", "Horror", "Scary"] },
+    { "name": "Newark Stars", "abbrev": "NWK", "captain": "CrazieViews", "players": ["Lewy", "Utopian", "Noti", "Zylix"] },
+    { "name": "Chicago $wervo", "abbrev": "CHI", "captain": "Hype", "players": ["Aldo", "Realm", "Zico", "Shasta"] },
+    { "name": "Detroit Dirty Dogs", "abbrev": "DET", "captain": "Inkster", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"] }
+  ],
+  "freeAgents": ["Bombz"],
+  "schedule": {
+    "weeks": [
+      {
+        "week": 1,
+        "matches": [
+          ["Aurora", "CrazieViews"], ["Aurora", "Hype"],
+          ["Aj", "Renicide"], ["Aj", "Inkster"],
+          ["CrazieViews", "Hype"], ["Renicide", "Inkster"]
+        ]
+      },
+      {
+        "week": 2,
+        "matches": [
+          ["Aurora", "Aj"], ["Aurora", "Inkster"],
+          ["Aj", "Hype"], ["CrazieViews", "Renicide"],
+          ["CrazieViews", "Inkster"], ["Renicide", "Hype"]
+        ]
+      },
+      {
+        "week": 3,
+        "matches": [
+          ["Aurora", "Renicide"], ["Aurora", "Inkster"],
+          ["Aj", "CrazieViews"], ["Aj", "Renicide"],
+          ["CrazieViews", "Hype"], ["Inkster", "Hype"]
+        ]
+      }
+    ]
+  }
+}

@@ -1371,6 +1371,21 @@
       "accolades": ""
     },
     {
+      "player": "AGF",
+      "seasonsLabel": "S1",
+      "numQualifyingSeasons": 1,
+      "kills": 204,
+      "deaths": 239,
+      "kd": 0.8535564853556485,
+      "seasonKD": {
+        "1": 0.8535564853556485
+      },
+      "maps": 13,
+      "avgSeasonOverall": 76,
+      "playerOverall": 76,
+      "accolades": ""
+    },
+    {
       "player": "Underwrld",
       "seasonsLabel": "S1, S2",
       "numQualifyingSeasons": 2,
@@ -1383,21 +1398,6 @@
       },
       "maps": 12,
       "avgSeasonOverall": 74.3,
-      "playerOverall": 76,
-      "accolades": ""
-    },
-    {
-      "player": "AGF",
-      "seasonsLabel": "S1",
-      "numQualifyingSeasons": 1,
-      "kills": 204,
-      "deaths": 239,
-      "kd": 0.8535564853556485,
-      "seasonKD": {
-        "1": 0.8535564853556485
-      },
-      "maps": 13,
-      "avgSeasonOverall": 76,
       "playerOverall": 76,
       "accolades": ""
     },
@@ -2157,8 +2157,8 @@
     "user": "User",
     "horror": "Horror",
     "edot": "Edot",
-    "underwrld": "Underwrld",
     "agf": "AGF",
+    "underwrld": "Underwrld",
     "lt7": "LT7",
     "sergio": "Sergio",
     "ibo": "IBO",
@@ -5672,7 +5672,7 @@
         {
           "team": "New York G Pieces",
           "officialFinish": "1st",
-          "champion": true,
+          "champion": false,
           "runnerUp": false,
           "record": "3-1",
           "mapRecord": "10-7",
@@ -5711,7 +5711,7 @@
           "team": "Boston Excane",
           "officialFinish": "2nd",
           "champion": false,
-          "runnerUp": true,
+          "runnerUp": false,
           "record": "3-1",
           "mapRecord": "11-5",
           "winPct": "75%",
@@ -5748,7 +5748,7 @@
         {
           "team": "New Orleans No Legs Academy",
           "officialFinish": "3rd",
-          "champion": false,
+          "champion": true,
           "runnerUp": false,
           "record": "3-1",
           "mapRecord": "11-6",
@@ -5787,7 +5787,7 @@
           "team": "Seattle Aces",
           "officialFinish": "4th",
           "champion": false,
-          "runnerUp": false,
+          "runnerUp": true,
           "record": "2-2",
           "mapRecord": "7-8",
           "winPct": "50%",
@@ -7031,7 +7031,7 @@
         {
           "team": "Honolulu Hummingbirds",
           "officialFinish": "1st",
-          "champion": true,
+          "champion": false,
           "runnerUp": false,
           "record": "6-2",
           "mapRecord": "20-11",
@@ -7074,8 +7074,8 @@
         {
           "team": "WCi LA",
           "officialFinish": "2nd",
-          "champion": false,
-          "runnerUp": true,
+          "champion": true,
+          "runnerUp": false,
           "record": "6-2",
           "mapRecord": "19-9",
           "winPct": "75%",
@@ -7252,7 +7252,7 @@
           "team": "New York Freaky D's",
           "officialFinish": "6th",
           "champion": false,
-          "runnerUp": false,
+          "runnerUp": true,
           "record": "4-4",
           "mapRecord": "16-12",
           "winPct": "50%",
