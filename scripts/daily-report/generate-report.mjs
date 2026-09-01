@@ -60,6 +60,7 @@ const storylines = storylinesFile.storylines || [];
 const playerNotes = storylinesFile.playerNotes || [];
 const season6 = JSON.parse(readFileSync(join(__dirname, '../../src/data/season6.json'), 'utf-8'));
 const playerRoles = JSON.parse(readFileSync(join(__dirname, 'player-roles.json'), 'utf-8'));
+const playerTiers = JSON.parse(readFileSync(join(__dirname, 'player-tiers.json'), 'utf-8'));
 
 const HISTORY_PATH = join(__dirname, 'history.json');
 const HISTORY_LIMIT = 20; // how many past picks we remember, to avoid repeats
@@ -186,6 +187,80 @@ function buildTeamSummary(captainName) {
 }
 
 // ---------------------------------------------------------------------------
+// Betting lines — "Kills, Maps 1-3" (PrizePicks/CDL style over-under), built
+// from real career kills-per-map, adjusted by each player's own per-mode K/D,
+// blended across the maps 1-3 format (Hardpoint, Search & Destroy, Control —
+// one map each). Falls back to an empirical tier average (computed from real
+// tiered players' career data) for anyone with no league history.
+//
+// These multipliers reflect typical relative kill volume per mode in
+// competitive Cold War (Hardpoint's continuous respawns produce far more
+// kills per map than round-based Search & Destroy, with Control in between).
+// They're set so their average is 1.0, so summing all three modes at a
+// player's baseline kills-per-map reconstructs their overall average exactly
+// when no per-mode adjustment is applied.
+const MODE_KPM_MULT = { hp: 1.7, snd: 0.4, ctl: 0.9 };
+
+// Empirical tier baselines — computed once from real tiered players who have
+// career history, used only as a fallback for brand-new/unrated players.
+const TIER_FALLBACK_KPM = { A: 19.23, B: 18.08, C: 14.53 };
+
+function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+
+function estimateKillsMaps1to3(playerName) {
+  const career = data.career.find(c => c.player.toLowerCase() === playerName.toLowerCase());
+  const tier = playerTiers[playerName] || null;
+
+  let baseKpm, hpKd = null, sndKd = null, ctlKd = null, overallKd = null, source;
+
+  if (career && career.maps > 0) {
+    baseKpm = career.kills / career.maps;
+    overallKd = career.kd;
+    // Pull the player's most recent season row for mode-specific K/D, if available
+    const seasons = Object.keys(career.seasonKD || {}).map(Number).sort((a, b) => a - b);
+    const lastSid = seasons[seasons.length - 1];
+    const row = lastSid != null ? data.seasons[String(lastSid)]?.players.find(p => p.player.toLowerCase() === playerName.toLowerCase()) : null;
+    if (row) { hpKd = row.hpKd; sndKd = row.sndKd; ctlKd = row.ctlKd; }
+    source = 'career history';
+  } else {
+    baseKpm = tier ? TIER_FALLBACK_KPM[tier] : TIER_FALLBACK_KPM.C;
+    source = tier ? `${tier}-tier average (no league history)` : 'league-average fallback (no data at all)';
+  }
+
+  function modeEstimate(mult, modeKd) {
+    let kpm = baseKpm * mult;
+    if (modeKd != null && overallKd) {
+      const adj = clamp(modeKd / overallKd, 0.75, 1.3);
+      kpm *= adj;
+    }
+    return kpm;
+  }
+
+  const hp = modeEstimate(MODE_KPM_MULT.hp, hpKd);
+  const snd = modeEstimate(MODE_KPM_MULT.snd, sndKd);
+  const ctl = modeEstimate(MODE_KPM_MULT.ctl, ctlKd);
+  const total = hp + snd + ctl;
+
+  // Sportsbook convention: line set at X.5 (floor + 0.5) so a push is impossible
+  const roundedLine = Math.floor(total) + 0.5;
+
+  return {
+    player: playerName,
+    tier,
+    line: roundedLine,
+    projected: Math.round(total * 10) / 10,
+    breakdown: { hardpoint: Math.round(hp * 10) / 10, searchAndDestroy: Math.round(snd * 10) / 10, control: Math.round(ctl * 10) / 10 },
+    source,
+  };
+}
+
+function buildBettingLines(teamSummary) {
+  return teamSummary.roster
+    .filter(p => p.role) // skip totally unknown role players (can't reason about them at all)
+    .map(p => estimateKillsMaps1to3(p.name));
+}
+
+// ---------------------------------------------------------------------------
 // Topic override — either a direct manual topic this run, or a queued one
 // left over from an earlier "queue for next run" request. Direct manual
 // topics always take priority if somehow both are present.
@@ -266,6 +341,11 @@ if (effectiveTopic) {
     context.matchFormatNote = season6.matchFormatNote;
     context.teamA = buildTeamSummary(capA);
     context.teamB = buildTeamSummary(capB);
+    context.bettingLines = {
+      note: 'Kills, Maps 1-3 (Hardpoint + Search & Destroy + Control) — over/under lines, PrizePicks/CDL style',
+      [context.teamA.name]: buildBettingLines(context.teamA),
+      [context.teamB.name]: buildBettingLines(context.teamB),
+    };
     subjectId = `${upcoming.week}-${upcoming.match.join('v')}`;
   } else if (angle === 'upcoming_schedule') {
     context.currentWeekMatches = season6.schedule.weeks.map(w => ({
@@ -305,6 +385,8 @@ Editorial direction: favor forward-looking content — season previews, players 
 The league's upcoming season hasn't started yet, so lean into offseason-style formats: top-10 lists (by role, by stat, by era), "players to watch this season," "the case for X as the greatest Y ever," award-chase storylines. Ranked lists are a great default format here.
 
 If the data includes "teamA" and "teamB" (a match preview): this is a real upcoming series. Remember this is Call of Duty played 4v4 — each roster has 5 players (4 active + 1 who sits that series), so when picking standout performers, reason about which 4 are most likely playing rather than assuming every listed player is on the server. Compare the two rosters using the ratings and roles given, and make an actual prediction — pick a side and say why, referencing specific players. Also predict specific statlines for 2-3 standout players (a plausible K/D or kill count based on their real rating and role, clearly framed as a prediction, not a fact). Mention the match format if given (e.g. best of 5: Hardpoint, Search & Destroy, Control, Hardpoint, Search & Destroy). Don't hedge into "too close to call" — sports previews commit to a pick.
+
+If the data includes "bettingLines": present these as betting-style over/under lines, PrizePicks/CDL format — e.g. "Jmetree — Kills, Maps 1-3: 20.5 (Over/Under)". Give a one-line lean (over or under) on 2-3 of the more interesting lines, briefly explaining why based on their role, tier, or recent form. Don't present every single line with commentary — a quick hits list is fine, most of them can just be listed. If a line's source is a tier-based estimate (no league history), you can mention it's a projection since there's no track record yet, without dwelling on it.
 
 If the data includes "currentWeekMatches" (a schedule rundown): list out the matchups clearly, organized by week, in a natural preview-desk tone.
 
