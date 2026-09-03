@@ -1,0 +1,106 @@
+---
+import Base from '../../../layouts/Base.astro';
+import season6Matches from '../../../data/season6-matches.json';
+import { isHofPlayer, hasSuperBurger } from '../../../data/leagueData.js';
+
+export function getStaticPaths() {
+  return season6Matches.series.map(s => ({
+    params: { slug: s.slug },
+    props: { series: s },
+  }));
+}
+
+const { series } = Astro.props;
+const byTeam = { [series.teamA]: [], [series.teamB]: [] };
+for (const p of series.players) {
+  (byTeam[p.team] ||= []).push(p);
+}
+const teamTotals = [series.teamA, series.teamB].map(t => ({
+  team: t,
+  kills: byTeam[t].reduce((s, p) => s + (p.kills || 0), 0),
+  deaths: byTeam[t].reduce((s, p) => s + (p.deaths || 0), 0),
+}));
+---
+<Base title={`${series.name} | Burger Town Leagues`}>
+  <section style="padding-bottom: 0;">
+    <div class="wrap">
+      <a href="/current-season/schedule" class="btn btn-ghost" style="margin-bottom: 20px; display: inline-flex;">← Back to Schedule</a>
+      <span class="eyebrow">Week {series.week} · Season 6</span>
+      <h1 class="script-heading" style="font-size: 2.2rem;">{series.name}</h1>
+      <p style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">{series.winner} wins {series.seriesScore}</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Map by Map</h2>
+      <div class="table-scroll" style="margin-bottom: 32px;">
+        <table class="stat-table">
+          <thead><tr><th>Map</th><th>Mode</th><th>{series.teamA}</th><th>{series.teamB}</th><th>Winner</th></tr></thead>
+          <tbody>
+            {series.maps.map(m => (
+              <tr>
+                <td>{m.map}</td>
+                <td>{m.mode}</td>
+                <td class={m.winner === series.teamA ? 'rank-1' : ''}>{m.teamAScore}</td>
+                <td class={m.winner === series.teamB ? 'rank-1' : ''}>{m.teamBScore}</td>
+                <td style="color: var(--gold); font-weight: 700;">{m.winner}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid grid-3" style="margin-bottom: 32px;">
+        {teamTotals.map(t => (
+          <div class="pixel-card">
+            <span class="eyebrow">{t.team}</span>
+            <p style="font-family: var(--font-mono); font-size: 1.3rem; color: var(--gold); margin: 4px 0;">
+              {t.kills}<span style="color: var(--paper-dim); font-size: 0.9rem;"> Kills</span> · {t.deaths}<span style="color: var(--paper-dim); font-size: 0.9rem;"> Deaths</span>
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {[series.teamA, series.teamB].map(t => (
+        <>
+          <h2 class="section-title">{t}</h2>
+          <div class="table-scroll" style="margin-bottom: 32px;">
+            <table class="stat-table">
+              <thead>
+                <tr>
+                  <th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th>
+                  {series.maps.map(m => <th>Map {m.mapNum}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {byTeam[t].sort((a, b) => b.kills - a.kills).map(p => (
+                  <tr>
+                    <td>
+                      {p.isManager ? (
+                        <span style="color: var(--paper-dim); font-style: italic;">{p.player} (Manager)</span>
+                      ) : (
+                        <a href={`/players/${encodeURIComponent(p.player)}`} class={`${isHofPlayer(p.player) ? 'hof-name' : ''} ${hasSuperBurger(p.player) ? 'superburger-name' : ''}`}>{p.player}</a>
+                      )}
+                    </td>
+                    <td>{p.kills}</td>
+                    <td>{p.deaths}</td>
+                    <td>{p.deaths > 0 ? (p.kills / p.deaths).toFixed(2) : p.kills.toFixed(2)}</td>
+                    {p.perMap.map((k, i) => (
+                      <td>{k != null ? `${k}-${p.perMapDeaths[i]}` : '—'}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {byTeam[t].some(p => p.note) && (
+            <p style="color: var(--paper-dim); font-size: 0.8rem; margin-top: -16px; margin-bottom: 24px;">
+              {byTeam[t].filter(p => p.note).map(p => `${p.player}: ${p.note}`).join(' · ')}
+            </p>
+          )}
+        </>
+      ))}
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,39 @@
+{
+  "series": [
+    {
+      "slug": "nashville-mighty-ducks-vs-detroit-dirty-dogs",
+      "week": 1,
+      "name": "Nashville Mighty Ducks vs Detroit Dirty Dogs",
+      "teamA": "Nashville Mighty Ducks",
+      "teamB": "Detroit Dirty Dogs",
+      "seriesScore": "3-2",
+      "winner": "Nashville Mighty Ducks",
+      "forfeit": false,
+      "maps": [
+        { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 196, "winner": "Nashville Mighty Ducks" },
+        { "mapNum": 2, "map": "Checkmate", "mode": "Control", "teamAScore": 0, "teamBScore": 3, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 3, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 2, "teamBScore": 6, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 4, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 149, "winner": "Nashville Mighty Ducks" },
+        { "mapNum": 5, "map": "Moscow", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 5, "winner": "Nashville Mighty Ducks" }
+      ],
+      "players": [
+        { "player": "Aj", "team": "Nashville Mighty Ducks", "kills": 88, "deaths": 83, "perMap": [44, 2, 12, 23, 7], "perMapDeaths": [26, 7, 19, 23, 8] },
+        { "player": "Jmetree", "team": "Nashville Mighty Ducks", "kills": 90, "deaths": 85, "perMap": [27, 6, 19, 30, 8], "perMapDeaths": [29, 7, 18, 22, 9] },
+        { "player": "Acro Ace", "team": "Nashville Mighty Ducks", "kills": 91, "deaths": 68, "perMap": [35, 7, 16, 24, 9], "perMapDeaths": [20, 6, 17, 20, 5] },
+        { "player": "Chadwick", "team": "Nashville Mighty Ducks", "kills": 44, "deaths": 52, "perMap": [null, 5, 5, 24, 10], "perMapDeaths": [null, 7, 17, 20, 8] },
+        { "player": "Shadow", "team": "Nashville Mighty Ducks", "kills": 12, "deaths": 30, "perMap": [12, null, null, null, null], "perMapDeaths": [30, null, null, null, null], "note": "Nashville's team manager — emergency-subbed in for Map 1 only, then Chadwick took over for the rest of the series", "isManager": true },
+        { "player": "Inkster", "team": "Detroit Dirty Dogs", "kills": 86, "deaths": 76, "perMap": [24, 10, 21, 25, 6], "perMapDeaths": [26, 2, 13, 25, 10] },
+        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 76, "deaths": 85, "perMap": [26, 3, 18, 23, 6], "perMapDeaths": [33, 7, 13, 25, 7] },
+        { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 81, "deaths": 81, "perMap": [30, 7, 14, 21, 9], "perMapDeaths": [27, 6, 12, 26, 10] },
+        { "player": "Peach", "team": "Detroit Dirty Dogs", "kills": 75, "deaths": 83, "perMap": [25, 7, 18, 16, 9], "perMapDeaths": [32, 5, 14, 25, 7] }
+      ]
+    }
+  ],
+  "voidedResults": [
+    {
+      "matchup": "Newark Stars vs London Royal Ravens",
+      "week": 1,
+      "note": "Originally ruled a 3-0 forfeit win for Newark Stars after London Royal Ravens' roster collapse. The forfeit was voided after the two teams agreed to play the series as scheduled — rescheduled to the next night."
+    }
+  ]
+}

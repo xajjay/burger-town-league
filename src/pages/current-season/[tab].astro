@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
 import { rulebookUrl, isHofPlayer, hasSuperBurger } from '../../data/leagueData.js';
 import season6 from '../../data/season6.json';
+import season6Matches from '../../data/season6-matches.json';
 
 export function getStaticPaths() {
   return currentSeasonTabs
@@ -15,6 +16,18 @@ const { label } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 const teamByCaptain = Object.fromEntries(season6.teams.map(t => [t.captain, t]));
+
+function recordSortKey(record) {
+  const [w, l] = record.split('-').map(Number);
+  return w - l;
+}
+const sortedStandings = [...season6.teams].sort((a, b) => recordSortKey(b.record) - recordSortKey(a.record));
+
+function findSeriesFor(teamAName, teamBName) {
+  return season6Matches.series.find(s =>
+    (s.teamA === teamAName && s.teamB === teamBName) || (s.teamA === teamBName && s.teamB === teamAName)
+  );
+}
 ---
 <Base title={`${label} | Current Season | Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
@@ -48,7 +61,7 @@ const teamByCaptain = Object.fromEntries(season6.teams.map(t => [t.captain, t]))
           <span class="eyebrow">{season6.status}</span>
           <h1 class="script-heading" style="margin-bottom: 8px;">Standings</h1>
           <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 24px;">
-            All teams start even — real standings will populate once matches begin.
+            Updated after each series as results come in.
           </p>
         </>
       )}
@@ -79,8 +92,9 @@ const teamByCaptain = Object.fromEntries(season6.teams.map(t => [t.captain, t]))
           {season6.teams.map(team => (
             <div class="pixel-card">
               <span class="eyebrow">{team.abbrev}</span>
-              <h2 style="font-family: var(--font-body); font-weight: 700; margin: 4px 0 12px; color: var(--paper);">{team.name}</h2>
-              <table class="stat-table">
+              <h2 style="font-family: var(--font-body); font-weight: 700; margin: 4px 0 4px; color: var(--paper);">{team.name}</h2>
+              {team.formerName && <p style="color: var(--paper-dim); font-size: 0.75rem; margin-bottom: 8px;">Formerly {team.formerName}</p>}
+              <table class="stat-table" style={!team.formerName ? "margin-top: 12px;" : ""}>
                 <tbody>
                   <tr>
                     <td><a href={`/players/${encodeURIComponent(team.captain)}`} class={`${isHofPlayer(team.captain) ? 'hof-name' : ''}`}>{team.captain}</a></td>
@@ -109,13 +123,14 @@ const teamByCaptain = Object.fromEntries(season6.teams.map(t => [t.captain, t]))
       <div class="wrap">
         <div class="table-scroll">
           <table class="stat-table">
-            <thead><tr><th>Team</th><th>Captain</th><th>Record</th></tr></thead>
+            <thead><tr><th>#</th><th>Team</th><th>Captain</th><th>Record</th></tr></thead>
             <tbody>
-              {season6.teams.map(team => (
+              {sortedStandings.map((team, i) => (
                 <tr>
+                  <td class={i === 0 ? 'rank-1' : ''}>{i + 1}</td>
                   <td>{team.name}</td>
                   <td><a href={`/players/${encodeURIComponent(team.captain)}`}>{team.captain}</a></td>
-                  <td>0-0</td>
+                  <td style="color: var(--gold); font-weight: 700;">{team.record}</td>
                 </tr>
               ))}
             </tbody>
@@ -133,15 +148,36 @@ const teamByCaptain = Object.fromEntries(season6.teams.map(t => [t.captain, t]))
             <h2 class="section-title">Week {week.week}</h2>
             <div class="table-scroll" style="margin-bottom: 32px;">
               <table class="stat-table">
-                <thead><tr><th>Matchup</th></tr></thead>
+                <thead><tr><th>Matchup</th><th>Result</th></tr></thead>
                 <tbody>
-                  {week.matches.map(([a, b]) => (
-                    <tr>
-                      <td>
-                        {teamByCaptain[a]?.name || a} <span style="color: var(--paper-dim);">vs</span> {teamByCaptain[b]?.name || b}
-                      </td>
-                    </tr>
-                  ))}
+                  {week.matches.map(([a, b]) => {
+                    const nameA = teamByCaptain[a]?.name || a;
+                    const nameB = teamByCaptain[b]?.name || b;
+                    const series = findSeriesFor(nameA, nameB);
+                    const voided = season6Matches.voidedResults.find(v =>
+                      v.week === week.week && v.matchup.includes(nameA) && v.matchup.includes(nameB)
+                    );
+                    return (
+                      <tr>
+                        <td>
+                          {series ? (
+                            <a href={`/current-season/series/${series.slug}`}>{nameA} <span style="color: var(--paper-dim);">vs</span> {nameB}</a>
+                          ) : (
+                            <>{nameA} <span style="color: var(--paper-dim);">vs</span> {nameB}</>
+                          )}
+                        </td>
+                        <td>
+                          {series ? (
+                            <span style="color: var(--gold); font-weight: 700;">{series.winner} win {series.seriesScore}</span>
+                          ) : voided ? (
+                            <span style="color: var(--paper-dim); font-size: 0.85rem;">Rescheduled</span>
+                          ) : (
+                            <span style="color: var(--paper-dim);">Not yet played</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
