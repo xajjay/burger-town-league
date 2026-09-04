@@ -8,10 +8,10 @@
   "teams": [
     { "name": "Nashville Mighty Ducks", "abbrev": "NSH", "captain": "Aj", "players": ["Jmetree", "Acro Ace", "Chadwick", "Moon"], "record": "1-0" },
     { "name": "San Jose Cougars", "abbrev": "SJ", "captain": "Aurora", "players": ["Waly", "Proxzify", "Toremeant", "TrapNA"], "record": "0-0" },
-    { "name": "Miami Reapers", "abbrev": "MIA", "captain": "Renicide", "players": ["Nastyy", "Karnij", "Horror", "Scary"], "record": "0-0" },
+    { "name": "Miami Reapers", "abbrev": "MIA", "captain": "Renicide", "players": ["Nastyy", "Karnij", "Horror", "Scary"], "record": "0-1" },
     { "name": "Newark Stars", "abbrev": "NWK", "captain": "CrazieViews", "players": ["Lewy", "Utopian", "Noti", "Zylix"], "record": "0-0" },
     { "name": "London Royal Ravens", "abbrev": "LDN", "captain": "Trap", "players": ["Realm", "Zico", "Hitta", "nate"], "record": "0-0", "formerName": "Chicago $wervo" },
-    { "name": "Detroit Dirty Dogs", "abbrev": "DET", "captain": "Inkster", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"], "record": "0-1" }
+    { "name": "Detroit Dirty Dogs", "abbrev": "DET", "captain": "Inkster", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"], "record": "2-0" }
   ],
   "freeAgents": ["Hype", "Aldo", "Shasta", "Bombz"],
   "schedule": {

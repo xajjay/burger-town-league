@@ -9,6 +9,7 @@
       "seriesScore": "3-2",
       "winner": "Nashville Mighty Ducks",
       "forfeit": false,
+      "vodUrl": "https://youtu.be/GCM_4nPGorg?si=5cwwlhbjVh6q9ucV",
       "maps": [
         { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 196, "winner": "Nashville Mighty Ducks" },
         { "mapNum": 2, "map": "Checkmate", "mode": "Control", "teamAScore": 0, "teamBScore": 3, "winner": "Detroit Dirty Dogs" },
@@ -27,6 +28,32 @@
         { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 81, "deaths": 81, "perMap": [30, 7, 14, 21, 9], "perMapDeaths": [27, 6, 12, 26, 10] },
         { "player": "Peach", "team": "Detroit Dirty Dogs", "kills": 75, "deaths": 83, "perMap": [25, 7, 18, 16, 9], "perMapDeaths": [32, 5, 14, 25, 7] }
       ]
+    },
+    {
+      "slug": "miami-reapers-vs-detroit-dirty-dogs",
+      "week": 1,
+      "name": "Miami Reapers vs Detroit Dirty Dogs",
+      "teamA": "Miami Reapers",
+      "teamB": "Detroit Dirty Dogs",
+      "seriesScore": "3-0",
+      "winner": "Detroit Dirty Dogs",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/A8msmHWtA6s?si=GqmOnsQxOb1vbtC2",
+      "maps": [
+        { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 130, "teamBScore": 250, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 3, "teamBScore": 6, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 3, "map": "Checkmate", "mode": "Control", "teamAScore": 0, "teamBScore": 3, "winner": "Detroit Dirty Dogs" }
+      ],
+      "players": [
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 50, "deaths": 62, "perMap": [25, 4, 21], "perMapDeaths": [35, 7, 20] },
+        { "player": "Scary", "team": "Miami Reapers", "kills": 31, "deaths": 58, "perMap": [18, 5, 8], "perMapDeaths": [33, 7, 18], "note": "Substituted in for Nastyy, who had a scheduling conflict with a tournament in another game" },
+        { "player": "Karnij", "team": "Miami Reapers", "kills": 41, "deaths": 50, "perMap": [18, 5, 18], "perMapDeaths": [28, 6, 16] },
+        { "player": "Horror", "team": "Miami Reapers", "kills": 35, "deaths": 55, "perMap": [20, 7, 8], "perMapDeaths": [27, 7, 21] },
+        { "player": "Inkster", "team": "Detroit Dirty Dogs", "kills": 67, "deaths": 46, "perMap": [35, 9, 23], "perMapDeaths": [22, 7, 17] },
+        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 62, "deaths": 40, "perMap": [38, 5, 19], "perMapDeaths": [20, 6, 14] },
+        { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 48, "deaths": 29, "perMap": [24, 6, 18], "perMapDeaths": [14, 3, 12] },
+        { "player": "Peach", "team": "Detroit Dirty Dogs", "kills": 48, "deaths": 42, "perMap": [26, 7, 15], "perMapDeaths": [25, 5, 12] }
+      ]
     }
   ],
   "voidedResults": [
@@ -35,5 +62,9 @@
       "week": 1,
       "note": "Originally ruled a 3-0 forfeit win for Newark Stars after London Royal Ravens' roster collapse. The forfeit was voided after the two teams agreed to play the series as scheduled — rescheduled to the next night."
     }
+  ],
+  "reschedules": [
+    { "matchup": "Nashville Mighty Ducks vs Miami Reapers", "week": 1, "note": "Rescheduled to next week — Nashville captain Aj was unable to play." },
+    { "matchup": "San Jose Cougars vs Newark Stars", "week": 1, "note": "Rescheduled to next week — Newark's Noti did not show up for the match." }
   ]
 }

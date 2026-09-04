@@ -28,6 +28,15 @@ const teamTotals = [series.teamA, series.teamB].map(t => ({
       <span class="eyebrow">Week {series.week} · Season 6</span>
       <h1 class="script-heading" style="font-size: 2.2rem;">{series.name}</h1>
       <p style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">{series.winner} wins {series.seriesScore}</p>
+      {series.vodUrl && (
+        <a href={series.vodUrl} target="_blank" rel="noopener" class="pixel-card" style="display: flex; align-items: center; gap: 14px; max-width: 420px; margin-top: 16px; text-decoration: none; transition: border-color 0.15s ease;">
+          <span style="font-size: 1.8rem;">▶</span>
+          <span>
+            <span style="display: block; color: var(--paper); font-weight: 700; font-size: 0.95rem;">Watch the VOD</span>
+            <span style="display: block; color: var(--paper-dim); font-size: 0.78rem;">Full match on YouTube</span>
+          </span>
+        </a>
+      )}
     </div>
   </section>
 

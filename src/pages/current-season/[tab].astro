@@ -157,6 +157,9 @@ function findSeriesFor(teamAName, teamBName) {
                     const voided = season6Matches.voidedResults.find(v =>
                       v.week === week.week && v.matchup.includes(nameA) && v.matchup.includes(nameB)
                     );
+                    const rescheduled = season6Matches.reschedules?.find(r =>
+                      r.week === week.week && r.matchup.includes(nameA) && r.matchup.includes(nameB)
+                    );
                     return (
                       <tr>
                         <td>
@@ -170,7 +173,9 @@ function findSeriesFor(teamAName, teamBName) {
                           {series ? (
                             <span style="color: var(--gold); font-weight: 700;">{series.winner} win {series.seriesScore}</span>
                           ) : voided ? (
-                            <span style="color: var(--paper-dim); font-size: 0.85rem;">Rescheduled</span>
+                            <span style="color: var(--paper-dim); font-size: 0.85rem;" title={voided.note}>Rescheduled</span>
+                          ) : rescheduled ? (
+                            <span style="color: var(--paper-dim); font-size: 0.85rem;" title={rescheduled.note}>Rescheduled</span>
                           ) : (
                             <span style="color: var(--paper-dim);">Not yet played</span>
                           )}
