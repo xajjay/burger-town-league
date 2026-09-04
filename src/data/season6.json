@@ -11,7 +11,7 @@
     { "name": "Miami Reapers", "abbrev": "MIA", "captain": "Renicide", "players": ["Nastyy", "Karnij", "Horror", "Scary"], "record": "0-1" },
     { "name": "Newark Stars", "abbrev": "NWK", "captain": "CrazieViews", "players": ["Lewy", "Utopian", "Noti", "Zylix"], "record": "0-0" },
     { "name": "London Royal Ravens", "abbrev": "LDN", "captain": "Trap", "players": ["Realm", "Zico", "Hitta", "nate"], "record": "0-0", "formerName": "Chicago $wervo" },
-    { "name": "Detroit Dirty Dogs", "abbrev": "DET", "captain": "Inkster", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"], "record": "2-0" }
+    { "name": "Detroit Dirty Dogs", "abbrev": "DET", "captain": "Inkster", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"], "record": "1-1" }
   ],
   "freeAgents": ["Hype", "Aldo", "Shasta", "Bombz"],
   "schedule": {
