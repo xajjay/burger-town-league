@@ -29,6 +29,24 @@ function findSeriesFor(teamAName, teamBName, week) {
     ((s.teamA === teamAName && s.teamB === teamBName) || (s.teamA === teamBName && s.teamB === teamAName))
   );
 }
+
+// Player stats aggregated live from every series recorded in season6-matches.json —
+// this automatically reflects new results with no extra step, since it just re-runs
+// this reduction over whatever series exist at build time.
+const playerAggregates = {};
+for (const series of season6Matches.series) {
+  for (const p of series.players) {
+    if (p.isManager) continue; // don't count emergency manager cameos in season stats
+    const agg = (playerAggregates[p.player] ||= { player: p.player, team: p.team, kills: 0, deaths: 0, seriesPlayed: 0 });
+    agg.kills += p.kills;
+    agg.deaths += p.deaths;
+    agg.seriesPlayed += 1;
+    agg.team = p.team; // keep most recent team in case of a trade
+  }
+}
+const season6PlayerStats = Object.values(playerAggregates)
+  .map(p => ({ ...p, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills }))
+  .sort((a, b) => b.kd - a.kd);
 ---
 <Base title={`${label} | Current Season | Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
@@ -76,15 +94,50 @@ function findSeriesFor(teamAName, teamBName, week) {
 
       {(tab === 'player-stats') && (
         <>
-          <span class="eyebrow">Coming Soon</span>
-          <h1 class="script-heading">{label}</h1>
-          <p style="color: var(--paper-dim); max-width: 60ch;">
-            {label} will show up here once real matches are played.
+          <span class="eyebrow">{season6.status}</span>
+          <h1 class="script-heading" style="margin-bottom: 8px;">Player Stats</h1>
+          <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 24px;">
+            {season6PlayerStats.length > 0
+              ? 'Updates automatically after every series that gets recorded.'
+              : 'Will populate here as soon as the first series is played.'}
           </p>
         </>
       )}
     </div>
   </section>
+
+  {tab === 'player-stats' && season6PlayerStats.length > 0 && (
+    <section>
+      <div class="wrap">
+        <div class="table-scroll">
+          <table class="stat-table sortable-table">
+            <thead>
+              <tr>
+                <th data-sort="text">Player</th>
+                <th data-sort="text">Team</th>
+                <th data-sort="num">Kills</th>
+                <th data-sort="num">Deaths</th>
+                <th data-sort="num" data-dir="desc" class="sorted-desc">K/D</th>
+                <th data-sort="num">Series Played</th>
+              </tr>
+            </thead>
+            <tbody>
+              {season6PlayerStats.map(p => (
+                <tr>
+                  <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={`${isHofPlayer(p.player) ? 'hof-name' : ''} ${hasSuperBurger(p.player) ? 'superburger-name' : ''}`}>{p.player}</a></td>
+                  <td>{p.team}</td>
+                  <td data-value={p.kills}>{p.kills}</td>
+                  <td data-value={p.deaths}>{p.deaths}</td>
+                  <td data-value={p.kd} style="color: var(--gold); font-weight: 700;">{p.kd.toFixed(2)}</td>
+                  <td data-value={p.seriesPlayed}>{p.seriesPlayed}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
 
   {tab === 'rosters' && (
     <section>

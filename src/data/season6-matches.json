@@ -73,7 +73,7 @@
         { "mapNum": 5, "map": "Express", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 4, "winner": "Newark Stars" }
       ],
       "players": [
-        { "player": "CrazieViews", "team": "Newark Stars", "kills": 98, "deaths": 84, "perMap": [45, 7, 16, 19, 11], "perMapDeaths": [23, 4, 19, 27, 7] },
+        { "player": "CrazieViews", "team": "Newark Stars", "kills": 98, "deaths": 80, "perMap": [45, 7, 16, 19, 11], "perMapDeaths": [23, 4, 19, 27, 7] },
         { "player": "Utopian", "team": "Newark Stars", "kills": 69, "deaths": 78, "perMap": [32, 6, 10, 16, 5], "perMapDeaths": [25, 7, 18, 22, 6] },
         { "player": "Lewy", "team": "Newark Stars", "kills": 92, "deaths": 76, "perMap": [35, 10, 15, 25, 7], "perMapDeaths": [24, 2, 20, 23, 7] },
         { "player": "Noti", "team": "Newark Stars", "kills": 57, "deaths": 94, "perMap": [20, 4, 12, 14, 7], "perMapDeaths": [31, 8, 20, 27, 8] },
