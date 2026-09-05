@@ -23,9 +23,10 @@ function recordSortKey(record) {
 }
 const sortedStandings = [...season6.teams].sort((a, b) => recordSortKey(b.record) - recordSortKey(a.record));
 
-function findSeriesFor(teamAName, teamBName) {
+function findSeriesFor(teamAName, teamBName, week) {
   return season6Matches.series.find(s =>
-    (s.teamA === teamAName && s.teamB === teamBName) || (s.teamA === teamBName && s.teamB === teamAName)
+    s.week === week &&
+    ((s.teamA === teamAName && s.teamB === teamBName) || (s.teamA === teamBName && s.teamB === teamAName))
   );
 }
 ---
@@ -153,7 +154,7 @@ function findSeriesFor(teamAName, teamBName) {
                   {week.matches.map(([a, b]) => {
                     const nameA = teamByCaptain[a]?.name || a;
                     const nameB = teamByCaptain[b]?.name || b;
-                    const series = findSeriesFor(nameA, nameB);
+                    const series = findSeriesFor(nameA, nameB, week.week);
                     const voided = season6Matches.voidedResults.find(v =>
                       v.week === week.week && v.matchup.includes(nameA) && v.matchup.includes(nameB)
                     );
