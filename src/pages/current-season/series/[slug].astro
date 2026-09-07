@@ -40,6 +40,16 @@ const teamTotals = [series.teamA, series.teamB].map(t => ({
     </div>
   </section>
 
+  {series.statsPending ? (
+    <section>
+      <div class="wrap">
+        <div class="pixel-card" style="max-width: 480px;">
+          <span class="eyebrow">Stats Pending</span>
+          <p style="color: var(--paper); margin: 4px 0 0;">Map-by-map scores and player stats for this series haven't been entered yet. Check back once the full box score is available.</p>
+        </div>
+      </div>
+    </section>
+  ) : (
   <section>
     <div class="wrap">
       <h2 class="section-title">Map by Map</h2>
@@ -112,4 +122,5 @@ const teamTotals = [series.teamA, series.teamB].map(t => ({
       ))}
     </div>
   </section>
+  )}
 </Base>

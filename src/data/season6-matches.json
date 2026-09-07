@@ -82,6 +82,33 @@
         { "player": "Realm", "team": "London Royal Ravens", "kills": 74, "deaths": 78, "perMap": [22, 5, 16, 23, 8], "perMapDeaths": [33, 7, 14, 16, 8] },
         { "player": "Hitta", "team": "London Royal Ravens", "kills": 92, "deaths": 75, "perMap": [30, 5, 21, 29, 7], "perMapDeaths": [29, 6, 12, 20, 8] }
       ]
+    },
+    {
+      "slug": "london-royal-ravens-vs-nashville-mighty-ducks",
+      "week": 2,
+      "name": "London Royal Ravens vs Nashville Mighty Ducks",
+      "teamA": "London Royal Ravens",
+      "teamB": "Nashville Mighty Ducks",
+      "seriesScore": "3-1",
+      "winner": "London Royal Ravens",
+      "forfeit": false,
+      "vodUrl": "https://www.youtube.com/watch?v=r2Zp2EXVSGI",
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 74, "winner": "London Royal Ravens" },
+        { "mapNum": 2, "map": "Moscow", "mode": "Search & Destroy", "teamAScore": 5, "teamBScore": 6, "winner": "Nashville Mighty Ducks" },
+        { "mapNum": 3, "map": "Garrison", "mode": "Control", "teamAScore": 3, "teamBScore": 0, "winner": "London Royal Ravens" },
+        { "mapNum": 4, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 168, "winner": "London Royal Ravens" }
+      ],
+      "players": [
+        { "player": "Trap", "team": "London Royal Ravens", "kills": 69, "deaths": 64, "perMap": [17, 12, 14, 26], "perMapDeaths": [13, 8, 14, 29] },
+        { "player": "Realm", "team": "London Royal Ravens", "kills": 69, "deaths": 66, "perMap": [20, 9, 13, 27], "perMapDeaths": [17, 9, 15, 25] },
+        { "player": "Dragon", "team": "London Royal Ravens", "kills": 71, "deaths": 64, "perMap": [21, 3, 23, 24], "perMapDeaths": [17, 8, 9, 30] },
+        { "player": "Aldo", "team": "London Royal Ravens", "kills": 77, "deaths": 52, "perMap": [29, 5, 20, 23], "perMapDeaths": [11, 7, 9, 25] },
+        { "player": "Aj", "team": "Nashville Mighty Ducks", "kills": 56, "deaths": 76, "perMap": [16, 6, 10, 24], "perMapDeaths": [23, 8, 19, 26] },
+        { "player": "Jmetree", "team": "Nashville Mighty Ducks", "kills": 78, "deaths": 67, "perMap": [20, 9, 14, 35], "perMapDeaths": [20, 7, 17, 23] },
+        { "player": "Acro Ace", "team": "Nashville Mighty Ducks", "kills": 61, "deaths": 66, "perMap": [18, 6, 13, 24], "perMapDeaths": [20, 7, 16, 23] },
+        { "player": "Chadwick", "team": "Nashville Mighty Ducks", "kills": 51, "deaths": 77, "perMap": [4, 11, 10, 26], "perMapDeaths": [24, 7, 18, 28] }
+      ]
     }
   ],
   "voidedResults": [],
