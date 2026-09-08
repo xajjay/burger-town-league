@@ -103,7 +103,7 @@
         { "player": "Trap", "team": "London Royal Ravens", "kills": 69, "deaths": 64, "perMap": [17, 12, 14, 26], "perMapDeaths": [13, 8, 14, 29] },
         { "player": "Realm", "team": "London Royal Ravens", "kills": 69, "deaths": 66, "perMap": [20, 9, 13, 27], "perMapDeaths": [17, 9, 15, 25] },
         { "player": "Dragon", "team": "London Royal Ravens", "kills": 71, "deaths": 64, "perMap": [21, 3, 23, 24], "perMapDeaths": [17, 8, 9, 30] },
-        { "player": "Aldo", "team": "London Royal Ravens", "kills": 77, "deaths": 52, "perMap": [29, 5, 20, 23], "perMapDeaths": [11, 7, 9, 25] },
+        { "player": "Aldo", "team": "London Royal Ravens", "kills": 77, "deaths": 52, "perMap": [29, 5, 20, 23], "perMapDeaths": [11, 7, 9, 25], "note": "Temporary substitution, not a permanent roster addition" },
         { "player": "Aj", "team": "Nashville Mighty Ducks", "kills": 56, "deaths": 76, "perMap": [16, 6, 10, 24], "perMapDeaths": [23, 8, 19, 26] },
         { "player": "Jmetree", "team": "Nashville Mighty Ducks", "kills": 78, "deaths": 67, "perMap": [20, 9, 14, 35], "perMapDeaths": [20, 7, 17, 23] },
         { "player": "Acro Ace", "team": "Nashville Mighty Ducks", "kills": 61, "deaths": 66, "perMap": [18, 6, 13, 24], "perMapDeaths": [20, 7, 16, 23] },
