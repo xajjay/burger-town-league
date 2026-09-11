@@ -14,6 +14,11 @@
       "date": "2026-09-10",
       "angle": "player_spotlight",
       "subject": "Acro Ace"
+    },
+    {
+      "date": "2026-09-11",
+      "angle": "upcoming_schedule",
+      "subject": null
     }
   ]
 }
