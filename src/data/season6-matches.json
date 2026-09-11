@@ -109,11 +109,113 @@
         { "player": "Acro Ace", "team": "Nashville Mighty Ducks", "kills": 61, "deaths": 66, "perMap": [18, 6, 13, 24], "perMapDeaths": [20, 7, 16, 23] },
         { "player": "Chadwick", "team": "Nashville Mighty Ducks", "kills": 51, "deaths": 77, "perMap": [4, 11, 10, 26], "perMapDeaths": [24, 7, 18, 28] }
       ]
+    },
+    {
+      "slug": "london-royal-ravens-vs-miami-reapers",
+      "week": 2,
+      "name": "London Royal Ravens vs Miami Reapers",
+      "teamA": "London Royal Ravens",
+      "teamB": "Miami Reapers",
+      "seriesScore": "3-0",
+      "winner": "London Royal Ravens",
+      "forfeit": false,
+      "maps": [
+        { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 213, "winner": "London Royal Ravens" },
+        { "mapNum": 2, "map": "Express", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 1, "winner": "London Royal Ravens" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 3, "teamBScore": 1, "winner": "London Royal Ravens" }
+      ],
+      "players": [
+        { "player": "Trap", "team": "London Royal Ravens", "kills": 71, "deaths": 54, "perMap": [35, 5, 31], "perMapDeaths": [27, 3, 24] },
+        { "player": "Hitta", "team": "London Royal Ravens", "kills": 64, "deaths": 44, "perMap": [29, 15, 20], "perMapDeaths": [22, 2, 20] },
+        { "player": "Dragon", "team": "London Royal Ravens", "kills": 63, "deaths": 56, "perMap": [27, 5, 31], "perMapDeaths": [30, 2, 24] },
+        { "player": "Realm", "team": "London Royal Ravens", "kills": 46, "deaths": 53, "perMap": [22, 2, 22], "perMapDeaths": [29, 4, 20] },
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 63, "deaths": 65, "perMap": [35, 5, 23], "perMapDeaths": [30, 7, 28] },
+        { "player": "Acro Ace", "team": "Miami Reapers", "kills": 60, "deaths": 46, "perMap": [32, 3, 25], "perMapDeaths": [22, 6, 18] },
+        { "player": "Scary", "team": "Miami Reapers", "kills": 43, "deaths": 62, "perMap": [18, 1, 24], "perMapDeaths": [28, 7, 27] },
+        { "player": "Horror", "team": "Miami Reapers", "kills": 41, "deaths": 71, "perMap": [23, 2, 16], "perMapDeaths": [33, 7, 31] }
+      ]
+    },
+    {
+      "slug": "miami-reapers-vs-newark-stars",
+      "week": 2,
+      "name": "Miami Reapers vs Newark Stars",
+      "teamA": "Miami Reapers",
+      "teamB": "Newark Stars",
+      "seriesScore": "3-1",
+      "winner": "Miami Reapers",
+      "forfeit": false,
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 231, "winner": "Miami Reapers" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 5, "teamBScore": 6, "winner": "Newark Stars" },
+        { "mapNum": 3, "map": "Checkmate", "mode": "Control", "teamAScore": 3, "teamBScore": 2, "winner": "Miami Reapers" },
+        { "mapNum": 4, "map": "Apocalypse", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 172, "winner": "Miami Reapers" }
+      ],
+      "players": [
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 117, "deaths": 88, "perMap": [31, 7, 47, 32], "perMapDeaths": [31, 7, 28, 22] },
+        { "player": "Karnij", "team": "Miami Reapers", "kills": 97, "deaths": 71, "perMap": [37, 8, 31, 21], "perMapDeaths": [18, 8, 23, 22] },
+        { "player": "Acro Ace", "team": "Miami Reapers", "kills": 88, "deaths": 71, "perMap": [27, 10, 27, 24], "perMapDeaths": [22, 6, 25, 18] },
+        { "player": "Scary", "team": "Miami Reapers", "kills": 73, "deaths": 89, "perMap": [23, 7, 17, 26], "perMapDeaths": [25, 10, 32, 22] },
+        { "player": "CrazieViews", "team": "Newark Stars", "kills": 94, "deaths": 101, "perMap": [30, 11, 32, 21], "perMapDeaths": [34, 9, 29, 29] },
+        { "player": "Lewy", "team": "Newark Stars", "kills": 91, "deaths": 78, "perMap": [20, 12, 30, 29], "perMapDeaths": [22, 6, 28, 22] },
+        { "player": "Noti", "team": "Newark Stars", "kills": 78, "deaths": 111, "perMap": [22, 4, 29, 23], "perMapDeaths": [37, 9, 37, 28] },
+        { "player": "Utopian", "team": "Newark Stars", "kills": 56, "deaths": 86, "perMap": [24, 4, 17, 11], "perMapDeaths": [25, 9, 28, 24] }
+      ]
+    },
+    {
+      "slug": "nashville-mighty-ducks-vs-miami-reapers",
+      "week": 1,
+      "name": "Nashville Mighty Ducks vs Miami Reapers",
+      "teamA": "Nashville Mighty Ducks",
+      "teamB": "Miami Reapers",
+      "seriesScore": "3-0",
+      "winner": "Miami Reapers",
+      "forfeit": false,
+      "maps": [
+        { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 89, "teamBScore": 250, "winner": "Miami Reapers" },
+        { "mapNum": 2, "map": "Raid", "mode": "Search & Destroy", "teamAScore": 0, "teamBScore": 6, "winner": "Miami Reapers" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 2, "teamBScore": 3, "winner": "Miami Reapers" }
+      ],
+      "players": [
+        { "player": "Aj", "team": "Nashville Mighty Ducks", "kills": 78, "deaths": 66, "perMap": [27, 1, 50], "perMapDeaths": [29, 6, 31] },
+        { "player": "Moon", "team": "Nashville Mighty Ducks", "kills": 52, "deaths": 66, "perMap": [21, 4, 27], "perMapDeaths": [27, 6, 33] },
+        { "player": "Chadwick", "team": "Nashville Mighty Ducks", "kills": 36, "deaths": 70, "perMap": [13, 1, 22], "perMapDeaths": [33, 6, 31] },
+        { "player": "Nastyy", "team": "Nashville Mighty Ducks", "kills": 34, "deaths": 77, "perMap": [16, 2, 16], "perMapDeaths": [30, 6, 41] },
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 72, "deaths": 55, "perMap": [35, 8, 29], "perMapDeaths": [19, 3, 33] },
+        { "player": "Acro Ace", "team": "Miami Reapers", "kills": 77, "deaths": 45, "perMap": [30, 8, 39], "perMapDeaths": [18, 0, 27] },
+        { "player": "Karnij", "team": "Miami Reapers", "kills": 68, "deaths": 46, "perMap": [29, 4, 35], "perMapDeaths": [18, 4, 24] },
+        { "player": "Scary", "team": "Miami Reapers", "kills": 61, "deaths": 54, "perMap": [25, 4, 32], "perMapDeaths": [22, 1, 31] }
+      ]
+    },
+    {
+      "slug": "san-jose-cougars-vs-nashville-mighty-ducks",
+      "week": 2,
+      "name": "San Jose Cougars vs Nashville Mighty Ducks",
+      "teamA": "San Jose Cougars",
+      "teamB": "Nashville Mighty Ducks",
+      "seriesScore": "3-2",
+      "winner": "Nashville Mighty Ducks",
+      "forfeit": false,
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 235, "winner": "San Jose Cougars" },
+        { "mapNum": 2, "map": "Moscow", "mode": "Search & Destroy", "teamAScore": 4, "teamBScore": 6, "winner": "Nashville Mighty Ducks" },
+        { "mapNum": 3, "map": "Checkmate", "mode": "Control", "teamAScore": 2, "teamBScore": 3, "winner": "Nashville Mighty Ducks" },
+        { "mapNum": 4, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 162, "winner": "San Jose Cougars" },
+        { "mapNum": 5, "map": "Raid", "mode": "Search & Destroy", "teamAScore": 2, "teamBScore": 6, "winner": "Nashville Mighty Ducks" }
+      ],
+      "players": [
+        { "player": "Toremeant", "team": "San Jose Cougars", "kills": 102, "deaths": 80, "perMap": [24, 7, 31, 31, 9], "perMapDeaths": [22, 6, 26, 19, 7] },
+        { "player": "Aurora", "team": "San Jose Cougars", "kills": 101, "deaths": 86, "perMap": [39, 4, 28, 28, 2], "perMapDeaths": [22, 8, 28, 22, 6] },
+        { "player": "Waly", "team": "San Jose Cougars", "kills": 83, "deaths": 78, "perMap": [17, 9, 22, 32, 3], "perMapDeaths": [22, 6, 25, 18, 7] },
+        { "player": "Proxzify", "team": "San Jose Cougars", "kills": 73, "deaths": 82, "perMap": [19, 6, 26, 21, 1], "perMapDeaths": [22, 7, 24, 21, 8] },
+        { "player": "Aj", "team": "Nashville Mighty Ducks", "kills": 89, "deaths": 86, "perMap": [25, 6, 25, 24, 9], "perMapDeaths": [23, 5, 27, 26, 5] },
+        { "player": "Jmetree", "team": "Nashville Mighty Ducks", "kills": 85, "deaths": 90, "perMap": [19, 6, 32, 20, 8], "perMapDeaths": [27, 7, 27, 26, 3] },
+        { "player": "Moon", "team": "Nashville Mighty Ducks", "kills": 79, "deaths": 82, "perMap": [24, 11, 20, 16, 8], "perMapDeaths": [21, 5, 23, 29, 4] },
+        { "player": "Nastyy", "team": "Nashville Mighty Ducks", "kills": 73, "deaths": 101, "perMap": [20, 4, 26, 20, 3], "perMapDeaths": [28, 9, 30, 31, 3] }
+      ]
     }
   ],
   "voidedResults": [],
   "reschedules": [
-    { "matchup": "Nashville Mighty Ducks vs Miami Reapers", "week": 1, "note": "Rescheduled to next week — Nashville captain Aj was unable to play." },
     { "matchup": "San Jose Cougars vs Newark Stars", "week": 1, "note": "Rescheduled to next week — Newark's Noti did not show up for the match." }
   ]
 }
