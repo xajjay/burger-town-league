@@ -119,6 +119,7 @@
       "seriesScore": "3-0",
       "winner": "London Royal Ravens",
       "forfeit": false,
+      "vodUrl": "https://youtu.be/9mjJC1tDN_Y?si=JelOAuxsIAlI-CTU",
       "maps": [
         { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 213, "winner": "London Royal Ravens" },
         { "mapNum": 2, "map": "Express", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 1, "winner": "London Royal Ravens" },
@@ -144,6 +145,7 @@
       "seriesScore": "3-1",
       "winner": "Miami Reapers",
       "forfeit": false,
+      "vodUrl": "https://youtu.be/cB5tgSlugDU?si=AnMneB5up4rIewKb",
       "maps": [
         { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 231, "winner": "Miami Reapers" },
         { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 5, "teamBScore": 6, "winner": "Newark Stars" },
@@ -170,6 +172,7 @@
       "seriesScore": "3-0",
       "winner": "Miami Reapers",
       "forfeit": false,
+      "vodUrl": "https://youtu.be/WSDWQDCVnfQ?si=UVsNVSW_Zw1j0sjs",
       "maps": [
         { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 89, "teamBScore": 250, "winner": "Miami Reapers" },
         { "mapNum": 2, "map": "Raid", "mode": "Search & Destroy", "teamAScore": 0, "teamBScore": 6, "winner": "Miami Reapers" },
@@ -195,6 +198,7 @@
       "seriesScore": "3-2",
       "winner": "Nashville Mighty Ducks",
       "forfeit": false,
+      "vodUrl": "https://youtu.be/oc2D3VqEygQ?si=CkJe9Aedo_PQMm8V",
       "maps": [
         { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 235, "winner": "San Jose Cougars" },
         { "mapNum": 2, "map": "Moscow", "mode": "Search & Destroy", "teamAScore": 4, "teamBScore": 6, "winner": "Nashville Mighty Ducks" },

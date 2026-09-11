@@ -47,6 +47,51 @@ for (const series of season6Matches.series) {
 const season6PlayerStats = Object.values(playerAggregates)
   .map(p => ({ ...p, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills }))
   .sort((a, b) => b.kd - a.kd);
+
+// Season records by mode (Kill/Death/K-D highs and lows) — computed live from
+// every recorded series' map-by-map data, same auto-update principle as the
+// stats table above.
+const modeStats = { Hardpoint: {}, 'Search & Destroy': {}, Control: {} };
+const seriesBest = {};
+for (const series of season6Matches.series) {
+  for (const p of series.players) {
+    if (p.isManager) continue;
+    p.perMap.forEach((k, i) => {
+      if (k == null) return;
+      const mode = series.maps[i].mode;
+      const d = p.perMapDeaths[i];
+      const rec = (modeStats[mode][p.player] ||= { kills: 0, deaths: 0 });
+      rec.kills += k;
+      rec.deaths += d;
+    });
+    const kd = p.kills / p.deaths;
+    if (!seriesBest[p.player] || kd > seriesBest[p.player].kd) {
+      seriesBest[p.player] = { kd, kills: p.kills, deaths: p.deaths };
+    }
+  }
+}
+function findRecord(modeData, key, best) {
+  let winner = null;
+  for (const [player, rec] of Object.entries(modeData)) {
+    const val = key === 'kd' ? rec.kills / rec.deaths : rec[key];
+    if (!winner || (best === 'high' ? val > winner.val : val < winner.val)) winner = { player, val };
+  }
+  return winner;
+}
+const recordRows = ['Hardpoint', 'Search & Destroy', 'Control'].map(mode => ({
+  mode,
+  killRecord: findRecord(modeStats[mode], 'kills', 'high'),
+  killLow: findRecord(modeStats[mode], 'kills', 'low'),
+  deathRecord: findRecord(modeStats[mode], 'deaths', 'high'),
+  deathLow: findRecord(modeStats[mode], 'deaths', 'low'),
+  kdRecord: findRecord(modeStats[mode], 'kd', 'high'),
+  kdLow: findRecord(modeStats[mode], 'kd', 'low'),
+}));
+let bestSeriesKD = null, worstSeriesKD = null;
+Object.entries(seriesBest).forEach(([player, r]) => {
+  if (!bestSeriesKD || r.kd > bestSeriesKD.kd) bestSeriesKD = { player, ...r };
+  if (!worstSeriesKD || r.kd < worstSeriesKD.kd) worstSeriesKD = { player, ...r };
+});
 ---
 <Base title={`${label} | Current Season | Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
@@ -138,6 +183,54 @@ const season6PlayerStats = Object.values(playerAggregates)
       </div>
     </section>
   )}
+
+  {tab === 'player-stats' && recordRows.some(r => r.killRecord) && (
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Season Records</h2>
+        <div class="table-scroll" style="margin-bottom: 24px;">
+          <table class="stat-table">
+            <thead>
+              <tr><th>Record</th><th>Hardpoint</th><th>Search &amp; Destroy</th><th>Control</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Kill Record</td>
+                {recordRows.map(r => <td>{r.killRecord.player} ({r.killRecord.val})</td>)}
+              </tr>
+              <tr>
+                <td>Kill Low</td>
+                {recordRows.map(r => <td>{r.killLow.player} ({r.killLow.val})</td>)}
+              </tr>
+              <tr>
+                <td>Death Record</td>
+                {recordRows.map(r => <td>{r.deathRecord.player} ({r.deathRecord.val})</td>)}
+              </tr>
+              <tr>
+                <td>Death Low</td>
+                {recordRows.map(r => <td>{r.deathLow.player} ({r.deathLow.val})</td>)}
+              </tr>
+              <tr>
+                <td>K/D Record</td>
+                {recordRows.map(r => <td style="color: var(--gold); font-weight: 700;">{r.kdRecord.player} ({r.kdRecord.val.toFixed(2)})</td>)}
+              </tr>
+              <tr>
+                <td>K/D Low</td>
+                {recordRows.map(r => <td>{r.kdLow.player} ({r.kdLow.val.toFixed(2)})</td>)}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        {bestSeriesKD && (
+          <p style="color: var(--paper-dim); font-size: 0.85rem;">
+            Best single-series K/D: <span style="color: var(--gold);">{bestSeriesKD.player} ({bestSeriesKD.kd.toFixed(2)}, {bestSeriesKD.kills}/{bestSeriesKD.deaths})</span>
+            &nbsp;·&nbsp; Worst single-series K/D: {worstSeriesKD.player} ({worstSeriesKD.kd.toFixed(2)}, {worstSeriesKD.kills}/{worstSeriesKD.deaths})
+          </p>
+        )}
+      </div>
+    </section>
+  )}
+
 
   {tab === 'rosters' && (
     <section>
