@@ -13,7 +13,7 @@
     { "name": "London Royal Ravens", "abbrev": "LDN", "captain": "Trap", "players": ["Realm", "Dragon", "Hitta", "nate"], "record": "2-1", "formerName": "Chicago $wervo" },
     { "name": "Detroit Dirty Dogs", "abbrev": "DET", "captain": "Inkster", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"], "record": "1-1" }
   ],
-  "freeAgents": ["Hype", "Aldo", "Shasta", "Bombz", "Zico"],
+  "freeAgents": ["Hype", "Shasta", "Bombz", "Zico"],
   "schedule": {
     "weeks": [
       {

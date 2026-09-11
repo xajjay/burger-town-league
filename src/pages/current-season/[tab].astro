@@ -33,10 +33,11 @@ function findSeriesFor(teamAName, teamBName, week) {
 // Player stats aggregated live from every series recorded in season6-matches.json —
 // this automatically reflects new results with no extra step, since it just re-runs
 // this reduction over whatever series exist at build time.
+const EXCLUDED_PLAYERS = new Set(['Aldo']); // removed from the league
 const playerAggregates = {};
 for (const series of season6Matches.series) {
   for (const p of series.players) {
-    if (p.isManager) continue; // don't count emergency manager cameos in season stats
+    if (p.isManager || EXCLUDED_PLAYERS.has(p.player)) continue; // don't count emergency manager cameos or removed players
     const agg = (playerAggregates[p.player] ||= { player: p.player, team: p.team, kills: 0, deaths: 0, seriesPlayed: 0 });
     agg.kills += p.kills;
     agg.deaths += p.deaths;
@@ -48,50 +49,59 @@ const season6PlayerStats = Object.values(playerAggregates)
   .map(p => ({ ...p, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills }))
   .sort((a, b) => b.kd - a.kd);
 
-// Season records by mode (Kill/Death/K-D highs and lows) — computed live from
-// every recorded series' map-by-map data, same auto-update principle as the
-// stats table above.
-const modeStats = { Hardpoint: {}, 'Search & Destroy': {}, Control: {} };
-const seriesBest = {};
+// Season records — matches the workbook's methodology: Hardpoint/SnD/Control
+// columns are the single BEST/WORST MAP performance in that mode (not a season
+// sum), and Series is the single best/worst FULL-SERIES total. Manager cameos
+// ARE included here (matching the workbook), but excluded players are not.
+const modeMapStats = { Hardpoint: {}, 'Search & Destroy': {}, Control: {} };
+const seriesTotals = [];
 for (const series of season6Matches.series) {
   for (const p of series.players) {
-    if (p.isManager) continue;
+    if (EXCLUDED_PLAYERS.has(p.player)) continue;
     p.perMap.forEach((k, i) => {
       if (k == null) return;
       const mode = series.maps[i].mode;
       const d = p.perMapDeaths[i];
-      const rec = (modeStats[mode][p.player] ||= { kills: 0, deaths: 0 });
-      rec.kills += k;
-      rec.deaths += d;
+      (modeMapStats[mode][p.player] ||= []).push({ k, d, kd: d > 0 ? k / d : k });
     });
-    const kd = p.kills / p.deaths;
-    if (!seriesBest[p.player] || kd > seriesBest[p.player].kd) {
-      seriesBest[p.player] = { kd, kills: p.kills, deaths: p.deaths };
-    }
+    seriesTotals.push({ player: p.player, kills: p.kills, deaths: p.deaths, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills });
   }
 }
-function findRecord(modeData, key, best) {
+function findMapRecord(modeData, key, best) {
   let winner = null;
-  for (const [player, rec] of Object.entries(modeData)) {
-    const val = key === 'kd' ? rec.kills / rec.deaths : rec[key];
-    if (!winner || (best === 'high' ? val > winner.val : val < winner.val)) winner = { player, val };
+  for (const [player, maps] of Object.entries(modeData)) {
+    for (const m of maps) {
+      const val = m[key];
+      if (!winner || (best === 'high' ? val > winner.val : val < winner.val)) winner = { player, val };
+    }
+  }
+  return winner;
+}
+function findSeriesRecord(key, best) {
+  let winner = null;
+  for (const r of seriesTotals) {
+    if (!winner || (best === 'high' ? r[key] > winner[key] : r[key] < winner[key])) winner = r;
   }
   return winner;
 }
 const recordRows = ['Hardpoint', 'Search & Destroy', 'Control'].map(mode => ({
   mode,
-  killRecord: findRecord(modeStats[mode], 'kills', 'high'),
-  killLow: findRecord(modeStats[mode], 'kills', 'low'),
-  deathRecord: findRecord(modeStats[mode], 'deaths', 'high'),
-  deathLow: findRecord(modeStats[mode], 'deaths', 'low'),
-  kdRecord: findRecord(modeStats[mode], 'kd', 'high'),
-  kdLow: findRecord(modeStats[mode], 'kd', 'low'),
+  killRecord: findMapRecord(modeMapStats[mode], 'k', 'high'),
+  killLow: findMapRecord(modeMapStats[mode], 'k', 'low'),
+  deathRecord: findMapRecord(modeMapStats[mode], 'd', 'high'),
+  deathLow: findMapRecord(modeMapStats[mode], 'd', 'low'),
+  kdRecord: findMapRecord(modeMapStats[mode], 'kd', 'high'),
+  kdLow: findMapRecord(modeMapStats[mode], 'kd', 'low'),
 }));
-let bestSeriesKD = null, worstSeriesKD = null;
-Object.entries(seriesBest).forEach(([player, r]) => {
-  if (!bestSeriesKD || r.kd > bestSeriesKD.kd) bestSeriesKD = { player, ...r };
-  if (!worstSeriesKD || r.kd < worstSeriesKD.kd) worstSeriesKD = { player, ...r };
-});
+const seriesColumn = {
+  mode: 'Series',
+  killRecord: (() => { const r = findSeriesRecord('kills', 'high'); return { player: r.player, val: r.kills }; })(),
+  killLow: (() => { const r = findSeriesRecord('kills', 'low'); return { player: r.player, val: r.kills }; })(),
+  deathRecord: (() => { const r = findSeriesRecord('deaths', 'high'); return { player: r.player, val: r.deaths }; })(),
+  deathLow: (() => { const r = findSeriesRecord('deaths', 'low'); return { player: r.player, val: r.deaths }; })(),
+  kdRecord: (() => { const r = findSeriesRecord('kd', 'high'); return { player: r.player, val: r.kd }; })(),
+  kdLow: (() => { const r = findSeriesRecord('kd', 'low'); return { player: r.player, val: r.kd }; })(),
+};
 ---
 <Base title={`${label} | Current Season | Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
@@ -191,42 +201,36 @@ Object.entries(seriesBest).forEach(([player, r]) => {
         <div class="table-scroll" style="margin-bottom: 24px;">
           <table class="stat-table">
             <thead>
-              <tr><th>Record</th><th>Hardpoint</th><th>Search &amp; Destroy</th><th>Control</th></tr>
+              <tr><th>Record</th><th>Hardpoint</th><th>Search &amp; Destroy</th><th>Control</th><th>Series</th></tr>
             </thead>
             <tbody>
               <tr>
                 <td>Kill Record</td>
-                {recordRows.map(r => <td>{r.killRecord.player} ({r.killRecord.val})</td>)}
+                {[...recordRows, seriesColumn].map(r => <td>{r.killRecord.player} ({r.killRecord.val})</td>)}
               </tr>
               <tr>
                 <td>Kill Low</td>
-                {recordRows.map(r => <td>{r.killLow.player} ({r.killLow.val})</td>)}
+                {[...recordRows, seriesColumn].map(r => <td>{r.killLow.player} ({r.killLow.val})</td>)}
               </tr>
               <tr>
                 <td>Death Record</td>
-                {recordRows.map(r => <td>{r.deathRecord.player} ({r.deathRecord.val})</td>)}
+                {[...recordRows, seriesColumn].map(r => <td>{r.deathRecord.player} ({r.deathRecord.val})</td>)}
               </tr>
               <tr>
                 <td>Death Low</td>
-                {recordRows.map(r => <td>{r.deathLow.player} ({r.deathLow.val})</td>)}
+                {[...recordRows, seriesColumn].map(r => <td>{r.deathLow.player} ({r.deathLow.val})</td>)}
               </tr>
               <tr>
                 <td>K/D Record</td>
-                {recordRows.map(r => <td style="color: var(--gold); font-weight: 700;">{r.kdRecord.player} ({r.kdRecord.val.toFixed(2)})</td>)}
+                {[...recordRows, seriesColumn].map(r => <td style="color: var(--gold); font-weight: 700;">{r.kdRecord.player} ({r.kdRecord.val.toFixed(2)})</td>)}
               </tr>
               <tr>
                 <td>K/D Low</td>
-                {recordRows.map(r => <td>{r.kdLow.player} ({r.kdLow.val.toFixed(2)})</td>)}
+                {[...recordRows, seriesColumn].map(r => <td>{r.kdLow.player} ({r.kdLow.val.toFixed(2)})</td>)}
               </tr>
             </tbody>
           </table>
         </div>
-        {bestSeriesKD && (
-          <p style="color: var(--paper-dim); font-size: 0.85rem;">
-            Best single-series K/D: <span style="color: var(--gold);">{bestSeriesKD.player} ({bestSeriesKD.kd.toFixed(2)}, {bestSeriesKD.kills}/{bestSeriesKD.deaths})</span>
-            &nbsp;·&nbsp; Worst single-series K/D: {worstSeriesKD.player} ({worstSeriesKD.kd.toFixed(2)}, {worstSeriesKD.kills}/{worstSeriesKD.deaths})
-          </p>
-        )}
       </div>
     </section>
   )}
