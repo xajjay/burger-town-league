@@ -1,6 +1,18 @@
 {
   "series": [
     {
+      "slug": "san-jose-cougars-vs-newark-stars",
+      "week": 1,
+      "name": "San Jose Cougars vs Newark Stars",
+      "teamA": "San Jose Cougars",
+      "teamB": "Newark Stars",
+      "seriesScore": "3-0",
+      "winner": "San Jose Cougars",
+      "forfeit": true,
+      "maps": [],
+      "players": []
+    },
+    {
       "slug": "nashville-mighty-ducks-vs-detroit-dirty-dogs",
       "week": 1,
       "name": "Nashville Mighty Ducks vs Detroit Dirty Dogs",
@@ -219,7 +231,5 @@
     }
   ],
   "voidedResults": [],
-  "reschedules": [
-    { "matchup": "San Jose Cougars vs Newark Stars", "week": 1, "note": "Rescheduled to next week — Newark's Noti did not show up for the match." }
-  ]
+  "reschedules": []
 }

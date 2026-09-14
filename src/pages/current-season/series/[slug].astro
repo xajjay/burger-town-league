@@ -40,7 +40,16 @@ const teamTotals = [series.teamA, series.teamB].map(t => ({
     </div>
   </section>
 
-  {series.statsPending ? (
+  {series.forfeit ? (
+    <section>
+      <div class="wrap">
+        <div class="pixel-card" style="max-width: 480px;">
+          <span class="eyebrow">Forfeit</span>
+          <p style="color: var(--paper); margin: 4px 0 0;">This series was decided by forfeit — no maps were played, so there's no box score to show.</p>
+        </div>
+      </div>
+    </section>
+  ) : series.statsPending ? (
     <section>
       <div class="wrap">
         <div class="pixel-card" style="max-width: 480px;">
