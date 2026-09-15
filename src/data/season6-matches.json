@@ -1,6 +1,33 @@
 {
   "series": [
     {
+      "slug": "san-jose-cougars-vs-london-royal-ravens",
+      "week": 1,
+      "name": "San Jose Cougars vs London Royal Ravens",
+      "teamA": "San Jose Cougars",
+      "teamB": "London Royal Ravens",
+      "seriesScore": "3-1",
+      "winner": "London Royal Ravens",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/b0gUHkD9NCs",
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 154, "teamBScore": 250, "winner": "London Royal Ravens" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 3, "teamBScore": 6, "winner": "London Royal Ravens" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 3, "teamBScore": 2, "winner": "San Jose Cougars" },
+        { "mapNum": 4, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 226, "teamBScore": 250, "winner": "London Royal Ravens" }
+      ],
+      "players": [
+        { "player": "Aurora", "team": "San Jose Cougars", "kills": 82, "deaths": 84, "perMap": [23, 7, 33, 34], "perMapDeaths": [30, 9, 32, 23] },
+        { "player": "Waly", "team": "San Jose Cougars", "kills": 80, "deaths": 79, "perMap": [21, 4, 29, 26], "perMapDeaths": [22, 8, 27, 22] },
+        { "player": "Toremeant", "team": "San Jose Cougars", "kills": 77, "deaths": 91, "perMap": [21, 6, 27, 23], "perMapDeaths": [21, 7, 36, 27] },
+        { "player": "Proxzify", "team": "San Jose Cougars", "kills": 83, "deaths": 78, "perMap": [18, 3, 33, 29], "perMapDeaths": [23, 8, 24, 23] },
+        { "player": "Realm", "team": "London Royal Ravens", "kills": 74, "deaths": 72, "perMap": [18, 7, 32, 17], "perMapDeaths": [18, 6, 22, 26] },
+        { "player": "Dragon", "team": "London Royal Ravens", "kills": 88, "deaths": 91, "perMap": [23, 5, 27, 33], "perMapDeaths": [21, 7, 34, 29] },
+        { "player": "Trap", "team": "London Royal Ravens", "kills": 95, "deaths": 89, "perMap": [30, 9, 36, 20], "perMapDeaths": [23, 4, 32, 30] },
+        { "player": "Hitta", "team": "London Royal Ravens", "kills": 85, "deaths": 86, "perMap": [25, 11, 24, 25], "perMapDeaths": [21, 3, 34, 28] }
+      ]
+    },
+    {
       "slug": "san-jose-cougars-vs-newark-stars",
       "week": 1,
       "name": "San Jose Cougars vs Newark Stars",
