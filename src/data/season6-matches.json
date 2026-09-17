@@ -1,6 +1,34 @@
 {
   "series": [
     {
+      "slug": "miami-reapers-vs-london-royal-ravens-2",
+      "week": 3,
+      "name": "Miami Reapers vs London Royal Ravens",
+      "teamA": "Miami Reapers",
+      "teamB": "London Royal Ravens",
+      "seriesScore": "3-2",
+      "winner": "Miami Reapers",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/fXV8Jsuicl4",
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 185, "teamBScore": 250, "winner": "London Royal Ravens" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 1, "teamBScore": 6, "winner": "London Royal Ravens" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 3, "teamBScore": 2, "winner": "Miami Reapers" },
+        { "mapNum": 4, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 241, "winner": "Miami Reapers" },
+        { "mapNum": 5, "map": "Express", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 4, "winner": "Miami Reapers" }
+      ],
+      "players": [
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 97, "deaths": 98, "perMap": [21, 1, 37, 31, 7], "perMapDeaths": [29, 6, 29, 28, 6] },
+        { "player": "Acro Ace", "team": "Miami Reapers", "kills": 93, "deaths": 85, "perMap": [23, 3, 33, 28, 6], "perMapDeaths": [23, 6, 23, 24, 9] },
+        { "player": "Karnij", "team": "Miami Reapers", "kills": 94, "deaths": 86, "perMap": [20, 5, 37, 25, 7], "perMapDeaths": [23, 7, 22, 29, 5] },
+        { "player": "Horror", "team": "Miami Reapers", "kills": 93, "deaths": 106, "perMap": [19, 3, 29, 31, 11], "perMapDeaths": [30, 7, 32, 31, 6] },
+        { "player": "Dragon", "team": "London Royal Ravens", "kills": 95, "deaths": 102, "perMap": [30, 13, 25, 21, 6], "perMapDeaths": [24, 3, 36, 32, 7] },
+        { "player": "Hitta", "team": "London Royal Ravens", "kills": 112, "deaths": 86, "perMap": [33, 7, 29, 36, 7], "perMapDeaths": [17, 3, 31, 28, 7] },
+        { "player": "Realm", "team": "London Royal Ravens", "kills": 72, "deaths": 93, "perMap": [14, 2, 24, 27, 5], "perMapDeaths": [19, 3, 35, 28, 8] },
+        { "player": "Trap", "team": "London Royal Ravens", "kills": 96, "deaths": 96, "perMap": [28, 4, 28, 28, 8], "perMapDeaths": [23, 3, 34, 27, 9] }
+      ]
+    },
+    {
       "slug": "san-jose-cougars-vs-london-royal-ravens",
       "week": 1,
       "name": "San Jose Cougars vs London Royal Ravens",
