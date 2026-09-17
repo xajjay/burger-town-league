@@ -1,7 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
-import { rulebookUrl } from '../../data/leagueData.js';
+import { rulebookUrl, isHofPlayer, hasSuperBurger } from '../../data/leagueData.js';
+import season6 from '../../data/season6.json';
+import season6Matches from '../../data/season6-matches.json';
 
 export function getStaticPaths() {
   return currentSeasonTabs
@@ -12,6 +14,94 @@ export function getStaticPaths() {
 const { tab } = Astro.params;
 const { label } = Astro.props;
 const currentPath = Astro.url.pathname;
+
+const teamByCaptain = Object.fromEntries(season6.teams.map(t => [t.captain, t]));
+
+function recordSortKey(record) {
+  const [w, l] = record.split('-').map(Number);
+  return w - l;
+}
+const sortedStandings = [...season6.teams].sort((a, b) => recordSortKey(b.record) - recordSortKey(a.record));
+
+function findSeriesFor(teamAName, teamBName, week) {
+  return season6Matches.series.find(s =>
+    s.week === week &&
+    ((s.teamA === teamAName && s.teamB === teamBName) || (s.teamA === teamBName && s.teamB === teamAName))
+  );
+}
+
+// Player stats aggregated live from every series recorded in season6-matches.json —
+// this automatically reflects new results with no extra step, since it just re-runs
+// this reduction over whatever series exist at build time.
+const EXCLUDED_PLAYERS = new Set(['Aldo']); // removed from the league
+const playerAggregates = {};
+for (const series of season6Matches.series) {
+  for (const p of series.players) {
+    if (p.isManager || EXCLUDED_PLAYERS.has(p.player)) continue; // don't count emergency manager cameos or removed players
+    const agg = (playerAggregates[p.player] ||= { player: p.player, team: p.team, kills: 0, deaths: 0, seriesPlayed: 0 });
+    agg.kills += p.kills;
+    agg.deaths += p.deaths;
+    agg.seriesPlayed += 1;
+    agg.team = p.team; // keep most recent team in case of a trade
+  }
+}
+const season6PlayerStats = Object.values(playerAggregates)
+  .map(p => ({ ...p, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills }))
+  .sort((a, b) => b.kd - a.kd);
+
+// Season records — matches the workbook's methodology: Hardpoint/SnD/Control
+// columns are the single BEST/WORST MAP performance in that mode (not a season
+// sum), and Series is the single best/worst FULL-SERIES total. Manager cameos
+// ARE included here (matching the workbook), but excluded players are not.
+const modeMapStats = { Hardpoint: {}, 'Search & Destroy': {}, Control: {} };
+const seriesTotals = [];
+for (const series of season6Matches.series) {
+  for (const p of series.players) {
+    if (EXCLUDED_PLAYERS.has(p.player)) continue;
+    p.perMap.forEach((k, i) => {
+      if (k == null) return;
+      const mode = series.maps[i].mode;
+      const d = p.perMapDeaths[i];
+      (modeMapStats[mode][p.player] ||= []).push({ k, d, kd: d > 0 ? k / d : k });
+    });
+    seriesTotals.push({ player: p.player, kills: p.kills, deaths: p.deaths, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills });
+  }
+}
+function findMapRecord(modeData, key, best) {
+  let winner = null;
+  for (const [player, maps] of Object.entries(modeData)) {
+    for (const m of maps) {
+      const val = m[key];
+      if (!winner || (best === 'high' ? val > winner.val : val < winner.val)) winner = { player, val };
+    }
+  }
+  return winner;
+}
+function findSeriesRecord(key, best) {
+  let winner = null;
+  for (const r of seriesTotals) {
+    if (!winner || (best === 'high' ? r[key] > winner[key] : r[key] < winner[key])) winner = r;
+  }
+  return winner;
+}
+const recordRows = ['Hardpoint', 'Search & Destroy', 'Control'].map(mode => ({
+  mode,
+  killRecord: findMapRecord(modeMapStats[mode], 'k', 'high'),
+  killLow: findMapRecord(modeMapStats[mode], 'k', 'low'),
+  deathRecord: findMapRecord(modeMapStats[mode], 'd', 'high'),
+  deathLow: findMapRecord(modeMapStats[mode], 'd', 'low'),
+  kdRecord: findMapRecord(modeMapStats[mode], 'kd', 'high'),
+  kdLow: findMapRecord(modeMapStats[mode], 'kd', 'low'),
+}));
+const seriesColumn = {
+  mode: 'Series',
+  killRecord: (() => { const r = findSeriesRecord('kills', 'high'); return { player: r.player, val: r.kills }; })(),
+  killLow: (() => { const r = findSeriesRecord('kills', 'low'); return { player: r.player, val: r.kills }; })(),
+  deathRecord: (() => { const r = findSeriesRecord('deaths', 'high'); return { player: r.player, val: r.deaths }; })(),
+  deathLow: (() => { const r = findSeriesRecord('deaths', 'low'); return { player: r.player, val: r.deaths }; })(),
+  kdRecord: (() => { const r = findSeriesRecord('kd', 'high'); return { player: r.player, val: r.kd }; })(),
+  kdLow: (() => { const r = findSeriesRecord('kd', 'low'); return { player: r.player, val: r.kd }; })(),
+};
 ---
 <Base title={`${label} | Current Season | Burger Town Leagues`}>
   <section style="padding-bottom: 0;">
@@ -21,7 +111,8 @@ const currentPath = Astro.url.pathname;
           <a class={`season-pill ${currentPath === `/current-season/${t.slug}` ? 'active' : ''}`} href={`/current-season/${t.slug}`}>{t.label}</a>
         ))}
       </div>
-      {tab === 'rulebook' ? (
+
+      {tab === 'rulebook' && (
         <>
           <span class="eyebrow">Official Rules</span>
           <h1 class="script-heading">Rulebook</h1>
@@ -30,15 +121,225 @@ const currentPath = Astro.url.pathname;
           </p>
           <a class="btn btn-primary" href={rulebookUrl} target="_blank" rel="noopener">View Rulebook</a>
         </>
-      ) : (
+      )}
+
+      {tab === 'rosters' && (
         <>
-          <span class="eyebrow">Coming Soon</span>
-          <h1 class="script-heading">{label}</h1>
-          <p style="color: var(--paper-dim); max-width: 60ch;">
-            {label} for Burger Town's first season will show up here once the season is underway.
+          <span class="eyebrow">{season6.status}</span>
+          <h1 class="script-heading" style="margin-bottom: 24px;">Team Rosters</h1>
+        </>
+      )}
+
+      {tab === 'standings' && (
+        <>
+          <span class="eyebrow">{season6.status}</span>
+          <h1 class="script-heading" style="margin-bottom: 8px;">Standings</h1>
+          <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 24px;">
+            Updated after each series as results come in.
+          </p>
+        </>
+      )}
+
+      {tab === 'schedule' && (
+        <>
+          <span class="eyebrow">{season6.status}</span>
+          <h1 class="script-heading" style="margin-bottom: 24px;">Schedule</h1>
+        </>
+      )}
+
+      {(tab === 'player-stats') && (
+        <>
+          <span class="eyebrow">{season6.status}</span>
+          <h1 class="script-heading" style="margin-bottom: 8px;">Player Stats</h1>
+          <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 24px;">
+            {season6PlayerStats.length > 0
+              ? 'Updates automatically after every series that gets recorded.'
+              : 'Will populate here as soon as the first series is played.'}
           </p>
         </>
       )}
     </div>
   </section>
+
+  {tab === 'player-stats' && season6PlayerStats.length > 0 && (
+    <section>
+      <div class="wrap">
+        <div class="table-scroll">
+          <table class="stat-table sortable-table">
+            <thead>
+              <tr>
+                <th data-sort="text">Player</th>
+                <th data-sort="text">Team</th>
+                <th data-sort="num">Kills</th>
+                <th data-sort="num">Deaths</th>
+                <th data-sort="num" data-dir="desc" class="sorted-desc">K/D</th>
+                <th data-sort="num">Series Played</th>
+              </tr>
+            </thead>
+            <tbody>
+              {season6PlayerStats.map(p => (
+                <tr>
+                  <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={`${isHofPlayer(p.player) ? 'hof-name' : ''} ${hasSuperBurger(p.player) ? 'superburger-name' : ''}`}>{p.player}</a></td>
+                  <td>{p.team}</td>
+                  <td data-value={p.kills}>{p.kills}</td>
+                  <td data-value={p.deaths}>{p.deaths}</td>
+                  <td data-value={p.kd} style="color: var(--gold); font-weight: 700;">{p.kd.toFixed(2)}</td>
+                  <td data-value={p.seriesPlayed}>{p.seriesPlayed}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {tab === 'player-stats' && recordRows.some(r => r.killRecord) && (
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Season Records</h2>
+        <div class="table-scroll" style="margin-bottom: 24px;">
+          <table class="stat-table">
+            <thead>
+              <tr><th>Record</th><th>Hardpoint</th><th>Search &amp; Destroy</th><th>Control</th><th>Series</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Kill Record</td>
+                {[...recordRows, seriesColumn].map(r => <td>{r.killRecord.player} ({r.killRecord.val})</td>)}
+              </tr>
+              <tr>
+                <td>Kill Low</td>
+                {[...recordRows, seriesColumn].map(r => <td>{r.killLow.player} ({r.killLow.val})</td>)}
+              </tr>
+              <tr>
+                <td>Death Record</td>
+                {[...recordRows, seriesColumn].map(r => <td>{r.deathRecord.player} ({r.deathRecord.val})</td>)}
+              </tr>
+              <tr>
+                <td>Death Low</td>
+                {[...recordRows, seriesColumn].map(r => <td>{r.deathLow.player} ({r.deathLow.val})</td>)}
+              </tr>
+              <tr>
+                <td>K/D Record</td>
+                {[...recordRows, seriesColumn].map(r => <td style="color: var(--gold); font-weight: 700;">{r.kdRecord.player} ({r.kdRecord.val.toFixed(2)})</td>)}
+              </tr>
+              <tr>
+                <td>K/D Low</td>
+                {[...recordRows, seriesColumn].map(r => <td>{r.kdLow.player} ({r.kdLow.val.toFixed(2)})</td>)}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+
+
+  {tab === 'rosters' && (
+    <section>
+      <div class="wrap">
+        <div class="teams-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;">
+          {season6.teams.map(team => (
+            <div class="pixel-card">
+              <span class="eyebrow">{team.abbrev}</span>
+              <h2 style="font-family: var(--font-body); font-weight: 700; margin: 4px 0 4px; color: var(--paper);">{team.name}</h2>
+              {team.formerName && <p style="color: var(--paper-dim); font-size: 0.75rem; margin-bottom: 8px;">Formerly {team.formerName}</p>}
+              <table class="stat-table" style={!team.formerName ? "margin-top: 12px;" : ""}>
+                <tbody>
+                  <tr>
+                    <td><a href={`/players/${encodeURIComponent(team.captain)}`} class={`${isHofPlayer(team.captain) ? 'hof-name' : ''}`}>{team.captain}</a></td>
+                    <td><span class="badge badge-gold">Captain</span></td>
+                  </tr>
+                  {team.players.map(p => (
+                    <tr>
+                      <td><a href={`/players/${encodeURIComponent(p)}`} class={`${isHofPlayer(p) ? 'hof-name' : ''} ${hasSuperBurger(p) ? 'superburger-name' : ''}`}>{p}</a></td>
+                      <td></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+        {season6.freeAgents.length > 0 && (
+          <p style="color: var(--paper-dim); margin-top: 24px;">Unrostered free agents: {season6.freeAgents.join(', ')}</p>
+        )}
+      </div>
+    </section>
+  )}
+
+  {tab === 'standings' && (
+    <section>
+      <div class="wrap">
+        <div class="table-scroll">
+          <table class="stat-table">
+            <thead><tr><th>#</th><th>Team</th><th>Captain</th><th>Record</th></tr></thead>
+            <tbody>
+              {sortedStandings.map((team, i) => (
+                <tr>
+                  <td class={i === 0 ? 'rank-1' : ''}>{i + 1}</td>
+                  <td>{team.name}</td>
+                  <td><a href={`/players/${encodeURIComponent(team.captain)}`}>{team.captain}</a></td>
+                  <td style="color: var(--gold); font-weight: 700;">{team.record}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {tab === 'schedule' && (
+    <section>
+      <div class="wrap">
+        {season6.schedule.weeks.map(week => (
+          <>
+            <h2 class="section-title">Week {week.week}</h2>
+            <div class="table-scroll" style="margin-bottom: 32px;">
+              <table class="stat-table">
+                <thead><tr><th>Matchup</th><th>Result</th></tr></thead>
+                <tbody>
+                  {week.matches.map(([a, b]) => {
+                    const nameA = teamByCaptain[a]?.name || a;
+                    const nameB = teamByCaptain[b]?.name || b;
+                    const series = findSeriesFor(nameA, nameB, week.week);
+                    const voided = season6Matches.voidedResults.find(v =>
+                      v.week === week.week && v.matchup.includes(nameA) && v.matchup.includes(nameB)
+                    );
+                    const rescheduled = season6Matches.reschedules?.find(r =>
+                      r.week === week.week && r.matchup.includes(nameA) && r.matchup.includes(nameB)
+                    );
+                    return (
+                      <tr>
+                        <td>
+                          {series ? (
+                            <a href={`/current-season/series/${series.slug}`}>{nameA} <span style="color: var(--paper-dim);">vs</span> {nameB}</a>
+                          ) : (
+                            <>{nameA} <span style="color: var(--paper-dim);">vs</span> {nameB}</>
+                          )}
+                        </td>
+                        <td>
+                          {series ? (
+                            <span style="color: var(--gold); font-weight: 700;">{series.winner} win {series.seriesScore}</span>
+                          ) : voided ? (
+                            <span style="color: var(--paper-dim); font-size: 0.85rem;" title={voided.note}>Rescheduled</span>
+                          ) : rescheduled ? (
+                            <span style="color: var(--paper-dim); font-size: 0.85rem;" title={rescheduled.note}>Rescheduled</span>
+                          ) : (
+                            <span style="color: var(--paper-dim);">Not yet played</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ))}
+      </div>
+    </section>
+  )}
 </Base>

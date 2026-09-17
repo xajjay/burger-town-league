@@ -1,15 +1,12 @@
 {
-  "players": [
-    "Jmetree", "Aj", "Inkster", "Aurora", "Habibi", "Aldo", "Waly", "Docsukii",
-    "Boogy", "Zico", "Renicide", "Bleepa", "Karnij", "Proxzify", "Realm", "Lewy",
-    "Shasta", "Peach", "Hype", "Latinooo", "Chadwick", "Ephrisy", "Horror",
-    "Trap", "Toremeant", "Zylix", "Moon", "Scary", "Nastyy", "Crooked", "Crazie"
+  "draftComplete": true,
+  "teams": [
+    { "captain": "Aurora", "captainRole": "SMG", "players": ["Waly", "Proxzify", "Toremeant", "Trap"] },
+    { "captain": "Aj", "captainRole": "SMG", "players": ["Jmetree", "Acro Ace", "Chadwick", "Moon"] },
+    { "captain": "CrazieViews", "captainRole": "AR", "players": ["Lewy", "Utopian", "Noti", "Zylix"] },
+    { "captain": "Renicide", "captainRole": "SMG", "players": ["Nastyy", "Karnij", "Horror", "Scary"] },
+    { "captain": "Inkster", "captainRole": "AR", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"] },
+    { "captain": "Hype", "captainRole": "AR", "players": ["Aldo", "Realm", "Zico", "Shasta"] }
   ],
-  "teamLeads": [
-    { "player": "Jmetree", "manager": "Shadow", "staff": "Utopian" },
-    { "player": "Aj", "manager": "Solium", "staff": "Skapun" },
-    { "player": "Inkster", "manager": "DBZKILLA", "staff": "Shadow" },
-    { "player": "Aurora", "manager": null, "staff": "Acro Ace" }
-  ],
-  "note": "Signups still in progress — this list will grow before the season starts. Chadwick is a brand-new name with no prior league stats."
-}
+  "note": "Draft complete as of the 6-captain snake draft. Each team has 5 players (captain + 4)." }
+ 

@@ -1,13 +1,6 @@
 name: BTL Daily Report
 
 on:
-  schedule:
-    # Runs at 8:00 PM Eastern. GitHub Actions cron is UTC only:
-    # 00:00 UTC = 8:00 PM EDT (roughly March-November, covers now)
-    # 01:00 UTC = 8:00 PM EST (roughly November-March)
-    # This is set for EDT — once clocks fall back to EST in November, this will
-    # fire at 7:00 PM Eastern instead unless you change it to '0 1 * * *'.
-    - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
       topic:

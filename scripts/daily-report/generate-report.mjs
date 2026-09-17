@@ -58,8 +58,9 @@ const data = JSON.parse(readFileSync(join(__dirname, '../../src/data/real_data.j
 const storylinesFile = JSON.parse(readFileSync(join(__dirname, 'storylines.json'), 'utf-8'));
 const storylines = storylinesFile.storylines || [];
 const playerNotes = storylinesFile.playerNotes || [];
-const upcomingSeason = JSON.parse(readFileSync(join(__dirname, 'upcoming-signups.json'), 'utf-8'));
+const season6 = JSON.parse(readFileSync(join(__dirname, '../../src/data/season6.json'), 'utf-8'));
 const playerRoles = JSON.parse(readFileSync(join(__dirname, 'player-roles.json'), 'utf-8'));
+const playerTiers = JSON.parse(readFileSync(join(__dirname, 'player-tiers.json'), 'utf-8'));
 
 const HISTORY_PATH = join(__dirname, 'history.json');
 const HISTORY_LIMIT = 20; // how many past picks we remember, to avoid repeats
@@ -158,6 +159,107 @@ function storylineFlavorFor(playerName) {
   return match ? { title: match.title, oneLiner: match.summary.split('.')[0] + '.' } : null;
 }
 
+// --- Season 6 helpers ---
+const teamByCaptain = Object.fromEntries(season6.teams.map(t => [t.captain, t]));
+
+function lastSeasonInfo(name) {
+  const career = data.career.find(c => c.player.toLowerCase() === name.toLowerCase());
+  if (!career) return { rating: null, isNew: true, isHof: false };
+  const seasons = Object.keys(career.seasonKD || {}).map(Number).sort((a, b) => a - b);
+  const lastSid = seasons[seasons.length - 1];
+  const row = data.seasons[String(lastSid)]?.players.find(p => p.player.toLowerCase() === name.toLowerCase());
+  const isHof = data.hallOfFame.some(h => h.player.toLowerCase() === name.toLowerCase());
+  return { rating: row ? row.overall : null, isNew: false, isHof, lastSeason: lastSid };
+}
+
+function buildTeamSummary(captainName) {
+  const team = teamByCaptain[captainName];
+  if (!team) return null;
+  const allPlayers = [team.captain, ...team.players];
+  const roster = allPlayers.map(name => ({
+    name,
+    role: playerRoles[name] || null,
+    ...lastSeasonInfo(name),
+  }));
+  const rated = roster.filter(p => p.rating != null);
+  const avgRating = rated.length ? rated.reduce((s, p) => s + p.rating, 0) / rated.length : null;
+  return { name: team.name, abbrev: team.abbrev, captain: team.captain, roster, avgRating };
+}
+
+// ---------------------------------------------------------------------------
+// Betting lines — "Kills, Maps 1-3" (PrizePicks/CDL style over-under), built
+// from real career kills-per-map, adjusted by each player's own per-mode K/D,
+// blended across the maps 1-3 format (Hardpoint, Search & Destroy, Control —
+// one map each). Falls back to an empirical tier average (computed from real
+// tiered players' career data) for anyone with no league history.
+//
+// These multipliers reflect typical relative kill volume per mode in
+// competitive Cold War (Hardpoint's continuous respawns produce far more
+// kills per map than round-based Search & Destroy, with Control in between).
+// They're set so their average is 1.0, so summing all three modes at a
+// player's baseline kills-per-map reconstructs their overall average exactly
+// when no per-mode adjustment is applied.
+const MODE_KPM_MULT = { hp: 1.7, snd: 0.4, ctl: 0.9 };
+
+// Empirical tier baselines — computed once from real tiered players who have
+// career history, used only as a fallback for brand-new/unrated players.
+const TIER_FALLBACK_KPM = { A: 19.23, B: 18.08, C: 14.53 };
+
+function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+
+function estimateKillsMaps1to3(playerName) {
+  const career = data.career.find(c => c.player.toLowerCase() === playerName.toLowerCase());
+  const tier = playerTiers[playerName] || null;
+
+  let baseKpm, hpKd = null, sndKd = null, ctlKd = null, overallKd = null, source;
+
+  if (career && career.maps > 0) {
+    baseKpm = career.kills / career.maps;
+    overallKd = career.kd;
+    // Pull the player's most recent season row for mode-specific K/D, if available
+    const seasons = Object.keys(career.seasonKD || {}).map(Number).sort((a, b) => a - b);
+    const lastSid = seasons[seasons.length - 1];
+    const row = lastSid != null ? data.seasons[String(lastSid)]?.players.find(p => p.player.toLowerCase() === playerName.toLowerCase()) : null;
+    if (row) { hpKd = row.hpKd; sndKd = row.sndKd; ctlKd = row.ctlKd; }
+    source = 'career history';
+  } else {
+    baseKpm = tier ? TIER_FALLBACK_KPM[tier] : TIER_FALLBACK_KPM.C;
+    source = tier ? `${tier}-tier average (no league history)` : 'league-average fallback (no data at all)';
+  }
+
+  function modeEstimate(mult, modeKd) {
+    let kpm = baseKpm * mult;
+    if (modeKd != null && overallKd) {
+      const adj = clamp(modeKd / overallKd, 0.75, 1.3);
+      kpm *= adj;
+    }
+    return kpm;
+  }
+
+  const hp = modeEstimate(MODE_KPM_MULT.hp, hpKd);
+  const snd = modeEstimate(MODE_KPM_MULT.snd, sndKd);
+  const ctl = modeEstimate(MODE_KPM_MULT.ctl, ctlKd);
+  const total = hp + snd + ctl;
+
+  // Sportsbook convention: line set at X.5 (floor + 0.5) so a push is impossible
+  const roundedLine = Math.floor(total) + 0.5;
+
+  return {
+    player: playerName,
+    tier,
+    line: roundedLine,
+    projected: Math.round(total * 10) / 10,
+    breakdown: { hardpoint: Math.round(hp * 10) / 10, searchAndDestroy: Math.round(snd * 10) / 10, control: Math.round(ctl * 10) / 10 },
+    source,
+  };
+}
+
+function buildBettingLines(teamSummary) {
+  return teamSummary.roster
+    .filter(p => p.role) // skip totally unknown role players (can't reason about them at all)
+    .map(p => estimateKillsMaps1to3(p.name));
+}
+
 // ---------------------------------------------------------------------------
 // Topic override — either a direct manual topic this run, or a queued one
 // left over from an earlier "queue for next run" request. Direct manual
@@ -186,13 +288,17 @@ if (effectiveTopic) {
     careerLeaders: [...data.career].sort((a, b) => (b.playerOverall ?? 0) - (a.playerOverall ?? 0)).slice(0, 20),
   };
 } else {
-  // The current season (BTL Season 1) hasn't started yet, so this runs in
-  // "offseason" mode — mostly retrospective and preview content, the way real
-  // sports media covers an offseason. Flip hasLiveSeason once real matches exist.
-  const hasLiveSeason = false;
+  // BTL Season 1 (Season 6) has a real schedule now, so live-season content
+  // is available: match previews, the schedule itself, and stat angles that
+  // don't require results yet. Match recaps stay off until real results exist
+  // (flip on once scores start coming in — see the "results" field to add later).
+  const hasLiveSeason = true;
 
   const angles = hasLiveSeason
-    ? ['match_recap', 'upcoming_schedule', 'power_rankings', 'player_spotlight', 'top10_ar', 'top10_smg']
+    ? [
+        'match_preview', 'upcoming_schedule', 'power_rankings_alltime', 'player_spotlight',
+        'top10_ar', 'top10_smg', 'awards_chase', 'best_individual_seasons',
+      ]
     : [
         'player_spotlight', 'power_rankings_alltime', 'season_preview', 'awards_chase',
         'all_time_teams', 'underrated_players', 'best_individual_seasons',
@@ -219,12 +325,33 @@ if (effectiveTopic) {
   } else if (angle === 'power_rankings_alltime') {
     context.top10 = data.hallOfFame.slice(0, 10);
   } else if (angle === 'season_preview') {
-    context.upcomingSeason = upcomingSeason;
-    context.notablePlayers = upcomingSeason.players
-      .map(name => data.career.find(c => c.player === name))
+    const allNames = season6.teams.flatMap(t => [t.captain, ...t.players]);
+    context.finalTeams = season6.teams;
+    context.notablePlayers = allNames
+      .map(name => data.career.find(c => c.player.toLowerCase() === name.toLowerCase()))
       .filter(Boolean)
       .sort((a, b) => (b.playerOverall ?? 0) - (a.playerOverall ?? 0))
       .slice(0, 10);
+  } else if (angle === 'match_preview') {
+    const allMatches = season6.schedule.weeks.flatMap(w => w.matches.map(m => ({ week: w.week, match: m })));
+    const upcoming = pickFresh(allMatches, angle, x => `${x.week}-${x.match.join('v')}`);
+    const [capA, capB] = upcoming.match;
+    context.week = upcoming.week;
+    context.matchFormat = season6.matchFormat;
+    context.matchFormatNote = season6.matchFormatNote;
+    context.teamA = buildTeamSummary(capA);
+    context.teamB = buildTeamSummary(capB);
+    context.bettingLines = {
+      note: 'Kills, Maps 1-3 (Hardpoint + Search & Destroy + Control) — over/under lines, PrizePicks/CDL style',
+      [context.teamA.name]: buildBettingLines(context.teamA),
+      [context.teamB.name]: buildBettingLines(context.teamB),
+    };
+    subjectId = `${upcoming.week}-${upcoming.match.join('v')}`;
+  } else if (angle === 'upcoming_schedule') {
+    context.currentWeekMatches = season6.schedule.weeks.map(w => ({
+      week: w.week,
+      matches: w.matches.map(([a, b]) => `${teamByCaptain[a]?.name || a} vs ${teamByCaptain[b]?.name || b}`),
+    }));
   } else if (angle === 'awards_chase') {
     context.oneSeasonFromHOF = oneSeasonFromHOF;
     context.allStarsChasingFirstRing = allStarsNoRing;
@@ -256,6 +383,12 @@ Voice: think real sports media — ESPN, The Athletic, an esports desk. Vary you
 Editorial direction: favor forward-looking content — season previews, players to watch, power rankings, top-10 lists by role or stat, award-chase storylines, "greatest ever" debates. When history comes up, use it the way sports media uses records and legacy (a player's résumé, a team's dominant stretch, a rivalry in stats) rather than retelling old drama as the headline. If a "briefHistoricalFlavor" field is present, you may drop it in as a single passing line for color — do not make it the focus of the piece.
 
 The league's upcoming season hasn't started yet, so lean into offseason-style formats: top-10 lists (by role, by stat, by era), "players to watch this season," "the case for X as the greatest Y ever," award-chase storylines. Ranked lists are a great default format here.
+
+If the data includes "teamA" and "teamB" (a match preview): this is a real upcoming series. Remember this is Call of Duty played 4v4 — each roster has 5 players (4 active + 1 who sits that series), so when picking standout performers, reason about which 4 are most likely playing rather than assuming every listed player is on the server. Compare the two rosters using the ratings and roles given, and make an actual prediction — pick a side and say why, referencing specific players. Also predict specific statlines for 2-3 standout players (a plausible K/D or kill count based on their real rating and role, clearly framed as a prediction, not a fact). Mention the match format if given (e.g. best of 5: Hardpoint, Search & Destroy, Control, Hardpoint, Search & Destroy). Don't hedge into "too close to call" — sports previews commit to a pick.
+
+If the data includes "bettingLines": present these as betting-style over/under lines, PrizePicks/CDL format — e.g. "Jmetree — Kills, Maps 1-3: 20.5 (Over/Under)". Give a one-line lean (over or under) on 2-3 of the more interesting lines, briefly explaining why based on their role, tier, or recent form. Don't present every single line with commentary — a quick hits list is fine, most of them can just be listed. If a line's source is a tier-based estimate (no league history), you can mention it's a projection since there's no track record yet, without dwelling on it.
+
+If the data includes "currentWeekMatches" (a schedule rundown): list out the matchups clearly, organized by week, in a natural preview-desk tone.
 
 Format: a punchy one-line headline, then the body. Keep it well under the length limit so it never gets cut off mid-sentence — budget your words up front rather than running long and trailing off.
 
