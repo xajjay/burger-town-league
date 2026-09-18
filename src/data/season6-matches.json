@@ -1,6 +1,33 @@
 {
   "series": [
     {
+      "slug": "miami-reapers-vs-newark-stars-2",
+      "week": 3,
+      "name": "Miami Reapers vs Newark Stars",
+      "teamA": "Miami Reapers",
+      "teamB": "Newark Stars",
+      "seriesScore": "3-1",
+      "winner": "Miami Reapers",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/gWdl-ovxsLs",
+      "maps": [
+        { "mapNum": 1, "map": "Garrison", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 224, "winner": "Miami Reapers" },
+        { "mapNum": 2, "map": "Express", "mode": "Search & Destroy", "teamAScore": 0, "teamBScore": 6, "winner": "Newark Stars" },
+        { "mapNum": 3, "map": "Checkmate", "mode": "Control", "teamAScore": 3, "teamBScore": 0, "winner": "Miami Reapers" },
+        { "mapNum": 4, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 151, "winner": "Miami Reapers" }
+      ],
+      "players": [
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 94, "deaths": 70, "perMap": [37, 5, 23, 29], "perMapDeaths": [28, 6, 15, 21] },
+        { "player": "Karnij", "team": "Miami Reapers", "kills": 82, "deaths": 62, "perMap": [33, 3, 19, 27], "perMapDeaths": [26, 6, 15, 15] },
+        { "player": "Acro Ace", "team": "Miami Reapers", "kills": 74, "deaths": 58, "perMap": [25, 2, 23, 24], "perMapDeaths": [25, 6, 13, 14] },
+        { "player": "Horror", "team": "Miami Reapers", "kills": 71, "deaths": 81, "perMap": [25, 3, 16, 27], "perMapDeaths": [32, 6, 19, 24] },
+        { "player": "CrazieViews", "team": "Newark Stars", "kills": 92, "deaths": 74, "perMap": [42, 7, 19, 24], "perMapDeaths": [27, 3, 20, 24] },
+        { "player": "Lewy", "team": "Newark Stars", "kills": 64, "deaths": 87, "perMap": [25, 6, 18, 15], "perMapDeaths": [33, 2, 21, 31] },
+        { "player": "Noti", "team": "Newark Stars", "kills": 59, "deaths": 89, "perMap": [27, 6, 14, 12], "perMapDeaths": [35, 3, 22, 29] },
+        { "player": "Utopian", "team": "Newark Stars", "kills": 56, "deaths": 72, "perMap": [17, 5, 11, 23], "perMapDeaths": [26, 5, 18, 23] }
+      ]
+    },
+    {
       "slug": "miami-reapers-vs-london-royal-ravens-2",
       "week": 3,
       "name": "Miami Reapers vs London Royal Ravens",
