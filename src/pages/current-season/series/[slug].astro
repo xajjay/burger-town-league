@@ -37,6 +37,9 @@ const teamTotals = [series.teamA, series.teamB].map(t => ({
           </span>
         </a>
       )}
+      {series.note && (
+        <p style="color: var(--paper-dim); font-size: 0.85rem; max-width: 60ch; margin-top: 16px;">{series.note}</p>
+      )}
     </div>
   </section>
 

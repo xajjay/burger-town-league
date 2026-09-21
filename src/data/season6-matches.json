@@ -1,6 +1,34 @@
 {
   "series": [
     {
+      "slug": "london-royal-ravens-vs-detroit-dirty-dogs",
+      "week": 3,
+      "name": "London Royal Ravens vs Detroit Dirty Dogs",
+      "teamA": "London Royal Ravens",
+      "teamB": "Detroit Dirty Dogs",
+      "seriesScore": "3-2",
+      "winner": "London Royal Ravens",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/9RBtbz77VLs",
+      "note": "Detroit played with Newark's Utopian filling in as an emergency substitute for their 4th roster spot. No individual stats were logged for that appearance, so only Detroit's 3 regular players are shown below.",
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 211, "teamBScore": 250, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 4, "winner": "London Royal Ravens" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 2, "teamBScore": 3, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 4, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 171, "winner": "London Royal Ravens" },
+        { "mapNum": 5, "map": "Raid", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 3, "winner": "London Royal Ravens" }
+      ],
+      "players": [
+        { "player": "Trap", "team": "London Royal Ravens", "kills": 113, "deaths": 90, "perMap": [28, 10, 37, 29, 9], "perMapDeaths": [27, 4, 33, 21, 5] },
+        { "player": "Hitta", "team": "London Royal Ravens", "kills": 85, "deaths": 91, "perMap": [16, 10, 28, 23, 8], "perMapDeaths": [25, 6, 36, 19, 5] },
+        { "player": "Dragon", "team": "London Royal Ravens", "kills": 86, "deaths": 103, "perMap": [21, 4, 29, 26, 6], "perMapDeaths": [30, 7, 33, 25, 8] },
+        { "player": "Realm", "team": "London Royal Ravens", "kills": 73, "deaths": 113, "perMap": [18, 6, 30, 16, 3], "perMapDeaths": [32, 8, 37, 27, 9] },
+        { "player": "Inkster", "team": "Detroit Dirty Dogs", "kills": 123, "deaths": 93, "perMap": [35, 11, 37, 30, 10], "perMapDeaths": [20, 7, 32, 28, 6] },
+        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 106, "deaths": 102, "perMap": [29, 6, 37, 25, 9], "perMapDeaths": [27, 8, 36, 25, 6] },
+        { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 97, "deaths": 83, "perMap": [28, 6, 40, 20, 3], "perMapDeaths": [18, 8, 28, 22, 7] }
+      ]
+    },
+    {
       "slug": "miami-reapers-vs-newark-stars-2",
       "week": 3,
       "name": "Miami Reapers vs Newark Stars",
