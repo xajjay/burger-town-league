@@ -27,7 +27,9 @@ const teamTotals = [series.teamA, series.teamB].map(t => ({
       <a href="/current-season/schedule" class="btn btn-ghost" style="margin-bottom: 20px; display: inline-flex;">← Back to Schedule</a>
       <span class="eyebrow">Week {series.week} · Season 6</span>
       <h1 class="script-heading" style="font-size: 2.2rem;">{series.name}</h1>
-      <p style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">{series.winner} wins {series.seriesScore}</p>
+      <p style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">
+        {series.doubleForfeit ? 'Double forfeit — both teams took a loss' : `${series.winner} wins ${series.seriesScore}`}
+      </p>
       {series.vodUrl && (
         <a href={series.vodUrl} target="_blank" rel="noopener" class="pixel-card" style="display: flex; align-items: center; gap: 14px; max-width: 420px; margin-top: 16px; text-decoration: none; transition: border-color 0.15s ease;">
           <span style="font-size: 1.8rem;">▶</span>
@@ -47,8 +49,12 @@ const teamTotals = [series.teamA, series.teamB].map(t => ({
     <section>
       <div class="wrap">
         <div class="pixel-card" style="max-width: 480px;">
-          <span class="eyebrow">Forfeit</span>
-          <p style="color: var(--paper); margin: 4px 0 0;">This series was decided by forfeit — no maps were played, so there's no box score to show.</p>
+          <span class="eyebrow">{series.doubleForfeit ? 'Double Forfeit' : 'Forfeit'}</span>
+          <p style="color: var(--paper); margin: 4px 0 0;">
+            {series.doubleForfeit
+              ? 'Both teams forfeited this series — no maps were played, and both teams receive a loss in the standings.'
+              : "This series was decided by forfeit — no maps were played, so there's no box score to show."}
+          </p>
         </div>
       </div>
     </section>

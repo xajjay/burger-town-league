@@ -6,12 +6,12 @@
   "matchFormat": ["Hardpoint", "Search & Destroy", "Control", "Hardpoint", "Search & Destroy"],
   "matchFormatNote": "Best of 5",
   "teams": [
-    { "name": "Nashville Mighty Ducks", "abbrev": "NSH", "captain": "Aj", "players": ["Jmetree", "Nastyy", "Chadwick", "Moon"], "record": "2-2" },
-    { "name": "San Jose Cougars", "abbrev": "SJ", "captain": "Aurora", "players": ["Waly", "Proxzify", "Toremeant", "TrapNA"], "record": "1-2" },
+    { "name": "Nashville Mighty Ducks", "abbrev": "NSH", "captain": "Aj", "players": ["Jmetree", "Nastyy", "Chadwick", "Moon"], "record": "3-3" },
+    { "name": "San Jose Cougars", "abbrev": "SJ", "captain": "Aurora", "players": ["Waly", "Proxzify", "Toremeant", "TrapNA"], "record": "1-5" },
     { "name": "Miami Reapers", "abbrev": "MIA", "captain": "Renicide", "players": ["Acro Ace", "Karnij", "Horror", "Scary"], "record": "4-2" },
-    { "name": "Newark Stars", "abbrev": "NWK", "captain": "CrazieViews", "players": ["Lewy", "Utopian", "Noti", "Zylix"], "record": "1-3" },
+    { "name": "Newark Stars", "abbrev": "NWK", "captain": "CrazieViews", "players": ["Lewy", "Utopian", "Noti", "Zylix"], "record": "2-4" },
     { "name": "London Royal Ravens", "abbrev": "LDN", "captain": "Trap", "players": ["Realm", "Dragon", "Hitta", "nate"], "record": "4-2", "formerName": "Chicago $wervo" },
-    { "name": "Detroit Dirty Dogs", "abbrev": "DET", "captain": "Inkster", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"], "record": "1-2" }
+    { "name": "Detroit Dirty Dogs", "abbrev": "DET", "captain": "Inkster", "players": ["Habibi", "Docsukii", "Peach", "Latinooo"], "record": "3-3" }
   ],
   "freeAgents": ["Hype", "Shasta", "Bombz", "Zico"],
   "schedule": {

@@ -123,6 +123,17 @@ const seriesColumn = {
         </>
       )}
 
+      {tab === 'playoffs' && (
+        <>
+          <span class="eyebrow">Double Elimination · 6 Teams</span>
+          <h1 class="script-heading" style="margin-bottom: 8px;">Playoffs</h1>
+          <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 20px;">
+            The BTL Season 1 playoff bracket is underway. Follow the live bracket for real-time matchups and results — seeding is set by final regular-season standings.
+          </p>
+          <a class="btn btn-primary" href="https://challonge.com/t40oa1gv" target="_blank" rel="noopener">View Live Bracket</a>
+        </>
+      )}
+
       {tab === 'rosters' && (
         <>
           <span class="eyebrow">{season6.status}</span>
@@ -190,6 +201,50 @@ const seriesColumn = {
             </tbody>
           </table>
         </div>
+      </div>
+    </section>
+  )}
+
+  {tab === 'playoffs' && (
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Bracket Preview</h2>
+        <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 24px;">
+          Double elimination, 6 teams. This is a snapshot of the current bracket — follow the live bracket above for real-time results as matches are played.
+        </p>
+
+        <h3 style="color: var(--gold); font-family: var(--font-body); font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.04em; margin-bottom: 12px;">Winners Bracket — Round 1</h3>
+        <div class="grid grid-2" style="margin-bottom: 28px;">
+          <div class="pixel-card">
+            <p style="color: var(--paper-dim); font-size: 0.75rem; margin-bottom: 8px;">MATCH 1</p>
+            <p style="margin: 4px 0;"><span style="color: var(--gold);">#1</span> London Royal Ravens</p>
+            <p style="margin: 4px 0;"><span style="color: var(--gold);">#4</span> Nashville Mighty Ducks</p>
+          </div>
+          <div class="pixel-card">
+            <p style="color: var(--paper-dim); font-size: 0.75rem; margin-bottom: 8px;">MATCH 2</p>
+            <p style="margin: 4px 0;"><span style="color: var(--gold);">#2</span> Miami Reapers</p>
+            <p style="margin: 4px 0;"><span style="color: var(--gold);">#3</span> Detroit Dirty Dogs</p>
+          </div>
+        </div>
+
+        <h3 style="color: var(--gold); font-family: var(--font-body); font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.04em; margin-bottom: 12px;">Losers Bracket — Round 1</h3>
+        <div class="grid grid-2" style="margin-bottom: 28px;">
+          <div class="pixel-card">
+            <p style="color: var(--paper-dim); font-size: 0.75rem; margin-bottom: 8px;">MATCH 4</p>
+            <p style="margin: 4px 0; color: var(--paper-dim); font-style: italic;">Loser of Match 2</p>
+            <p style="margin: 4px 0;"><span style="color: var(--gold);">#5</span> San Jose Cougars</p>
+          </div>
+          <div class="pixel-card">
+            <p style="color: var(--paper-dim); font-size: 0.75rem; margin-bottom: 8px;">MATCH 3</p>
+            <p style="margin: 4px 0; color: var(--paper-dim); font-style: italic;">Loser of Match 1</p>
+            <p style="margin: 4px 0;"><span style="color: var(--gold);">#6</span> Newark Stars</p>
+          </div>
+        </div>
+
+        <h3 style="color: var(--gold); font-family: var(--font-body); font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.04em; margin-bottom: 12px;">What's Ahead</h3>
+        <p style="color: var(--paper-dim); font-size: 0.85rem; max-width: 60ch;">
+          Winners of Matches 1 &amp; 2 meet in the Semifinals. Losers Round 2 and Round 3 work through the bracket from there, with the Losers Bracket winner facing the Semifinal winner in the Finals. Full progression is live on the bracket link above.
+        </p>
       </div>
     </section>
   )}
@@ -321,7 +376,9 @@ const seriesColumn = {
                           )}
                         </td>
                         <td>
-                          {series ? (
+                          {series?.doubleForfeit ? (
+                            <span style="color: var(--paper-dim);">Double Forfeit — both teams take a loss</span>
+                          ) : series ? (
                             <span style="color: var(--gold); font-weight: 700;">{series.winner} win {series.seriesScore}</span>
                           ) : voided ? (
                             <span style="color: var(--paper-dim); font-size: 0.85rem;" title={voided.note}>Rescheduled</span>

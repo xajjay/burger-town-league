@@ -1,6 +1,81 @@
 {
   "series": [
     {
+      "slug": "nashville-mighty-ducks-vs-san-jose-cougars",
+      "week": 3,
+      "name": "Nashville Mighty Ducks vs San Jose Cougars",
+      "teamA": "Nashville Mighty Ducks",
+      "teamB": "San Jose Cougars",
+      "seriesScore": "3-0",
+      "winner": "Nashville Mighty Ducks",
+      "forfeit": true,
+      "maps": [],
+      "players": []
+    },
+    {
+      "slug": "san-jose-cougars-vs-detroit-dirty-dogs",
+      "week": 2,
+      "name": "San Jose Cougars vs Detroit Dirty Dogs",
+      "teamA": "San Jose Cougars",
+      "teamB": "Detroit Dirty Dogs",
+      "forfeit": true,
+      "doubleForfeit": true,
+      "winner": null,
+      "maps": [],
+      "players": []
+    },
+    {
+      "slug": "detroit-dirty-dogs-vs-san-jose-cougars",
+      "week": 3,
+      "name": "Detroit Dirty Dogs vs San Jose Cougars",
+      "teamA": "Detroit Dirty Dogs",
+      "teamB": "San Jose Cougars",
+      "seriesScore": "3-0",
+      "winner": "Detroit Dirty Dogs",
+      "forfeit": true,
+      "maps": [],
+      "players": []
+    },
+    {
+      "slug": "nashville-mighty-ducks-vs-newark-stars",
+      "week": 3,
+      "name": "Nashville Mighty Ducks vs Newark Stars",
+      "teamA": "Nashville Mighty Ducks",
+      "teamB": "Newark Stars",
+      "seriesScore": "3-0",
+      "winner": "Newark Stars",
+      "forfeit": true,
+      "maps": [],
+      "players": []
+    },
+    {
+      "slug": "detroit-dirty-dogs-vs-newark-stars",
+      "week": 3,
+      "name": "Detroit Dirty Dogs vs Newark Stars",
+      "teamA": "Detroit Dirty Dogs",
+      "teamB": "Newark Stars",
+      "seriesScore": "3-1",
+      "winner": "Detroit Dirty Dogs",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/SBXdq0XaPHQ?si=Bqtq11RjInwZUhuJ",
+      "maps": [
+        { "mapNum": 1, "map": "Garrison", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 249, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 5, "teamBScore": 6, "winner": "Newark Stars" },
+        { "mapNum": 3, "map": "Checkmate", "mode": "Control", "teamAScore": 3, "teamBScore": 0, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 4, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 224, "winner": "Detroit Dirty Dogs" }
+      ],
+      "players": [
+        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 108, "deaths": 90, "perMap": [44, 5, 20, 39], "perMapDeaths": [34, 8, 15, 23] },
+        { "player": "Inkster", "team": "Detroit Dirty Dogs", "kills": 108, "deaths": 74, "perMap": [42, 13, 21, 32], "perMapDeaths": [31, 7, 14, 22] },
+        { "player": "Peach", "team": "Detroit Dirty Dogs", "kills": 79, "deaths": 77, "perMap": [24, 8, 18, 29], "perMapDeaths": [32, 9, 13, 23] },
+        { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 73, "deaths": 62, "perMap": [19, 8, 20, 26], "perMapDeaths": [24, 7, 9, 22] },
+        { "player": "CrazieViews", "team": "Newark Stars", "kills": 92, "deaths": 91, "perMap": [44, 8, 12, 28], "perMapDeaths": [31, 8, 18, 34] },
+        { "player": "Lewy", "team": "Newark Stars", "kills": 78, "deaths": 94, "perMap": [30, 10, 19, 19], "perMapDeaths": [35, 7, 19, 33] },
+        { "player": "Noti", "team": "Newark Stars", "kills": 58, "deaths": 97, "perMap": [25, 6, 8, 19], "perMapDeaths": [34, 10, 21, 32] },
+        { "player": "Utopian", "team": "Newark Stars", "kills": 65, "deaths": 86, "perMap": [22, 7, 12, 24], "perMapDeaths": [29, 9, 21, 27] }
+      ]
+    },
+    {
       "slug": "london-royal-ravens-vs-detroit-dirty-dogs",
       "week": 3,
       "name": "London Royal Ravens vs Detroit Dirty Dogs",
