@@ -25,7 +25,7 @@ const teamTotals = [series.teamA, series.teamB].map(t => ({
   <section style="padding-bottom: 0;">
     <div class="wrap">
       <a href="/current-season/schedule" class="btn btn-ghost" style="margin-bottom: 20px; display: inline-flex;">← Back to Schedule</a>
-      <span class="eyebrow">Week {series.week} · Season 6</span>
+      <span class="eyebrow">{series.phase === 'playoffs' ? series.round : `Week ${series.week}`} · Season 6</span>
       <h1 class="script-heading" style="font-size: 2.2rem;">{series.name}</h1>
       <p style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">
         {series.doubleForfeit ? 'Double forfeit — both teams took a loss' : `${series.winner} wins ${series.seriesScore}`}

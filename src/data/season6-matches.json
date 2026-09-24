@@ -1,6 +1,64 @@
 {
   "series": [
     {
+      "slug": "playoffs-london-royal-ravens-vs-nashville-mighty-ducks",
+      "phase": "playoffs",
+      "round": "Winners Round 1",
+      "name": "London Royal Ravens vs Nashville Mighty Ducks",
+      "teamA": "London Royal Ravens",
+      "teamB": "Nashville Mighty Ducks",
+      "seriesScore": "3-2",
+      "winner": "London Royal Ravens",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/idRP29ljMwo?si=2J7tgaCF-XFhRs7I",
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 245, "winner": "London Royal Ravens" },
+        { "mapNum": 2, "map": "Moscow", "mode": "Search & Destroy", "teamAScore": 2, "teamBScore": 6, "winner": "Nashville Mighty Ducks" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 3, "teamBScore": 2, "winner": "London Royal Ravens" },
+        { "mapNum": 4, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 170, "teamBScore": 205, "winner": "Nashville Mighty Ducks" },
+        { "mapNum": 5, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 1, "winner": "London Royal Ravens" }
+      ],
+      "players": [
+        { "player": "Dragon", "team": "London Royal Ravens", "kills": 132, "deaths": 117, "perMap": [30, 2, 43, 29, 8], "perMapDeaths": [25, 7, 30, 33, 2] },
+        { "player": "Trap", "team": "London Royal Ravens", "kills": 96, "deaths": 110, "perMap": [24, 4, 31, 30, 7], "perMapDeaths": [33, 7, 35, 32, 3] },
+        { "player": "Hitta", "team": "London Royal Ravens", "kills": 83, "deaths": 90, "perMap": [24, 7, 20, 26, 6], "perMapDeaths": [21, 7, 28, 31, 3] },
+        { "player": "Realm", "team": "London Royal Ravens", "kills": 84, "deaths": 91, "perMap": [23, 6, 21, 29, 5], "perMapDeaths": [23, 6, 33, 26, 3] },
+        { "player": "Aj", "team": "Nashville Mighty Ducks", "kills": 112, "deaths": 94, "perMap": [35, 9, 33, 35, 0], "perMapDeaths": [21, 6, 32, 28, 7] },
+        { "player": "Jmetree", "team": "Nashville Mighty Ducks", "kills": 118, "deaths": 90, "perMap": [27, 10, 35, 39, 7], "perMapDeaths": [27, 4, 29, 25, 5] },
+        { "player": "Nastyy", "team": "Nashville Mighty Ducks", "kills": 89, "deaths": 109, "perMap": [21, 6, 30, 28, 4], "perMapDeaths": [32, 5, 32, 34, 6] },
+        { "player": "Moon", "team": "Nashville Mighty Ducks", "kills": 68, "deaths": 82, "perMap": [19, 2, 27, 20, 0], "perMapDeaths": [21, 4, 23, 27, 7] }
+      ]
+    },
+    {
+      "slug": "playoffs-detroit-dirty-dogs-vs-miami-reapers",
+      "phase": "playoffs",
+      "round": "Winners Round 1",
+      "name": "Detroit Dirty Dogs vs Miami Reapers",
+      "teamA": "Detroit Dirty Dogs",
+      "teamB": "Miami Reapers",
+      "seriesScore": "3-2",
+      "winner": "Detroit Dirty Dogs",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/jMD-xjw_QCg?si=Bnsz-t3yxweE2DQ_",
+      "maps": [
+        { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 128, "teamBScore": 250, "winner": "Miami Reapers" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 3, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 3, "map": "Checkmate", "mode": "Control", "teamAScore": 1, "teamBScore": 3, "winner": "Miami Reapers" },
+        { "mapNum": 4, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 125, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 5, "map": "Raid", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 3, "winner": "Detroit Dirty Dogs" }
+      ],
+      "players": [
+        { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 102, "deaths": 75, "perMap": [30, 9, 28, 26, 9], "perMapDeaths": [24, 3, 28, 14, 6] },
+        { "player": "Inkster", "team": "Detroit Dirty Dogs", "kills": 96, "deaths": 84, "perMap": [24, 8, 31, 25, 8], "perMapDeaths": [27, 6, 26, 19, 6] },
+        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 80, "deaths": 81, "perMap": [21, 6, 18, 26, 9], "perMapDeaths": [22, 7, 29, 19, 4] },
+        { "player": "Peach", "team": "Detroit Dirty Dogs", "kills": 71, "deaths": 102, "perMap": [17, 7, 24, 19, 4], "perMapDeaths": [31, 7, 30, 26, 8] },
+        { "player": "Acro Ace", "team": "Miami Reapers", "kills": 89, "deaths": 81, "perMap": [36, 4, 24, 21, 4], "perMapDeaths": [20, 8, 25, 21, 7] },
+        { "player": "Karnij", "team": "Miami Reapers", "kills": 92, "deaths": 87, "perMap": [26, 7, 30, 21, 8], "perMapDeaths": [24, 7, 21, 28, 7] },
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 91, "deaths": 95, "perMap": [26, 7, 32, 21, 5], "perMapDeaths": [26, 7, 31, 22, 9] },
+        { "player": "Horror", "team": "Miami Reapers", "kills": 70, "deaths": 87, "perMap": [16, 5, 27, 15, 7], "perMapDeaths": [23, 8, 24, 25, 7] }
+      ]
+    },
+    {
       "slug": "nashville-mighty-ducks-vs-san-jose-cougars-2",
       "week": 3,
       "name": "Nashville Mighty Ducks vs San Jose Cougars",
