@@ -1,7 +1,7 @@
 {
   "series": [
     {
-      "slug": "nashville-mighty-ducks-vs-san-jose-cougars",
+      "slug": "nashville-mighty-ducks-vs-san-jose-cougars-2",
       "week": 3,
       "name": "Nashville Mighty Ducks vs San Jose Cougars",
       "teamA": "Nashville Mighty Ducks",
@@ -18,14 +18,13 @@
       "name": "San Jose Cougars vs Detroit Dirty Dogs",
       "teamA": "San Jose Cougars",
       "teamB": "Detroit Dirty Dogs",
-      "forfeit": true,
       "doubleForfeit": true,
-      "winner": null,
+      "note": "Both teams forfeited this series — each is credited with a loss, and no series win was awarded to either side.",
       "maps": [],
       "players": []
     },
     {
-      "slug": "detroit-dirty-dogs-vs-san-jose-cougars",
+      "slug": "detroit-dirty-dogs-vs-san-jose-cougars-2",
       "week": 3,
       "name": "Detroit Dirty Dogs vs San Jose Cougars",
       "teamA": "Detroit Dirty Dogs",
@@ -50,7 +49,7 @@
     },
     {
       "slug": "detroit-dirty-dogs-vs-newark-stars",
-      "week": 3,
+      "week": 2,
       "name": "Detroit Dirty Dogs vs Newark Stars",
       "teamA": "Detroit Dirty Dogs",
       "teamB": "Newark Stars",
