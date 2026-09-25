@@ -19,7 +19,7 @@
         { "mapNum": 5, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 1, "winner": "London Royal Ravens" }
       ],
       "players": [
-        { "player": "Dragon", "team": "London Royal Ravens", "kills": 132, "deaths": 117, "perMap": [30, 2, 43, 29, 8], "perMapDeaths": [25, 7, 30, 33, 2] },
+        { "player": "Dragon", "team": "London Royal Ravens", "kills": 112, "deaths": 97, "perMap": [30, 2, 43, 29, 8], "perMapDeaths": [25, 7, 30, 33, 2] },
         { "player": "Trap", "team": "London Royal Ravens", "kills": 96, "deaths": 110, "perMap": [24, 4, 31, 30, 7], "perMapDeaths": [33, 7, 35, 32, 3] },
         { "player": "Hitta", "team": "London Royal Ravens", "kills": 83, "deaths": 90, "perMap": [24, 7, 20, 26, 6], "perMapDeaths": [21, 7, 28, 31, 3] },
         { "player": "Realm", "team": "London Royal Ravens", "kills": 84, "deaths": 91, "perMap": [23, 6, 21, 29, 5], "perMapDeaths": [23, 6, 33, 26, 3] },
@@ -56,6 +56,34 @@
         { "player": "Karnij", "team": "Miami Reapers", "kills": 92, "deaths": 87, "perMap": [26, 7, 30, 21, 8], "perMapDeaths": [24, 7, 21, 28, 7] },
         { "player": "Renicide", "team": "Miami Reapers", "kills": 91, "deaths": 95, "perMap": [26, 7, 32, 21, 5], "perMapDeaths": [26, 7, 31, 22, 9] },
         { "player": "Horror", "team": "Miami Reapers", "kills": 70, "deaths": 87, "perMap": [16, 5, 27, 15, 7], "perMapDeaths": [23, 8, 24, 25, 7] }
+      ]
+    },
+    {
+      "slug": "playoffs-miami-reapers-vs-san-jose-cougars",
+      "phase": "playoffs",
+      "round": "Losers Round 1",
+      "name": "Miami Reapers vs San Jose Cougars",
+      "teamA": "Miami Reapers",
+      "teamB": "San Jose Cougars",
+      "seriesScore": "3-1",
+      "winner": "Miami Reapers",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/ExIYQfYKyRs",
+      "maps": [
+        { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 245, "teamBScore": 250, "winner": "San Jose Cougars" },
+        { "mapNum": 2, "map": "Raid", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 1, "winner": "Miami Reapers" },
+        { "mapNum": 3, "map": "Checkmate", "mode": "Control", "teamAScore": 3, "teamBScore": 0, "winner": "Miami Reapers" },
+        { "mapNum": 4, "map": "Moscow", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 202, "winner": "Miami Reapers" }
+      ],
+      "players": [
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 80, "deaths": 72, "perMap": [34, 3, 19, 24], "perMapDeaths": [28, 6, 17, 21] },
+        { "player": "Horror", "team": "Miami Reapers", "kills": 72, "deaths": 72, "perMap": [25, 6, 21, 20], "perMapDeaths": [36, 3, 12, 21] },
+        { "player": "Karnij", "team": "Miami Reapers", "kills": 80, "deaths": 58, "perMap": [28, 8, 17, 27], "perMapDeaths": [30, 2, 12, 14] },
+        { "player": "Acro Ace", "team": "Miami Reapers", "kills": 74, "deaths": 67, "perMap": [29, 8, 14, 23], "perMapDeaths": [26, 2, 14, 25] },
+        { "player": "Waly", "team": "San Jose Cougars", "kills": 62, "deaths": 61, "perMap": [33, 4, 8, 17], "perMapDeaths": [28, 6, 12, 15] },
+        { "player": "Proxzify", "team": "San Jose Cougars", "kills": 67, "deaths": 71, "perMap": [31, 4, 16, 16], "perMapDeaths": [26, 6, 15, 24] },
+        { "player": "Noti", "team": "San Jose Cougars", "kills": 59, "deaths": 89, "perMap": [25, 2, 17, 15], "perMapDeaths": [31, 7, 22, 29] },
+        { "player": "EJ", "team": "San Jose Cougars", "kills": 70, "deaths": 77, "perMap": [31, 3, 11, 25], "perMapDeaths": [31, 6, 19, 21] }
       ]
     },
     {
@@ -122,7 +150,7 @@
         { "mapNum": 4, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 224, "winner": "Detroit Dirty Dogs" }
       ],
       "players": [
-        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 108, "deaths": 90, "perMap": [44, 5, 20, 39], "perMapDeaths": [34, 8, 15, 23] },
+        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 108, "deaths": 80, "perMap": [44, 5, 20, 39], "perMapDeaths": [34, 8, 15, 23] },
         { "player": "Inkster", "team": "Detroit Dirty Dogs", "kills": 108, "deaths": 74, "perMap": [42, 13, 21, 32], "perMapDeaths": [31, 7, 14, 22] },
         { "player": "Peach", "team": "Detroit Dirty Dogs", "kills": 79, "deaths": 77, "perMap": [24, 8, 18, 29], "perMapDeaths": [32, 9, 13, 23] },
         { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 73, "deaths": 62, "perMap": [19, 8, 20, 26], "perMapDeaths": [24, 7, 9, 22] },
@@ -232,7 +260,7 @@
         { "mapNum": 4, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 226, "teamBScore": 250, "winner": "London Royal Ravens" }
       ],
       "players": [
-        { "player": "Aurora", "team": "San Jose Cougars", "kills": 82, "deaths": 84, "perMap": [23, 7, 33, 34], "perMapDeaths": [30, 9, 32, 23] },
+        { "player": "Aurora", "team": "San Jose Cougars", "kills": 97, "deaths": 94, "perMap": [23, 7, 33, 34], "perMapDeaths": [30, 9, 32, 23] },
         { "player": "Waly", "team": "San Jose Cougars", "kills": 80, "deaths": 79, "perMap": [21, 4, 29, 26], "perMapDeaths": [22, 8, 27, 22] },
         { "player": "Toremeant", "team": "San Jose Cougars", "kills": 77, "deaths": 91, "perMap": [21, 6, 27, 23], "perMapDeaths": [21, 7, 36, 27] },
         { "player": "Proxzify", "team": "San Jose Cougars", "kills": 83, "deaths": 78, "perMap": [18, 3, 33, 29], "perMapDeaths": [23, 8, 24, 23] },

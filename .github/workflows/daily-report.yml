@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -43,6 +45,13 @@ jobs:
           git config user.name "btl-daily-report-bot"
           git config user.email "actions@github.com"
           git add scripts/daily-report/history.json scripts/daily-report/next-topic.txt
-          git diff --quiet --cached || git commit -m "Update daily report state [skip ci]"
-          git push
+          git diff --quiet --cached && echo "Nothing to save" && exit 0
+          git commit -m "Update daily report state [skip ci]"
+          # If someone pushed to main while the report was generating, rebase onto it and retry
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && exit 0
+            echo "Push attempt $i failed, retrying..."
+            sleep $((i * 5))
+          done
+          exit 1
 
