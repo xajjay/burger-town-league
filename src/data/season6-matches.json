@@ -59,6 +59,35 @@
       ]
     },
     {
+      "slug": "playoffs-london-royal-ravens-vs-detroit-dirty-dogs",
+      "phase": "playoffs",
+      "round": "Winners Finals",
+      "name": "London Royal Ravens vs Detroit Dirty Dogs",
+      "teamA": "London Royal Ravens",
+      "teamB": "Detroit Dirty Dogs",
+      "seriesScore": "3-2",
+      "winner": "London Royal Ravens",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/RBocEAMhRyE",
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 139, "winner": "London Royal Ravens" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 4, "winner": "London Royal Ravens" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 2, "teamBScore": 3, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 4, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 244, "teamBScore": 250, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 5, "map": "Raid", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 2, "winner": "London Royal Ravens" }
+      ],
+      "players": [
+        { "player": "Realm", "team": "London Royal Ravens", "kills": 77, "deaths": 102, "perMap": [23, 5, 22, 21, 6], "perMapDeaths": [22, 5, 36, 34, 5] },
+        { "player": "Dragon", "team": "London Royal Ravens", "kills": 89, "deaths": 104, "perMap": [25, 6, 30, 23, 5], "perMapDeaths": [24, 6, 33, 35, 6] },
+        { "player": "Trap", "team": "London Royal Ravens", "kills": 95, "deaths": 106, "perMap": [24, 6, 28, 34, 3], "perMapDeaths": [27, 8, 29, 35, 7] },
+        { "player": "Hitta", "team": "London Royal Ravens", "kills": 99, "deaths": 92, "perMap": [24, 8, 22, 35, 10], "perMapDeaths": [17, 5, 34, 31, 5] },
+        { "player": "Inkster", "team": "Detroit Dirty Dogs", "kills": 102, "deaths": 90, "perMap": [22, 7, 28, 40, 5], "perMapDeaths": [22, 6, 28, 29, 5] },
+        { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 109, "deaths": 79, "perMap": [31, 4, 38, 31, 5], "perMapDeaths": [21, 6, 21, 25, 6] },
+        { "player": "Peach", "team": "Detroit Dirty Dogs", "kills": 96, "deaths": 91, "perMap": [21, 8, 30, 29, 8], "perMapDeaths": [25, 7, 25, 28, 6] },
+        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 96, "deaths": 102, "perMap": [16, 5, 35, 35, 5], "perMapDeaths": [28, 6, 29, 32, 7] }
+      ]
+    },
+    {
       "slug": "playoffs-miami-reapers-vs-san-jose-cougars",
       "phase": "playoffs",
       "round": "Losers Round 1",
