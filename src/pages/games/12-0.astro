@@ -491,6 +491,7 @@ function renderBracket(animLast){
     const champ = R.place==="1st", flawless = champ && R.ml===0;
     if (isDaily()){
       store.set("btl120-dailyres-"+DAY, R.place);
+      try { localStorage.setItem("btlg-res-12-0-"+DAY, JSON.stringify({win: R.place==="1st", share: shareText(R)})); } catch(e){}
     } else {
       const score = (champ?1000:0) + ({"1st":6,"2nd":5,"3rd":4,"4th":3,"5th–6th":2,"7th–8th":1}[R.place])*100 + (R.mw-R.ml);
       const prev = store.get("btl120-bestscore");

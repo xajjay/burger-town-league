@@ -1,0 +1,119 @@
+---
+import Base from '../../layouts/Base.astro';
+import GameFrame from '../../components/GameFrame.astro';
+import '../../styles/games.css';
+import DATA from '../../data/game-12-0.json';
+---
+<Base title="Gridlock | Burger Town Leagues" description="Fill the 3x3 grid with Burger Town Leagues players who fit both the row and the column. Daily challenge plus free play.">
+<GameFrame title="Gridlock" tagline="Fill the 3×3 grid. Each square needs a player who fits both its row and its column. You have 9 guesses, and every player can only be used once.">
+</GameFrame>
+<script is:inline src="/scripts/btl-games-core.js"></script>
+<script is:inline define:vars={{ DATA }}>
+(function(){
+const B = BTL, esc = B.esc, D = B.prep(DATA), MAXG = 9;
+const ITEMS = D.list.map(e => ({id:e.c, label:e.c, sub:e.aliasList.length ? "aka " + e.aliasList.join(", ") : "", search:e.search}));
+
+/* ---- condition library (all evaluated on a player's whole career) ---- */
+const C = [];
+const add = (id, fam, label, fn) => C.push({id, fam, label, fn});
+add("s1","seasons","Only 1 season", e => e.seasons === 1);
+add("s2","seasons","2+ seasons", e => e.seasons >= 2);
+add("s3","seasons","3+ seasons", e => e.seasons >= 3);
+add("s4","seasons","4+ seasons", e => e.seasons >= 4);
+for (let n = 1; n <= 5; n++) add("p"+n, "played", "Played in Season " + n, e => !!e.sset[n]);
+add("ring1","ring","Won a championship", e => e.champs >= 1);
+add("ring2","ring","2+ championships", e => e.champs >= 2);
+add("as1","as","Made an All-Star team", e => e.allstars >= 1);
+add("as2","as","2+ All-Star teams", e => e.allstars >= 2);
+add("mvp","mvp","Won league MVP", e => e.mvps >= 1);
+add("ckd1","ckd","Career K/D 1.00 or better", e => e.kd >= 1);
+add("ckd0","ckd","Career K/D under 1.00", e => e.kd < 1);
+add("ckd11","ckd","Career K/D 1.10+", e => e.kd >= 1.1);
+add("kd12","kdseason","Had a 1.20+ K/D season", e => e.maxKD >= 1.2);
+add("kd85","kdseason","Had a season under 0.85 K/D", e => e.minKD < 0.85);
+add("ar","role","Played AR", e => !!e.roles.AR);
+add("smg","role","Played SMG", e => !!e.roles.SMG);
+add("o85","ovr","Season Overall 85+", e => e.maxO >= 85);
+add("o70","ovr","Never above 75 Overall", e => e.maxO <= 75);
+add("snd","snd","1.20+ SnD K/D in a season", e => e.maxSk >= 1.2);
+add("ip","ip","45+ interactions/map in a season", e => e.maxIp >= 45);
+// team conditions: franchises with at least 6 distinct players in history
+const tcount = {}, tlabel = {};
+DATA.teams.forEach(t => { const k = D.norm(t.name); tlabel[k] = tlabel[k] || t.name; tcount[k] = tcount[k] || {}; t.p.forEach(id => { tcount[k][DATA.players[id] ? DATA.players[id].c : id] = 1; }); });
+Object.keys(tcount).filter(k => Object.keys(tcount[k]).length >= 6).forEach(k => add("t:"+k, "team", "Played for " + tlabel[k], e => !!e.teamKeys[k]));
+
+function candidates(a, b){ return D.list.filter(e => a.fn(e) && b.fn(e)); }
+function perfect(cells){ // bipartite matching: 9 cells -> distinct players
+  const match = {};
+  function tryK(ci, seen){
+    for (const c of cells[ci]){ if (seen[c]) continue; seen[c] = 1; if (match[c] == null || tryK(match[c], seen)){ match[c] = ci; return true; } }
+    return false;
+  }
+  for (let i = 0; i < cells.length; i++) if (!tryK(i, {})) return false;
+  return true;
+}
+function makeGrid(r){
+  for (let tries = 0; tries < 2000; tries++){
+    const pool = B.shuffle(C, r), rows = pool.slice(0,3), cols = [];
+    for (const c of pool.slice(3)){ if (cols.length < 3 && !rows.some(x => x.fam === c.fam && x.fam !== "team" && x.fam !== "played")) cols.push(c); }
+    if (cols.length < 3) continue;
+    const cells = [], sizes = [];
+    for (const ro of rows) for (const co of cols){ const cand = candidates(ro, co).map(e => e.c); cells.push(cand); sizes.push(cand.length); }
+    if (Math.min.apply(null, sizes) < 2 || Math.max.apply(null, sizes) > 45) continue;
+    if (!perfect(cells)) continue;
+    return {rows, cols, cells};
+  }
+}
+
+B.shell({game:"gridlock", start:function(ctx){
+  const G = makeGrid(ctx.rng);
+  const S = ctx.saved && ctx.saved.cells ? ctx.saved : {cells:Array(9).fill(null), used:0, quit:false};
+  const filled = () => S.cells.filter(Boolean).length;
+  const over = () => S.quit || S.used >= MAXG || filled() === 9;
+  let sel = null, note = "", noteCls = "", flash = -1;
+
+  const root = document.createElement("div"); root.className = "panel"; root.style.cssText = "display:flex;flex-direction:column;gap:12px"; ctx.body.appendChild(root);
+  const gridHost = document.createElement("div"), noteEl = document.createElement("div"), entryHost = document.createElement("div"); entryHost.className = "gm-entry";
+  noteEl.className = "glnote"; root.append(gridHost, noteEl, entryHost);
+  const actions = document.createElement("div"); actions.className = "gm-actions"; root.appendChild(actions);
+
+  function renderGrid(){
+    const done = over();
+    let h = '<div class="gl"><div class="corner"><b class="num" style="font-size:18px;color:var(--mustard)">' + (MAXG - S.used) + '</b>guesses left</div>' + G.cols.map(c => '<div class="hdr c">' + esc(c.label) + '</div>').join("");
+    for (let r = 0; r < 3; r++){
+      h += '<div class="hdr r">' + esc(G.rows[r].label) + '</div>';
+      for (let c = 0; c < 3; c++){
+        const i = r * 3 + c, p = S.cells[i];
+        if (p) h += '<div class="cell done">' + esc(p) + '</div>';
+        else if (done) h += '<div class="cell reveal">' + esc(G.cells[i][0]) + '<small>+' + (G.cells[i].length - 1) + ' more</small></div>';
+        else h += '<button class="cell' + (sel === i ? " sel" : "") + (flash === i ? " flash" : "") + '" data-i="' + i + '" aria-label="Square ' + (i+1) + '">' + (sel === i ? "Selected" : "＋") + '</button>';
+      }
+    }
+    gridHost.innerHTML = h + '</div>';
+    noteEl.textContent = done ? "" : note; noteEl.className = "glnote " + noteCls;
+    actions.innerHTML = done ? "" : '<button class="gbtn ghost" id="giveup">Give up</button>';
+    entryHost.hidden = done;
+  }
+  gridHost.addEventListener("click", e => { const b = e.target.closest("button.cell"); if (!b) return; sel = +b.dataset.i; note = "Now type a player who fits both."; noteCls = ""; renderGrid(); pk.focus(); });
+  actions.addEventListener("click", e => { if (e.target.id === "giveup"){ S.quit = true; ctx.save(S); after(); } });
+  const pk = B.picker(entryHost, ITEMS, {placeholder:"Type a player for the selected square…", exclude:() => Object.fromEntries(S.cells.filter(Boolean).map(x => [x,1])), onPick:function(it){
+    if (sel == null){ note = "Pick a square first."; noteCls = "err"; renderGrid(); return; }
+    S.used++;
+    if (G.cells[sel].indexOf(it.id) >= 0){ S.cells[sel] = it.id; note = it.id + " fits!"; noteCls = "ok"; flash = -1; sel = null; }
+    else { note = it.id + " doesn't fit that square."; noteCls = "err"; flash = sel; }
+    ctx.save(S); after();
+  }});
+  function after(){ renderGrid(); if (over()) finish(); }
+  function finish(){
+    const n = filled(), win = n === 9;
+    const grid = [0,1,2].map(r => [0,1,2].map(c => S.cells[r*3+c] ? "🟩" : "⬛").join("")).join("\n");
+    ctx.end({win:win, score:n,
+      headline: win ? "Grid complete in " + S.used + " guesses!" : n + " of 9 squares filled",
+      detail: "Squares you missed show one valid answer in the grid above.",
+      share: (ctx.daily ? "Gridlock #" + ctx.num : "Gridlock (free play)") + " " + n + "/9\n" + grid});
+  }
+  renderGrid(); if (over()) finish();
+}});
+})();
+</script>
+</Base>
