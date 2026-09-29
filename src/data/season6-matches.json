@@ -59,6 +59,33 @@
       ]
     },
     {
+      "slug": "playoffs-newark-stars-vs-nashville-mighty-ducks",
+      "phase": "playoffs",
+      "round": "Losers Round 1",
+      "name": "Newark Stars vs Nashville Mighty Ducks",
+      "teamA": "Newark Stars",
+      "teamB": "Nashville Mighty Ducks",
+      "seriesScore": "3-0",
+      "winner": "Newark Stars",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/5gtMDvBRkDY",
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 227, "winner": "Newark Stars" },
+        { "mapNum": 2, "map": "Moscow", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 5, "winner": "Newark Stars" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 3, "teamBScore": 1, "winner": "Newark Stars" }
+      ],
+      "players": [
+        { "player": "CrazieViews", "team": "Newark Stars", "kills": 72, "deaths": 48, "perMap": [31, 9, 32], "perMapDeaths": [18, 9, 21] },
+        { "player": "Toremeant", "team": "Newark Stars", "kills": 49, "deaths": 55, "perMap": [17, 7, 25], "perMapDeaths": [23, 8, 24] },
+        { "player": "Utopian", "team": "Newark Stars", "kills": 43, "deaths": 59, "perMap": [15, 7, 21], "perMapDeaths": [22, 8, 29] },
+        { "player": "Lewy", "team": "Newark Stars", "kills": 60, "deaths": 60, "perMap": [30, 8, 22], "perMapDeaths": [21, 7, 32] },
+        { "player": "Aj", "team": "Nashville Mighty Ducks", "kills": 69, "deaths": 61, "perMap": [27, 15, 27], "perMapDeaths": [25, 8, 28] },
+        { "player": "Jmetree", "team": "Nashville Mighty Ducks", "kills": 59, "deaths": 54, "perMap": [23, 7, 29], "perMapDeaths": [22, 6, 26] },
+        { "player": "Nastyy", "team": "Nashville Mighty Ducks", "kills": 54, "deaths": 51, "perMap": [20, 6, 28], "perMapDeaths": [22, 8, 21] },
+        { "player": "Moon", "team": "Nashville Mighty Ducks", "kills": 39, "deaths": 58, "perMap": [14, 4, 21], "perMapDeaths": [24, 9, 25] }
+      ]
+    },
+    {
       "slug": "playoffs-london-royal-ravens-vs-detroit-dirty-dogs",
       "phase": "playoffs",
       "round": "Winners Finals",
