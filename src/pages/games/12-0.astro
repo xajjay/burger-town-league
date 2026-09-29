@@ -1,0 +1,586 @@
+---
+import Base from '../../layouts/Base.astro';
+import '../../styles/game-12-0.css';
+import DATA from '../../data/game-12-0.json';
+---
+<Base title="12-0 | Burger Town Leagues" description="Spin real teams from Seasons 1-5, draft 2 ARs and 2 SMGs, and run a double-elimination bracket against the best teams in league history.">
+<div class="g120">
+<div class="wrap gwrap">
+  <header class="top">
+    <div class="gbrand">
+      <a class="eyebrow" href="/games" style="text-decoration:none">Games</a>
+      <h1 class="script-heading">12<span class="dash">–</span>0</h1>
+      <p class="tag">Spin a team from Seasons 1–5, draft one player off it, and repeat until you have 2 ARs and 2 SMGs. Then run an 8-team double-elimination bracket against the best real teams in league history.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+      <div class="modes" role="tablist" aria-label="Game mode">
+        <button class="tab" id="m-daily" role="tab">Daily challenge</button>
+        <button class="tab" id="m-free" role="tab">Free play</button>
+      </div>
+      <div class="dailyinfo" id="dailyinfo"></div>
+      <div class="diff" id="diffgroup" role="group" aria-label="Difficulty">
+        <span class="label">Respins</span>
+        <button class="chip" id="d-easy" data-d="easy">Easy · 4</button>
+        <button class="chip" id="d-std" data-d="std">Standard · 1</button>
+        <button class="chip" id="d-hard" data-d="hard">Hard · 0, no stats</button>
+      </div>
+      <div class="best" id="best"></div>
+    </div>
+  </header>
+
+  <div class="rail" id="rail" aria-label="Your roster"></div>
+
+  <div class="stage" id="stage">
+    <div class="reelrow">
+      <div class="reel" id="reel">
+        <div class="season" id="reel-season">PICK 1 OF 4</div>
+        <div class="team" id="reel-team">Ready to spin</div>
+        <div class="meta" id="reel-meta"></div>
+      </div>
+      <div class="actions">
+        <button class="gbtn primary" id="spin">Spin</button>
+        <button class="gbtn ghost" id="respin" disabled>Respin</button>
+      </div>
+    </div>
+    <div class="freebar" id="freebar" hidden>
+      <div><b>Folded team · free respin</b><p id="freebar-txt"></p></div>
+      <button class="gbtn free" id="freespin">Free respin</button>
+    </div>
+    <div class="cards" id="cards"></div>
+    <ol class="rules" id="rules">
+      <li>Each spin lands on a real team from one of the five completed seasons. Pick one player from that roster.</li>
+      <li>Your roster needs 2 ARs and 2 SMGs. Once a role is full, anyone else you take from that role plays off-role at −3 overall.</li>
+      <li>You can only draft a player once, whichever season or name you take him under.</li>
+      <li>Land on a folded team with 1–2 players and you get a free respin in every mode.</li>
+      <li>Team overall = player average, plus small boosts for real-teammate chemistry, balance between respawn and SnD K/D, and accolades.</li>
+      <li>The daily challenge gives everyone the same spins and the same opponents. One run per day, resets at midnight Eastern.</li>
+    </ol>
+  </div>
+
+  <div class="rating" id="rating" hidden></div>
+  <div class="bracket" id="bracket" hidden></div>
+</div>
+</div>
+<script is:inline define:vars={{ DATA }}>
+
+(function(){
+"use strict";
+const P = DATA.players, T = DATA.teams;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const f2 = x => x == null ? "—" : x.toFixed(2);
+const ACC_W = {MVP:.75, AS1:.5, AS2:.3, CHAMP:.4, RU:.2};
+const ACC_LABEL = {MVP:"MVP", AS1:"All-Star 1st", AS2:"All-Star 2nd", CHAMP:"Champion", RU:"Runner-up"};
+const DIFF = {easy:4, std:1, hard:0};
+const THIN = 2;                       // rosters this small earn a free respin
+const LAUNCH = "2026-09-29";          // Daily #1
+const SITE = "burgertownleagues.com/games/12-0";
+const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+};
+
+// ---- seeded randomness (daily) ----
+function hashStr(str){ let h = 1779033703 ^ str.length; for (let i=0;i<str.length;i++){ h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = h<<13 | h>>>19; } h = Math.imul(h ^ h>>>16, 2246822507); h = Math.imul(h ^ h>>>13, 3266489909); return (h ^= h>>>16) >>> 0; }
+function mulberry32(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a>>>15, 1 | a); t = t + Math.imul(t ^ t>>>7, 61 | t) ^ t; return ((t ^ t>>>14) >>> 0) / 4294967296; }; }
+function todayET(){
+  try { return new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }
+  catch(e){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+}
+const DAY = todayET();
+const DAILY_NO = Math.max(1, Math.round((Date.parse(DAY) - Date.parse(LAUNCH))/86400000) + 1);
+let rand = Math.random;               // swapped for a seeded generator in daily mode
+
+// ---- names ----
+const norm = x => String(x).toLowerCase().replace(/[^a-z0-9]/g,"");
+const hasAka = p => norm(p.n) !== norm(p.c);          // Acro_Ace vs Acro Ace is not an alias
+const dispName = p => p.n;
+const akaHTML = p => hasAka(p) ? `<span class="aka">aka ${esc(p.c)}</span>` : "";
+const shortName = p => hasAka(p) ? `${p.n} (${p.c})` : p.n;
+
+// ---- teammate graph: canonical names who shared a team-season ----
+const mates = new Map();
+const key = (a,b) => a < b ? a+"|"+b : b+"|"+a;
+T.forEach(t => {
+  for (let i=0;i<t.p.length;i++) for (let j=i+1;j<t.p.length;j++){
+    const a=P[t.p[i]].c, b=P[t.p[j]].c; if (a===b) continue;
+    const k=key(a,b); if(!mates.has(k)) mates.set(k,[]); mates.get(k).push(t.id);
+  }
+});
+
+// ---- scoring ----
+const respawnKD = p => p.rk != null ? p.rk : p.kd;
+const sndKD = p => p.sk != null ? p.sk : p.kd;
+function rawBalance(ps){
+  const xs = ps.filter(p => p.rk != null && p.sk != null);
+  if (xs.length < 2) return {b:null, n:xs.length};
+  const r = xs.reduce((a,p)=>a+p.rk,0)/xs.length, s = xs.reduce((a,p)=>a+p.sk,0)/xs.length;
+  return {b: Math.max(-1, Math.min(1, 1 - 4*Math.abs(r-s))), n: xs.length, r, s};
+}
+const core4 = t => t.p.map(i=>P[i]).slice().sort((a,b)=>b.m-a.m || a.id-b.id).slice(0,4);
+// Neutral balance = league average of real Season 2–5 teams. Season 1 players (no mode splits)
+// count as that average, so they neither help nor hurt this component.
+const NEUTRAL = (() => {
+  const v = T.filter(t => t.s>1 && t.p.length>=4).map(t => rawBalance(core4(t)).b).filter(x=>x!=null);
+  return v.reduce((a,b)=>a+b,0)/v.length;
+})();
+function teamScore(picks){
+  const ps = picks.map(x=>x.p);
+  const base = picks.reduce((a,x)=>a + x.p.o - (x.off?3:0), 0)/picks.length;
+  let pairs=0, same=0; const chemPairs=[];
+  for (let i=0;i<ps.length;i++) for (let j=i+1;j<ps.length;j++){
+    const m = mates.get(key(ps[i].c, ps[j].c));
+    if (m){ pairs++; chemPairs.push([ps[i],ps[j],m]); }
+    if (ps[i].t === ps[j].t) same++;
+  }
+  const chem = Math.min(2.5, .5*pairs + .25*same);
+  const acc = Math.min(2.5, ps.reduce((a,p)=>a+p.a.reduce((x,k)=>x+ACC_W[k],0),0));
+  const rb = rawBalance(ps);
+  const n = rb.b==null ? 0 : rb.n;
+  const bal = rb.b==null ? NEUTRAL : (n/4)*rb.b + (1-n/4)*NEUTRAL;
+  return {base, chem, acc, bal, total: Math.min(99, base+chem+acc+bal), chemPairs, rb, nSplit:n,
+          resp: ps.reduce((a,p)=>a+respawnKD(p),0)/ps.length, snd: ps.reduce((a,p)=>a+sndKD(p),0)/ps.length};
+}
+
+// ---- state ----
+let S;
+const isDaily = () => S.mode === "daily";
+const hideStats = () => S.mode === "free" && S.diff === "hard" && S.picks.length < 4;
+function fresh(mode, diff){
+  if (S && S.bracket) clearTimeout(S.bracket.timer);
+  S = {mode, diff: mode==="daily" ? "std" : diff, picks:[], spun:null, spinning:false, opp:null, bracket:null, locked:false};
+  S.respins = DIFF[S.diff];
+  S.spinRng = mode==="daily" ? mulberry32(hashStr("btl120|"+DAY+"|spins")) : Math.random;
+}
+const savedMode = store.get("btl120-mode");
+const savedDiff = store.get("btl120-diff");
+fresh(savedMode==="free" ? "free" : "daily", savedDiff in DIFF ? savedDiff : "std");
+
+function slotsLeft(){
+  return {AR: 2-S.picks.filter(x=>x.slot==="AR").length, SMG: 2-S.picks.filter(x=>x.slot==="SMG").length};
+}
+const taken = () => new Set(S.picks.map(x=>x.p.c));
+function slotFor(p){
+  const L = slotsLeft();
+  if (L[p.r] > 0) return {slot:p.r, off:false};
+  return {slot: p.r==="AR" ? "SMG" : "AR", off:true};
+}
+
+// ---- header ----
+function renderHeader(){
+  $("m-daily").setAttribute("aria-selected", isDaily() ? "true":"false");
+  $("m-free").setAttribute("aria-selected", isDaily() ? "false":"true");
+  $("m-daily").disabled = $("m-free").disabled = S.spinning;
+  $("diffgroup").hidden = isDaily();
+  ["easy","std","hard"].forEach(d=>{
+    const b = $("d-"+d); b.setAttribute("aria-pressed", S.diff===d ? "true":"false");
+    b.disabled = S.picks.length>0 || S.spun!=null || S.spinning;
+  });
+  $("dailyinfo").textContent = isDaily() ? `DAILY #${DAILY_NO} · ${DAY} · STANDARD RULES` : "";
+  const best = store.get("btl120-best");
+  $("best").textContent = !isDaily() && best ? "Your best free-play run: " + best : "";
+}
+
+// ---- roster rail ----
+function renderRail(){
+  const order = [["AR",0],["AR",1],["SMG",0],["SMG",1]];
+  const hide = hideStats();
+  const html = order.map(([role,i])=>{
+    const x = S.picks.filter(k=>k.slot===role)[i];
+    if (!x) return `<div class="slot empty"><span class="role ${role}">${role}</span><div class="pname">Open</div><div class="sub">&nbsp;</div><div class="ovr" style="color:var(--line)">—</div></div>`;
+    const p=x.p, t=T[p.t];
+    const ovr = hide ? `<div class="ovr q">??</div>` : `<div class="ovr num">${p.o - (x.off?3:0)}${x.off?"<small>−3</small>":""}</div>`;
+    return `<div class="slot filled"><span class="role ${role}">${role}${x.off?" · off-role":""}</span>
+      <div class="pname">${esc(dispName(p))}</div><div class="sub">${hasAka(p)?`aka ${esc(p.c)} · `:""}S${p.s} ${esc(t.name)}</div>${ovr}</div>`;
+  }).join("");
+  let meter;
+  if (S.picks.length && !hide){
+    const sc = teamScore(S.picks);
+    meter = `<div class="meter"><span class="label">${S.picks.length<4?"Team overall so far":"Team overall"}</span><div class="big num">${sc.total.toFixed(1)}</div><span class="label">${4-S.picks.length} pick${S.picks.length===3?"":"s"} left</span></div>`;
+  } else meter = `<div class="meter"><span class="label">Team overall</span><div class="big" style="color:var(--line)">${hide&&S.picks.length?"??":"—"}</div><span class="label">${hide?"Hidden on Hard until the draft is done":(4-S.picks.length)+" picks left"}</span></div>`;
+  $("rail").innerHTML = html + meter;
+}
+
+// ---- spin ----
+const isThin = t => t.p.length <= THIN;
+function spinPool(){
+  const tk = taken();
+  return T.filter(t => t.p.some(i => !tk.has(P[i].c)) && (!S.spun || t.id!==S.spun.id));
+}
+// kind: "spin" | "respin" | "free"
+function spin(kind){
+  if (S.spinning || S.locked) return;
+  if (kind==="spin" && S.spun) return;
+  if (kind==="respin"){ if (!S.spun || S.respins<=0) return; S.respins--; }
+  if (kind==="free" && !(S.spun && isThin(S.spun))) return;
+  const pool = spinPool(); if (!pool.length) return;
+  const target = pool[Math.floor(S.spinRng()*pool.length)];
+  S.spinning = true; S.spun = null; $("cards").innerHTML = ""; $("freebar").hidden = true;
+  renderButtons(); renderHeader();
+  const reel = $("reel"); reel.classList.add("spinning");
+  let ticks = reduceMotion() ? 0 : 16, delay = 45;
+  const step = () => {
+    if (ticks-- > 0){
+      const t = T[Math.floor(Math.random()*T.length)];
+      $("reel-season").textContent = "SEASON " + t.s; $("reel-team").textContent = t.name; $("reel-meta").textContent = "";
+      delay *= 1.13; setTimeout(step, delay);
+    } else {
+      reel.classList.remove("spinning"); S.spinning=false; S.spun = target; renderSpun();
+    }
+  };
+  step();
+}
+function teamLine(t){
+  const bits = [];
+  if (t.champ) bits.push("Champion"); else if (t.ru) bits.push("Runner-up");
+  bits.push(t.fin ? t.fin + " in the regular season" : "Folded mid-season");
+  bits.push(t.p.length + " player" + (t.p.length>1?"s":"") + " with stats");
+  return bits.join(" · ");
+}
+function statsBlock(p){
+  if (hideStats()) return `<div class="hidden-stats">Stats hidden on Hard.</div>`;
+  return `<div class="stats">
+        <div><b>${f2(p.kd)}</b><span>Overall K/D</span></div>
+        <div><b>${f2(p.rk)}</b><span>Respawn</span></div>
+        <div><b>${f2(p.sk)}</b><span>SnD</span></div>
+      </div>`;
+}
+function renderSpun(){
+  const t = S.spun;
+  const hide = hideStats();
+  $("reel-season").textContent = `SEASON ${t.s} · PICK ${S.picks.length+1} OF 4`;
+  $("reel-team").textContent = t.name;
+  $("reel-meta").textContent = teamLine(t);
+  const tk = taken();
+  const players = t.p.map(i=>P[i]).slice().sort((a,b)=> hide ? a.n.localeCompare(b.n) : b.o-a.o);
+  $("cards").innerHTML = players.map(p=>{
+    const dup = tk.has(p.c);
+    const prev = dup ? S.picks.find(x=>x.p.c===p.c).p : null;
+    const sf = slotFor(p);
+    const chem = S.picks.map(x=>x.p).filter(q => mates.has(key(q.c,p.c))).map(q=>dispName(q));
+    const cta = dup ? `<span class="cta off">Already drafted (S${prev.s}${prev.n!==p.n?" as "+esc(prev.n):""})</span>`
+      : sf.off ? `<span class="cta off">Draft off-role at ${sf.slot} · −3</span>`
+      : `<span class="cta">Draft as ${sf.slot}</span>`;
+    return `<button class="card" data-id="${p.id}" ${dup?"disabled":""} aria-label="Draft ${esc(p.n)}">
+      <div class="head"><div><div class="pname">${esc(p.n)}</div>${akaHTML(p)}</div>${hide?`<div class="ovr q">??</div>`:`<div class="ovr num">${p.o}</div>`}</div>
+      <div><span class="role ${p.r}">${p.r}</span></div>
+      ${statsBlock(p)}
+      <div class="accs">${p.a.map(a=>`<span class="acc ${a}">${ACC_LABEL[a]}</span>`).join("")}${hide?"":`<span class="acc" style="background:transparent;color:var(--muted);padding-left:0">${p.m} maps</span>`}</div>
+      ${chem.length ? `<div class="chem">Chemistry with ${chem.map(esc).join(", ")}</div>` : ""}
+      ${cta}
+    </button>`;
+  }).join("") + (t.s===1 && !hide ? `<p class="hint" style="grid-column:1/-1">Season 1 only has series totals, so respawn and SnD K/D show as —. Season 1 players count as league average for team balance.</p>` : "");
+  if (isThin(t)){
+    $("freebar-txt").textContent = `${t.name} folded with only ${t.p.length} player${t.p.length>1?"s":""} on record. Take ${t.p.length>1?"one of them":"him"}, or spin a new team for free. This does not use a respin.`;
+    $("freebar").hidden = false;
+  }
+  renderButtons(); renderHeader();
+}
+function draft(id){
+  const p = P[id]; if (!S.spun || S.spinning || taken().has(p.c)) return;
+  if (!S.spun.p.includes(id)) return;
+  const sf = slotFor(p);
+  S.picks.push({p, slot:sf.slot, off:sf.off});
+  S.spun = null; $("freebar").hidden = true;
+  renderRail();
+  if (S.picks.length === 4){ finishDraft(); return; }
+  $("cards").innerHTML = "";
+  $("reel-season").textContent = `PICK ${S.picks.length+1} OF 4`;
+  $("reel-team").textContent = "Spin again";
+  const L = slotsLeft();
+  $("reel-meta").textContent = `Open: ${L.AR} AR, ${L.SMG} SMG`;
+  renderButtons(); renderHeader();
+}
+function renderButtons(){
+  const done = S.picks.length===4;
+  $("spin").disabled = S.spinning || done || S.spun!=null;
+  $("respin").disabled = S.spinning || done || !S.spun || S.respins<=0;
+  $("respin").textContent = `Respin (${S.respins} left)`;
+}
+function resetStage(){
+  $("rating").hidden = true; $("bracket").hidden = true; $("rules").hidden = false; $("stage").hidden = false; $("freebar").hidden = true;
+  $("cards").innerHTML = "";
+  $("reel-season").textContent = "PICK 1 OF 4";
+  $("reel-team").textContent = "Ready to spin";
+  $("reel-meta").textContent = isDaily()
+    ? `Daily #${DAILY_NO}: everyone gets the same spins and the same seven opponents today.`
+    : `${P.length} player-seasons across ${T.length} teams. Every pick uses that player's overall from that season.`;
+}
+
+// ---- after the draft ----
+function finishDraft(){
+  $("stage").hidden = true;
+  if (isDaily()){
+    S.locked = true;
+    store.set("btl120-daily-"+DAY, JSON.stringify({picks:S.picks.map(x=>[x.p.id,x.slot,x.off?1:0])}));
+  }
+  renderRail(); renderButtons(); renderHeader(); renderRating(); pickOpponents(); renderField();
+  $("rating").scrollIntoView({behavior: reduceMotion() ? "auto" : "smooth", block:"start"});
+}
+function bar(v, max){
+  const w = Math.max(0, Math.min(100, Math.abs(v)/max*100));
+  return `<div class="bar"><i class="${v<0?"neg":""}" style="left:0;width:${w}%"></i></div>`;
+}
+function renderRating(){
+  const sc = teamScore(S.picks);
+  const off = S.picks.filter(x=>x.off).length;
+  const chemTxt = sc.chemPairs.length ? sc.chemPairs.map(([a,b,m])=>`${a.n} + ${b.n} (${m.map(i=>"S"+T[i].s+" "+T[i].name).join(", ")})`).join("; ") : "No one on this roster has played together.";
+  const balTxt = sc.rb.b==null
+    ? "Not enough players with respawn/SnD splits, so this is set to the league average."
+    : `Respawn K/D ${sc.rb.r.toFixed(2)} vs SnD K/D ${sc.rb.s.toFixed(2)} across ${sc.nSplit} player${sc.nSplit>1?"s":""} with splits${sc.nSplit<4?"; Season 1 players count as league average":""}.`;
+  const accCount = {}; S.picks.forEach(x=>x.p.a.forEach(a=>accCount[a]=(accCount[a]||0)+1));
+  const accTxt = Object.keys(accCount).length ? Object.entries(accCount).map(([k,v])=>`${v}× ${ACC_LABEL[k]}`).join(", ") : "No season accolades.";
+  const daily = isDaily();
+  $("rating").hidden = false;
+  $("rating").innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span class="label">${daily?`Daily #${DAILY_NO} · `:""}Team overall</span>
+      <div class="total num">${sc.total.toFixed(1)}</div>
+      <p class="hint">${off ? off+" player"+(off>1?"s":"")+" off-role (−3 each). " : ""}Team K/D profile: respawn ${sc.resp.toFixed(2)}, SnD ${sc.snd.toFixed(2)}.</p>
+      <div class="actions" id="rating-actions"><button class="gbtn primary" id="run">Run the bracket</button>${daily?"":`<button class="gbtn ghost" id="again">New draft</button>`}</div>
+      ${daily?`<p class="locked">Your daily roster is locked in. The bracket result is the same no matter how many times you open this page.</p>`:""}
+    </div>
+    <div class="rows">
+      <div class="rrow"><span class="label">Player avg</span>${bar(sc.base-60,40)}<b class="num">${sc.base.toFixed(1)}</b><div class="why">Average of the four season overalls${off?", after off-role penalties":""}.</div></div>
+      <div class="rrow"><span class="label">Chemistry</span>${bar(sc.chem,2.5)}<b class="num">+${sc.chem.toFixed(2)}</b><div class="why">${esc(chemTxt)} Max +2.5.</div></div>
+      <div class="rrow"><span class="label">Balance</span>${bar(sc.bal,1)}<b class="num">${sc.bal>=0?"+":""}${sc.bal.toFixed(2)}</b><div class="why">${esc(balTxt)} Range −1 to +1.</div></div>
+      <div class="rrow"><span class="label">Accolades</span>${bar(sc.acc,2.5)}<b class="num">+${sc.acc.toFixed(2)}</b><div class="why">${esc(accTxt)} Max +2.5.</div></div>
+    </div>`;
+}
+
+// ---- opponents & seeding ----
+function oppEntry(t){
+  const ps = core4(t);
+  return {name:`S${t.s} ${t.name}`, t, ps, sc:teamScore(ps.map(p=>({p, off:false}))), me:false};
+}
+function pickOpponents(){
+  const r = isDaily() ? mulberry32(hashStr("btl120|"+DAY+"|field")) : Math.random;
+  const pool = T.filter(t=>t.elig);
+  for (let i=pool.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  S.opp = pool.slice(0,7).map(oppEntry);
+}
+function field(){
+  const me = {name:"Your team", ps:S.picks.map(x=>x.p), sc:teamScore(S.picks), me:true};
+  return [me, ...S.opp].sort((a,b)=>b.sc.total-a.sc.total || (a.me?-1:b.me?1:a.name.localeCompare(b.name)));
+}
+const seedsHTML = F => `<div class="seeds">${F.map((e,i)=>`<div class="seed ${e.me?"me":""}"><span class="sn">#${i+1}</span><span class="tn">${esc(e.name)}</span><span class="to num">${e.sc.total.toFixed(1)}</span><span class="tp">${e.ps.map(p=>esc(shortName(p))).join(" · ")}</span></div>`).join("")}</div>`;
+function renderField(){
+  $("bracket").hidden = false;
+  $("bracket").innerHTML = `<div class="panel"><h2>The field</h2>
+    <p class="hint">Seven opponents drawn from teams that finished top 4 in their regular season or reached the final${isDaily()?" (the same seven for everyone today)":""}. Each is rated with the same formula on its four players with the most maps.</p>
+    ${seedsHTML(field())}</div>`;
+}
+
+// ---- simulation ----
+const MAPS = {HP:["Checkmate","Raid","Garrison","Apocalypse","Moscow"], SND:["Raid","Standoff","Express","Moscow","Miami"], CTL:["Raid","Checkmate","Garrison"]};
+const MODES = ["HP","SND","CTL","HP","SND"];
+const MODE_NAME = {HP:"Hardpoint", SND:"Search", CTL:"Control"};
+const pick = a => a[Math.floor(rand()*a.length)];
+const gauss = () => { let u=0,v=0; while(!u)u=rand(); while(!v)v=rand(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); };
+const modeKD = (e, mode) => e.ps.reduce((a,p)=>a+(mode==="SND"?sndKD(p):respawnKD(p)),0)/e.ps.length;
+function mapWinProb(A,B,mode,fa,fb){
+  const d = (A.sc.total+fa) - (B.sc.total+fb) + 6*(modeKD(A,mode)-modeKD(B,mode));
+  return 1/(1+Math.exp(-d/5.5));
+}
+function mapScore(mode, pw){
+  const close = 1 - Math.abs(pw-.5)*2;
+  if (mode==="HP") return [250, Math.round(120 + 125*Math.min(1, close*.7 + rand()*.45))];
+  if (mode==="SND") return [6, Math.min(5, Math.floor(rand()*(2+4*close)))];
+  return [3, Math.min(2, Math.floor(rand()*(1.2+2*close)))];
+}
+function playerLine(p, mode, won){
+  const base = {HP:24, SND:7, CTL:19}[mode];
+  const kd = mode==="SND"?sndKD(p):respawnKD(p);
+  const k = Math.max(0, Math.round(base*(0.72+rand()*.56)*Math.sqrt(kd)*(won?1.07:.94)));
+  const d = Math.max(1, Math.round(base*(0.72+rand()*.56)/Math.sqrt(kd)*(won?.9:1.1)));
+  return [k,d];
+}
+function playSeries(A,B){
+  const fa = gauss()*1.2, fb = gauss()*1.2;
+  let wa=0, wb=0; const maps=[]; const used = new Set();
+  while (wa<3 && wb<3){
+    const mode = MODES[maps.length];
+    let m, guard=0; do { m = pick(MAPS[mode]); } while (used.has(mode+m) && ++guard<20); used.add(mode+m);
+    const p = mapWinProb(A,B,mode,fa,fb);
+    const aWon = rand() < p;
+    const [hi,lo] = mapScore(mode, p);
+    aWon ? wa++ : wb++;
+    const lines = [];
+    [A,B].forEach(e=>{ if(e.me){ const won = (e===A)===aWon; e.ps.forEach(pl=>{ const [k,d]=playerLine(pl,mode,won); lines.push([pl.id,k,d]); }); } });
+    maps.push({mode, map:m, score: aWon?[hi,lo]:[lo,hi], lines});
+  }
+  return {A,B,wa,wb,maps, winner: wa>wb?A:B, loser: wa>wb?B:A};
+}
+// 8-team double elimination, every series best of 5, no bracket reset.
+const LAYOUT = [
+  {id:"W1", r:"Winners R1", a:["s",0], b:["s",7]},
+  {id:"W2", r:"Winners R1", a:["s",3], b:["s",4]},
+  {id:"W3", r:"Winners R1", a:["s",1], b:["s",6]},
+  {id:"W4", r:"Winners R1", a:["s",2], b:["s",5]},
+  {id:"W5", r:"Winners semis", a:["w","W1"], b:["w","W2"]},
+  {id:"W6", r:"Winners semis", a:["w","W3"], b:["w","W4"]},
+  {id:"L1", r:"Losers R1", a:["l","W1"], b:["l","W2"]},
+  {id:"L2", r:"Losers R1", a:["l","W3"], b:["l","W4"]},
+  {id:"L3", r:"Losers R2", a:["w","L1"], b:["l","W6"]},
+  {id:"L4", r:"Losers R2", a:["w","L2"], b:["l","W5"]},
+  {id:"W7", r:"Winners final", a:["w","W5"], b:["w","W6"]},
+  {id:"L5", r:"Losers R3", a:["w","L3"], b:["w","L4"]},
+  {id:"L6", r:"Losers final", a:["w","L5"], b:["l","W7"]},
+  {id:"GF", r:"Grand final", a:["w","W7"], b:["w","L6"]},
+];
+const ELIM_PLACE = {L1:"7th–8th", L2:"7th–8th", L3:"5th–6th", L4:"5th–6th", L5:"4th", L6:"3rd", GF:"2nd"};
+const COLS = [["Winners R1"],["Winners semis","Losers R1"],["Winners final","Losers R2"],["Losers R3"],["Losers final"],["Grand final"]];
+
+function runBracket(instant){
+  if (S.bracket) clearTimeout(S.bracket.timer);
+  rand = isDaily() ? mulberry32(hashStr("btl120|"+DAY+"|sim|"+S.picks.map(x=>x.p.id+x.slot+(x.off?1:0)).join(","))) : Math.random;
+  const seeds = field();
+  const res = {};
+  const who = ref => ref[0]==="s" ? seeds[ref[1]] : ref[0]==="w" ? res[ref[1]].winner : res[ref[1]].loser;
+  LAYOUT.forEach(m => { res[m.id] = playSeries(who(m.a), who(m.b)); });
+  rand = Math.random;
+  S.bracket = {seeds, res, shown: instant ? LAYOUT.length : 0};
+  $("rating-actions") && ($("rating-actions").hidden = isDaily());
+  if (instant) renderBracket(false); else { renderBracket(false); revealNext(); }
+}
+function revealNext(){
+  const B = S.bracket; if (!B || B.shown >= LAYOUT.length) return;
+  B.shown++; renderBracket(true);
+  if (B.shown < LAYOUT.length) B.timer = setTimeout(revealNext, reduceMotion() ? 0 : 520);
+}
+function skipAhead(){ const B=S.bracket; clearTimeout(B.timer); B.shown = LAYOUT.length; renderBracket(false); }
+
+function seriesHTML(m, visible, isFresh){
+  const r = S.bracket.res[m.id];
+  if (!visible) return `<div class="series"><div class="t tbd"><span>${m.id}</span><span class="sc">–</span></div><div class="t tbd"><span>&nbsp;</span><span class="sc">–</span></div></div>`;
+  const row = (e, w, sc) => `<div class="t ${w?"w":"l"}"><span>${esc(e.me ? "★ Your team" : e.name)}</span><span class="sc">${sc}</span></div>`;
+  const maps = r.maps.map(x=>`<li>${MODE_NAME[x.mode]} · ${x.map} · ${x.score[0]}–${x.score[1]}</li>`).join("");
+  return `<div class="series ${(r.A.me||r.B.me)?"me":""} ${isFresh?"fresh":""}">${row(r.A, r.wa>r.wb, r.wa)}${row(r.B, r.wb>r.wa, r.wb)}
+    <details data-id="${m.id}"><summary>Maps ▾</summary><ol>${maps}</ol></details></div>`;
+}
+function myRun(){
+  const {res} = S.bracket;
+  let place = "1st", sw=0, sl=0, mw=0, ml=0; const stat = {}; const path = [];
+  S.picks.forEach(x=>stat[x.p.id]={p:x.p,k:0,d:0,maps:0});
+  LAYOUT.forEach(m=>{
+    const r = res[m.id]; if (!(r.A.me || r.B.me)) return;
+    const w = r.A.me ? r.wa : r.wb, l = r.A.me ? r.wb : r.wa;
+    mw+=w; ml+=l; path.push([m.id,w,l]);
+    if (w>l) sw++; else { sl++; if (sl>=2 || m.id==="GF") place = ELIM_PLACE[m.id]; }
+    r.maps.forEach(x=>x.lines.forEach(([id,k,d])=>{ stat[id].k+=k; stat[id].d+=d; stat[id].maps++; }));
+  });
+  return {place, sw, sl, mw, ml, stat, path};
+}
+function shareText(R){
+  const sc = teamScore(S.picks);
+  const head = isDaily() ? `BTL 12-0 Daily #${DAILY_NO}` : `BTL 12-0 · ${({easy:"Easy",std:"Standard",hard:"Hard"})[S.diff]}`;
+  const finish = R.place==="1st" ? (R.ml===0 ? "🏆 FLAWLESS 12-0" : "🏆 Champions") : R.place;
+  const squares = R.path.map(([id,w,l]) => w>l ? (l===0?"🟩":"🟨") : "🟥").join("");
+  const roster = S.picks.map(x=>`${x.p.n} S${x.p.s}`).join(" · ");
+  return `${head}\n${finish} · maps ${R.mw}-${R.ml} · OVR ${sc.total.toFixed(1)}\n${squares}\n||${roster}||\n${SITE}`;
+}
+function renderBracket(animLast){
+  const B = S.bracket; const done = B.shown >= LAYOUT.length;
+  const shownIds = new Set(LAYOUT.slice(0,B.shown).map(m=>m.id));
+  const lastId = LAYOUT[B.shown-1] && LAYOUT[B.shown-1].id;
+  const cols = COLS.map(names => `<div class="round">${names.map(n=>`<h3>${n}</h3>${LAYOUT.filter(m=>m.r===n).map(m=>seriesHTML(m, shownIds.has(m.id), animLast && m.id===lastId)).join("")}`).join("")}</div>`).join("");
+  let result = "";
+  if (done){
+    const R = myRun();
+    const champ = R.place==="1st", flawless = champ && R.ml===0;
+    if (isDaily()){
+      store.set("btl120-dailyres-"+DAY, R.place);
+    } else {
+      const score = (champ?1000:0) + ({"1st":6,"2nd":5,"3rd":4,"4th":3,"5th–6th":2,"7th–8th":1}[R.place])*100 + (R.mw-R.ml);
+      const prev = store.get("btl120-bestscore");
+      if (!prev || score > +prev){ store.set("btl120-bestscore", String(score)); store.set("btl120-best", `${R.place}, maps ${R.mw}-${R.ml}${flawless?" (flawless)":""}`); }
+    }
+    const rows = Object.values(R.stat).map(s=>({...s, kd: s.k/Math.max(1,s.d)})).sort((a,b)=>b.kd-a.kd);
+    const mvp = rows[0] && rows[0].p.id;
+    const buttons = isDaily()
+      ? `<button class="gbtn primary" id="copy">Copy for Discord</button><button class="gbtn ghost" id="gofree">Play free mode</button>`
+      : `<button class="gbtn primary" id="resim">Re-sim bracket</button><button class="gbtn ghost" id="newopp">New opponents</button><button class="gbtn ghost" id="again2">New draft</button><button class="gbtn ghost" id="copy">Copy for Discord</button>`;
+    result = `<div class="result">
+      <div><span class="label">${isDaily()?`Daily #${DAILY_NO} · `:""}Your finish</span><div class="place ${champ?"win":""}">${champ?"Champions":R.place}</div>
+        <div class="rec">Series ${R.sw}-${R.sl} · Maps ${R.mw}-${R.ml}</div>${flawless?`<span class="flawless">12–0 FLAWLESS</span>`:""}</div>
+      <div class="actions">${buttons}</div>
+      <div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px">
+        <label class="label" for="sharebox">${isDaily()?"Post this in the Burger Town Discord. Your roster is spoiler-tagged.":"Share text"}</label>
+        <textarea class="share" id="sharebox" readonly>${esc(shareText(R))}</textarea>
+        <div class="toast" id="toast"></div>
+      </div>
+    </div>
+    <div class="panel"><h2>Your playoff stat lines</h2><div class="scroll"><table class="tbl"><thead><tr><th>Player</th><th>Maps</th><th>Kills</th><th>Deaths</th><th>K/D</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr><td class="${r.p.id===mvp?"mvp":""}">${esc(shortName(r.p))}${r.p.id===mvp?" · team MVP":""}</td><td>${r.maps}</td><td>${r.k}</td><td>${r.d}</td><td>${r.kd.toFixed(2)}</td></tr>`).join("")}
+    </tbody></table></div></div>`;
+  }
+  const prevScroll = $("bracket").querySelector(".rounds") ? $("bracket").querySelector(".rounds").parentElement.scrollLeft : 0;
+  const openSeries = new Set([...$("bracket").querySelectorAll("details[open]")].map(d=>d.dataset.id));
+  $("bracket").hidden = false;
+  $("bracket").innerHTML = `${result}
+    <div class="panel"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h2>Playoffs · double elimination</h2>
+      ${done?"":`<button class="gbtn ghost" id="skip">Skip to result</button>`}</div>
+      <p class="hint">Every series is best of 5 (Hardpoint, SnD, Control, Hardpoint, SnD). Grand final has no bracket reset. Tap “Maps” on any series for the map-by-map.</p>
+      <div class="scroll"><div class="rounds">${cols}</div></div></div>
+    <div class="panel"><h2>Seeding</h2>${seedsHTML(B.seeds)}</div>`;
+  const sc = $("bracket").querySelector(".rounds"); if (sc) sc.parentElement.scrollLeft = prevScroll;
+  $("bracket").querySelectorAll("details").forEach(d=>{ if (openSeries.has(d.dataset.id)) d.open = true; });
+}
+function copyResult(){
+  const box = $("sharebox"); const txt = box.value;
+  const ok = () => $("toast").textContent = "Copied. Paste it in Discord.";
+  const fail = () => { box.focus(); box.select(); $("toast").textContent = "Press Ctrl+C (or Cmd+C) to copy the selected text."; };
+  try { navigator.clipboard.writeText(txt).then(ok, fail); } catch(e){ fail(); }
+}
+
+// ---- modes ----
+function startMode(mode){
+  fresh(mode, S ? S.diff : "std");
+  if (mode==="free" && store.get("btl120-diff") in DIFF){ S.diff = store.get("btl120-diff"); S.respins = DIFF[S.diff]; }
+  store.set("btl120-mode", mode);
+  resetStage();
+  if (mode==="daily"){
+    let saved = null; try { saved = JSON.parse(store.get("btl120-daily-"+DAY) || "null"); } catch(e){}
+    if (saved && saved.picks && saved.picks.length===4 && saved.picks.every(([id])=>P[id])){
+      S.picks = saved.picks.map(([id,slot,off])=>({p:P[id], slot, off:!!off}));
+      S.locked = true;
+      $("stage").hidden = true;
+      renderRail(); renderButtons(); renderHeader(); renderRating(); pickOpponents();
+      if (store.get("btl120-dailyres-"+DAY)) runBracket(true); else renderField();
+      return;
+    }
+  }
+  renderHeader(); renderRail(); renderButtons();
+}
+
+// ---- wiring ----
+$("m-daily").onclick = () => { if (!isDaily()) { startMode("daily"); window.scrollTo({top:0}); } };
+$("m-free").onclick = () => { if (isDaily()) { startMode("free"); window.scrollTo({top:0}); } };
+document.querySelectorAll(".chip[data-d]").forEach(b => b.onclick = () => {
+  if (isDaily() || S.picks.length || S.spun) return;
+  S.diff = b.dataset.d; S.respins = DIFF[S.diff]; store.set("btl120-diff", S.diff); renderHeader(); renderButtons();
+});
+$("spin").onclick = () => spin("spin");
+$("respin").onclick = () => spin("respin");
+$("freespin").onclick = () => spin("free");
+$("cards").addEventListener("click", e => { const c = e.target.closest(".card"); if (c && !c.disabled) draft(+c.dataset.id); });
+$("rating").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.id==="run") runBracket(false);
+  else if (b.id==="again") { startMode("free"); window.scrollTo({top:0}); }
+});
+$("bracket").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.id==="skip") skipAhead();
+  else if (b.id==="resim") runBracket(false);
+  else if (b.id==="newopp"){ pickOpponents(); runBracket(false); }
+  else if (b.id==="again2" || b.id==="gofree"){ startMode("free"); window.scrollTo({top:0}); }
+  else if (b.id==="copy") copyResult();
+});
+startMode(S.mode);
+window.BTL120 = {teamScore, P, T, NEUTRAL, get state(){return S;}, spin, draft, LAYOUT, startMode, DAY};
+})();
+
+</script>
+</Base>

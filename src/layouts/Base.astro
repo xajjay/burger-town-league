@@ -27,6 +27,7 @@ const currentPath = Astro.url.pathname;
         <li><a href="/history" aria-current={currentPath.startsWith('/history') || currentPath.startsWith('/season') ? 'page' : undefined}>History</a></li>
         <li><a href="/players" aria-current={currentPath.startsWith('/players') ? 'page' : undefined}>Players</a></li>
         <li><a href="/hall-of-fame" aria-current={currentPath === '/hall-of-fame' ? 'page' : undefined}>Hall of Fame</a></li>
+        <li><a href="/games" aria-current={currentPath.startsWith('/games') ? 'page' : undefined}>Games</a></li>
         <li class="nav-cta-mobile"><a href={social.discord} target="_blank" rel="noopener">Discord</a></li>
       </ul>
       <label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">
