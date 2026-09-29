@@ -123,3 +123,41 @@
 .gm .glnote.err{color:var(--ketchup)}
 .gm .glnote.ok{color:var(--pickle)}
 @media (max-width:520px){.gm .gl .hdr{font-size:10.5px;padding:5px 3px}.gm .gl{grid-template-columns:minmax(58px,.7fr) repeat(3,minmax(0,1fr));gap:4px}}
+/* fantasy draft */
+.gm .tscroll{overflow-x:auto;max-height:560px;overflow-y:auto}
+.gm table.tb{width:100%;border-collapse:collapse;font-size:14px}
+.gm table.tb th{position:sticky;top:0;background:var(--panel);text-align:left;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.gm table.tb td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.gm table.tb td small{color:var(--muted);font-size:11px;font-weight:400}
+.gm table.tb tr.me td{background:var(--good-bg)}
+.gm table.tb tr.cut td{border-bottom:2px dashed var(--mustard)}
+.gm .sm{font-size:12px;color:var(--muted)}
+.gm .gbtn.sm{padding:6px 12px;font-size:11px}
+.gm .role{font-size:11px;font-weight:700;letter-spacing:.1em;border-radius:2px;padding:2px 6px;border:1px solid currentColor}
+.gm .role.AR{color:var(--ar)}
+.gm .role.SMG{color:var(--smg)}
+.gm .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.gm select{background:var(--black);border:1px solid var(--line);color:var(--text);padding:8px 10px;border-radius:2px;font:inherit;font-size:14px}
+.gm .rgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:6px}
+.gm .rslot{background:var(--panel-2);border:1px solid var(--line);padding:10px;border-radius:2px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.gm .rslot.empty{border-style:dashed;opacity:.6}
+.gm .rslot b{overflow-wrap:anywhere}
+.gm .rosterbox{background:var(--panel);border:1px solid var(--line);padding:14px;border-radius:2px}
+.gm .logl{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.gm .logl small{color:var(--muted)}
+.gm .awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:8px 0 14px}
+.gm .awards>div{background:var(--panel-2);border:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:2px}
+.gm .awards b{font-size:20px}
+.gm .awards small{color:var(--muted)}
+.gm .alab{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mustard);font-weight:700}
+.gm .twocol{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.gm .bracket{display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;margin-top:8px}
+.gm .bracket .round{display:flex;flex-direction:column;gap:8px;min-width:210px}
+.gm .bracket h3{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:6px 0 0}
+.gm .series{background:var(--panel-2);border:1px solid var(--line);border-radius:2px}
+.gm .series.me{border-color:var(--mustard)}
+.gm .series .t{display:flex;justify-content:space-between;gap:8px;padding:6px 8px;font-size:13px}
+.gm .series .t.w{font-weight:800}
+.gm .series .t.l{color:var(--muted)}
+.gm .series .t small{color:var(--muted);font-weight:400}
+@media (max-width:640px){.gm .rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}

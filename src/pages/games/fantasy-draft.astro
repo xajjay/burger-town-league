@@ -1,0 +1,261 @@
+---
+import Base from '../../layouts/Base.astro';
+import GameFrame from '../../components/GameFrame.astro';
+import '../../styles/games.css';
+import DATA from '../../data/game-12-0.json';
+---
+<Base title="Fantasy Draft | Burger Town Leagues" description="Draft a team from every player in Burger Town history, then simulate a full season and playoffs.">
+<GameFrame title="Fantasy Draft" tagline="Name your city, join a 12-team snake draft from every player in league history, then simulate the full season, playoffs and awards.">
+  <div slot="rules" class="rules">
+    <span><b>4 rounds, snake order.</b> Every team needs 2 ARs and 2 SMGs. Players are drafted as their whole career (all seasons combined).</span>
+    <span>Balance high <b>Overall</b>, high <b>K/D</b>, and strong <b>Respawn and SnD</b> K/D. The 11 AI teams draft the same way.</span>
+  </div>
+</GameFrame>
+<script is:inline src="/scripts/btl-games-core.js"></script>
+<script is:inline define:vars={{ DATA }}>
+(function(){
+const B = BTL, esc = B.esc, D = B.prep(DATA), ROUNDS = 4, NT = 12;
+const f2 = v => v.toFixed(2), f1 = v => v.toFixed(1);
+const gm = B.norm;
+
+/* ---------- career cards ---------- */
+const CARDS = {}, LIST = [];
+D.list.forEach(e => {
+  let wm = 0, wo = 0, wr = 0, ws = 0;
+  e.rows.forEach(p => { const w = Math.max(1, p.m); wm += w; wo += p.o * w; wr += (p.rk != null ? p.rk : p.kd) * w; ws += (p.sk != null ? p.sk : p.kd) * w; });
+  const last = e.rows[e.rows.length - 1];
+  const c = {id:e.c, name:e.c, alias:e.aliasList, role:last.r, ovr:Math.min(99, wo / wm + Math.min(4, 1.2 * (e.seasons - 1))), kd:e.kd, rk:wr / wm, sk:ws / wm,
+    seasons:e.seasons, rings:e.champs, as:e.allstars, mvp:e.mvps, search:e.search};
+  CARDS[c.id] = c; LIST.push(c);
+});
+const mean = a => a.reduce((x, y) => x + y, 0) / a.length, sd = a => { const m = mean(a); return Math.sqrt(mean(a.map(x => (x - m) * (x - m)))) || 1; };
+const stat = {o:[mean(LIST.map(c=>c.ovr)), sd(LIST.map(c=>c.ovr))], r:[mean(LIST.map(c=>c.rk)), sd(LIST.map(c=>c.rk))], s:[mean(LIST.map(c=>c.sk)), sd(LIST.map(c=>c.sk))]};
+LIST.forEach(c => { c.zo = (c.ovr - stat.o[0]) / stat.o[1]; c.zr = (c.rk - stat.r[0]) / stat.r[1]; c.zs = (c.sk - stat.s[0]) / stat.s[1]; });
+
+/* ---------- franchise names ---------- */
+const MULTI = ["New Orleans","New York","Los Angeles","San Francisco","Oklahoma City","Mexico City","St. Petersburg"];
+const FR = [], seenFr = {}; 
+DATA.teams.forEach(t => {
+  if (/^(WCi|POBO)/.test(t.name) || seenFr[gm(t.name)]) return; seenFr[gm(t.name)] = 1;
+  const m = MULTI.find(x => t.name.indexOf(x + " ") === 0), city = m || t.name.split(" ")[0];
+  FR.push({city, nick:t.name.slice(city.length + 1)});
+});
+const NICKS = Array.from(new Set(FR.map(f => f.nick).filter(Boolean)));
+
+/* ---------- roster helpers ---------- */
+const need = r => ({AR:2 - r.filter(c => c.role === "AR").length, SMG:2 - r.filter(c => c.role === "SMG").length});
+const strength = ps => { const o = mean(ps.map(c => c.ovr)), r = mean(ps.map(c => c.rk)), s = mean(ps.map(c => c.sk)); return o + 8 * ((r + s) / 2 - 1) - 6 * Math.abs(r - s); };
+function aiValue(c, roster, rr){
+  const dR = roster.length ? mean(roster.map(x => x.rk)) - mean(roster.map(x => x.sk)) : 0;
+  const wR = 0.5 + Math.max(-0.3, Math.min(0.3, -dR * 4)), kdTerm = wR * c.zr + (1 - wR) * c.zs;
+  return 0.55 * c.zo + 0.30 * kdTerm + 0.15 * Math.min(c.zr, c.zs) + rr.g * 0.28;
+}
+function gauss(r){ let u = 0, v = 0; while (!u) u = r(); while (!v) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+
+B.shell({game:"fantasy-draft", start:function(ctx){
+  const S = ctx.saved && ctx.saved.city ? ctx.saved : {city:"", picks:[], stage:0};
+  const root = document.createElement("div"); root.style.cssText = "display:flex;flex-direction:column;gap:16px"; ctx.body.appendChild(root);
+  let TEAMS = null, SLOT = null, filt = {role:"ALL", sort:"ovr", q:""}, sim = null;
+
+  function buildLeague(){
+    const r = B.rng(ctx.seed + "|league"), cityKey = gm(S.city);
+    const pool = B.shuffle(FR.filter(f => gm(f.city) !== cityKey), r), used = {}, ai = [];
+    pool.forEach(f => { if (ai.length < 11 && !used[gm(f.city)]) { used[gm(f.city)] = 1; ai.push({name:f.city + " " + f.nick, city:f.city, nick:f.nick}); } });
+    const left = NICKS.filter(n => !ai.some(a => a.nick === n));
+    const nick = B.pick(left.length ? left : NICKS, r);
+    TEAMS = ai.map((a, i) => ({id:i, name:a.name, user:false}));
+    const userT = {id:11, name:S.city + " " + nick, user:true}; TEAMS.push(userT);
+    SLOT = B.shuffle(TEAMS.map(t => t.id), r);
+  }
+  const owner = n => { const rd = Math.floor(n / NT), i = n % NT; return rd % 2 === 0 ? SLOT[i] : SLOT[NT - 1 - i]; };
+  function replay(){
+    const taken = {}, rosters = TEAMS.map(() => []), log = []; let n = 0, up = 0;
+    while (n < NT * ROUNDS){
+      const t = owner(n); let c;
+      if (TEAMS[t].user){ if (up >= S.picks.length) break; c = CARDS[S.picks[up++]]; }
+      else c = aiPick(t, n, taken, rosters[t]);
+      taken[c.id] = 1; rosters[t].push(c); log.push({n, t, c}); n++;
+    }
+    return {n, taken, rosters, log};
+  }
+  function aiPick(t, n, taken, roster){
+    const r = B.rng(ctx.seed + "|ai|" + n), nd = need(roster), rr = {g:gauss(r)};
+    let best = null, bv = -1e9;
+    LIST.forEach(c => { if (taken[c.id] || nd[c.role] <= 0) return; const v = aiValue(c, roster, {g:gauss(r)}); if (v > bv){ bv = v; best = c; } });
+    return best;
+  }
+  const bestFor = (taken, roster) => { let best = null, bv = -1e9; const nd = need(roster); LIST.forEach(c => { if (taken[c.id] || nd[c.role] <= 0) return; const v = aiValue(c, roster, {g:0}); if (v > bv){ bv = v; best = c; } }); return best; };
+
+  /* ---------- SETUP ---------- */
+  function renderSetup(){
+    root.innerHTML = '<div class="panel" style="display:flex;flex-direction:column;gap:12px"><div class="label">Step 1 · Your franchise</div><div style="font-size:18px;font-weight:800">What city is your team from?</div>' +
+      '<div class="gm-entry"><input class="pk-in" id="city" maxlength="24" placeholder="e.g. Knoxville" style="flex:1 1 220px;width:auto" autocomplete="off"><button class="gbtn primary" id="go">Enter the draft</button></div>' +
+      '<div class="status">11 AI franchises come from real past seasons. You get a random draft slot.</div></div>';
+    const inp = root.querySelector("#city"), go = () => { const v = inp.value.trim(); if (!v) return; S.city = v.replace(/[<>]/g, ""); S.picks = []; S.stage = 0; ctx.save(S); start(); };
+    root.querySelector("#go").onclick = go; inp.addEventListener("keydown", e => { if (e.key === "Enter") go(); }); inp.focus();
+  }
+
+  /* ---------- DRAFT ---------- */
+  function boardRows(st, mineNeed){
+    let rows = LIST.filter(c => !st.taken[c.id]);
+    if (filt.role !== "ALL") rows = rows.filter(c => c.role === filt.role);
+    if (filt.q) { const q = gm(filt.q); rows = rows.filter(c => D.byC[c.id].search.indexOf(q) >= 0); }
+    const key = {ovr:c => -c.ovr, kd:c => -c.kd, rk:c => -c.rk, sk:c => -c.sk, seasons:c => -c.seasons}[filt.sort];
+    rows.sort((a, b) => key(a) - key(b));
+    return rows.map(c => {
+      const ok = mineNeed[c.role] > 0, acc = (c.mvp ? "MVP×" + c.mvp + " " : "") + (c.rings ? "🏆×" + c.rings + " " : "") + (c.as ? "★×" + c.as : "");
+      return '<tr><td><b>' + esc(c.name) + '</b>' + (c.alias.length ? '<small> aka ' + esc(c.alias[0]) + '</small>' : '') + '</td><td><span class="role ' + c.role + '">' + c.role + '</span></td><td class="num"><b>' + f1(c.ovr) + '</b></td><td class="num">' + f2(c.kd) + '</td><td class="num">' + f2(c.rk) + '</td><td class="num">' + f2(c.sk) + '</td><td class="num">' + c.seasons + '</td><td>' + esc(acc) + '</td><td><button class="gbtn ' + (ok ? "primary" : "ghost") + ' sm" data-pick="' + esc(c.id) + '" ' + (ok ? "" : "disabled") + '>Draft</button></td></tr>';
+    }).join("");
+  }
+  function rosterHTML(list, title){
+    const slots = [];
+    ["AR","AR","SMG","SMG"].forEach(role => slots.push(role));
+    const have = list.slice();
+    return '<div class="rosterbox"><div class="label">' + esc(title) + '</div><div class="rgrid">' + slots.map(role => {
+      const i = have.findIndex(c => c.role === role); const c = i >= 0 ? have.splice(i, 1)[0] : null;
+      return c ? '<div class="rslot"><span class="role ' + role + '">' + role + '</span><b>' + esc(c.name) + '</b><span class="num">' + f1(c.ovr) + ' · ' + f2(c.kd) + '</span></div>' : '<div class="rslot empty"><span class="role ' + role + '">' + role + '</span><b>—</b></div>';
+    }).join("") + '</div></div>';
+  }
+  function renderDraft(){
+    const st = replay(), n = st.n, done = n >= NT * ROUNDS;
+    if (done) { renderPost(st); return; }
+    const mine = st.rosters[11], nd = need(mine), rd = Math.floor(n / NT) + 1, slotNo = SLOT.indexOf(11) + 1;
+    const recent = st.log.slice(-8).reverse().map(l => '<li><span class="num">#' + (l.n + 1) + '</span> ' + esc(TEAMS[l.t].name) + (TEAMS[l.t].user ? " ★" : "") + ' — <b>' + esc(l.c.name) + '</b> <span class="role ' + l.c.role + '">' + l.c.role + '</span> <span class="num">' + f1(l.c.ovr) + '</span></li>').join("");
+    root.innerHTML = '<div class="panel" style="display:flex;flex-direction:column;gap:6px"><div class="label">Round ' + rd + ' of ' + ROUNDS + ' · Pick ' + (n + 1) + ' of ' + NT * ROUNDS + '</div>' +
+      '<div style="font-size:20px;font-weight:800;color:var(--mustard)">You are on the clock — ' + esc(TEAMS[11].name) + '</div><div class="status">Your draft slot: <b>#' + slotNo + '</b> of 12 (snake). Need: <b>' + nd.AR + ' AR</b> and <b>' + nd.SMG + ' SMG</b>. <button class="gbtn ghost sm" id="auto">Auto-pick best fit</button></div></div>' +
+      rosterHTML(mine, "Your roster") +
+      '<div class="panel"><div class="filters"><div class="gm-modes">' + ["ALL","AR","SMG"].map(r => '<button class="chip" data-role="' + r + '" aria-pressed="' + (filt.role === r) + '">' + r + '</button>').join("") + '</div>' +
+      '<select id="sortsel" aria-label="Sort">' + [["ovr","Overall"],["kd","Overall K/D"],["rk","Respawn K/D"],["sk","SnD K/D"],["seasons","Seasons"]].map(o => '<option value="' + o[0] + '"' + (filt.sort === o[0] ? " selected" : "") + '>Sort: ' + o[1] + '</option>').join("") + '</select>' +
+      '<input class="pk-in" id="q" style="flex:1 1 160px;width:auto;padding:8px 10px" placeholder="Search players" value="' + esc(filt.q) + '"></div>' +
+      '<div class="tscroll"><table class="tb"><thead><tr><th>Player</th><th>Pos</th><th>OVR</th><th>K/D</th><th>Resp</th><th>SnD</th><th>Szn</th><th>Accolades</th><th></th></tr></thead><tbody>' + boardRows(st, nd) + '</tbody></table></div></div>' +
+      '<details class="panel"><summary class="label" style="cursor:pointer">Draft log (latest 8)</summary><ul class="logl">' + recent + '</ul></details>';
+    root.querySelector("#auto").onclick = () => pick(bestFor(st.taken, mine).id);
+    root.querySelectorAll("[data-role]").forEach(b => b.onclick = () => { filt.role = b.dataset.role; renderDraft(); });
+    root.querySelector("#sortsel").onchange = e => { filt.sort = e.target.value; renderDraft(); };
+    const q = root.querySelector("#q"); q.oninput = () => { filt.q = q.value; const pos = q.selectionStart; renderDraft(); const q2 = root.querySelector("#q"); q2.focus(); q2.setSelectionRange(pos, pos); };
+    root.querySelector("tbody").onclick = e => { const b = e.target.closest("[data-pick]"); if (b && !b.disabled) pick(b.dataset.pick); };
+  }
+  function pick(id){ S.picks.push(id); ctx.save(S); renderDraft(); window.scrollTo({top:0, behavior:"smooth"}); }
+
+  /* ---------- POST-DRAFT ---------- */
+  function teamRank(st){ return TEAMS.map(t => ({t, ps:st.rosters[t.id], s:strength(st.rosters[t.id])})).sort((a, b) => b.s - a.s); }
+  function renderPost(st){
+    if (S.stage >= 1) { runSeason(st); return; }
+    const rk = teamRank(st), pos = rk.findIndex(x => x.t.user) + 1, grade = pos <= 2 ? "A" : pos <= 4 ? "B" : pos <= 8 ? "C" : pos <= 10 ? "D" : "F";
+    root.innerHTML = '<div class="panel" style="display:flex;flex-direction:column;gap:6px"><div class="label">Draft complete</div><div style="font-size:22px;font-weight:800">' + esc(TEAMS[11].name) + ' · Draft grade <span style="color:var(--mustard)">' + grade + '</span> (#' + pos + ' of 12)</div></div>' + rosterHTML(st.rosters[11], "Your roster") +
+      '<div class="panel"><div class="label">League power rankings after the draft</div><div class="tscroll"><table class="tb"><thead><tr><th>#</th><th>Team</th><th>Roster</th><th>Avg OVR</th><th>Resp</th><th>SnD</th></tr></thead><tbody>' +
+      rk.map((x, i) => '<tr class="' + (x.t.user ? "me" : "") + '"><td class="num">' + (i + 1) + '</td><td><b>' + esc(x.t.name) + '</b></td><td class="sm">' + x.ps.map(c => esc(c.name)).join(", ") + '</td><td class="num">' + f1(mean(x.ps.map(c => c.ovr))) + '</td><td class="num">' + f2(mean(x.ps.map(c => c.rk))) + '</td><td class="num">' + f2(mean(x.ps.map(c => c.sk))) + '</td></tr>').join("") + '</tbody></table></div></div>' +
+      '<div class="gm-actions"><button class="gbtn primary" id="simseason">Simulate the season</button></div>';
+    root.querySelector("#simseason").onclick = () => { S.stage = 1; ctx.save(S); renderDraft(); window.scrollTo({top:0}); };
+  }
+
+  /* ---------- SIMULATION ---------- */
+  const MODES = ["HP","SND","CTL","HP","SND"], MODE_NAME = {HP:"Hardpoint", SND:"Search", CTL:"Control"}, MAPS = {HP:["Checkmate","Raid","Garrison","Apocalypse","Moscow"], SND:["Raid","Standoff","Express","Moscow","Miami"], CTL:["Raid","Checkmate","Garrison"]};
+  const BASE = {HP:24, SND:7, CTL:19};
+  function simulate(st){
+    const rand = B.rng(ctx.seed + "|sim|" + S.picks.join(","));
+    const g = () => gauss(rand);
+    const ent = TEAMS.map(t => ({id:t.id, name:t.name, user:t.user, ps:st.rosters[t.id], form:st.rosters[t.id].map(() => 1 + g() * 0.04), w:0, l:0, mw:0, ml:0, tb:rand()}));
+    const mk = () => { const o = {}; LIST.forEach(c => o[c.id] = {k:{HP:0,SND:0,CTL:0}, d:{HP:0,SND:0,CTL:0}, m:0}); return o; };
+    const reg = mk(), po = mk();
+    const talent = (c, mode) => Math.min(1.4, 1 + 0.45 * ((mode === "SND" ? c.sk : c.rk) - 1));
+    const rate = (e, mode) => e.ps.map((c, i) => talent(c, mode) * e.form[i]);
+    const modeAvg = (e, mode) => mean(e.ps.map(c => mode === "SND" ? c.sk : c.rk));
+    const split = (total, w) => { const sum = w.reduce((a, b) => a + b, 0), raw = w.map(x => total * x / sum), out = raw.map(Math.floor); let rem = Math.round(total) - out.reduce((a, b) => a + b, 0); raw.map((r, i) => [r - out[i], i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (rem > 0) { out[i]++; rem--; } }); return out; };
+    function mapLines(A, Bt, mode, aWon, bucket){
+      const ra = rate(A, mode), rb = rate(Bt, mode);
+      let R = mean(ra) / mean(rb) * (aWon ? 1.05 : 0.95) * (1 + g() * 0.03); R = Math.max(0.7, Math.min(1.45, R));
+      const sq = Math.sqrt(R), n = 4 * BASE[mode], KA = n * sq, KB = n / sq, wk = r => r.map(x => x * (0.72 + rand() * .56)), wd = r => r.map(x => (1 / x) * (0.72 + rand() * .56));
+      const ka = split(KA, wk(ra)), da = split(KB, wd(ra)), kb = split(KB, wk(rb)), db = split(KA, wd(rb));
+      [[A, ka, da], [Bt, kb, db]].forEach(([e, k, d]) => e.ps.forEach((c, i) => { const s = bucket[c.id]; s.k[mode] += k[i]; s.d[mode] += Math.max(1, d[i]); s.m++; }));
+    }
+    function series(A, Bt, bucket){
+      const fa = g() * 1.2, fb = g() * 1.2; let wa = 0, wb = 0; const maps = [];
+      while (wa < 3 && wb < 3){
+        const mode = MODES[maps.length];
+        const d = mean(A.ps.map(c => c.ovr)) - mean(Bt.ps.map(c => c.ovr)) + fa - fb + 6 * (modeAvg(A, mode) - modeAvg(Bt, mode));
+        const p = 1 / (1 + Math.exp(-d / 6)), aWon = rand() < p; aWon ? wa++ : wb++;
+        mapLines(A, Bt, mode, aWon, bucket);
+        const close = 1 - Math.abs(p - .5) * 2, hi = mode === "HP" ? 250 : mode === "SND" ? 6 : 3;
+        const lo = mode === "HP" ? Math.round(120 + 125 * Math.min(1, close * .7 + rand() * .45)) : mode === "SND" ? Math.min(5, Math.floor(rand() * (2 + 4 * close))) : Math.min(2, Math.floor(rand() * (1.2 + 2 * close)));
+        maps.push({mode, map:B.pick(MAPS[mode], rand), score:aWon ? [hi, lo] : [lo, hi]});
+      }
+      return {A, B:Bt, wa, wb, maps, winner:wa > wb ? A : Bt, loser:wa > wb ? Bt : A};
+    }
+    // regular season: 8 random rounds of a 12-team round robin (every team gets 8 different opponents)
+    const idx = ent.map((_, i) => i), rounds = [];
+    for (let r = 0; r < 11; r++){ const arr = [idx[0]].concat(idx.slice(1).slice(-r).concat(idx.slice(1).slice(0, 11 - r))); const pairs = []; for (let i = 0; i < 6; i++) pairs.push([arr[i], arr[11 - i]]); rounds.push(pairs); }
+    const chosen = B.shuffle(rounds, rand).slice(0, 8), sched = [];
+    chosen.forEach((pairs, wk) => pairs.forEach(([a, b]) => {
+      const A = ent[a], Bt = ent[b], s = series(A, Bt, reg);
+      s.winner.w++; s.loser.l++; A.mw += s.wa; A.ml += s.wb; Bt.mw += s.wb; Bt.ml += s.wa;
+      sched.push({wk:wk + 1, s});
+    }));
+    const stand = ent.slice().sort((a, b) => b.w - a.w || (b.mw - b.ml) - (a.mw - a.ml) || b.tb - a.tb);
+    const seeds = stand.slice(0, 8);
+    const LAYOUT = [
+      {id:"W1", r:"Winners R1", a:["s",0], b:["s",7]}, {id:"W2", r:"Winners R1", a:["s",3], b:["s",4]}, {id:"W3", r:"Winners R1", a:["s",1], b:["s",6]}, {id:"W4", r:"Winners R1", a:["s",2], b:["s",5]},
+      {id:"W5", r:"Winners semis", a:["w","W1"], b:["w","W2"]}, {id:"W6", r:"Winners semis", a:["w","W3"], b:["w","W4"]}, {id:"L1", r:"Losers R1", a:["l","W1"], b:["l","W2"]}, {id:"L2", r:"Losers R1", a:["l","W3"], b:["l","W4"]},
+      {id:"L3", r:"Losers R2", a:["w","L1"], b:["l","W6"]}, {id:"L4", r:"Losers R2", a:["w","L2"], b:["l","W5"]}, {id:"W7", r:"Winners final", a:["w","W5"], b:["w","W6"]}, {id:"L5", r:"Losers R3", a:["w","L3"], b:["w","L4"]},
+      {id:"L6", r:"Losers final", a:["w","L5"], b:["l","W7"]}, {id:"GF", r:"Grand final", a:["w","W7"], b:["w","L6"]}];
+    const res = {}, who = ref => ref[0] === "s" ? seeds[ref[1]] : ref[0] === "w" ? res[ref[1]].winner : res[ref[1]].loser;
+    LAYOUT.forEach(m => { res[m.id] = series(who(m.a), who(m.b), po); });
+    const champ = res.GF.winner, runner = res.GF.loser;
+    const PLACE = {L1:"7th–8th", L2:"7th–8th", L3:"5th–6th", L4:"5th–6th", L5:"4th", L6:"3rd"}, place = {};
+    Object.keys(PLACE).forEach(k => { place[res[k].loser.id] = PLACE[k]; }); place[champ.id] = "Champions"; place[runner.id] = "Runner-up";
+    stand.forEach((e, i) => { if (i >= 8) place[e.id] = "Missed playoffs"; });
+    // awards
+    const tot = (b, id) => { const s = b[id]; const K = s.k.HP + s.k.SND + s.k.CTL, Dd = s.d.HP + s.d.SND + s.d.CTL; return {K, D:Dd, kd:K / Math.max(1, Dd), rK:s.k.HP + s.k.CTL, rD:s.d.HP + s.d.CTL, sK:s.k.SND, sD:s.d.SND, maps:s.m}; };
+    const teamOf = {}; ent.forEach(e => e.ps.forEach(c => teamOf[c.id] = e));
+    const rows = LIST.filter(c => teamOf[c.id]).map(c => { const t = tot(reg, c.id), e = teamOf[c.id], wp = e.w / 8; return Object.assign({c, e, wp, rkd:t.rK / Math.max(1, t.rD), skd:t.sK / Math.max(1, t.sD), score:t.kd * 100 + 20 * (wp - .5) + (e === champ ? 3 : 0)}, t); });
+    rows.sort((a, b) => b.score - a.score);
+    const mvp = rows[0], used = {}, allstar = {first:[], second:[]};
+    ["first","second"].forEach(k => { const q = {AR:2, SMG:2}; rows.forEach(r => { if (used[r.c.id] || q[r.c.role] <= 0) return; used[r.c.id] = 1; q[r.c.role]--; allstar[k].push(r); }); });
+    const poRows = champ.ps.map(c => Object.assign({c}, tot(po, c.id))).sort((a, b) => b.kd - a.kd), fmvp = poRows[0];
+    return {ent, stand, seeds, sched, LAYOUT, res, champ, runner, place, rows, mvp, allstar, fmvp, poRows, reg, po};
+  }
+
+  /* ---------- SEASON / PLAYOFF VIEW ---------- */
+  function runSeason(st){
+    sim = simulate(st);
+    const me = sim.ent.find(e => e.user), myPlace = sim.place[me.id];
+    const seed = sim.stand.indexOf(me) + 1;
+    let h = '<div class="panel" style="display:flex;flex-direction:column;gap:6px"><div class="label">Season complete</div><div style="font-size:24px;font-weight:800">' + esc(sim.champ.name) + ' win the title' + (sim.champ.user ? " 🏆" : "") + '</div><div class="status">' + esc(me.name) + ': <b>' + me.w + '–' + me.l + '</b> (' + (me.mw - me.ml >= 0 ? "+" : "") + (me.mw - me.ml) + ' maps), seed #' + seed + ' · <b>' + esc(myPlace) + '</b></div></div>';
+    h += rosterHTML(me.ps, "Your roster");
+    h += '<div class="panel"><div class="label">Standings (8 games each)</div><div class="tscroll"><table class="tb"><thead><tr><th>#</th><th>Team</th><th>W</th><th>L</th><th>Map diff</th><th>Result</th></tr></thead><tbody>' + sim.stand.map((e, i) => '<tr class="' + (e.user ? "me" : "") + (i === 7 ? " cut" : "") + '"><td class="num">' + (i + 1) + '</td><td><b>' + esc(e.name) + '</b></td><td class="num">' + e.w + '</td><td class="num">' + e.l + '</td><td class="num">' + (e.mw - e.ml >= 0 ? "+" : "") + (e.mw - e.ml) + '</td><td>' + esc(sim.place[e.id]) + '</td></tr>').join("") + '</tbody></table></div><div class="status">Top 8 make the double-elimination playoffs.</div></div>';
+    const mine = sim.sched.filter(x => x.s.A === me || x.s.B === me);
+    h += '<div class="panel"><div class="label">Your regular season</div><ul class="logl">' + mine.map(x => { const s = x.s, mineA = s.A === me, opp = mineA ? s.B : s.A, w = s.winner === me; return '<li><span class="num">G' + x.wk + '</span> ' + (w ? "W" : "L") + ' <b class="num">' + (mineA ? s.wa + "–" + s.wb : s.wb + "–" + s.wa) + '</b> vs ' + esc(opp.name) + '</li>'; }).join("") + '</ul></div>';
+    const cols = [["Winners R1"], ["Winners semis", "Losers R1"], ["Winners final", "Losers R2"], ["Losers R3", "Losers final"], ["Grand final"]];
+    const ser = m => { const r = sim.res[m.id], row = (e, w, sc, sd) => '<div class="t ' + (w ? "w" : "l") + '"><span>' + (e.user ? "★ " : "") + esc(e.name) + ' <small>(' + (sim.seeds.indexOf(e) + 1) + ')</small></span><span class="sc">' + sc + '</span></div>'; return '<div class="series ' + (r.A.user || r.B.user ? "me" : "") + '">' + row(r.A, r.wa > r.wb, r.wa) + row(r.B, r.wb > r.wa, r.wb) + '</div>'; };
+    h += '<div class="panel"><div class="label">Playoffs · double elimination · best of 5</div><div class="bracket">' + cols.map(cs => '<div class="round">' + cs.map(n => '<h3>' + n + '</h3>' + sim.LAYOUT.filter(m => m.r === n).map(ser).join("")).join("") + '</div>').join("") + '</div></div>';
+    // awards
+    const acc = {}; const add = (r, t) => { (acc[r.c.id] = acc[r.c.id] || []).push(t); };
+    add(sim.mvp, "League MVP"); sim.allstar.first.forEach(r => add(r, "All-Star 1st")); sim.allstar.second.forEach(r => add(r, "All-Star 2nd")); sim.champ.ps.forEach(c => (acc[c.id] = acc[c.id] || []).push("Champion")); sim.runner.ps.forEach(c => (acc[c.id] = acc[c.id] || []).push("Runner-up")); (acc[sim.fmvp.c.id] = acc[sim.fmvp.c.id] || []).push("Finals MVP");
+    const al = k => sim.allstar[k].map(r => '<li><span class="role ' + r.c.role + '">' + r.c.role + '</span> <b>' + esc(r.c.name) + '</b> <small>' + esc(r.e.name) + '</small> <span class="num">' + f2(r.kd) + '</span></li>').join("");
+    h += '<div class="panel"><div class="label">Season awards</div><div class="awards"><div><div class="alab">League MVP</div><b>' + esc(sim.mvp.c.name) + '</b><small>' + esc(sim.mvp.e.name) + ' · ' + f2(sim.mvp.kd) + ' K/D</small></div><div><div class="alab">Finals MVP</div><b>' + esc(sim.fmvp.c.name) + '</b><small>' + esc(sim.champ.name) + ' · ' + f2(sim.fmvp.kd) + ' K/D</small></div><div><div class="alab">Champions</div><b>' + esc(sim.champ.name) + '</b><small>over ' + esc(sim.runner.name) + '</small></div></div>' +
+      '<div class="twocol"><div><div class="alab">All-Star 1st team</div><ul class="logl">' + al("first") + '</ul></div><div><div class="alab">All-Star 2nd team</div><ul class="logl">' + al("second") + '</ul></div></div></div>';
+    const statRow = r => '<tr class="' + (r.e.user ? "me" : "") + '"><td><b>' + esc(r.c.name) + '</b> <small>' + esc(r.e.name) + '</small></td><td><span class="role ' + r.c.role + '">' + r.c.role + '</span></td><td class="num">' + r.maps + '</td><td class="num">' + r.K + '</td><td class="num">' + r.D + '</td><td class="num"><b>' + f2(r.kd) + '</b></td><td class="num">' + f2(r.rkd) + '</td><td class="num">' + f2(r.skd) + '</td><td class="sm">' + esc((acc[r.c.id] || []).join(", ")) + '</td></tr>';
+    const head = '<thead><tr><th>Player</th><th>Pos</th><th>Maps</th><th>K</th><th>D</th><th>K/D</th><th>Resp</th><th>SnD</th><th>Honors</th></tr></thead>';
+    const mineRows = sim.rows.filter(r => r.e.user).sort((a, b) => b.kd - a.kd);
+    h += '<div class="panel"><div class="label">Your players · regular season stats</div><div class="tscroll"><table class="tb">' + head + '<tbody>' + mineRows.map(statRow).join("") + '</tbody></table></div></div>';
+    const lead = sim.rows.slice().sort((a, b) => b.kd - a.kd).slice(0, 12);
+    h += '<div class="panel"><div class="label">League leaders · K/D</div><div class="tscroll"><table class="tb">' + head + '<tbody>' + lead.map(statRow).join("") + '</tbody></table></div></div>';
+    root.innerHTML = h;
+    const line = ["AR","AR","SMG","SMG"].map(r => r).length && me.ps.map(c => c.name).join(", ");
+    const win = sim.champ.user, squares = "🏈";
+    const place = myPlace === "Champions" ? "🏆 Champions" : myPlace;
+    const bestKD = mineRows[0];
+    ctx.end({win, score:null,
+      headline: win ? "Your franchise won the title!" : place,
+      detail: esc(me.name) + " finished " + me.w + "–" + me.l + " and " + esc(myPlace) + ". Draft slot #" + (SLOT.indexOf(11) + 1) + ".",
+      share: (ctx.daily ? "BTL Fantasy Draft #" + ctx.num : "BTL Fantasy Draft (free play)") + "\n" + me.name + " · " + me.w + "–" + me.l + " · " + place + "\nPick #" + (SLOT.indexOf(11) + 1) + " · Best player " + bestKD.c.name + " " + f2(bestKD.kd) + " K/D\n||" + line + "||"});
+  }
+
+  /* ---------- boot ---------- */
+  function start(){ buildLeague(); if (!S.city) renderSetup(); else renderDraft(); }
+  if (S.city) buildLeague();
+  start();
+}});
+})();
+</script>
+</Base>

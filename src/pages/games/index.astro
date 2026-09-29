@@ -5,6 +5,7 @@ const games = [
   { id: 'career-path', href: '/games/career-path', title: 'Career Path', blurb: 'Guess the player from the teams they played for. Wrong guesses unlock the seasons, then a K/D clue.' },
   { id: 'ranking-point', href: '/games/ranking-point', title: 'Ranking Point', blurb: 'Rank five players from one season by K/D, Respawn, SnD, interactions or Overall. Correct slots lock in green.' },
   { id: 'player-guessr', href: '/games/player-guessr', title: 'Player Guessr', blurb: 'Find the mystery player using seasons, rings, All-Stars, teammates and teams. Fewest guesses wins.' },
+  { id: 'fantasy-draft', href: '/games/fantasy-draft', title: 'Fantasy Draft', blurb: 'Name your city, draft 4 players in a 12-team snake draft from all of league history, then sim the season, playoffs and awards.' },
   { id: 'gridlock', href: '/games/gridlock', title: 'Gridlock', blurb: 'Fill a 3×3 grid with players who fit both the row and the column. Nine guesses, no repeats.' },
 ];
 ---
@@ -14,7 +15,7 @@ const games = [
       <span class="eyebrow">Play</span>
       <h1 class="script-heading" style="margin-bottom: 8px;">Games</h1>
       <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 8px;">
-        Five games built on real Burger Town history. Each has a daily challenge that everyone gets the same, and a free play mode for extra rounds. New dailies drop at midnight Eastern.
+        Six games built on real Burger Town history. Each has a daily challenge that everyone gets the same, and a free play mode for extra rounds. New dailies drop at midnight Eastern.
       </p>
       <p id="hub-status" style="color: var(--paper-dim); font-size: 14px; margin-bottom: 24px;"></p>
       <div class="grid grid-3">
@@ -35,8 +36,8 @@ const games = [
 </Base>
 <script is:inline>
 (function(){
-  var order = ["12-0","career-path","ranking-point","player-guessr","gridlock"];
-  var names = {"12-0":"12–0","career-path":"Career Path","ranking-point":"Ranking Point","player-guessr":"Player Guessr","gridlock":"Gridlock"};
+  var order = ["12-0","career-path","ranking-point","player-guessr","gridlock","fantasy-draft"];
+  var names = {"12-0":"12–0","career-path":"Career Path","ranking-point":"Ranking Point","player-guessr":"Player Guessr","gridlock":"Gridlock","fantasy-draft":"Fantasy Draft"};
   function etDate(){ return new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }
   var d = etDate(), done = [], shares = [];
   order.forEach(function(g){
@@ -45,7 +46,7 @@ const games = [
     if (r && card) { card.textContent = "Daily complete ✓"; card.style.color = "var(--gold)"; done.push(g); if (r.share) shares.push(r.share); }
   });
   var s = document.getElementById("hub-status");
-  s.textContent = done.length ? "Today: " + done.length + " of 5 dailies done." : "Today: no dailies played yet.";
+  s.textContent = done.length ? "Today: " + done.length + " of 6 dailies done." : "Today: no dailies played yet.";
   var b = document.getElementById("copyall");
   if (shares.length) {
     b.style.display = "";

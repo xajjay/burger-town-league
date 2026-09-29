@@ -36,12 +36,14 @@ add("smg","role","Played SMG", e => !!e.roles.SMG);
 add("o85","ovr","Season Overall 85+", e => e.maxO >= 85);
 add("o70","ovr","Never above 75 Overall", e => e.maxO <= 75);
 add("snd","snd","1.20+ SnD K/D in a season", e => e.maxSk >= 1.2);
-add("ip","ip","45+ interactions/map in a season", e => e.maxIp >= 45);
+add("ip","ip","40+ interactions/map in a season", e => e.maxIp >= 40);
 // team conditions: franchises with at least 6 distinct players in history
 const tcount = {}, tlabel = {};
 DATA.teams.forEach(t => { const k = D.norm(t.name); tlabel[k] = tlabel[k] || t.name; tcount[k] = tcount[k] || {}; t.p.forEach(id => { tcount[k][DATA.players[id] ? DATA.players[id].c : id] = 1; }); });
 Object.keys(tcount).filter(k => Object.keys(tcount[k]).length >= 6).forEach(k => add("t:"+k, "team", "Played for " + tlabel[k], e => !!e.teamKeys[k]));
 
+// drop conditions that too few players satisfy (keeps every square fair)
+for (let i = C.length - 1; i >= 0; i--) if (D.list.filter(C[i].fn).length < 10) C.splice(i, 1);
 function candidates(a, b){ return D.list.filter(e => a.fn(e) && b.fn(e)); }
 function perfect(cells){ // bipartite matching: 9 cells -> distinct players
   const match = {};
@@ -59,7 +61,7 @@ function makeGrid(r){
     if (cols.length < 3) continue;
     const cells = [], sizes = [];
     for (const ro of rows) for (const co of cols){ const cand = candidates(ro, co).map(e => e.c); cells.push(cand); sizes.push(cand.length); }
-    if (Math.min.apply(null, sizes) < 2 || Math.max.apply(null, sizes) > 45) continue;
+    if (Math.min.apply(null, sizes) < 4 || Math.max.apply(null, sizes) > 45) continue;
     if (!perfect(cells)) continue;
     return {rows, cols, cells};
   }
