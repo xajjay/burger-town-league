@@ -21,26 +21,25 @@ const gm = B.norm;
 /* ---------- career cards ---------- */
 const CARDS = {}, LIST = [];
 D.list.forEach(e => {
-  let wm = 0, wo = 0, wr = 0, ws = 0;
-  e.rows.forEach(p => { const w = Math.max(1, p.m); wm += w; wo += p.o * w; wr += (p.rk != null ? p.rk : p.kd) * w; ws += (p.sk != null ? p.sk : p.kd) * w; });
+  let wm = 0, wo = 0, wr = 0, ws = 0, wi = 0;
+  e.rows.forEach(p => { const w = Math.max(1, p.m); wm += w; wo += p.o * w; wr += (p.rk != null ? p.rk : p.kd) * w; ws += (p.sk != null ? p.sk : p.kd) * w; wi += p.ip * w; });
   const last = e.rows[e.rows.length - 1];
-  const c = {id:e.c, name:e.c, alias:e.aliasList, role:last.r, ovr:Math.min(99, wo / wm + Math.min(4, 1.2 * (e.seasons - 1))), kd:e.kd, rk:wr / wm, sk:ws / wm,
+  const c = {id:e.c, name:e.c, alias:e.aliasList, role:last.r, ovr:Math.min(99, wo / wm + Math.min(4, 1.2 * (e.seasons - 1))), kd:e.kd, rk:wr / wm, sk:ws / wm, ip:wi / wm,
     seasons:e.seasons, rings:e.champs, as:e.allstars, mvp:e.mvps, search:e.search};
   CARDS[c.id] = c; LIST.push(c);
 });
 const mean = a => a.reduce((x, y) => x + y, 0) / a.length, sd = a => { const m = mean(a); return Math.sqrt(mean(a.map(x => (x - m) * (x - m)))) || 1; };
-const stat = {o:[mean(LIST.map(c=>c.ovr)), sd(LIST.map(c=>c.ovr))], r:[mean(LIST.map(c=>c.rk)), sd(LIST.map(c=>c.rk))], s:[mean(LIST.map(c=>c.sk)), sd(LIST.map(c=>c.sk))]};
-LIST.forEach(c => { c.zo = (c.ovr - stat.o[0]) / stat.o[1]; c.zr = (c.rk - stat.r[0]) / stat.r[1]; c.zs = (c.sk - stat.s[0]) / stat.s[1]; });
+const stat = {o:[mean(LIST.map(c=>c.ovr)), sd(LIST.map(c=>c.ovr))], r:[mean(LIST.map(c=>c.rk)), sd(LIST.map(c=>c.rk))], s:[mean(LIST.map(c=>c.sk)), sd(LIST.map(c=>c.sk))], i:[mean(LIST.map(c=>c.ip)), sd(LIST.map(c=>c.ip))]};
+LIST.forEach(c => { c.zo = (c.ovr - stat.o[0]) / stat.o[1]; c.zr = (c.rk - stat.r[0]) / stat.r[1]; c.zs = (c.sk - stat.s[0]) / stat.s[1]; c.zi = (c.ip - stat.i[0]) / stat.i[1]; });
 
 /* ---------- franchise names ---------- */
 const MULTI = ["New Orleans","New York","Los Angeles","San Francisco","Oklahoma City","Mexico City","St. Petersburg"];
 const FR = [], seenFr = {}; 
 DATA.teams.forEach(t => {
-  if (/^(WCi|POBO)/.test(t.name) || seenFr[gm(t.name)]) return; seenFr[gm(t.name)] = 1;
+  if (t.fa || /^(WCi|POBO)/.test(t.name) || seenFr[gm(t.name)]) return; seenFr[gm(t.name)] = 1;
   const m = MULTI.find(x => t.name.indexOf(x + " ") === 0), city = m || t.name.split(" ")[0];
-  FR.push({city, nick:t.name.slice(city.length + 1)});
+  if (city.length > 1) FR.push({city});
 });
-const NICKS = Array.from(new Set(FR.map(f => f.nick).filter(Boolean)));
 
 /* ---------- roster helpers ---------- */
 const need = r => ({AR:2 - r.filter(c => c.role === "AR").length, SMG:2 - r.filter(c => c.role === "SMG").length});
@@ -48,7 +47,7 @@ const strength = ps => { const o = mean(ps.map(c => c.ovr)), r = mean(ps.map(c =
 function aiValue(c, roster, rr){
   const dR = roster.length ? mean(roster.map(x => x.rk)) - mean(roster.map(x => x.sk)) : 0;
   const wR = 0.5 + Math.max(-0.3, Math.min(0.3, -dR * 4)), kdTerm = wR * c.zr + (1 - wR) * c.zs;
-  return 0.55 * c.zo + 0.30 * kdTerm + 0.15 * Math.min(c.zr, c.zs) + rr.g * 0.28;
+  return 0.50 * c.zo + 0.28 * kdTerm + 0.14 * Math.min(c.zr, c.zs) + 0.08 * c.zi + rr.g * 0.28;
 }
 function gauss(r){ let u = 0, v = 0; while (!u) u = r(); while (!v) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
 
@@ -60,11 +59,9 @@ B.shell({game:"fantasy-draft", start:function(ctx){
   function buildLeague(){
     const r = B.rng(ctx.seed + "|league"), cityKey = gm(S.city);
     const pool = B.shuffle(FR.filter(f => gm(f.city) !== cityKey), r), used = {}, ai = [];
-    pool.forEach(f => { if (ai.length < 11 && !used[gm(f.city)]) { used[gm(f.city)] = 1; ai.push({name:f.city + " " + f.nick, city:f.city, nick:f.nick}); } });
-    const left = NICKS.filter(n => !ai.some(a => a.nick === n));
-    const nick = B.pick(left.length ? left : NICKS, r);
+    pool.forEach(f => { if (ai.length < 11 && !used[gm(f.city)]) { used[gm(f.city)] = 1; ai.push({name:f.city}); } });
     TEAMS = ai.map((a, i) => ({id:i, name:a.name, user:false}));
-    const userT = {id:11, name:S.city + " " + nick, user:true}; TEAMS.push(userT);
+    TEAMS.push({id:11, name:S.city, user:true});
     SLOT = B.shuffle(TEAMS.map(t => t.id), r);
   }
   const owner = n => { const rd = Math.floor(n / NT), i = n % NT; return rd % 2 === 0 ? SLOT[i] : SLOT[NT - 1 - i]; };
@@ -100,11 +97,11 @@ B.shell({game:"fantasy-draft", start:function(ctx){
     let rows = LIST.filter(c => !st.taken[c.id]);
     if (filt.role !== "ALL") rows = rows.filter(c => c.role === filt.role);
     if (filt.q) { const q = gm(filt.q); rows = rows.filter(c => D.byC[c.id].search.indexOf(q) >= 0); }
-    const key = {ovr:c => -c.ovr, kd:c => -c.kd, rk:c => -c.rk, sk:c => -c.sk, seasons:c => -c.seasons}[filt.sort];
+    const key = {ovr:c => -c.ovr, kd:c => -c.kd, rk:c => -c.rk, sk:c => -c.sk, ip:c => -c.ip, seasons:c => -c.seasons}[filt.sort];
     rows.sort((a, b) => key(a) - key(b));
     return rows.map(c => {
       const ok = mineNeed[c.role] > 0, acc = (c.mvp ? "MVP×" + c.mvp + " " : "") + (c.rings ? "🏆×" + c.rings + " " : "") + (c.as ? "★×" + c.as : "");
-      return '<tr><td><b>' + esc(c.name) + '</b>' + (c.alias.length ? '<small> aka ' + esc(c.alias[0]) + '</small>' : '') + '</td><td><span class="role ' + c.role + '">' + c.role + '</span></td><td class="num"><b>' + f1(c.ovr) + '</b></td><td class="num">' + f2(c.kd) + '</td><td class="num">' + f2(c.rk) + '</td><td class="num">' + f2(c.sk) + '</td><td class="num">' + c.seasons + '</td><td>' + esc(acc) + '</td><td><button class="gbtn ' + (ok ? "primary" : "ghost") + ' sm" data-pick="' + esc(c.id) + '" ' + (ok ? "" : "disabled") + '>Draft</button></td></tr>';
+      return '<tr><td><b>' + esc(c.name) + '</b>' + (c.alias.length ? '<small> aka ' + esc(c.alias[0]) + '</small>' : '') + '</td><td><span class="role ' + c.role + '">' + c.role + '</span></td><td class="num"><b>' + f1(c.ovr) + '</b></td><td class="num">' + f2(c.kd) + '</td><td class="num">' + f2(c.rk) + '</td><td class="num">' + f2(c.sk) + '</td><td class="num">' + f1(c.ip) + '</td><td class="num">' + c.seasons + '</td><td>' + esc(acc) + '</td><td><button class="gbtn ' + (ok ? "primary" : "ghost") + ' sm" data-pick="' + esc(c.id) + '" ' + (ok ? "" : "disabled") + '>Draft</button></td></tr>';
     }).join("");
   }
   function rosterHTML(list, title){
@@ -125,9 +122,9 @@ B.shell({game:"fantasy-draft", start:function(ctx){
       '<div style="font-size:20px;font-weight:800;color:var(--mustard)">You are on the clock — ' + esc(TEAMS[11].name) + '</div><div class="status">Your draft slot: <b>#' + slotNo + '</b> of 12 (snake). Need: <b>' + nd.AR + ' AR</b> and <b>' + nd.SMG + ' SMG</b>. <button class="gbtn ghost sm" id="auto">Auto-pick best fit</button></div></div>' +
       rosterHTML(mine, "Your roster") +
       '<div class="panel"><div class="filters"><div class="gm-modes">' + ["ALL","AR","SMG"].map(r => '<button class="chip" data-role="' + r + '" aria-pressed="' + (filt.role === r) + '">' + r + '</button>').join("") + '</div>' +
-      '<select id="sortsel" aria-label="Sort">' + [["ovr","Overall"],["kd","Overall K/D"],["rk","Respawn K/D"],["sk","SnD K/D"],["seasons","Seasons"]].map(o => '<option value="' + o[0] + '"' + (filt.sort === o[0] ? " selected" : "") + '>Sort: ' + o[1] + '</option>').join("") + '</select>' +
+      '<select id="sortsel" aria-label="Sort">' + [["ovr","Overall"],["kd","Overall K/D"],["rk","Respawn K/D"],["sk","SnD K/D"],["ip","Interactions/map"],["seasons","Seasons"]].map(o => '<option value="' + o[0] + '"' + (filt.sort === o[0] ? " selected" : "") + '>Sort: ' + o[1] + '</option>').join("") + '</select>' +
       '<input class="pk-in" id="q" style="flex:1 1 160px;width:auto;padding:8px 10px" placeholder="Search players" value="' + esc(filt.q) + '"></div>' +
-      '<div class="tscroll"><table class="tb"><thead><tr><th>Player</th><th>Pos</th><th>OVR</th><th>K/D</th><th>Resp</th><th>SnD</th><th>Szn</th><th>Accolades</th><th></th></tr></thead><tbody>' + boardRows(st, nd) + '</tbody></table></div></div>' +
+      '<div class="tscroll"><table class="tb"><thead><tr><th>Player</th><th>Pos</th><th>OVR</th><th>K/D</th><th>Resp</th><th>SnD</th><th>Int</th><th>Szn</th><th>Accolades</th><th></th></tr></thead><tbody>' + boardRows(st, nd) + '</tbody></table></div></div>' +
       '<details class="panel"><summary class="label" style="cursor:pointer">Draft log (latest 8)</summary><ul class="logl">' + recent + '</ul></details>';
     root.querySelector("#auto").onclick = () => pick(bestFor(st.taken, mine).id);
     root.querySelectorAll("[data-role]").forEach(b => b.onclick = () => { filt.role = b.dataset.role; renderDraft(); });
@@ -143,8 +140,8 @@ B.shell({game:"fantasy-draft", start:function(ctx){
     if (S.stage >= 1) { runSeason(st); return; }
     const rk = teamRank(st), pos = rk.findIndex(x => x.t.user) + 1, grade = pos <= 2 ? "A" : pos <= 4 ? "B" : pos <= 8 ? "C" : pos <= 10 ? "D" : "F";
     root.innerHTML = '<div class="panel" style="display:flex;flex-direction:column;gap:6px"><div class="label">Draft complete</div><div style="font-size:22px;font-weight:800">' + esc(TEAMS[11].name) + ' · Draft grade <span style="color:var(--mustard)">' + grade + '</span> (#' + pos + ' of 12)</div></div>' + rosterHTML(st.rosters[11], "Your roster") +
-      '<div class="panel"><div class="label">League power rankings after the draft</div><div class="tscroll"><table class="tb"><thead><tr><th>#</th><th>Team</th><th>Roster</th><th>Avg OVR</th><th>Resp</th><th>SnD</th></tr></thead><tbody>' +
-      rk.map((x, i) => '<tr class="' + (x.t.user ? "me" : "") + '"><td class="num">' + (i + 1) + '</td><td><b>' + esc(x.t.name) + '</b></td><td class="sm">' + x.ps.map(c => esc(c.name)).join(", ") + '</td><td class="num">' + f1(mean(x.ps.map(c => c.ovr))) + '</td><td class="num">' + f2(mean(x.ps.map(c => c.rk))) + '</td><td class="num">' + f2(mean(x.ps.map(c => c.sk))) + '</td></tr>').join("") + '</tbody></table></div></div>' +
+      '<div class="panel"><div class="label">League power rankings after the draft</div><div class="tscroll"><table class="tb"><thead><tr><th>#</th><th>Team</th><th>Roster</th><th>Avg OVR</th><th>Resp</th><th>SnD</th><th>Int</th></tr></thead><tbody>' +
+      rk.map((x, i) => '<tr class="' + (x.t.user ? "me" : "") + '"><td class="num">' + (i + 1) + '</td><td><b>' + esc(x.t.name) + '</b></td><td class="sm">' + x.ps.map(c => esc(c.name)).join(", ") + '</td><td class="num">' + f1(mean(x.ps.map(c => c.ovr))) + '</td><td class="num">' + f2(mean(x.ps.map(c => c.rk))) + '</td><td class="num">' + f2(mean(x.ps.map(c => c.sk))) + '</td><td class="num">' + f1(mean(x.ps.map(c => c.ip))) + '</td></tr>').join("") + '</tbody></table></div></div>' +
       '<div class="gm-actions"><button class="gbtn primary" id="simseason">Simulate the season</button></div>';
     root.querySelector("#simseason").onclick = () => { S.stage = 1; ctx.save(S); renderDraft(); window.scrollTo({top:0}); };
   }
@@ -156,7 +153,7 @@ B.shell({game:"fantasy-draft", start:function(ctx){
     const rand = B.rng(ctx.seed + "|sim|" + S.picks.join(","));
     const g = () => gauss(rand);
     const ent = TEAMS.map(t => ({id:t.id, name:t.name, user:t.user, ps:st.rosters[t.id], form:st.rosters[t.id].map(() => 1 + g() * 0.04), w:0, l:0, mw:0, ml:0, tb:rand()}));
-    const mk = () => { const o = {}; LIST.forEach(c => o[c.id] = {k:{HP:0,SND:0,CTL:0}, d:{HP:0,SND:0,CTL:0}, m:0}); return o; };
+    const mk = () => { const o = {}; LIST.forEach(c => o[c.id] = {k:{HP:0,SND:0,CTL:0}, d:{HP:0,SND:0,CTL:0}, m:0, ip:0}); return o; };
     const reg = mk(), po = mk();
     const talent = (c, mode) => Math.min(1.4, 1 + 0.45 * ((mode === "SND" ? c.sk : c.rk) - 1));
     const rate = (e, mode) => e.ps.map((c, i) => talent(c, mode) * e.form[i]);
@@ -167,18 +164,19 @@ B.shell({game:"fantasy-draft", start:function(ctx){
       let R = mean(ra) / mean(rb) * (aWon ? 1.05 : 0.95) * (1 + g() * 0.03); R = Math.max(0.7, Math.min(1.45, R));
       const sq = Math.sqrt(R), n = 4 * BASE[mode], KA = n * sq, KB = n / sq, wk = r => r.map(x => x * (0.72 + rand() * .56)), wd = r => r.map(x => (1 / x) * (0.72 + rand() * .56));
       const ka = split(KA, wk(ra)), da = split(KB, wd(ra)), kb = split(KB, wk(rb)), db = split(KA, wd(rb));
-      [[A, ka, da], [Bt, kb, db]].forEach(([e, k, d]) => e.ps.forEach((c, i) => { const s = bucket[c.id]; s.k[mode] += k[i]; s.d[mode] += Math.max(1, d[i]); s.m++; }));
+      [[A, ka, da], [Bt, kb, db]].forEach(([e, k, d]) => e.ps.forEach((c, i) => { const s = bucket[c.id]; s.k[mode] += k[i]; s.d[mode] += Math.max(1, d[i]); s.m++; s.ip += Math.max(8, c.ip * e.form[i] * (0.9 + rand() * 0.2)); }));
     }
     function series(A, Bt, bucket){
-      const fa = g() * 1.2, fb = g() * 1.2; let wa = 0, wb = 0; const maps = [];
+      const fa = g() * 1.2, fb = g() * 1.2; let wa = 0, wb = 0; const maps = []; const usedMaps = {};
       while (wa < 3 && wb < 3){
         const mode = MODES[maps.length];
-        const d = mean(A.ps.map(c => c.ovr)) - mean(Bt.ps.map(c => c.ovr)) + fa - fb + 6 * (modeAvg(A, mode) - modeAvg(Bt, mode));
+        const d = mean(A.ps.map(c => c.ovr)) - mean(Bt.ps.map(c => c.ovr)) + fa - fb + 6 * (modeAvg(A, mode) - modeAvg(Bt, mode)) + 0.12 * (mean(A.ps.map(c => c.ip)) - mean(Bt.ps.map(c => c.ip)));
         const p = 1 / (1 + Math.exp(-d / 6)), aWon = rand() < p; aWon ? wa++ : wb++;
         mapLines(A, Bt, mode, aWon, bucket);
         const close = 1 - Math.abs(p - .5) * 2, hi = mode === "HP" ? 250 : mode === "SND" ? 6 : 3;
         const lo = mode === "HP" ? Math.round(120 + 125 * Math.min(1, close * .7 + rand() * .45)) : mode === "SND" ? Math.min(5, Math.floor(rand() * (2 + 4 * close))) : Math.min(2, Math.floor(rand() * (1.2 + 2 * close)));
-        maps.push({mode, map:B.pick(MAPS[mode], rand), score:aWon ? [hi, lo] : [lo, hi]});
+        const opts = MAPS[mode].filter(x => !usedMaps[mode + x]), mp = B.pick(opts.length ? opts : MAPS[mode], rand); usedMaps[mode + mp] = 1;
+        maps.push({mode, map:mp, score:aWon ? [hi, lo] : [lo, hi]});
       }
       return {A, B:Bt, wa, wb, maps, winner:wa > wb ? A : Bt, loser:wa > wb ? Bt : A};
     }
@@ -205,7 +203,7 @@ B.shell({game:"fantasy-draft", start:function(ctx){
     Object.keys(PLACE).forEach(k => { place[res[k].loser.id] = PLACE[k]; }); place[champ.id] = "Champions"; place[runner.id] = "Runner-up";
     stand.forEach((e, i) => { if (i >= 8) place[e.id] = "Missed playoffs"; });
     // awards
-    const tot = (b, id) => { const s = b[id]; const K = s.k.HP + s.k.SND + s.k.CTL, Dd = s.d.HP + s.d.SND + s.d.CTL; return {K, D:Dd, kd:K / Math.max(1, Dd), rK:s.k.HP + s.k.CTL, rD:s.d.HP + s.d.CTL, sK:s.k.SND, sD:s.d.SND, maps:s.m}; };
+    const tot = (b, id) => { const s = b[id]; const K = s.k.HP + s.k.SND + s.k.CTL, Dd = s.d.HP + s.d.SND + s.d.CTL; return {ipm:s.ip / Math.max(1, s.m), K, D:Dd, kd:K / Math.max(1, Dd), rK:s.k.HP + s.k.CTL, rD:s.d.HP + s.d.CTL, sK:s.k.SND, sD:s.d.SND, maps:s.m}; };
     const teamOf = {}; ent.forEach(e => e.ps.forEach(c => teamOf[c.id] = e));
     const rows = LIST.filter(c => teamOf[c.id]).map(c => { const t = tot(reg, c.id), e = teamOf[c.id], wp = e.w / 8; return Object.assign({c, e, wp, rkd:t.rK / Math.max(1, t.rD), skd:t.sK / Math.max(1, t.sD), score:t.kd * 100 + 20 * (wp - .5) + (e === champ ? 3 : 0)}, t); });
     rows.sort((a, b) => b.score - a.score);
@@ -222,25 +220,27 @@ B.shell({game:"fantasy-draft", start:function(ctx){
     const seed = sim.stand.indexOf(me) + 1;
     let h = '<div class="panel" style="display:flex;flex-direction:column;gap:6px"><div class="label">Season complete</div><div style="font-size:24px;font-weight:800">' + esc(sim.champ.name) + ' win the title' + (sim.champ.user ? " 🏆" : "") + '</div><div class="status">' + esc(me.name) + ': <b>' + me.w + '–' + me.l + '</b> (' + (me.mw - me.ml >= 0 ? "+" : "") + (me.mw - me.ml) + ' maps), seed #' + seed + ' · <b>' + esc(myPlace) + '</b></div></div>';
     h += rosterHTML(me.ps, "Your roster");
-    h += '<div class="panel"><div class="label">Standings (8 games each)</div><div class="tscroll"><table class="tb"><thead><tr><th>#</th><th>Team</th><th>W</th><th>L</th><th>Map diff</th><th>Result</th></tr></thead><tbody>' + sim.stand.map((e, i) => '<tr class="' + (e.user ? "me" : "") + (i === 7 ? " cut" : "") + '"><td class="num">' + (i + 1) + '</td><td><b>' + esc(e.name) + '</b></td><td class="num">' + e.w + '</td><td class="num">' + e.l + '</td><td class="num">' + (e.mw - e.ml >= 0 ? "+" : "") + (e.mw - e.ml) + '</td><td>' + esc(sim.place[e.id]) + '</td></tr>').join("") + '</tbody></table></div><div class="status">Top 8 make the double-elimination playoffs.</div></div>';
+    h += '<div class="panel"><div class="label">Standings (8 games each)</div><div class="tscroll"><table class="tb"><thead><tr><th>#</th><th>Team</th><th>W</th><th>L</th><th>Map diff</th><th>Result</th></tr></thead><tbody>' + sim.stand.map((e, i) => '<tr class="' + (e.user ? "me" : "") + (i === 7 ? " cut" : "") + '"><td class="num">' + (i + 1) + '</td><td><a href="#r-' + e.id + '" data-r="' + e.id + '" class="tl"><b>' + esc(e.name) + '</b></a></td><td class="num">' + e.w + '</td><td class="num">' + e.l + '</td><td class="num">' + (e.mw - e.ml >= 0 ? "+" : "") + (e.mw - e.ml) + '</td><td>' + esc(sim.place[e.id]) + '</td></tr>').join("") + '</tbody></table></div><div class="status">Top 8 make the double-elimination playoffs.</div></div>';
     const mine = sim.sched.filter(x => x.s.A === me || x.s.B === me);
     h += '<div class="panel"><div class="label">Your regular season</div><ul class="logl">' + mine.map(x => { const s = x.s, mineA = s.A === me, opp = mineA ? s.B : s.A, w = s.winner === me; return '<li><span class="num">G' + x.wk + '</span> ' + (w ? "W" : "L") + ' <b class="num">' + (mineA ? s.wa + "–" + s.wb : s.wb + "–" + s.wa) + '</b> vs ' + esc(opp.name) + '</li>'; }).join("") + '</ul></div>';
-    const cols = [["Winners R1"], ["Winners semis", "Losers R1"], ["Winners final", "Losers R2"], ["Losers R3", "Losers final"], ["Grand final"]];
-    const ser = m => { const r = sim.res[m.id], row = (e, w, sc, sd) => '<div class="t ' + (w ? "w" : "l") + '"><span>' + (e.user ? "★ " : "") + esc(e.name) + ' <small>(' + (sim.seeds.indexOf(e) + 1) + ')</small></span><span class="sc">' + sc + '</span></div>'; return '<div class="series ' + (r.A.user || r.B.user ? "me" : "") + '">' + row(r.A, r.wa > r.wb, r.wa) + row(r.B, r.wb > r.wa, r.wb) + '</div>'; };
-    h += '<div class="panel"><div class="label">Playoffs · double elimination · best of 5</div><div class="bracket">' + cols.map(cs => '<div class="round">' + cs.map(n => '<h3>' + n + '</h3>' + sim.LAYOUT.filter(m => m.r === n).map(ser).join("")).join("") + '</div>').join("") + '</div></div>';
+    h += '<div class="panel"><div class="label">Playoffs · double elimination · best of 5</div><div id="bkhost"></div></div>';
     // awards
     const acc = {}; const add = (r, t) => { (acc[r.c.id] = acc[r.c.id] || []).push(t); };
     add(sim.mvp, "League MVP"); sim.allstar.first.forEach(r => add(r, "All-Star 1st")); sim.allstar.second.forEach(r => add(r, "All-Star 2nd")); sim.champ.ps.forEach(c => (acc[c.id] = acc[c.id] || []).push("Champion")); sim.runner.ps.forEach(c => (acc[c.id] = acc[c.id] || []).push("Runner-up")); (acc[sim.fmvp.c.id] = acc[sim.fmvp.c.id] || []).push("Finals MVP");
     const al = k => sim.allstar[k].map(r => '<li><span class="role ' + r.c.role + '">' + r.c.role + '</span> <b>' + esc(r.c.name) + '</b> <small>' + esc(r.e.name) + '</small> <span class="num">' + f2(r.kd) + '</span></li>').join("");
     h += '<div class="panel"><div class="label">Season awards</div><div class="awards"><div><div class="alab">League MVP</div><b>' + esc(sim.mvp.c.name) + '</b><small>' + esc(sim.mvp.e.name) + ' · ' + f2(sim.mvp.kd) + ' K/D</small></div><div><div class="alab">Finals MVP</div><b>' + esc(sim.fmvp.c.name) + '</b><small>' + esc(sim.champ.name) + ' · ' + f2(sim.fmvp.kd) + ' K/D</small></div><div><div class="alab">Champions</div><b>' + esc(sim.champ.name) + '</b><small>over ' + esc(sim.runner.name) + '</small></div></div>' +
       '<div class="twocol"><div><div class="alab">All-Star 1st team</div><ul class="logl">' + al("first") + '</ul></div><div><div class="alab">All-Star 2nd team</div><ul class="logl">' + al("second") + '</ul></div></div></div>';
-    const statRow = r => '<tr class="' + (r.e.user ? "me" : "") + '"><td><b>' + esc(r.c.name) + '</b> <small>' + esc(r.e.name) + '</small></td><td><span class="role ' + r.c.role + '">' + r.c.role + '</span></td><td class="num">' + r.maps + '</td><td class="num">' + r.K + '</td><td class="num">' + r.D + '</td><td class="num"><b>' + f2(r.kd) + '</b></td><td class="num">' + f2(r.rkd) + '</td><td class="num">' + f2(r.skd) + '</td><td class="sm">' + esc((acc[r.c.id] || []).join(", ")) + '</td></tr>';
-    const head = '<thead><tr><th>Player</th><th>Pos</th><th>Maps</th><th>K</th><th>D</th><th>K/D</th><th>Resp</th><th>SnD</th><th>Honors</th></tr></thead>';
+    const statRow = r => '<tr class="' + (r.e.user ? "me" : "") + '"><td><b>' + esc(r.c.name) + '</b> <small>' + esc(r.e.name) + '</small></td><td><span class="role ' + r.c.role + '">' + r.c.role + '</span></td><td class="num">' + r.maps + '</td><td class="num">' + r.K + '</td><td class="num">' + r.D + '</td><td class="num"><b>' + f2(r.kd) + '</b></td><td class="num">' + f2(r.rkd) + '</td><td class="num">' + f2(r.skd) + '</td><td class="num">' + f1(r.ipm) + '</td><td class="sm">' + esc((acc[r.c.id] || []).join(", ")) + '</td></tr>';
+    const head = '<thead><tr><th>Player</th><th>Pos</th><th>Maps</th><th>K</th><th>D</th><th>K/D</th><th>Resp</th><th>SnD</th><th>Int</th><th>Honors</th></tr></thead>';
     const mineRows = sim.rows.filter(r => r.e.user).sort((a, b) => b.kd - a.kd);
     h += '<div class="panel"><div class="label">Your players · regular season stats</div><div class="tscroll"><table class="tb">' + head + '<tbody>' + mineRows.map(statRow).join("") + '</tbody></table></div></div>';
     const lead = sim.rows.slice().sort((a, b) => b.kd - a.kd).slice(0, 12);
     h += '<div class="panel"><div class="label">League leaders · K/D</div><div class="tscroll"><table class="tb">' + head + '<tbody>' + lead.map(statRow).join("") + '</tbody></table></div></div>';
+    const rrow = r => '<li><span class="role ' + r.c.role + '">' + r.c.role + '</span> <b>' + esc(r.c.name) + '</b> <span class="num">' + f2(r.kd) + ' K/D · ' + f1(r.ipm) + ' int</span> <small>OVR ' + f1(r.c.ovr) + ((acc[r.c.id] || []).length ? ' · ' + esc(acc[r.c.id].join(", ")) : '') + '</small></li>';
+    h += '<div class="panel"><div class="label">Team rosters · click a team in the standings to jump here</div><div class="rosters">' + sim.stand.map(e => { const rs = sim.rows.filter(r => r.e === e).sort((a, b) => b.kd - a.kd); return '<details id="r-' + e.id + '"' + (e === sim.champ ? " open" : "") + ' class="rdet' + (e.user ? " me" : "") + '"><summary><b>' + esc(e.name) + '</b>' + (e === sim.champ ? ' 🏆' : '') + ' <small>' + e.w + '–' + e.l + ' · ' + esc(sim.place[e.id]) + '</small></summary><ul class="logl">' + rs.map(rrow).join("") + '</ul></details>'; }).join("") + '</div></div>';
     root.innerHTML = h;
+    B.bracket(root.querySelector("#bkhost"), {res:sim.res, name:e => (e.user ? "★ " : "") + e.name, seed:e => sim.seeds.indexOf(e) + 1, isMe:e => e.user});
+    root.onclick = ev => { const a = ev.target.closest("[data-r]"); if (!a) return; ev.preventDefault(); const d = root.querySelector("#r-" + a.dataset.r); if (d){ d.open = true; d.scrollIntoView({behavior:"smooth", block:"center"}); } };
     const line = ["AR","AR","SMG","SMG"].map(r => r).length && me.ps.map(c => c.name).join(", ");
     const win = sim.champ.user, squares = "🏈";
     const place = myPlace === "Champions" ? "🏆 Champions" : myPlace;
