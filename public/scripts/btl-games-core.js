@@ -48,11 +48,13 @@ function prep(D){
         if(!e.teamKeys[key]){e.teamKeys[key]=1;e.teamNames.push(t.name);}
         t.p.forEach(function(id){var o=idc[id];if(o!==e.c)e.tm[o]=1;});
       }
-      if(p.kd>e.maxKD)e.maxKD=p.kd; if(p.kd<e.minKD)e.minKD=p.kd;
-      if(p.o>e.maxO)e.maxO=p.o;
-      if(p.sk!=null&&p.sk>e.maxSk)e.maxSk=p.sk;
-      if(p.rk!=null&&p.rk>e.maxRk)e.maxRk=p.rk;
-      if(p.ip>e.maxIp)e.maxIp=p.ip;
+      if(!p.prov||p.m>=12){
+        if(p.kd>e.maxKD)e.maxKD=p.kd; if(p.kd<e.minKD)e.minKD=p.kd;
+        if(p.sk!=null&&p.sk>e.maxSk)e.maxSk=p.sk;
+        if(p.rk!=null&&p.rk>e.maxRk)e.maxRk=p.rk;
+        if(p.ip>e.maxIp)e.maxIp=p.ip;
+      }
+      if(!p.prov&&p.o>e.maxO)e.maxO=p.o;
     });
     e.kd=e.d?e.k/e.d:0;
     e.search=Object.keys(e.names).map(norm).join("|");
@@ -161,13 +163,20 @@ function shell(o){
 /* ---- double-elimination bracket (Challonge-style, with connector lines) ---- */
 var BR_WIN=[["W1","W2","W3","W4"],["W5","W6"],["W7"],["GF"]], BR_LOS=[["L1","L2"],["L3","L4"],["L5"],["L6"]];
 var BR_FEED={W5:["W1","W2"],W6:["W3","W4"],W7:["W5","W6"],L3:["L1"],L4:["L2"],L5:["L3","L4"],L6:["L5"],GF:["W7","L6"]};
+var BR_SRC={W5:['Winner W1','Winner W2'],W6:['Winner W3','Winner W4'],L1:['Loser W1','Loser W2'],L2:['Loser W3','Loser W4'],L3:['Winner L1','Loser W6'],L4:['Winner L2','Loser W5'],W7:['Winner W5','Winner W6'],L5:['Winner L3','Winner L4'],L6:['Winner L5','Loser W7'],GF:['Winner W7','Winner L6'],W1:['Seed 1','Seed 8'],W2:['Seed 4','Seed 5'],W3:['Seed 2','Seed 7'],W4:['Seed 3','Seed 6']};
 var BR_TITLES={W:["Winners round 1","Winners semifinals","Winners final","Grand final"],L:["Losers round 1","Losers round 2","Losers round 3","Losers final"]};
 function bracket(host,o){
   var res=o.res, nm=o.name||function(e){return e.name;}, seedOf=o.seed||function(){return "";}, me=o.isMe||function(){return false;};
   function match(id){
-    var r=res[id]; if(!r)return '<div class="bm empty" data-m="'+id+'"></div>';
+    var r=res[id];
+    if(!r){
+      if(!o.slots)return '<div class="bm empty" data-m="'+id+'"></div>';
+      var sl=o.slots(id)||[null,null], src=BR_SRC[id]||["",""];
+      var prow=function(e,t){return e?'<div class="bt'+(me(e)?" me":"")+'"><span class="bs">'+esc(seedOf(e))+'</span><span class="bn">'+esc(nm(e))+'</span><span class="bc"></span></div>':'<div class="bt tbd"><span class="bs"></span><span class="bn">'+esc(t)+'</span><span class="bc"></span></div>';};
+      return '<div class="bm pend'+((sl[0]&&me(sl[0]))||(sl[1]&&me(sl[1]))?" mine":"")+(o.current===id?" cur":"")+'" data-m="'+id+'"><div class="bid">'+id+'</div>'+prow(sl[0],src[0])+prow(sl[1],src[1])+'</div>';
+    }
     function row(e,w,sc){return '<div class="bt '+(w?"w":"l")+(me(e)?" me":"")+'"><span class="bs">'+esc(seedOf(e))+'</span><span class="bn">'+esc(nm(e))+'</span><span class="bc">'+sc+'</span></div>';}
-    return '<div class="bm'+((me(r.A)||me(r.B))?" mine":"")+'" data-m="'+id+'"><div class="bid">'+id+'</div>'+row(r.A,r.wa>r.wb,r.wa)+row(r.B,r.wb>r.wa,r.wb)+'</div>';
+    return '<div class="bm'+((me(r.A)||me(r.B))?" mine":"")+(o.current===id?" cur":"")+'" data-m="'+id+'"><div class="bid">'+id+'</div>'+row(r.A,r.wa>r.wb,r.wa)+row(r.B,r.wb>r.wa,r.wb)+'</div>';
   }
   function section(cols,titles,cls){
     return '<div class="bsec '+cls+'">'+cols.map(function(c,i){return '<div class="bcol"><div class="btitle">'+titles[i]+'</div><div class="bmatches">'+c.map(match).join("")+'</div></div>';}).join("")+'</div>';

@@ -14,7 +14,7 @@ import DATA from '../../data/game-12-0.json';
 <script is:inline src="/scripts/btl-games-core.js"></script>
 <script is:inline define:vars={{ DATA }}>
 (function(){
-const B = BTL, esc = B.esc, D = B.prep(DATA), NT = 12, ROUNDS = 5, SAVE = "btlg-franchise-v1";
+const B = BTL, esc = B.esc, D = B.prep({players:DATA.players.filter(p => !p.prov), teams:DATA.teams}), NT = 12, ROUNDS = 5, SAVE = "btlg-franchise-v1";
 const f2 = v => v.toFixed(2), f1 = v => v.toFixed(1), gm = B.norm;
 const mean = a => a.reduce((x, y) => x + y, 0) / a.length, sd = a => { const m = mean(a); return Math.sqrt(mean(a.map(x => (x - m) * (x - m)))) || 1; };
 function gauss(r){ let u = 0, v = 0; while (!u) u = r(); while (!v) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
@@ -37,7 +37,7 @@ LIST.forEach(c => { c.zo = (c.ovr - stat.o[0]) / stat.o[1]; c.zr = (c.rk - stat.
 const MULTI = ["New Orleans","New York","Los Angeles","San Francisco","Oklahoma City","Mexico City","St. Petersburg"];
 const FR = [], seenFr = {};
 DATA.teams.forEach(t => {
-  if (t.fa || /^(WCi|POBO)/.test(t.name) || seenFr[gm(t.name)]) return; seenFr[gm(t.name)] = 1;
+  if (t.fa || t.cur || /^(WCi|POBO)/.test(t.name) || seenFr[gm(t.name)]) return; seenFr[gm(t.name)] = 1;
   const m = MULTI.find(x => t.name.indexOf(x + " ") === 0), city = m || t.name.split(" ")[0];
   if (city.length > 1) FR.push({city});
 });
@@ -140,11 +140,11 @@ function simSeries(A, Bt, bucket, r){
     // zero-sum kills/deaths
     const ra = A.ps.map((c, i) => talent(c, mode) * A.form[i]), rb = Bt.ps.map((c, i) => talent(c, mode) * Bt.form[i]);
     let R = mean(ra) / mean(rb) * (aWon ? 1.05 : 0.95) * (1 + g() * 0.03); R = Math.max(0.7, Math.min(1.45, R));
-    const sq = Math.sqrt(R), n = 4 * BASE[mode], KA = n * sq, KB = n / sq, wk = x => x.map(v => v * (0.72 + r() * .56)), wd = x => x.map(v => (1 / v) * (0.72 + r() * .56));
-    const ka = split(KA, wk(ra)), da = split(KB, wd(ra)), kb = split(KB, wk(rb)), db = split(KA, wd(rb));
+    const sq = Math.sqrt(R), n = 4 * BASE[mode], KA = n * sq, KB = n / sq, pace = A.ps.concat(Bt.ps).map(c => Math.max(.7, Math.min(1.35, Math.pow(c.ip / 37, .8)))), pa = pace.slice(0, 4), pb = pace.slice(4), wk = (x, pc) => x.map((v, i) => v * pc[i] * (0.72 + r() * .56)), wd = (x, pc) => x.map((v, i) => (pc[i] / v) * (0.72 + r() * .56));
+    const ka = split(KA, wk(ra, pa)), da = split(KB, wd(ra, pa)), kb = split(KB, wk(rb, pb)), db = split(KA, wd(rb, pb));
     const lines = {A:[], B:[]};
     [[A, ka, da, "A"], [Bt, kb, db, "B"]].forEach(([e, k, d, side]) => e.ps.forEach((c, i) => {
-      const ip = Math.max(8, Math.round(c.ip * e.form[i] * (0.9 + r() * 0.2))), dv = Math.max(1, d[i]), s = bucket[c.id];
+      const dv = Math.max(1, d[i]), ip = k[i] + dv, s = bucket[c.id];
       s.k[mode] += k[i]; s.d[mode] += dv; s.m++; s.ip += ip; lines[side].push([c.id, k[i], dv, ip]);
     }));
     const close = 1 - Math.abs(p - .5) * 2, hi = mode === "HP" ? 250 : mode === "SND" ? 6 : 3;
@@ -172,7 +172,7 @@ const LAYOUT = [
   {id:"L3", r:"Losers R2", a:["w","L1"], b:["l","W6"]}, {id:"L4", r:"Losers R2", a:["w","L2"], b:["l","W5"]}, {id:"W7", r:"Winners final", a:["w","W5"], b:["w","W6"]}, {id:"L5", r:"Losers R3", a:["w","L3"], b:["w","L4"]},
   {id:"L6", r:"Losers final", a:["w","L5"], b:["l","W7"]}, {id:"GF", r:"Grand final", a:["w","W7"], b:["w","L6"]}];
 const winnerOf = res => res.wa > res.wb ? res.a : res.b, loserOf = res => res.wa > res.wb ? res.b : res.a;
-const refTeam = ref => ref[0] === "s" ? G.seeds[ref[1]] : ref[0] === "w" ? winnerOf(G.poRes[ref[1]]) : loserOf(G.poRes[ref[1]]);
+const refTeam = ref => ref[0] !== "s" && !G.poRes[ref[1]] ? null : ref[0] === "s" ? G.seeds[ref[1]] : ref[0] === "w" ? winnerOf(G.poRes[ref[1]]) : loserOf(G.poRes[ref[1]]);
 const standings = () => G.teams.slice().sort((a, b) => b.w - a.w || (b.mw - b.ml) - (a.mw - a.ml) || G.tb[b.id] - G.tb[a.id]);
 const userPair = rd => G.sched[rd].pairs.find(p => p.indexOf(userId()) >= 0);
 const eliminated = () => { const u = userId(); return LAYOUT.some(m => G.poRes[m.id] && (m.id[0] === "L" || m.id === "GF") && loserOf(G.poRes[m.id]) === u); };
@@ -291,7 +291,11 @@ const roleTag = r => '<span class="role ' + r + '">' + r + '</span>';
 const tbl = (head, rows, cls) => '<div class="tscroll"><table class="tb ' + (cls || "") + '"><thead><tr>' + head.map(h => '<th>' + h + '</th>').join("") + '</tr></thead><tbody>' + rows.join("") + '</tbody></table></div>';
 const panel = (label, inner, extra) => '<div class="panel"' + (extra ? ' ' + extra : '') + '>' + (label ? '<div class="label">' + label + '</div>' : '') + inner + '</div>';
 const btn = (act, text, cls, arg, dis) => '<button class="gbtn ' + (cls || "ghost") + '" data-act="' + act + '"' + (arg != null ? ' data-arg="' + esc(String(arg)) + '"' : '') + (dis ? ' disabled' : '') + '>' + text + '</button>';
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+const SPEEDS = {slow:{label:"Slow", f:3.6}, normal:{label:"Normal", f:1.9}, fast:{label:"2x", f:1}};
+try { view.speed = localStorage.getItem("btlg-fm-speed") || "normal"; } catch (e) { view.speed = "normal"; }
+if (!SPEEDS[view.speed]) view.speed = "normal";
+const sleep = ms => new Promise(r => setTimeout(r, ms * SPEEDS[view.speed].f));
+function speedRow(){ return '<div class="spdrow"><span class="lab">Sim speed</span>' + Object.keys(SPEEDS).map(k => '<button class="chip" data-act="speed" data-arg="' + k + '" aria-pressed="' + (view.speed === k) + '">' + SPEEDS[k].label + '</button>').join("") + '</div>'; }
 
 function render(){
   if (!G) return renderSetup();
@@ -371,9 +375,11 @@ function renderHub(){
   root.innerHTML = h;
   if (G.phase === "playoffs" || G.phase === "done") { const host = root.querySelector("#bkhost"); if (host) drawBracket(host); }
 }
-function drawBracket(host){
+function drawBracket(host, current){
   const res = {}; LAYOUT.forEach(m => { const r = G.poRes[m.id]; if (r) res[m.id] = {A:{id:r.a, name:teamName(r.a), user:G.teams[r.a].user}, B:{id:r.b, name:teamName(r.b), user:G.teams[r.b].user}, wa:r.wa, wb:r.wb}; });
-  B.bracket(host, {res, name:e => (e.user ? "★ " : "") + e.name, seed:e => G.seeds.indexOf(e.id) + 1, isMe:e => e.user});
+  const ent = id => id == null ? null : {id, name:teamName(id), user:G.teams[id].user};
+  const slots = id => { const m = LAYOUT.find(x => x.id === id); if (!m) return [null, null]; return [ent(refTeam(m.a)), ent(refTeam(m.b))]; };
+  B.bracket(host, {res, slots, current, name:e => (e.user ? "★ " : "") + e.name, seed:e => G.seeds.indexOf(e.id) + 1, isMe:e => e.user});
 }
 function pl(id, extra){ const c = CARDS[id]; return '<b>' + esc(c.name) + '</b>' + (extra || ""); }
 function awardsPanel(){
@@ -474,9 +480,10 @@ function renderMatch(){
     const P = G.pending; if (!P){ view.screen = null; return render(); }
     const title = P.kind === "reg" ? "Week " + G.week + " · Match " + (G.rIdx % 2 + 1) : LAYOUT.find(m => m.id === P.m).r + " · " + P.m;
     root.innerHTML = panel(title, '<div style="font-size:26px;font-weight:800;text-align:center">' + esc(teamName(P.a)) + ' <span style="color:var(--muted)">vs</span> ' + esc(teamName(P.b)) + '</div><div class="status" style="text-align:center">Best of 5: Hardpoint, Search & Destroy, Control, Hardpoint, Search & Destroy</div>') +
-      panel("Tonight's lineups", '<div class="twocol">' + lineupHTML(P.a, P.luA) + lineupHTML(P.b, P.luB) + '</div>') + '<div class="gm-actions">' + btn("startmatch", "Start the match", "primary") + btn("back", "Back", "ghost") + '</div>';
+      panel("Tonight's lineups", '<div class="twocol">' + lineupHTML(P.a, P.luA) + lineupHTML(P.b, P.luB) + '</div>') + (P.kind === "po" ? panel("Playoff bracket", '<div id="bkprev"></div>') : "") + '<div class="gm-actions">' + btn("startmatch", "Start the match", "primary") + btn("back", "Back", "ghost") + '</div>';
+    if (P.kind === "po"){ const h2 = root.querySelector("#bkprev"); if (h2) drawBracket(h2, P.m); }
   } else if (view.mstage === "play"){
-    root.innerHTML = '<div class="panel" id="live"></div><div class="gm-actions" id="liveact">' + btn("skip", "Skip to final", "ghost") + '</div><div id="boxarea"></div>';
+    root.innerHTML = '<div class="panel" id="live"></div><div class="gm-actions" id="liveact">' + speedRow() + btn("skip", "Skip to final", "ghost") + '</div><div id="boxarea"></div>';
     animate(view.out);
   } else renderBoxScreen();
 }
@@ -532,6 +539,7 @@ function act(a, arg, el){
     case "back": G.pending = null; save(); view.screen = null; break;
     case "startmatch": view.out = runPending(); view.screen = "match"; view.mstage = "play"; break;
     case "skip": view.skip = true; return;
+    case "speed": { view.speed = arg; try { localStorage.setItem("btlg-fm-speed", arg); } catch (e) {} root.querySelectorAll('[data-act="speed"]').forEach(b => b.setAttribute("aria-pressed", String(b.dataset.arg === arg))); return; }
     case "donematch": view.screen = null; view.boxTab = null; break;
     case "lastbox": view.out = G.last; view.screen = "match"; view.mstage = "box"; view.boxTab = null; break;
     case "boxtab": view.boxTab = +arg; break;

@@ -76,8 +76,9 @@ import math, itertools, statistics
 alias=raw['alias']; roles=raw['roles']
 def canon(n): return alias.get(n.strip().lower(), n.strip())
 EXCLUDE={'anura'}
-MERGE={'i2dreamy':'Dreamy','dreamy':'Dreamy','nickyb':'NickBoston','nickboston':'NickBoston','trapeu':'Trap','trap':'Trap'}
+MERGE={'i2dreamy':'Dreamy','dreamy':'Dreamy','nickyb':'NickBoston','nickboston':'NickBoston','trapeu':'Trap','trap':'Trap','crazie':'CrazieViews','scary':'Scare','scareacy':'Scare'}
 alias.update(MERGE)
+roles['Hitta']='SMG'; roles['Scare']='SMG'
 for k in ('yankz','marckell','iblades'): roles[{'yankz':'Yankz','marckell':'Marckell','iblades':'iBlades'}[k]]='AR'
 extra={'1':{'Vegas Vanity':['Yankz','Marckell','iBlades']},'2':{'Mexico City Warriors':['Karnij','Grihmey']}}
 players=[]; teams=[]
@@ -130,10 +131,42 @@ for s,S in raw['seasons'].items():
             ip=None if p['ip'] is None else round(p['ip'],2), k=int(p['k'] or 0), d=int(p['d'] or 0), rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(p['maps'] or 0), a=[]))
         ids.append(pid)
     if ids: teams.append(dict(id=len(teams),s=s,name='Free Agent',fin=None,rank=None,champ=False,ru=False,p=ids,fa=True))
+# ---- Season 6 (in progress): stats + rosters only. Overalls are provisional and accolades are not awarded yet,
+#      so these rows are flagged prov=True and only used by games that do not need them. ----
+rows6=list(wb['Season 6'].iter_rows(values_only=True))
+stats6={}
+for r in rows6[3:]:
+    if r[0] and str(r[0]).startswith('Team Rosters'): break
+    if not r[0] or r[0]=='Player': continue
+    if (num(r[5]) or 0)<=0: continue
+    stats6[str(r[0]).strip().lower()]=r
+missing6=[]
+for i,r in enumerate(rows6[:70]):
+    for off in (0,7):
+        a=r[off] if len(r)>off else None
+        if not (a and ' — Standing:' in str(a)): continue
+        tname=str(a).split(' — ')[0].strip(); ids=[]
+        for rr in rows6[i+2:i+8]:
+            v=rr[off] if len(rr)>off else None
+            if not v or ' — ' in str(v): break
+            key=str(v).strip().lower()
+            if key not in stats6: continue
+            q=stats6[key]; n=str(v).strip(); c=canon(n)
+            if c.lower() in EXCLUDE: continue
+            if not roles.get(c): missing6.append(c)
+            hp,ctl,snd=num(q[6]),num(q[8]),num(q[7])
+            resp=(2*hp+ctl)/3 if hp is not None and ctl is not None else (hp if hp is not None else ctl)
+            ov=num(q[11])
+            pid=len(players)
+            players.append(dict(id=pid,n=n,c=c,s=6,t=len(teams),r=roles.get(c) or 'AR',o=int(ov) if ov else 0,kd=round(num(q[4]),3),
+                ip=None if num(q[9]) is None else round(num(q[9]),2), k=int(num(q[2]) or 0), d=int(num(q[3]) or 0), rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(num(q[5]) or 0), a=[], prov=True))
+            ids.append(pid)
+        if ids: teams.append(dict(id=len(teams),s=6,name=tname,fin=None,rank=None,champ=False,ru=False,p=ids,fa=False,cur=True))
+print('S6 teams:',[(t['name'],len(t['p'])) for t in teams if t.get('cur')],'roles defaulted to AR:',sorted(set(missing6)))
 print('unmapped (no All Seasons alias):',sorted(unmapped))
 # opponents: top-4 regular season OR champ/runner-up
 for t in teams:
-    t['fa']=bool(t.get('fa')); t['elig']= (not t['fa']) and bool(t['p']) and ((t['rank'] is not None and t['rank']<=4) or t['champ'] or t['ru'])
+    t['fa']=bool(t.get('fa')); t['elig']= (not t['fa']) and (not t.get('cur')) and bool(t['p']) and ((t['rank'] is not None and t['rank']<=4) or t['champ'] or t['ru'])
 print('eligible opponents:',[(t['s'],t['name']) for t in teams if t['elig']])
 json.dump(dict(players=players,teams=teams),open(OUT,'w'),separators=(',',':'))
 print(len(players),'player-seasons',len(teams),'teams', len(json.dumps(players))//1024,'KB')

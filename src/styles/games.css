@@ -213,3 +213,9 @@
 .gm .lmap{text-align:center;font-family:var(--font-mono);color:var(--mustard);letter-spacing:.06em;margin-top:8px}
 .gm .llog{margin-top:10px;text-align:center;align-items:center}
 @media (max-width:640px){.gm .rgrid.r5{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.gm .bm.pend{opacity:.85;border-style:dashed}
+.gm .bt.tbd .bn{color:var(--muted);font-style:italic;font-size:11.5px}
+.gm .bm.cur{border-color:var(--mustard);box-shadow:0 0 0 2px var(--mustard);opacity:1}
+.gm .spdrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.gm .spdrow .lab{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}

@@ -14,7 +14,7 @@ import DATA from '../../data/game-12-0.json';
 <script is:inline src="/scripts/btl-games-core.js"></script>
 <script is:inline define:vars={{ DATA }}>
 (function(){
-const B = BTL, esc = B.esc, D = B.prep(DATA), ROUNDS = 4, NT = 12;
+const B = BTL, esc = B.esc, D = B.prep({players:DATA.players.filter(p => !p.prov), teams:DATA.teams}), ROUNDS = 4, NT = 12;
 const f2 = v => v.toFixed(2), f1 = v => v.toFixed(1);
 const gm = B.norm;
 
@@ -36,7 +36,7 @@ LIST.forEach(c => { c.zo = (c.ovr - stat.o[0]) / stat.o[1]; c.zr = (c.rk - stat.
 const MULTI = ["New Orleans","New York","Los Angeles","San Francisco","Oklahoma City","Mexico City","St. Petersburg"];
 const FR = [], seenFr = {}; 
 DATA.teams.forEach(t => {
-  if (t.fa || /^(WCi|POBO)/.test(t.name) || seenFr[gm(t.name)]) return; seenFr[gm(t.name)] = 1;
+  if (t.fa || t.cur || /^(WCi|POBO)/.test(t.name) || seenFr[gm(t.name)]) return; seenFr[gm(t.name)] = 1;
   const m = MULTI.find(x => t.name.indexOf(x + " ") === 0), city = m || t.name.split(" ")[0];
   if (city.length > 1) FR.push({city});
 });
@@ -162,9 +162,9 @@ B.shell({game:"fantasy-draft", start:function(ctx){
     function mapLines(A, Bt, mode, aWon, bucket){
       const ra = rate(A, mode), rb = rate(Bt, mode);
       let R = mean(ra) / mean(rb) * (aWon ? 1.05 : 0.95) * (1 + g() * 0.03); R = Math.max(0.7, Math.min(1.45, R));
-      const sq = Math.sqrt(R), n = 4 * BASE[mode], KA = n * sq, KB = n / sq, wk = r => r.map(x => x * (0.72 + rand() * .56)), wd = r => r.map(x => (1 / x) * (0.72 + rand() * .56));
-      const ka = split(KA, wk(ra)), da = split(KB, wd(ra)), kb = split(KB, wk(rb)), db = split(KA, wd(rb));
-      [[A, ka, da], [Bt, kb, db]].forEach(([e, k, d]) => e.ps.forEach((c, i) => { const s = bucket[c.id]; s.k[mode] += k[i]; s.d[mode] += Math.max(1, d[i]); s.m++; s.ip += Math.max(8, c.ip * e.form[i] * (0.9 + rand() * 0.2)); }));
+      const sq = Math.sqrt(R), n = 4 * BASE[mode], KA = n * sq, KB = n / sq, pace = A.ps.concat(Bt.ps).map(c => Math.max(.7, Math.min(1.35, Math.pow(c.ip / 37, .8)))), pa = pace.slice(0, 4), pb = pace.slice(4), wk = (r, pc) => r.map((x, i) => x * pc[i] * (0.72 + rand() * .56)), wd = (r, pc) => r.map((x, i) => (pc[i] / x) * (0.72 + rand() * .56));
+      const ka = split(KA, wk(ra, pa)), da = split(KB, wd(ra, pa)), kb = split(KB, wk(rb, pb)), db = split(KA, wd(rb, pb));
+      [[A, ka, da], [Bt, kb, db]].forEach(([e, k, d]) => e.ps.forEach((c, i) => { const s = bucket[c.id]; s.k[mode] += k[i]; s.d[mode] += Math.max(1, d[i]); s.m++; s.ip += k[i] + Math.max(1, d[i]); }));
     }
     function series(A, Bt, bucket){
       const fa = g() * 1.2, fb = g() * 1.2; let wa = 0, wb = 0; const maps = []; const usedMaps = {};
