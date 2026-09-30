@@ -43,9 +43,11 @@ function prep(D){
       if(p.a.indexOf("AS1")>=0||p.a.indexOf("AS2")>=0)e.allstars++;
       if(p.a.indexOf("MVP")>=0)e.mvps++;
       e.roles[p.r]=1;
-      var key=norm(t.name);
-      if(!e.teamKeys[key]){e.teamKeys[key]=1;e.teamNames.push(t.name);}
-      t.p.forEach(function(id){var o=idc[id];if(o!==e.c)e.tm[o]=1;});
+      if(!t.fa){
+        var key=norm(t.name);
+        if(!e.teamKeys[key]){e.teamKeys[key]=1;e.teamNames.push(t.name);}
+        t.p.forEach(function(id){var o=idc[id];if(o!==e.c)e.tm[o]=1;});
+      }
       if(p.kd>e.maxKD)e.maxKD=p.kd; if(p.kd<e.minKD)e.minKD=p.kd;
       if(p.o>e.maxO)e.maxO=p.o;
       if(p.sk!=null&&p.sk>e.maxSk)e.maxSk=p.sk;
@@ -155,6 +157,40 @@ function shell(o){
   start("daily");
 }
 
-window.BTL={LAUNCH:LAUNCH,SITE:SITE,esc:esc,store:store,etDate:etDate,dayNum:dayNum,shiftDay:shiftDay,hashStr:hashStr,rng:rng,shuffle:shuffle,pick:pick,norm:norm,
+
+/* ---- double-elimination bracket (Challonge-style, with connector lines) ---- */
+var BR_WIN=[["W1","W2","W3","W4"],["W5","W6"],["W7"],["GF"]], BR_LOS=[["L1","L2"],["L3","L4"],["L5"],["L6"]];
+var BR_FEED={W5:["W1","W2"],W6:["W3","W4"],W7:["W5","W6"],L3:["L1"],L4:["L2"],L5:["L3","L4"],L6:["L5"],GF:["W7","L6"]};
+var BR_TITLES={W:["Winners round 1","Winners semifinals","Winners final","Grand final"],L:["Losers round 1","Losers round 2","Losers round 3","Losers final"]};
+function bracket(host,o){
+  var res=o.res, nm=o.name||function(e){return e.name;}, seedOf=o.seed||function(){return "";}, me=o.isMe||function(){return false;};
+  function match(id){
+    var r=res[id]; if(!r)return '<div class="bm empty" data-m="'+id+'"></div>';
+    function row(e,w,sc){return '<div class="bt '+(w?"w":"l")+(me(e)?" me":"")+'"><span class="bs">'+esc(seedOf(e))+'</span><span class="bn">'+esc(nm(e))+'</span><span class="bc">'+sc+'</span></div>';}
+    return '<div class="bm'+((me(r.A)||me(r.B))?" mine":"")+'" data-m="'+id+'"><div class="bid">'+id+'</div>'+row(r.A,r.wa>r.wb,r.wa)+row(r.B,r.wb>r.wa,r.wb)+'</div>';
+  }
+  function section(cols,titles,cls){
+    return '<div class="bsec '+cls+'">'+cols.map(function(c,i){return '<div class="bcol"><div class="btitle">'+titles[i]+'</div><div class="bmatches">'+c.map(match).join("")+'</div></div>';}).join("")+'</div>';
+  }
+  host.innerHTML='<div class="bk"><svg class="bsvg" aria-hidden="true"></svg><div class="bhead">Winners bracket</div>'+section(BR_WIN,BR_TITLES.W,"win")+'<div class="bhead">Losers bracket</div>'+section(BR_LOS,BR_TITLES.L,"los")+'</div>';
+  function draw(){
+    var bk=host.querySelector(".bk"), svg=host.querySelector(".bsvg"); if(!bk)return;
+    var b=bk.getBoundingClientRect(); svg.setAttribute("width",bk.scrollWidth); svg.setAttribute("height",bk.scrollHeight);
+    var d="";
+    Object.keys(BR_FEED).forEach(function(to){
+      var t=bk.querySelector('[data-m="'+to+'"]'); if(!t)return; var tb=t.getBoundingClientRect();
+      BR_FEED[to].forEach(function(from){
+        var f=bk.querySelector('[data-m="'+from+'"]'); if(!f)return; var fb=f.getBoundingClientRect();
+        var x1=fb.right-b.left+bk.scrollLeft, y1=fb.top+fb.height/2-b.top, x2=tb.left-b.left+bk.scrollLeft, y2=tb.top+tb.height/2-b.top, mx=x1+(x2-x1)/2;
+        d+='<path d="M'+x1+' '+y1+' H'+mx+' V'+y2+' H'+x2+'"/>';
+      });
+    });
+    svg.innerHTML=d;
+  }
+  draw(); setTimeout(draw,60);
+  if(!host._brResize){host._brResize=1;window.addEventListener("resize",draw);}
+}
+
+window.BTL={bracket:bracket,LAUNCH:LAUNCH,SITE:SITE,esc:esc,store:store,etDate:etDate,dayNum:dayNum,shiftDay:shiftDay,hashStr:hashStr,rng:rng,shuffle:shuffle,pick:pick,norm:norm,
   prep:prep,getRes:getRes,saveRes:saveRes,streak:streak,copy:copy,picker:picker,shell:shell};
 })();

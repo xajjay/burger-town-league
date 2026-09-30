@@ -6,6 +6,7 @@ const games = [
   { id: 'ranking-point', href: '/games/ranking-point', title: 'Ranking Point', blurb: 'Rank five players from one season by K/D, Respawn, SnD, interactions or Overall. Correct slots lock in green.' },
   { id: 'player-guessr', href: '/games/player-guessr', title: 'Player Guessr', blurb: 'Find the mystery player using seasons, rings, All-Stars, teammates and teams. Fewest guesses wins.' },
   { id: 'fantasy-draft', href: '/games/fantasy-draft', title: 'Fantasy Draft', blurb: 'Name your city, draft 4 players in a 12-team snake draft from all of league history, then sim the season, playoffs and awards.' },
+  { id: 'franchise-mode', tag: 'Season mode · saves progress', href: '/games/franchise-mode', title: 'Franchise Mode', blurb: 'The deep version: 5-man roster, weekly matches played live, lineup, free agents, trades, then playoffs and a full season recap.' },
   { id: 'gridlock', href: '/games/gridlock', title: 'Gridlock', blurb: 'Fill a 3×3 grid with players who fit both the row and the column. Nine guesses, no repeats.' },
 ];
 ---
@@ -15,13 +16,13 @@ const games = [
       <span class="eyebrow">Play</span>
       <h1 class="script-heading" style="margin-bottom: 8px;">Games</h1>
       <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 8px;">
-        Six games built on real Burger Town history. Each has a daily challenge that everyone gets the same, and a free play mode for extra rounds. New dailies drop at midnight Eastern.
+        Seven games built on real Burger Town history. Six have a daily challenge that everyone gets the same plus free play, and Franchise Mode is a full season you play at your own pace. New dailies drop at midnight Eastern.
       </p>
       <p id="hub-status" style="color: var(--paper-dim); font-size: 14px; margin-bottom: 24px;"></p>
       <div class="grid grid-3">
         {games.map(g => (
           <a class="pixel-card" href={g.href} data-game={g.id} style="text-decoration: none; display: block;">
-            <span class="eyebrow" data-status>Daily challenge</span>
+            <span class="eyebrow" data-status>{g.tag ?? "Daily challenge"}</span>
             <h2 class="script-heading" style="font-size: 2.4rem;">{g.title}</h2>
             <p style="color: var(--paper-dim); margin: 8px 0 16px;">{g.blurb}</p>
             <span class="btn btn-primary">Play</span>
@@ -29,7 +30,7 @@ const games = [
         ))}
       </div>
       <div style="margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
-        <button class="btn btn-ghost" id="copyall" style="display:none">Copy today's results for Discord</button>
+        <button id="copyall" style="display:none;background:transparent;color:var(--paper);border:1px solid var(--gold);padding:12px 20px;font:inherit;font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:13px;cursor:pointer;border-radius:2px">Copy today's results for Discord</button>
       </div>
     </div>
   </section>
@@ -49,7 +50,7 @@ const games = [
   s.textContent = done.length ? "Today: " + done.length + " of 6 dailies done." : "Today: no dailies played yet.";
   var b = document.getElementById("copyall");
   if (shares.length) {
-    b.style.display = "";
+    b.style.display = "inline-block";
     b.onclick = function(){
       var t = "Burger Town Leagues dailies\n\n" + shares.join("\n\n");
       var ok = function(){ b.textContent = "Copied!"; setTimeout(function(){ b.textContent = "Copy today's results for Discord"; }, 1600); };

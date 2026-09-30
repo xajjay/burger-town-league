@@ -32,7 +32,7 @@ for s in range(1,6):
         if r[0] and str(r[0]).startswith('Final'): break
         if not r[0] or r[0]=='Player' or num(r[11]) is None: continue
         if s==5 and num(r[4]) is None: continue
-        players[str(r[0]).strip().lower()]=dict(name=str(r[0]).strip(),abbr=r[1],kd=num(r[4]),maps=num(r[5]),hp=num(r[6]),snd=num(r[7]),ctl=num(r[8]),ovr=int(r[11]),notes=r[12] or '')
+        players[str(r[0]).strip().lower()]=dict(name=str(r[0]).strip(),abbr=r[1],k=num(r[2]),d=num(r[3]),ip=num(r[9]),kd=num(r[4]),maps=num(r[5]),hp=num(r[6]),snd=num(r[7]),ctl=num(r[8]),ovr=int(r[11]),notes=r[12] or '')
     # team blocks
     teams=[]; cur=None
     for i,r in enumerate(rows):
@@ -106,17 +106,34 @@ for s,S in raw['seasons'].items():
             role=roles.get(c) or 'FLEX'
             pid=len(players)
             players.append(dict(id=pid,n=p['name'],c=c,s=s,t=len(teams),r=role,o=p['ovr'],kd=round(p['kd'],3),
-                rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(p['maps'] or 0), a=acc))
+                ip=None if p['ip'] is None else round(p['ip'],2), k=int(p['k'] or 0), d=int(p['d'] or 0), rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(p['maps'] or 0), a=acc))
             ids.append(pid)
         fin=t['finish']
         rank=None
         if fin:
             import re; m=re.match(r'(\d+)',fin); rank=int(m.group(1)) if m else None
         teams.append(dict(id=len(teams),s=s,name=t['name'],fin=fin,rank=rank,champ=t['champ'],ru=t['ru'],p=ids))
+# free agents: players with recorded stats who never landed on a roster that season
+for s,S in raw['seasons'].items():
+    s=int(s)
+    rostered=set()
+    for t in S['teams']:
+        rostered|=set(t['roster'])|set(extra.get(str(s),{}).get(t['name'],[]))
+    ids=[]
+    for p in S['players'].values():
+        n=p['name']; c=canon(n)
+        if n in rostered or c.lower() in EXCLUDE or not (p['maps'] or 0): continue
+        hp,ctl,snd=p['hp'],p['ctl'],p['snd']
+        resp=(2*hp+ctl)/3 if hp is not None and ctl is not None else (hp if hp is not None else ctl)
+        pid=len(players)
+        players.append(dict(id=pid,n=n,c=c,s=s,t=len(teams),r=roles.get(c) or 'AR',o=p['ovr'],kd=round(p['kd'],3),
+            ip=None if p['ip'] is None else round(p['ip'],2), k=int(p['k'] or 0), d=int(p['d'] or 0), rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(p['maps'] or 0), a=[]))
+        ids.append(pid)
+    if ids: teams.append(dict(id=len(teams),s=s,name='Free Agent',fin=None,rank=None,champ=False,ru=False,p=ids,fa=True))
 print('unmapped (no All Seasons alias):',sorted(unmapped))
 # opponents: top-4 regular season OR champ/runner-up
 for t in teams:
-    t['elig']= bool(t['p']) and ((t['rank'] is not None and t['rank']<=4) or t['champ'] or t['ru'])
+    t['fa']=bool(t.get('fa')); t['elig']= (not t['fa']) and bool(t['p']) and ((t['rank'] is not None and t['rank']<=4) or t['champ'] or t['ru'])
 print('eligible opponents:',[(t['s'],t['name']) for t in teams if t['elig']])
 json.dump(dict(players=players,teams=teams),open(OUT,'w'),separators=(',',':'))
 print(len(players),'player-seasons',len(teams),'teams', len(json.dumps(players))//1024,'KB')

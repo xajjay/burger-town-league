@@ -122,7 +122,7 @@ const core4 = t => t.p.map(i=>P[i]).slice().sort((a,b)=>b.m-a.m || a.id-b.id).sl
 // Neutral balance = league average of real Season 2–5 teams. Season 1 players (no mode splits)
 // count as that average, so they neither help nor hurt this component.
 const NEUTRAL = (() => {
-  const v = T.filter(t => t.s>1 && t.p.length>=4).map(t => rawBalance(core4(t)).b).filter(x=>x!=null);
+  const v = T.filter(t => !t.fa && t.s>1 && t.p.length>=4).map(t => rawBalance(core4(t)).b).filter(x=>x!=null);
   return v.reduce((a,b)=>a+b,0)/v.length;
 })();
 function teamScore(picks){
@@ -206,7 +206,7 @@ function renderRail(){
 const isThin = t => t.p.length <= THIN;
 function spinPool(){
   const tk = taken();
-  return T.filter(t => t.p.some(i => !tk.has(P[i].c)) && (!S.spun || t.id!==S.spun.id));
+  return T.filter(t => !t.fa && t.p.some(i => !tk.has(P[i].c)) && (!S.spun || t.id!==S.spun.id));
 }
 // kind: "spin" | "respin" | "free"
 function spin(kind){

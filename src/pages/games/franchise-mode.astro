@@ -1,0 +1,570 @@
+---
+import Base from '../../layouts/Base.astro';
+import GameFrame from '../../components/GameFrame.astro';
+import '../../styles/games.css';
+import DATA from '../../data/game-12-0.json';
+---
+<Base title="Franchise Mode | Burger Town Leagues" description="Run a Burger Town franchise: draft, set your lineup, trade, sim every match live, and chase the title.">
+<GameFrame title="Franchise Mode" tagline="The deep version of Fantasy Draft. Draft a 5-player roster, manage your lineup, free agents and trades, and play every match of the season live." modes={false}>
+  <div slot="rules" class="rules">
+    <span><b>4 weeks, 2 matches a week.</b> Sim each of your matches live, then the week advances. Top 8 make a double-elimination playoff. Rosters lock once the playoffs start.</span>
+    <span>Your progress saves in this browser. There is no daily challenge in this mode.</span>
+  </div>
+</GameFrame>
+<script is:inline src="/scripts/btl-games-core.js"></script>
+<script is:inline define:vars={{ DATA }}>
+(function(){
+const B = BTL, esc = B.esc, D = B.prep(DATA), NT = 12, ROUNDS = 5, SAVE = "btlg-franchise-v1";
+const f2 = v => v.toFixed(2), f1 = v => v.toFixed(1), gm = B.norm;
+const mean = a => a.reduce((x, y) => x + y, 0) / a.length, sd = a => { const m = mean(a); return Math.sqrt(mean(a.map(x => (x - m) * (x - m)))) || 1; };
+function gauss(r){ let u = 0, v = 0; while (!u) u = r(); while (!v) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+
+/* ---------- career cards ---------- */
+const CARDS = {}, LIST = [];
+D.list.forEach(e => {
+  let wm = 0, wo = 0, wr = 0, ws = 0, wi = 0;
+  e.rows.forEach(p => { const w = Math.max(1, p.m); wm += w; wo += p.o * w; wr += (p.rk != null ? p.rk : p.kd) * w; ws += (p.sk != null ? p.sk : p.kd) * w; wi += p.ip * w; });
+  const last = e.rows[e.rows.length - 1];
+  const c = {id:e.c, name:e.c, alias:e.aliasList, role:last.r, ovr:Math.min(99, wo / wm + Math.min(4, 1.2 * (e.seasons - 1))), kd:e.kd, rk:wr / wm, sk:ws / wm, ip:wi / wm, seasons:e.seasons, rings:e.champs, as:e.allstars, mvp:e.mvps};
+  c.rating = c.ovr + 12 * ((c.rk + c.sk) / 2 - 1) + 0.15 * (c.ip - 37) + c.rings * 0.6 + c.as * 0.8 + c.mvp * 2;
+  c.val = Math.pow(Math.max(1, c.rating - 55), 2.2) / 25;   // steep on purpose: one star outweighs several solid players
+  CARDS[c.id] = c; LIST.push(c);
+});
+const stat = {o:[mean(LIST.map(c=>c.ovr)), sd(LIST.map(c=>c.ovr))], r:[mean(LIST.map(c=>c.rk)), sd(LIST.map(c=>c.rk))], s:[mean(LIST.map(c=>c.sk)), sd(LIST.map(c=>c.sk))], i:[mean(LIST.map(c=>c.ip)), sd(LIST.map(c=>c.ip))]};
+LIST.forEach(c => { c.zo = (c.ovr - stat.o[0]) / stat.o[1]; c.zr = (c.rk - stat.r[0]) / stat.r[1]; c.zs = (c.sk - stat.s[0]) / stat.s[1]; c.zi = (c.ip - stat.i[0]) / stat.i[1]; });
+
+/* ---------- franchise city names ---------- */
+const MULTI = ["New Orleans","New York","Los Angeles","San Francisco","Oklahoma City","Mexico City","St. Petersburg"];
+const FR = [], seenFr = {};
+DATA.teams.forEach(t => {
+  if (t.fa || /^(WCi|POBO)/.test(t.name) || seenFr[gm(t.name)]) return; seenFr[gm(t.name)] = 1;
+  const m = MULTI.find(x => t.name.indexOf(x + " ") === 0), city = m || t.name.split(" ")[0];
+  if (city.length > 1) FR.push({city});
+});
+
+/* ---------- roster helpers ---------- */
+const cnt = (ids, role) => ids.filter(i => CARDS[i].role === role).length;
+const validRoster = ids => cnt(ids, "AR") >= 2 && cnt(ids, "SMG") >= 2;
+const canTake = (ids, c, total) => { // draft legality: keep 2 AR + 2 SMG reachable inside `total` picks
+  const n = ids.length, ar = cnt(ids, "AR") + (c.role === "AR" ? 1 : 0), sm = cnt(ids, "SMG") + (c.role === "SMG" ? 1 : 0);
+  return Math.max(0, 2 - ar) + Math.max(0, 2 - sm) <= total - (n + 1);
+};
+function bestLineup(ids){
+  let best = null, bv = -1e9;
+  ids.forEach(out => { const l = ids.filter(i => i !== out); if (cnt(l, "AR") < 2 || cnt(l, "SMG") < 2) return; const v = l.reduce((a, i) => a + CARDS[i].rating, 0); if (v > bv){ bv = v; best = l; } });
+  return best || ids.slice(0, 4);
+}
+function aiValue(c, roster, g){
+  const dR = roster.length ? mean(roster.map(x => CARDS[x].rk)) - mean(roster.map(x => CARDS[x].sk)) : 0;
+  const wR = 0.5 + Math.max(-0.3, Math.min(0.3, -dR * 4)), kdTerm = wR * c.zr + (1 - wR) * c.zs;
+  return 0.50 * c.zo + 0.28 * kdTerm + 0.14 * Math.min(c.zr, c.zs) + 0.08 * c.zi + g * 0.28;
+}
+
+/* ---------- save / load ---------- */
+let G = null;
+function load(){ try { const s = JSON.parse(localStorage.getItem(SAVE) || "null"); if (s && s.v === 1) return s; } catch(e){} return null; }
+function save(){ try { localStorage.setItem(SAVE, JSON.stringify(G)); } catch(e){} }
+const evr = () => B.rng(G.seed + "|e|" + (G.ev++));
+const teamName = id => G.teams[id].name;
+const userId = () => G.teams.findIndex(t => t.user);
+
+/* ---------- league + draft ---------- */
+function newGame(city){
+  const seed = "fm|" + Date.now() + "|" + Math.random();
+  const r = B.rng(seed + "|league"), key = gm(city);
+  const pool = B.shuffle(FR.filter(f => gm(f.city) !== key), r), used = {}, ai = [];
+  pool.forEach(f => { if (ai.length < 11 && !used[gm(f.city)]) { used[gm(f.city)] = 1; ai.push(f.city); } });
+  const teams = ai.map((n, i) => ({id:i, name:n, user:false, roster:[], lineup:[]}));
+  teams.push({id:11, name:city, user:true, roster:[], lineup:[]});
+  const slot = B.shuffle(teams.map(t => t.id), r);
+  G = {v:1, seed, ev:0, phase:"draft", tab:"schedule", teams, slot, picks:[], week:1, rIdx:0, sched:[], results:[], reg:{}, po:{}, form:{}, tb:[], faMoves:0, offers:[], tradeLog:[], txLog:[], poRes:{}, poIdx:0, seeds:[], awards:null, pending:null};
+  save();
+}
+const owner = n => { const rd = Math.floor(n / NT), i = n % NT; return rd % 2 === 0 ? G.slot[i] : G.slot[NT - 1 - i]; };
+function aiPick(t, n, taken, roster){
+  const r = B.rng(G.seed + "|ai|" + n);
+  let best = null, bv = -1e9;
+  LIST.forEach(c => { if (taken[c.id] || !canTake(roster, c, ROUNDS)) return; const v = aiValue(c, roster, gauss(r)); if (v > bv){ bv = v; best = c; } });
+  return best;
+}
+function replay(){
+  const taken = {}, rosters = G.teams.map(() => []), log = []; let n = 0, up = 0;
+  while (n < NT * ROUNDS){
+    const t = owner(n); let c;
+    if (G.teams[t].user){ if (up >= G.picks.length) break; c = CARDS[G.picks[up++]]; }
+    else c = aiPick(t, n, taken, rosters[t]);
+    taken[c.id] = 1; rosters[t].push(c.id); log.push({n, t, c}); n++;
+  }
+  return {n, taken, rosters, log};
+}
+function bestForUser(st){
+  const ros = st.rosters[userId()]; let best = null, bv = -1e9;
+  LIST.forEach(c => { if (st.taken[c.id] || !canTake(ros, c, ROUNDS)) return; const v = aiValue(c, ros.slice(), 0); if (v > bv){ bv = v; best = c; } });
+  return best;
+}
+
+/* ---------- season setup ---------- */
+function startSeason(st){
+  G.teams.forEach((t, i) => { t.roster = st.rosters[i].slice(); t.lineup = bestLineup(t.roster); });
+  const r = B.rng(G.seed + "|season");
+  LIST.forEach(c => { G.form[c.id] = 1 + gauss(r) * 0.04; G.reg[c.id] = blank(); G.po[c.id] = blank(); });
+  const idx = G.teams.map((_, i) => i), rounds = [];
+  for (let k = 0; k < 11; k++){ const arr = [idx[0]].concat(idx.slice(1).slice(-k).concat(idx.slice(1).slice(0, 11 - k))); const pairs = []; for (let i = 0; i < 6; i++) pairs.push([arr[i], arr[11 - i]]); rounds.push(pairs); }
+  G.sched = B.shuffle(rounds, r).slice(0, 8).map((pairs, i) => ({rd:i + 1, week:Math.floor(i / 2) + 1, pairs, done:false}));
+  G.tb = G.teams.map(() => r());
+  G.teams.forEach(t => { t.w = 0; t.l = 0; t.mw = 0; t.ml = 0; });
+  G.phase = "season"; G.tab = "schedule"; G.week = 1; G.rIdx = 0; G.faMoves = 0;
+  save();
+}
+function blank(){ return {k:{HP:0,SND:0,CTL:0}, d:{HP:0,SND:0,CTL:0}, m:0, ip:0}; }
+
+/* ---------- match simulation ---------- */
+const MODES = ["HP","SND","CTL","HP","SND"], MODE_NAME = {HP:"Hardpoint", SND:"Search & Destroy", CTL:"Control"}, MAPS = {HP:["Checkmate","Raid","Garrison","Apocalypse","Moscow"], SND:["Raid","Standoff","Express","Moscow","Miami"], CTL:["Raid","Checkmate","Garrison"]};
+const BASE = {HP:24, SND:7, CTL:19}, ABSENT = 0.035;
+const talent = (c, mode) => Math.min(1.4, 1 + 0.45 * ((mode === "SND" ? c.sk : c.rk) - 1));
+function split(total, w){ const sum = w.reduce((a, b) => a + b, 0), raw = w.map(x => total * x / sum), out = raw.map(Math.floor); let rem = Math.round(total) - out.reduce((a, b) => a + b, 0); raw.map((r, i) => [r - out[i], i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (rem > 0){ out[i]++; rem--; } }); return out; }
+// who plays for a team in a match: starters, with the sub filling in for anyone who can't make it
+function rollLineup(tid, r){
+  const t = G.teams[tid], sub = t.roster.find(i => t.lineup.indexOf(i) < 0), ids = t.lineup.slice(), notes = []; let subUsed = false;
+  if (sub) ids.forEach((id, k) => { if (!subUsed && r() < ABSENT){ ids[k] = sub; subUsed = true; notes.push({out:id, in:sub}); } });
+  return {ids, notes};
+}
+function mkEnt(tid, lu){ return {tid, name:teamName(tid), user:G.teams[tid].user, ps:lu.ids.map(i => CARDS[i]), form:lu.ids.map(i => G.form[i]), notes:lu.notes}; }
+function simSeries(A, Bt, bucket, r){
+  const g = () => gauss(r), fa = g() * 1.2, fb = g() * 1.2; let wa = 0, wb = 0; const maps = []; const usedMaps = {};
+  const modeAvg = (e, mode) => mean(e.ps.map(c => mode === "SND" ? c.sk : c.rk));
+  while (wa < 3 && wb < 3){
+    const mode = MODES[maps.length];
+    const dd = mean(A.ps.map(c => c.ovr)) - mean(Bt.ps.map(c => c.ovr)) + fa - fb + 6 * (modeAvg(A, mode) - modeAvg(Bt, mode)) + 0.12 * (mean(A.ps.map(c => c.ip)) - mean(Bt.ps.map(c => c.ip)));
+    const p = 1 / (1 + Math.exp(-dd / 6)), aWon = r() < p; aWon ? wa++ : wb++;
+    // zero-sum kills/deaths
+    const ra = A.ps.map((c, i) => talent(c, mode) * A.form[i]), rb = Bt.ps.map((c, i) => talent(c, mode) * Bt.form[i]);
+    let R = mean(ra) / mean(rb) * (aWon ? 1.05 : 0.95) * (1 + g() * 0.03); R = Math.max(0.7, Math.min(1.45, R));
+    const sq = Math.sqrt(R), n = 4 * BASE[mode], KA = n * sq, KB = n / sq, wk = x => x.map(v => v * (0.72 + r() * .56)), wd = x => x.map(v => (1 / v) * (0.72 + r() * .56));
+    const ka = split(KA, wk(ra)), da = split(KB, wd(ra)), kb = split(KB, wk(rb)), db = split(KA, wd(rb));
+    const lines = {A:[], B:[]};
+    [[A, ka, da, "A"], [Bt, kb, db, "B"]].forEach(([e, k, d, side]) => e.ps.forEach((c, i) => {
+      const ip = Math.max(8, Math.round(c.ip * e.form[i] * (0.9 + r() * 0.2))), dv = Math.max(1, d[i]), s = bucket[c.id];
+      s.k[mode] += k[i]; s.d[mode] += dv; s.m++; s.ip += ip; lines[side].push([c.id, k[i], dv, ip]);
+    }));
+    const close = 1 - Math.abs(p - .5) * 2, hi = mode === "HP" ? 250 : mode === "SND" ? 6 : 3;
+    const lo = mode === "HP" ? Math.round(120 + 125 * Math.min(1, close * .7 + r() * .45)) : mode === "SND" ? Math.min(5, Math.floor(r() * (2 + 4 * close))) : Math.min(2, Math.floor(r() * (1.2 + 2 * close)));
+    const seq = []; if (mode !== "HP"){ const w = [], l = []; for (let i = 0; i < hi; i++) w.push("W"); for (let i = 0; i < lo; i++) w.push("L"); const arr = B.shuffle(w, r); arr.length = arr.length; let ww = 0; const out = []; arr.forEach(x => out.push(x)); 
+      // last round always won by the winner
+      const idxL = out.lastIndexOf("W"); if (idxL !== out.length - 1){ out.splice(idxL, 1); out.push("W"); } seq.push.apply(seq, out); }
+    let mp; { const opts = MAPS[mode].filter(x => !usedMaps[mode + x]); mp = B.pick(opts.length ? opts : MAPS[mode], r); usedMaps[mode + mp] = 1; }
+    maps.push({mode, map:mp, score:aWon ? [hi, lo] : [lo, hi], aWon, seq, lines});
+  }
+  return {a:A.tid, b:Bt.tid, wa, wb, maps, notesA:A.notes, notesB:Bt.notes};
+}
+// play one scheduled game (rating-based) and record it
+function commitGame(rd, a, b, bucketName, r, detail, luA, luB){
+  const bucket = G[bucketName], A = mkEnt(a, luA || rollLineup(a, r)), Bt = mkEnt(b, luB || rollLineup(b, r)), s = simSeries(A, Bt, bucket, r);
+  if (bucketName === "reg"){ const ta = G.teams[a], tb = G.teams[b]; ta.mw += s.wa; ta.ml += s.wb; tb.mw += s.wb; tb.ml += s.wa; (s.wa > s.wb ? (ta.w++, tb.l++) : (tb.w++, ta.l++)); }
+  G.results.push({rd, kind:bucketName, a, b, wa:s.wa, wb:s.wb, sub:s.notesA.concat(s.notesB), detail:detail ? s : null});
+  return s;
+}
+
+/* ---------- season flow ---------- */
+const LAYOUT = [
+  {id:"W1", r:"Winners R1", a:["s",0], b:["s",7]}, {id:"W2", r:"Winners R1", a:["s",3], b:["s",4]}, {id:"W3", r:"Winners R1", a:["s",1], b:["s",6]}, {id:"W4", r:"Winners R1", a:["s",2], b:["s",5]},
+  {id:"W5", r:"Winners semis", a:["w","W1"], b:["w","W2"]}, {id:"W6", r:"Winners semis", a:["w","W3"], b:["w","W4"]}, {id:"L1", r:"Losers R1", a:["l","W1"], b:["l","W2"]}, {id:"L2", r:"Losers R1", a:["l","W3"], b:["l","W4"]},
+  {id:"L3", r:"Losers R2", a:["w","L1"], b:["l","W6"]}, {id:"L4", r:"Losers R2", a:["w","L2"], b:["l","W5"]}, {id:"W7", r:"Winners final", a:["w","W5"], b:["w","W6"]}, {id:"L5", r:"Losers R3", a:["w","L3"], b:["w","L4"]},
+  {id:"L6", r:"Losers final", a:["w","L5"], b:["l","W7"]}, {id:"GF", r:"Grand final", a:["w","W7"], b:["w","L6"]}];
+const winnerOf = res => res.wa > res.wb ? res.a : res.b, loserOf = res => res.wa > res.wb ? res.b : res.a;
+const refTeam = ref => ref[0] === "s" ? G.seeds[ref[1]] : ref[0] === "w" ? winnerOf(G.poRes[ref[1]]) : loserOf(G.poRes[ref[1]]);
+const standings = () => G.teams.slice().sort((a, b) => b.w - a.w || (b.mw - b.ml) - (a.mw - a.ml) || G.tb[b.id] - G.tb[a.id]);
+const userPair = rd => G.sched[rd].pairs.find(p => p.indexOf(userId()) >= 0);
+const eliminated = () => { const u = userId(); return LAYOUT.some(m => G.poRes[m.id] && (m.id[0] === "L" || m.id === "GF") && loserOf(G.poRes[m.id]) === u); };
+
+function preparePending(){
+  if (G.pending) return;
+  if (G.phase === "season"){
+    const pr = userPair(G.rIdx), r = evr();
+    G.pending = {kind:"reg", rd:G.rIdx, a:pr[0], b:pr[1], luA:rollLineup(pr[0], r), luB:rollLineup(pr[1], r)};
+  } else if (G.phase === "playoffs"){
+    const m = LAYOUT[G.poIdx], a = refTeam(m.a), b = refTeam(m.b), r = evr();
+    G.pending = {kind:"po", m:m.id, a, b, luA:rollLineup(a, r), luB:rollLineup(b, r)};
+  }
+  save();
+}
+function runPending(){
+  const P = G.pending, r = B.rng(G.seed + "|m|" + (G.ev++));
+  let s;
+  if (P.kind === "reg"){
+    s = commitGame(P.rd, P.a, P.b, "reg", r, true, P.luA, P.luB);
+    const sr = G.sched[P.rd]; sr.pairs.forEach(pr => { if (pr[0] !== P.a || pr[1] !== P.b) commitGame(P.rd, pr[0], pr[1], "reg", evr(), false); });
+    sr.done = true; G.rIdx++;
+    if (G.rIdx % 2 === 0){ G.week++; G.faMoves = 0; if (G.rIdx < 8) makeOffers(); else G.offers = []; }
+    if (G.rIdx >= 8){ G.awards = computeAwards(); G.phase = "awards"; G.offers = []; }
+  } else {
+    s = simSeries(mkEnt(P.a, P.luA), mkEnt(P.b, P.luB), G.po, r);
+    G.poRes[P.m] = {a:P.a, b:P.b, wa:s.wa, wb:s.wb, detail:s}; G.poIdx++; checkDone();
+  }
+  const out = {P, s}; G.last = {P, s}; G.pending = null; save(); return out;
+}
+function autoPO(untilUser){
+  while (G.poIdx < LAYOUT.length){
+    const m = LAYOUT[G.poIdx], a = refTeam(m.a), b = refTeam(m.b), u = userId();
+    if (untilUser && (a === u || b === u) && !eliminated()) break;
+    const r = evr(), s = simSeries(mkEnt(a, rollLineup(a, r)), mkEnt(b, rollLineup(b, r)), G.po, r);
+    G.poRes[m.id] = {a, b, wa:s.wa, wb:s.wb, detail:null}; G.poIdx++;
+  }
+  checkDone(); save();
+}
+function beginPlayoffs(){ G.seeds = standings().slice(0, 8).map(t => t.id); G.phase = "playoffs"; G.poIdx = 0; G.poRes = {}; G.tab = "schedule"; if (!G.seeds.includes(userId())) autoPO(false); else autoPO(true); save(); }
+function checkDone(){
+  if (G.poIdx >= LAYOUT.length && G.phase !== "done"){
+    const gf = G.poRes.GF; G.champ = winnerOf(gf); G.runner = loserOf(gf);
+    const pool = G.teams[G.champ].roster.map(i => ({c:CARDS[i], t:tot(G.po, i)})).filter(x => x.t.maps > 0).sort((a, b) => b.t.kd - a.t.kd);
+    G.fmvp = pool.length ? pool[0].c.id : null; G.phase = "done";
+  }
+}
+
+/* ---------- stats + awards ---------- */
+function tot(bucket, id){ const s = bucket[id]; if (!s) return {K:0, D:0, kd:0, rkd:0, skd:0, ipm:0, maps:0}; const K = s.k.HP + s.k.SND + s.k.CTL, Dd = s.d.HP + s.d.SND + s.d.CTL, rK = s.k.HP + s.k.CTL, rD = s.d.HP + s.d.CTL;
+  return {K, D:Dd, kd:K / Math.max(1, Dd), rkd:rK / Math.max(1, rD), skd:s.k.SND / Math.max(1, s.d.SND), ipm:s.ip / Math.max(1, s.m), maps:s.m}; }
+const teamOfPlayer = id => G.teams.find(t => t.roster.indexOf(id) >= 0);
+function combined(id){ const a = G.reg[id], b = G.po[id], o = blank(); ["HP","SND","CTL"].forEach(m => { o.k[m] = a.k[m] + b.k[m]; o.d[m] = a.d[m] + b.d[m]; }); o.m = a.m + b.m; o.ip = a.ip + b.ip; return o; }
+function computeAwards(){
+  const rows = LIST.map(c => ({c, t:tot(G.reg, c.id), tm:teamOfPlayer(c.id)})).filter(r => r.t.maps > 0);
+  rows.forEach(r => { const wp = r.tm ? r.tm.w / 8 : 0.5; r.score = r.t.kd * 100 + 20 * (wp - .5); });
+  rows.sort((a, b) => b.score - a.score);
+  const used = {}, out = {mvp:rows[0].c.id, first:[], second:[]};
+  ["first","second"].forEach(k => { const q = {AR:2, SMG:2}; rows.forEach(r => { if (used[r.c.id] || q[r.c.role] <= 0) return; used[r.c.id] = 1; q[r.c.role]--; out[k].push(r.c.id); }); });
+  return out;
+}
+
+/* ---------- manager: free agents & trades ---------- */
+function faPool(){ const on = {}; G.teams.forEach(t => t.roster.forEach(i => on[i] = 1)); return LIST.filter(c => !on[c.id]); }
+function fixLineup(t){
+  let l = t.lineup.filter(i => t.roster.indexOf(i) >= 0);
+  t.roster.slice().sort((a, b) => CARDS[b].rating - CARDS[a].rating).forEach(i => { if (l.length < 4 && l.indexOf(i) < 0) l.push(i); });
+  t.lineup = (cnt(l, "AR") >= 2 && cnt(l, "SMG") >= 2) ? l : bestLineup(t.roster);
+}
+function canManage(){ return G.phase === "season" || G.phase === "awards" ? G.phase === "season" : false; }
+function signFA(faId, dropId){
+  if (!canManage()) return "Rosters are locked.";
+  if (G.faMoves >= 1) return "You already made your free agent move this week.";
+  const t = G.teams[userId()], next = t.roster.filter(i => i !== dropId).concat(faId);
+  if (!validRoster(next)) return "Your roster must keep at least 2 ARs and 2 SMGs.";
+  t.roster = next; fixLineup(t); G.faMoves++; G.txLog.unshift("Week " + G.week + ": signed " + faId + ", released " + dropId); save(); return null;
+}
+const sumV = ids => ids.reduce((a, i) => a + CARDS[i].val, 0);
+function evalTrade(tid, mine, theirs){
+  const u = G.teams[userId()], t = G.teams[tid];
+  if (!canManage()) return {ok:false, msg:"Rosters are locked."};
+  if (!mine.length || mine.length !== theirs.length || mine.length > 3) return {ok:false, msg:"Trades must be 1-for-1, 2-for-2 or 3-for-3."};
+  const myNext = u.roster.filter(i => mine.indexOf(i) < 0).concat(theirs), thNext = t.roster.filter(i => theirs.indexOf(i) < 0).concat(mine);
+  const vin = sumV(mine), vout = sumV(theirs);
+  if (!validRoster(myNext)) return {ok:false, msg:"That would leave you without 2 ARs and 2 SMGs.", vin, vout};
+  if (!validRoster(thNext)) return {ok:false, msg:t.name + " can't give up that position mix.", vin, vout};
+  if (vin < vout * 1.10) return {ok:false, msg:t.name + " declined: they need to come out ahead on value (at least ~10%).", vin, vout};
+  return {ok:true, msg:t.name + " will accept this trade.", vin, vout};
+}
+function applyTrade(tid, mine, theirs){
+  const u = G.teams[userId()], t = G.teams[tid];
+  u.roster = u.roster.filter(i => mine.indexOf(i) < 0).concat(theirs); t.roster = t.roster.filter(i => theirs.indexOf(i) < 0).concat(mine);
+  fixLineup(u); t.lineup = bestLineup(t.roster);
+  G.tradeLog.unshift("Week " + G.week + ": sent " + mine.join(", ") + " to " + t.name + " for " + theirs.join(", ")); save();
+}
+function makeOffers(){
+  G.offers = []; const r = evr(); if (r() > 0.8) return;
+  const u = G.teams[userId()];
+  for (let tries = 0; tries < 400 && G.offers.length < 2; tries++){
+    const tid = Math.floor(r() * 11), t = G.teams[tid], n = r() < 0.7 ? 1 : 2;
+    const mine = B.shuffle(u.roster, r).slice(0, n), theirs = B.shuffle(t.roster, r).slice(0, n);
+    const myNext = u.roster.filter(i => mine.indexOf(i) < 0).concat(theirs), thNext = t.roster.filter(i => theirs.indexOf(i) < 0).concat(mine);
+    if (!validRoster(myNext) || !validRoster(thNext)) continue;
+    const vin = sumV(mine), vout = sumV(theirs);
+    if (vin < vout * 1.10 || vout < vin * 0.72) continue;
+    if (G.offers.some(o => o.tid === tid)) continue;
+    G.offers.push({id:G.ev + "-" + tries, tid, mine, theirs});
+  }
+}
+
+/* ---------- UI ---------- */
+const root = document.getElementById("gm-body");
+let view = {screen:null, mtab:"lineup", filt:{role:"ALL", sort:"ovr", q:""}, stats:{scope:"reg", team:"ALL", sort:"kd"}, open:{}, tradeTid:0, tradeMine:[], tradeTheirs:[], msg:"", faQ:"", faSort:"ovr", faRole:"ALL", faPick:null, confirmReset:false, anim:null};
+const nm = id => CARDS[id] ? CARDS[id].name : id;
+const roleTag = r => '<span class="role ' + r + '">' + r + '</span>';
+const tbl = (head, rows, cls) => '<div class="tscroll"><table class="tb ' + (cls || "") + '"><thead><tr>' + head.map(h => '<th>' + h + '</th>').join("") + '</tr></thead><tbody>' + rows.join("") + '</tbody></table></div>';
+const panel = (label, inner, extra) => '<div class="panel"' + (extra ? ' ' + extra : '') + '>' + (label ? '<div class="label">' + label + '</div>' : '') + inner + '</div>';
+const btn = (act, text, cls, arg, dis) => '<button class="gbtn ' + (cls || "ghost") + '" data-act="' + act + '"' + (arg != null ? ' data-arg="' + esc(String(arg)) + '"' : '') + (dis ? ' disabled' : '') + '>' + text + '</button>';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function render(){
+  if (!G) return renderSetup();
+  if (view.screen === "match") return renderMatch();
+  if (G.phase === "draft") return renderDraft();
+  renderHub();
+}
+
+/* setup */
+function renderSetup(){
+  root.innerHTML = panel("Franchise Mode", '<div style="font-size:18px;font-weight:800;margin-bottom:8px">Start a new franchise</div><div class="status" style="margin-bottom:10px">Your progress saves in this browser. You can close the page and come back to your season.</div><div class="gm-entry"><input class="pk-in" id="city" maxlength="24" placeholder="Your city, e.g. Knoxville" style="flex:1 1 220px;width:auto" autocomplete="off"><button class="gbtn primary" data-act="new">Enter the draft</button></div>', 'style="display:flex;flex-direction:column;gap:6px"');
+  const i = root.querySelector("#city"); i.focus(); i.onkeydown = e => { if (e.key === "Enter") act("new"); };
+}
+
+/* draft */
+function draftRows(st){
+  const ros = st.rosters[userId()];
+  let rows = LIST.filter(c => !st.taken[c.id]);
+  const f = view.filt;
+  if (f.role !== "ALL") rows = rows.filter(c => c.role === f.role);
+  if (f.q) { const q = gm(f.q); rows = rows.filter(c => D.byC[c.id].search.indexOf(q) >= 0); }
+  const key = {ovr:c => -c.ovr, kd:c => -c.kd, rk:c => -c.rk, sk:c => -c.sk, ip:c => -c.ip}[f.sort];
+  rows.sort((a, b) => key(a) - key(b));
+  return rows.map(c => { const ok = canTake(ros, c, ROUNDS), acc = (c.mvp ? "MVP×" + c.mvp + " " : "") + (c.rings ? "🏆×" + c.rings + " " : "") + (c.as ? "★×" + c.as : "");
+    return '<tr><td><b>' + esc(c.name) + '</b>' + (c.alias.length ? '<small> aka ' + esc(c.alias[0]) + '</small>' : '') + '</td><td>' + roleTag(c.role) + '</td><td class="num"><b>' + f1(c.ovr) + '</b></td><td class="num">' + f2(c.kd) + '</td><td class="num">' + f2(c.rk) + '</td><td class="num">' + f2(c.sk) + '</td><td class="num">' + f1(c.ip) + '</td><td>' + esc(acc) + '</td><td>' + btn("pick", "Draft", ok ? "primary sm" : "ghost sm", c.id, !ok) + '</td></tr>'; }).join("");
+}
+function rosterBox(ids, title, slots){
+  const list = ids.map(i => CARDS[i]);
+  return '<div class="rosterbox"><div class="label">' + title + '</div><div class="rgrid r5">' + Array.from({length:slots || 5}, (_, k) => { const c = list[k]; return c ? '<div class="rslot">' + roleTag(c.role) + '<b>' + esc(c.name) + '</b><span class="num">' + f1(c.ovr) + ' · ' + f2(c.kd) + '</span></div>' : '<div class="rslot empty"><span class="label">' + (k < 4 ? "Starter" : "Sub") + '</span><b>—</b></div>'; }).join("") + '</div></div>';
+}
+function renderDraft(){
+  const st = replay(), n = st.n, u = userId();
+  if (n >= NT * ROUNDS){
+    const rk = G.teams.map((t, i) => ({t, ids:st.rosters[i], s:mean(st.rosters[i].map(x => CARDS[x].rating))})).sort((a, b) => b.s - a.s), pos = rk.findIndex(x => x.t.user) + 1;
+    root.innerHTML = panel("Draft complete", '<div style="font-size:22px;font-weight:800">' + esc(G.teams[u].name) + ' · #' + pos + ' of 12 by roster rating</div>') + rosterBox(st.rosters[u], "Your roster (top 4 by rating start; you can change this in Manager)") +
+      panel("Power rankings", tbl(["#","Team","Roster","Avg rating"], rk.map((x, i) => '<tr class="' + (x.t.user ? "me" : "") + '"><td class="num">' + (i + 1) + '</td><td><b>' + esc(x.t.name) + '</b></td><td class="sm">' + x.ids.map(nm).map(esc).join(", ") + '</td><td class="num">' + f1(x.s) + '</td></tr>'))) +
+      '<div class="gm-actions">' + btn("startseason", "Start Week 1", "primary") + '</div>';
+    return;
+  }
+  const mine = st.rosters[u], rd = Math.floor(n / NT) + 1, slotNo = G.slot.indexOf(u) + 1;
+  const recent = st.log.slice(-8).reverse().map(l => '<li><span class="num">#' + (l.n + 1) + '</span> ' + esc(G.teams[l.t].name) + (G.teams[l.t].user ? " ★" : "") + ' — <b>' + esc(l.c.name) + '</b> ' + roleTag(l.c.role) + ' <span class="num">' + f1(l.c.ovr) + '</span></li>').join("");
+  const needs = "Need at least 2 AR and 2 SMG (5th spot is your substitute, any role)";
+  const f = view.filt;
+  root.innerHTML = panel("Round " + rd + " of " + ROUNDS + " · Pick " + (n + 1) + " of " + NT * ROUNDS, '<div style="font-size:20px;font-weight:800;color:var(--mustard)">You are on the clock — ' + esc(G.teams[u].name) + '</div><div class="status">Draft slot <b>#' + slotNo + '</b> of 12 (snake). ' + needs + '. ' + btn("auto", "Auto-pick best fit", "ghost sm") + '</div>') + rosterBox(mine, "Your roster") +
+    panel("", '<div class="filters"><div class="gm-modes">' + ["ALL","AR","SMG"].map(r => '<button class="chip" data-act="role" data-arg="' + r + '" aria-pressed="' + (f.role === r) + '">' + r + '</button>').join("") + '</div><select id="sortsel" aria-label="Sort">' + [["ovr","Overall"],["kd","K/D"],["rk","Respawn K/D"],["sk","SnD K/D"],["ip","Interactions/map"]].map(o => '<option value="' + o[0] + '"' + (f.sort === o[0] ? " selected" : "") + '>Sort: ' + o[1] + '</option>').join("") + '</select><input class="pk-in" id="q" style="flex:1 1 160px;width:auto;padding:8px 10px" placeholder="Search players" value="' + esc(f.q) + '"></div>' +
+      tbl(["Player","Pos","OVR","K/D","Resp","SnD","Int","Accolades",""], [draftRows(st)])) +
+    '<details class="panel"><summary class="label" style="cursor:pointer">Draft log (latest 8)</summary><ul class="logl">' + recent + '</ul></details>';
+  root.querySelector("#sortsel").onchange = e => { view.filt.sort = e.target.value; render(); };
+  const q = root.querySelector("#q"); q.oninput = () => { view.filt.q = q.value; const pos = q.selectionStart; render(); const q2 = root.querySelector("#q"); q2.focus(); q2.setSelectionRange(pos, pos); };
+}
+
+/* ---------- hub ---------- */
+function nextActionHTML(){
+  const u = userId();
+  if (G.phase === "season"){
+    const pr = userPair(G.rIdx), opp = pr[0] === u ? pr[1] : pr[0], k = G.rIdx % 2 + 1;
+    return btn("preview", "Play Week " + G.week + " · Match " + k + " vs " + esc(teamName(opp)), "primary");
+  }
+  if (G.phase === "awards") return btn("playoffs", "Begin the playoffs", "primary");
+  if (G.phase === "playoffs"){
+    const m = LAYOUT[G.poIdx], a = refTeam(m.a), b = refTeam(m.b);
+    if ((a === u || b === u) && !eliminated()) return btn("preview", "Play " + m.r + " vs " + esc(teamName(a === u ? b : a)), "primary");
+    return btn("simpo", eliminated() || G.seeds.indexOf(u) < 0 ? "Sim the rest of the playoffs" : "Sim to my next series", "primary");
+  }
+  return "";
+}
+function renderHub(){
+  const u = userId(), me = G.teams[u], st = standings(), rank = st.indexOf(me) + 1;
+  const wk = G.phase === "season" ? "Week " + G.week + " of 4" : G.phase === "awards" ? "Regular season complete" : G.phase === "playoffs" ? "Playoffs" : "Season complete";
+  let h = '<div class="panel fmhead"><div><div class="label">' + wk + '</div><div style="font-size:24px;font-weight:800">' + esc(me.name) + '</div><div class="status">' + me.w + '–' + me.l + ' · map diff ' + (me.mw - me.ml >= 0 ? "+" : "") + (me.mw - me.ml) + ' · #' + rank + ' in the standings' + (G.faMoves && G.phase === "season" ? ' · FA move used this week' : '') + '</div></div><div class="gm-actions">' + nextActionHTML() + (G.last ? btn("lastbox", "Last match box score", "ghost") : "") + '</div></div>';
+  if (G.phase === "season" && G.offers.length) h += '<div class="notice">📨 You have ' + G.offers.length + ' trade offer' + (G.offers.length > 1 ? "s" : "") + ' waiting in Manager → Trades.</div>';
+  if (G.phase === "awards" || G.phase === "playoffs" || G.phase === "done") h += awardsPanel();
+  if (G.phase === "done") h += recapPanel();
+  h += '<div class="gm-modes fmtabs" role="tablist">' + [["schedule","Schedule"],["rosters","Rosters"],["stats","Stats"],["manager","Manager"]].map(t => '<button class="chip" data-act="tab" data-arg="' + t[0] + '" aria-pressed="' + (G.tab === t[0]) + '">' + t[1] + '</button>').join("") + '</div>';
+  h += G.tab === "schedule" ? tabSchedule(st) : G.tab === "rosters" ? tabRosters() : G.tab === "stats" ? tabStats() : tabManager();
+  h += '<div class="gm-actions" style="margin-top:8px">' + (view.confirmReset ? '<span class="status">Delete this franchise?</span>' + btn("reset2", "Yes, start over", "primary sm") + btn("noreset", "Cancel", "ghost sm") : btn("reset", "New franchise", "ghost sm")) + '</div>';
+  root.innerHTML = h;
+  if (G.phase === "playoffs" || G.phase === "done") { const host = root.querySelector("#bkhost"); if (host) drawBracket(host); }
+}
+function drawBracket(host){
+  const res = {}; LAYOUT.forEach(m => { const r = G.poRes[m.id]; if (r) res[m.id] = {A:{id:r.a, name:teamName(r.a), user:G.teams[r.a].user}, B:{id:r.b, name:teamName(r.b), user:G.teams[r.b].user}, wa:r.wa, wb:r.wb}; });
+  B.bracket(host, {res, name:e => (e.user ? "★ " : "") + e.name, seed:e => G.seeds.indexOf(e.id) + 1, isMe:e => e.user});
+}
+function pl(id, extra){ const c = CARDS[id]; return '<b>' + esc(c.name) + '</b>' + (extra || ""); }
+function awardsPanel(){
+  const A = G.awards; if (!A) return "";
+  const li = k => A[k].map(id => { const tm = teamOfPlayer(id), t = tot(G.reg, id); return '<li>' + roleTag(CARDS[id].role) + ' ' + pl(id) + ' <small>' + esc(tm ? tm.name : "FA") + '</small> <span class="num">' + f2(t.kd) + '</span></li>'; }).join("");
+  const mv = teamOfPlayer(A.mvp);
+  return panel("Regular season awards", '<div class="awards"><div><div class="alab">League MVP</div><b>' + esc(nm(A.mvp)) + '</b><small>' + esc(mv ? mv.name : "") + ' · ' + f2(tot(G.reg, A.mvp).kd) + ' K/D</small></div>' +
+    (G.fmvp ? '<div><div class="alab">Finals MVP</div><b>' + esc(nm(G.fmvp)) + '</b><small>' + esc(teamName(G.champ)) + ' · ' + f2(tot(G.po, G.fmvp).kd) + ' playoff K/D</small></div>' : '') +
+    (G.champ != null ? '<div><div class="alab">Champions</div><b>' + esc(teamName(G.champ)) + '</b><small>over ' + esc(teamName(G.runner)) + '</small></div>' : '') + '</div>' +
+    '<div class="twocol"><div><div class="alab">All-Star 1st team</div><ul class="logl">' + li("first") + '</ul></div><div><div class="alab">All-Star 2nd team</div><ul class="logl">' + li("second") + '</ul></div></div>');
+}
+function recapPanel(){
+  const u = userId(), ch = G.teams[G.champ];
+  let place = "Missed playoffs";
+  if (G.seeds.indexOf(u) >= 0){ place = G.champ === u ? "Champions 🏆" : G.runner === u ? "Runner-up" : (() => { for (const id of ["L1","L2","L3","L4","L5","L6"]) { const r = G.poRes[id]; if (r && loserOf(r) === u) return {L1:"7th–8th", L2:"7th–8th", L3:"5th–6th", L4:"5th–6th", L5:"4th", L6:"3rd"}[id]; } return "Playoffs"; })(); }
+  const combo = LIST.map(c => ({c, t:tot({[c.id]:combined(c.id)}, c.id)})).filter(x => x.t.maps > 0).sort((a, b) => b.t.kd - a.t.kd)[0];
+  return panel("Season recap", '<div style="font-size:24px;font-weight:800">' + esc(ch.name) + ' are your champions' + (G.champ === u ? " 🏆" : "") + '</div><div class="status">Your finish: <b>' + esc(place) + '</b> · Runner-up: ' + esc(teamName(G.runner)) + (combo ? ' · Best K/D all season: <b>' + esc(combo.c.name) + '</b> ' + f2(combo.t.kd) : '') + '</div>' +
+    '<div class="alab" style="margin-top:12px">Championship roster</div><ul class="logl">' + ch.roster.map(i => '<li>' + roleTag(CARDS[i].role) + ' ' + pl(i) + ' <span class="num">' + f2(tot(combined(i) && {[i]:combined(i)}, i).kd) + ' K/D (reg + playoffs)</span></li>').join("") + '</ul>' +
+    '<div class="gm-actions" style="margin-top:8px"><button class="gbtn primary" data-act="sharerecap">Copy season for Discord</button></div>');
+}
+
+/* schedule tab */
+function tabSchedule(st){
+  const u = userId(); let h = "";
+  if (G.phase === "playoffs" || G.phase === "done") h += panel("Playoffs · double elimination · best of 5", '<div id="bkhost"></div>');
+  h += panel("Standings · 8 games each", tbl(["#","Team","W","L","Map diff"], st.map((t, i) => '<tr class="' + (t.user ? "me" : "") + (i === 7 ? " cut" : "") + '"><td class="num">' + (i + 1) + '</td><td><a href="#" class="tl" data-act="openteam" data-arg="' + t.id + '"><b>' + esc(t.name) + '</b></a></td><td class="num">' + t.w + '</td><td class="num">' + t.l + '</td><td class="num">' + (t.mw - t.ml >= 0 ? "+" : "") + (t.mw - t.ml) + '</td></tr>')) + '<div class="status">Top 8 make the playoffs.</div>');
+  const mine = G.sched.map((sr, i) => { const pr = sr.pairs.find(p => p.indexOf(u) >= 0), opp = pr[0] === u ? pr[1] : pr[0], res = G.results.find(r => r.kind === "reg" && r.rd === i && (r.a === u || r.b === u));
+    const won = res && ((res.a === u) === (res.wa > res.wb)), sc = res ? (res.a === u ? res.wa + "–" + res.wb : res.wb + "–" + res.wa) : "";
+    const subs = res && res.sub.length ? ' <small>' + res.sub.map(s => nm(s.out) + " out, " + nm(s.in) + " subbed in").map(esc).join("; ") + '</small>' : "";
+    return '<li><span class="num">W' + sr.week + ' G' + (i % 2 + 1) + '</span> ' + (res ? (won ? "<b style='color:var(--pickle)'>W</b>" : "<b style='color:var(--ketchup)'>L</b>") + ' <b class="num">' + sc + '</b>' : (i === G.rIdx && G.phase === "season" ? "▶" : "·")) + ' vs ' + esc(teamName(opp)) + subs + '</li>'; }).join("");
+  h += panel("Your schedule", '<ul class="logl">' + mine + '</ul>');
+  const wkRes = [1,2,3,4].map(w => { const rs = G.results.filter(r => r.kind === "reg" && G.sched[r.rd].week === w); return rs.length ? '<details class="rdet"' + (w === G.week - (G.phase === "season" && G.rIdx % 2 === 0 ? 1 : 0) ? " open" : "") + '><summary><b>Week ' + w + ' results</b></summary><ul class="logl">' + rs.map(r => '<li>' + esc(teamName(r.a)) + ' <b class="num">' + r.wa + '–' + r.wb + '</b> ' + esc(teamName(r.b)) + '</li>').join("") + '</ul></details>' : ''; }).join("");
+  if (wkRes) h += panel("League results", '<div class="rosters">' + wkRes + '</div>');
+  return h;
+}
+
+/* rosters tab */
+function tabRosters(){
+  const st = standings(); const order = st.slice().sort((a, b) => (b.user ? 1 : 0) - (a.user ? 1 : 0));
+  return panel("Team rosters", '<div class="rosters">' + order.map(t => '<details id="tr-' + t.id + '" class="rdet' + (t.user ? " me" : "") + '"' + ((t.user || view.open[t.id]) ? " open" : "") + '><summary><b>' + esc(t.name) + '</b> <small>' + t.w + '–' + t.l + (G.champ === t.id ? " · 🏆 champions" : "") + '</small></summary><ul class="logl">' +
+    t.roster.slice().sort((a, b) => (t.lineup.indexOf(b) >= 0 ? 1 : 0) - (t.lineup.indexOf(a) >= 0 ? 1 : 0)).map(i => { const c = CARDS[i], x = tot(G.reg, i); return '<li>' + roleTag(c.role) + ' ' + pl(i) + ' <small>' + (t.lineup.indexOf(i) >= 0 ? "starter" : "sub") + ' · OVR ' + f1(c.ovr) + '</small> <span class="num">' + (x.maps ? f2(x.kd) + ' K/D · ' + f1(x.ipm) + ' int' : 'no maps yet') + '</span></li>'; }).join("") + '</ul></details>').join("") + '</div>');
+}
+
+/* stats tab */
+function tabStats(){
+  const s = view.stats, u = userId();
+  const bucket = s.scope === "po" ? G.po : G.reg;
+  let rows = LIST.map(c => { const t = s.scope === "all" ? tot({[c.id]:combined(c.id)}, c.id) : tot(bucket, c.id); return {c, t, tm:teamOfPlayer(c.id)}; }).filter(r => r.t.maps > 0);
+  if (s.team === "MINE") rows = rows.filter(r => r.tm && r.tm.id === u);
+  const key = {kd:r => -r.t.kd, rkd:r => -r.t.rkd, skd:r => -r.t.skd, ipm:r => -r.t.ipm, K:r => -r.t.K}[s.sort];
+  rows.sort((a, b) => key(a) - key(b));
+  const opt = (v, cur, l) => '<option value="' + v + '"' + (v === cur ? " selected" : "") + '>' + l + '</option>';
+  return panel("Player stats", '<div class="filters"><select data-sel="scope">' + opt("reg", s.scope, "Regular season") + opt("po", s.scope, "Playoffs") + opt("all", s.scope, "Combined") + '</select><select data-sel="team">' + opt("ALL", s.team, "All players") + opt("MINE", s.team, "My team") + '</select><select data-sel="sort">' + opt("kd", s.sort, "Sort: K/D") + opt("rkd", s.sort, "Sort: Respawn K/D") + opt("skd", s.sort, "Sort: SnD K/D") + opt("ipm", s.sort, "Sort: Interactions") + opt("K", s.sort, "Sort: Kills") + '</select></div>' +
+    (rows.length ? tbl(["#","Player","Team","Pos","Maps","K","D","K/D","Resp","SnD","Int"], rows.slice(0, 50).map((r, i) => '<tr class="' + (r.tm && r.tm.user ? "me" : "") + '"><td class="num">' + (i + 1) + '</td><td><b>' + esc(r.c.name) + '</b></td><td class="sm">' + esc(r.tm ? r.tm.name : "FA") + '</td><td>' + roleTag(r.c.role) + '</td><td class="num">' + r.t.maps + '</td><td class="num">' + r.t.K + '</td><td class="num">' + r.t.D + '</td><td class="num"><b>' + f2(r.t.kd) + '</b></td><td class="num">' + f2(r.t.rkd) + '</td><td class="num">' + f2(r.t.skd) + '</td><td class="num">' + f1(r.t.ipm) + '</td></tr>')) : '<div class="status">No stats yet. Play your first match.</div>'));
+}
+
+/* ---------- manager ---------- */
+function tabManager(){
+  const locked = G.phase !== "season", mt = view.mtab;
+  let h = '<div class="gm-modes" style="margin-top:2px">' + [["lineup","Lineup"],["fa","Free agents"],["trades","Trades" + (G.offers.length ? " (" + G.offers.length + ")" : "")]].map(t => '<button class="chip" data-act="mtab" data-arg="' + t[0] + '" aria-pressed="' + (mt === t[0]) + '">' + t[1] + '</button>').join("") + '</div>';
+  if (locked) h += '<div class="notice">🔒 ' + (G.phase === "done" ? "The season is over." : "Rosters are locked for the playoffs.") + ' You can still review your team.</div>';
+  const t = G.teams[userId()];
+  if (mt === "lineup"){
+    h += panel("Lineup · 4 starters and 1 substitute", '<div class="status" style="margin-bottom:8px">Starters need at least 2 ARs and 2 SMGs. The sub plays only when a starter has a scheduling conflict (rare).</div><div class="rgrid r5">' +
+      t.roster.map(i => { const c = CARDS[i], st = t.lineup.indexOf(i) >= 0, x = tot(G.reg, i); return '<div class="rslot ' + (st ? "" : "subslot") + '"><span class="label">' + (st ? "Starter" : "Substitute") + '</span>' + roleTag(c.role) + '<b>' + esc(c.name) + '</b><span class="num">OVR ' + f1(c.ovr) + '</span><span class="sm">' + (x.maps ? f2(x.kd) + ' K/D · ' + x.maps + ' maps' : 'no maps yet') + '</span>' + (locked ? "" : (st ? btn("bench", "Bench", "ghost sm", i) : btn("bench", "Not needed", "ghost sm", i, true))) + '</div>'; }).join("") + '</div>' +
+      (view.msg ? '<div class="glnote err" style="margin-top:8px">' + esc(view.msg) + '</div>' : '') + '<div class="status" style="margin-top:8px">To start your sub, bench a starter. Benching swaps the sub into the lineup.</div>');
+  } else if (mt === "fa"){
+    const f = view.faRole, q = gm(view.faQ);
+    let pool = faPool().filter(c => (f === "ALL" || c.role === f) && (!q || D.byC[c.id].search.indexOf(q) >= 0));
+    const key = {ovr:c => -c.ovr, kd:c => -c.kd, rk:c => -c.rk, sk:c => -c.sk, ip:c => -c.ip}[view.faSort]; pool.sort((a, b) => key(a) - key(b));
+    const opt = (v, cur, l) => '<option value="' + v + '"' + (v === cur ? " selected" : "") + '>' + l + '</option>';
+    h += panel("Free agents · " + faPool().length + " available · one add/drop per week (" + (G.faMoves ? "used" : "available") + ")",
+      (view.faPick ? '<div class="notice">Sign <b>' + esc(view.faPick) + '</b> — who do you release?<div class="gm-actions" style="margin-top:8px">' + t.roster.map(i => btn("signfa", "Release " + esc(nm(i)), "ghost sm", i)).join("") + btn("faCancel", "Cancel", "ghost sm") + '</div></div>' : "") +
+      (view.msg ? '<div class="glnote err">' + esc(view.msg) + '</div>' : "") +
+      '<div class="filters"><div class="gm-modes">' + ["ALL","AR","SMG"].map(r => '<button class="chip" data-act="farole" data-arg="' + r + '" aria-pressed="' + (f === r) + '">' + r + '</button>').join("") + '</div><select data-sel="fasort">' + opt("ovr", view.faSort, "Sort: Overall") + opt("kd", view.faSort, "Sort: K/D") + opt("rk", view.faSort, "Sort: Respawn K/D") + opt("sk", view.faSort, "Sort: SnD K/D") + opt("ip", view.faSort, "Sort: Interactions") + '</select><input class="pk-in" data-sel="faq" style="flex:1 1 160px;width:auto;padding:8px 10px" placeholder="Search" value="' + esc(view.faQ) + '"></div>' +
+      tbl(["Player","Pos","OVR","K/D","Resp","SnD","Int",""], pool.slice(0, 60).map(c => '<tr><td><b>' + esc(c.name) + '</b></td><td>' + roleTag(c.role) + '</td><td class="num"><b>' + f1(c.ovr) + '</b></td><td class="num">' + f2(c.kd) + '</td><td class="num">' + f2(c.rk) + '</td><td class="num">' + f2(c.sk) + '</td><td class="num">' + f1(c.ip) + '</td><td>' + (locked ? "" : btn("fapick", "Sign", G.faMoves ? "ghost sm" : "primary sm", c.id, !!G.faMoves)) + '</td></tr>')));
+    if (G.txLog.length) h += panel("Your transactions", '<ul class="logl">' + G.txLog.map(x => '<li>' + esc(x) + '</li>').join("") + '</ul>');
+  } else {
+    const tid = view.tradeTid, ot = G.teams[tid];
+    h += panel("Trade offers from other teams", G.offers.length && !locked ? '<div class="logl">' + G.offers.map(o => '<div class="offer"><div><b>' + esc(teamName(o.tid)) + '</b> offers ' + o.theirs.map(i => pl(i) + ' <small>(' + f1(CARDS[i].ovr) + ')</small>').join(" + ") + ' for your ' + o.mine.map(i => pl(i) + ' <small>(' + f1(CARDS[i].ovr) + ')</small>').join(" + ") + '</div><div class="gm-actions">' + btn("accept", "Accept", "primary sm", o.id) + btn("decline", "Decline", "ghost sm", o.id) + '</div></div>').join("") + '</div>' : '<div class="status">No offers right now. Offers can arrive at the start of each week.</div>');
+    const others = G.teams.filter(x => !x.user);
+    const pick = (ids, sel, side) => '<div class="tradecol"><div class="alab">' + (side === "m" ? "You send" : esc(ot.name) + " sends") + '</div>' + ids.map(i => '<label class="tchk"><input type="checkbox" data-trade="' + side + '" value="' + esc(i) + '"' + (sel.indexOf(i) >= 0 ? " checked" : "") + (locked ? " disabled" : "") + '> ' + roleTag(CARDS[i].role) + ' <b>' + esc(nm(i)) + '</b> <small>OVR ' + f1(CARDS[i].ovr) + ' · ' + f2(CARDS[i].kd) + ' K/D · value ' + f1(CARDS[i].val) + '</small></label>').join("") + '</div>';
+    const ev = view.tradeMine.length || view.tradeTheirs.length ? evalTrade(tid, view.tradeMine, view.tradeTheirs) : null;
+    h += panel("Propose a trade · 1-for-1, 2-for-2 or 3-for-3 only", '<div class="filters"><select data-sel="ttid">' + others.map(x => '<option value="' + x.id + '"' + (x.id === tid ? " selected" : "") + '>' + esc(x.name) + '</option>').join("") + '</select></div><div class="twocol">' + pick(t.roster, view.tradeMine, "m") + pick(ot.roster, view.tradeTheirs, "t") + '</div>' +
+      (ev ? '<div class="glnote ' + (ev.ok ? "ok" : "err") + '" style="margin-top:8px">' + esc(ev.msg) + (ev.vin != null ? ' <span class="num">(you send value ' + f1(ev.vin) + ' · you receive ' + f1(ev.vout) + ')</span>' : '') + '</div>' : '<div class="status" style="margin-top:8px">Pick players on both sides. Value is steep: one star is worth much more than several solid players, and the other team must come out ahead.</div>') +
+      '<div class="gm-actions" style="margin-top:8px">' + btn("propose", "Propose trade", "primary", null, locked || !ev || !ev.ok) + '</div>');
+    if (G.tradeLog.length) h += panel("Trade history", '<ul class="logl">' + G.tradeLog.map(x => '<li>' + esc(x) + '</li>').join("") + '</ul>');
+  }
+  return h;
+}
+
+/* ---------- match screen ---------- */
+function lineupHTML(tid, lu){ const subs = lu.notes.map(n => n.in);
+  return '<div class="mcol"><div class="alab">' + esc(teamName(tid)) + (G.teams[tid].user ? " ★" : "") + '</div><ul class="logl">' + lu.ids.map(i => '<li>' + roleTag(CARDS[i].role) + ' <b>' + esc(nm(i)) + '</b> <small>OVR ' + f1(CARDS[i].ovr) + (subs.indexOf(i) >= 0 ? ' · SUB' : '') + '</small></li>').join("") + '</ul>' + lu.notes.map(n => '<div class="notice">⚠ ' + esc(nm(n.out)) + ' has a scheduling conflict — ' + esc(nm(n.in)) + ' subs in.</div>').join("") + '</div>';
+}
+function renderMatch(){
+  if (view.mstage === "preview"){
+    const P = G.pending; if (!P){ view.screen = null; return render(); }
+    const title = P.kind === "reg" ? "Week " + G.week + " · Match " + (G.rIdx % 2 + 1) : LAYOUT.find(m => m.id === P.m).r + " · " + P.m;
+    root.innerHTML = panel(title, '<div style="font-size:26px;font-weight:800;text-align:center">' + esc(teamName(P.a)) + ' <span style="color:var(--muted)">vs</span> ' + esc(teamName(P.b)) + '</div><div class="status" style="text-align:center">Best of 5: Hardpoint, Search & Destroy, Control, Hardpoint, Search & Destroy</div>') +
+      panel("Tonight's lineups", '<div class="twocol">' + lineupHTML(P.a, P.luA) + lineupHTML(P.b, P.luB) + '</div>') + '<div class="gm-actions">' + btn("startmatch", "Start the match", "primary") + btn("back", "Back", "ghost") + '</div>';
+  } else if (view.mstage === "play"){
+    root.innerHTML = '<div class="panel" id="live"></div><div class="gm-actions" id="liveact">' + btn("skip", "Skip to final", "ghost") + '</div><div id="boxarea"></div>';
+    animate(view.out);
+  } else renderBoxScreen();
+}
+function renderBoxScreen(){
+  const s = view.out.s;
+  root.innerHTML = panel("Final", boxBanner(s)) + '<div id="boxarea">' + boxHTML(s) + '</div><div class="gm-actions">' + btn("donematch", "Continue", "primary") + '</div>';
+}
+function boxBanner(s){ const win = s.wa > s.wb ? s.a : s.b; return '<div style="text-align:center"><div style="font-size:28px;font-weight:800">' + esc(teamName(s.a)) + ' <span class="num" style="color:var(--mustard)">' + s.wa + ' – ' + s.wb + '</span> ' + esc(teamName(s.b)) + '</div><div class="status">' + esc(teamName(win)) + ' win the series</div></div>'; }
+function boxHTML(s){
+  const mi = view.boxTab == null ? -1 : view.boxTab;
+  const tabs = '<div class="gm-modes" style="margin:10px 0">' + btn("boxtab", "Series", mi < 0 ? "primary sm" : "ghost sm", -1) + s.maps.map((m, i) => btn("boxtab", "Map " + (i + 1) + " · " + m.mode, mi === i ? "primary sm" : "ghost sm", i)).join("") + '</div>';
+  const side = (key, tid, notes) => {
+    const subs = notes.map(n => n.in), acc = {};
+    s.maps.forEach((m, i) => { if (mi >= 0 && i !== mi) return; m.lines[key].forEach(([id, k, d, ip]) => { const a = acc[id] || (acc[id] = {k:0, d:0, ip:0, n:0}); a.k += k; a.d += d; a.ip += ip; a.n++; }); });
+    return '<div class="mcol"><div class="alab">' + esc(teamName(tid)) + '</div>' + tbl(["Player","K","D","K/D","Int"], Object.keys(acc).map(id => { const a = acc[id]; return '<tr><td><b>' + esc(nm(id)) + '</b>' + (subs.indexOf(id) >= 0 ? ' <small>(sub)</small>' : '') + '</td><td class="num">' + a.k + '</td><td class="num">' + a.d + '</td><td class="num"><b>' + f2(a.k / Math.max(1, a.d)) + '</b></td><td class="num">' + f1(a.ip / a.n) + '</td></tr>'; })) + '</div>';
+  };
+  const mp = mi >= 0 ? '<div class="status">' + MODE_NAME[s.maps[mi].mode] + ' · ' + s.maps[mi].map + ' · ' + s.maps[mi].score[0] + '–' + s.maps[mi].score[1] + '</div>' : '<div class="status">' + s.maps.map(m => m.mode + " " + m.map + " " + m.score[0] + "–" + m.score[1]).join(" · ") + '</div>';
+  return '<div class="panel"><div class="label">Box score</div>' + tabs + mp + '<div class="twocol">' + side("A", s.a, s.notesA) + side("B", s.b, s.notesB) + '</div></div>';
+}
+async function animate(out){
+  const s = out.s, token = view.anim = (view.anim || 0) + 1; view.skip = false; view.boxTab = null;
+  const live = () => root.querySelector("#live"); if (!live()) return;
+  const d = ms => view.skip ? Promise.resolve() : sleep(ms), alive = () => view.anim === token && view.screen === "match" && live();
+  let tw = [0, 0]; const log = [];
+  const draw = (mapI, sa, sb, note) => { if (!alive()) return; const m = s.maps[mapI];
+    live().innerHTML = '<div class="live"><div class="lteam">' + esc(teamName(s.a)) + '<span class="mapw num">' + tw[0] + '</span></div><div class="lscore num">' + sa + ' <span>–</span> ' + sb + '</div><div class="lteam r">' + esc(teamName(s.b)) + '<span class="mapw num">' + tw[1] + '</span></div></div><div class="lmap">Map ' + (mapI + 1) + ' · ' + MODE_NAME[m.mode] + ' · ' + esc(m.map) + '</div><div class="status" style="text-align:center;min-height:1.4em">' + (note || "") + '</div><ul class="logl llog">' + log.map(x => '<li>' + x + '</li>').join("") + '</ul>'; };
+  for (let i = 0; i < s.maps.length; i++){
+    const m = s.maps[i], [fa, fb] = m.score, wi = m.aWon ? 0 : 1; let a = 0, b = 0;
+    draw(i, 0, 0, "Map starting…"); await d(900); if (!alive()) return;
+    if (m.mode === "HP"){ const steps = 24; for (let t = 1; t <= steps; t++){ const f = t / steps; a = t === steps ? fa : Math.floor(fa * f); b = t === steps ? fb : Math.floor(fb * f); draw(i, a, b, "Holding the hill…"); await d(85); if (!alive()) return; } }
+    else { for (const x of m.seq){ const winnerScores = x === "W"; ((winnerScores ? wi : 1 - wi) === 0) ? a++ : b++; draw(i, a, b, "Round " + (a + b) + ": " + esc(teamName(((winnerScores ? wi : 1 - wi) === 0) ? s.a : s.b)) + " win"); await d(560); if (!alive()) return; } }
+    tw[wi]++; log.push('Map ' + (i + 1) + ' (' + MODE_NAME[m.mode] + ', ' + esc(m.map) + '): <b>' + esc(teamName(wi === 0 ? s.a : s.b)) + '</b> win ' + fa + '–' + fb); draw(i, fa, fb, "Map to " + esc(teamName(wi === 0 ? s.a : s.b)) + " · series " + tw[0] + "–" + tw[1]); await d(1200); if (!alive()) return;
+  }
+  if (!alive()) return;
+  view.mstage = "box"; renderBoxScreen();
+}
+
+/* ---------- actions ---------- */
+function shareRecap(){
+  const u = userId(), me = G.teams[u], place = G.champ === u ? "🏆 Champions" : G.runner === u ? "Runner-up" : G.seeds.indexOf(u) >= 0 ? "Made the playoffs" : "Missed playoffs";
+  return "BTL Franchise Mode\n" + me.name + " · " + me.w + "–" + me.l + " · " + place + "\nChampions: " + teamName(G.champ) + (G.fmvp ? " · Finals MVP " + nm(G.fmvp) : "") + "\n" + B.SITE + "/games/franchise-mode";
+}
+function act(a, arg, el){
+  switch (a){
+    case "new": { const v = (root.querySelector("#city") || {}).value; if (!v || !v.trim()) return; newGame(v.trim().replace(/[<>]/g, "")); break; }
+    case "pick": G.picks.push(arg); save(); window.scrollTo({top:0, behavior:"smooth"}); break;
+    case "auto": G.picks.push(bestForUser(replay()).id); save(); window.scrollTo({top:0, behavior:"smooth"}); break;
+    case "role": view.filt.role = arg; break;
+    case "startseason": startSeason(replay()); break;
+    case "tab": G.tab = arg; view.msg = ""; save(); break;
+    case "mtab": view.mtab = arg; view.msg = ""; break;
+    case "preview": preparePending(); view.screen = "match"; view.mstage = "preview"; break;
+    case "back": G.pending = null; save(); view.screen = null; break;
+    case "startmatch": view.out = runPending(); view.screen = "match"; view.mstage = "play"; break;
+    case "skip": view.skip = true; return;
+    case "donematch": view.screen = null; view.boxTab = null; break;
+    case "lastbox": view.out = G.last; view.screen = "match"; view.mstage = "box"; view.boxTab = null; break;
+    case "boxtab": view.boxTab = +arg; break;
+    case "playoffs": beginPlayoffs(); break;
+    case "simpo": autoPO(!(eliminated() || G.seeds.indexOf(userId()) < 0)); break;
+    case "openteam": G.tab = "rosters"; view.open[arg] = true; save(); render(); { const e = root.querySelector("#tr-" + arg); if (e) e.scrollIntoView({behavior:"smooth", block:"center"}); } return;
+    case "bench": { const t = G.teams[userId()], next = t.roster.filter(i => i !== arg); if (cnt(next, "AR") < 2 || cnt(next, "SMG") < 2){ view.msg = "Your starting four needs at least 2 ARs and 2 SMGs."; break; } t.lineup = next; view.msg = ""; save(); break; }
+    case "farole": view.faRole = arg; break;
+    case "fapick": view.faPick = arg; view.msg = ""; break;
+    case "faCancel": view.faPick = null; break;
+    case "signfa": { const err = signFA(view.faPick, arg); view.msg = err || ""; if (!err) view.faPick = null; break; }
+    case "propose": { const ev = evalTrade(view.tradeTid, view.tradeMine, view.tradeTheirs); if (ev.ok){ applyTrade(view.tradeTid, view.tradeMine, view.tradeTheirs); view.tradeMine = []; view.tradeTheirs = []; } break; }
+    case "accept": { const o = G.offers.find(x => x.id === arg); if (o){ const t = G.teams[o.tid], u = G.teams[userId()]; if (o.mine.every(i => u.roster.indexOf(i) >= 0) && o.theirs.every(i => t.roster.indexOf(i) >= 0) && validRoster(u.roster.filter(i => o.mine.indexOf(i) < 0).concat(o.theirs))){ applyTrade(o.tid, o.mine, o.theirs); G.offers = G.offers.filter(x => x.id !== arg); } else { G.offers = G.offers.filter(x => x.id !== arg); } save(); } break; }
+    case "decline": G.offers = G.offers.filter(x => x.id !== arg); save(); break;
+    case "reset": view.confirmReset = true; break;
+    case "noreset": view.confirmReset = false; break;
+    case "reset2": try { localStorage.removeItem(SAVE); } catch(e){} G = null; view = Object.assign(view, {screen:null, confirmReset:false}); break;
+    case "sharerecap": B.copy(shareRecap(), el); return;
+  }
+  render();
+}
+root.addEventListener("click", e => { const b = e.target.closest("[data-act]"); if (!b || b.disabled) return; e.preventDefault(); act(b.dataset.act, b.dataset.arg, b); });
+root.addEventListener("change", e => {
+  const s = e.target.closest("[data-sel]"), tc = e.target.closest("[data-trade]"); if (tc){ const arr = tc.dataset.trade === "m" ? view.tradeMine : view.tradeTheirs, v = tc.value, i = arr.indexOf(v); if (tc.checked && i < 0) arr.push(v); if (!tc.checked && i >= 0) arr.splice(i, 1); render(); return; }
+  if (!s) return; const k = s.dataset.sel, v = s.value;
+  if (k === "scope" || k === "team" || k === "sort") view.stats[k] = v; else if (k === "fasort") view.faSort = v; else if (k === "ttid"){ view.tradeTid = +v; view.tradeMine = []; view.tradeTheirs = []; }
+  render();
+});
+root.addEventListener("input", e => { const s = e.target.closest('[data-sel="faq"]'); if (s){ view.faQ = s.value; const pos = s.selectionStart; render(); const n = root.querySelector('[data-sel="faq"]'); if (n){ n.focus(); n.setSelectionRange(pos, pos); } } });
+G = load();
+window.__fm = {get G(){ return G; }, CARDS, LIST, evalTrade, sumV};
+render();
+})();
+
+</script>
+</Base>
