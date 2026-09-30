@@ -251,6 +251,12 @@ function signFA(faId, dropId){
   t.roster = next; fixLineup(t); G.faMoves++; G.txLog.unshift("Week " + G.week + ": signed " + faId + ", released " + dropId); save(); return null;
 }
 const sumV = ids => ids.reduce((a, i) => a + CARDS[i].val, 0);
+// how much extra value an AI team demands: contenders are picky, middle teams are fair, strugglers will shake things up
+function tradeNeed(tid){
+  const order = G.rIdx > 0 ? standings() : G.teams.slice().sort((a, b) => sumV(b.roster) - sumV(a.roster));
+  const rank = order.findIndex(t => t.id === tid);
+  return rank < 4 ? {f:1.15, tier:"a contender"} : rank < 8 ? {f:1.07, tier:"a middle-of-the-pack team"} : {f:1.00, tier:"a struggling team open to a shake-up"};
+}
 function evalTrade(tid, mine, theirs){
   const u = G.teams[userId()], t = G.teams[tid];
   if (!canManage()) return {ok:false, msg:"Rosters are locked."};
@@ -259,7 +265,8 @@ function evalTrade(tid, mine, theirs){
   const vin = sumV(mine), vout = sumV(theirs);
   if (!validRoster(myNext)) return {ok:false, msg:"That would leave you without 2 ARs and 2 SMGs.", vin, vout};
   if (!validRoster(thNext)) return {ok:false, msg:t.name + " can't give up that position mix.", vin, vout};
-  if (vin < vout * 1.10) return {ok:false, msg:t.name + " declined: they need to come out ahead on value (at least ~10%).", vin, vout};
+  const need = tradeNeed(tid);
+  if (vin < vout * need.f) return {ok:false, msg:t.name + " declined: as " + need.tier + ", they need at least " + need.f.toFixed(2) + "x value back (this offer is " + (vin / Math.max(.01, vout)).toFixed(2) + "x).", vin, vout};
   return {ok:true, msg:t.name + " will accept this trade.", vin, vout};
 }
 function applyTrade(tid, mine, theirs){
@@ -277,7 +284,7 @@ function makeOffers(){
     const myNext = u.roster.filter(i => mine.indexOf(i) < 0).concat(theirs), thNext = t.roster.filter(i => theirs.indexOf(i) < 0).concat(mine);
     if (!validRoster(myNext) || !validRoster(thNext)) continue;
     const vin = sumV(mine), vout = sumV(theirs);
-    if (vin < vout * 1.10 || vout < vin * 0.72) continue;
+    if (vin < vout * tradeNeed(tid).f || vout < vin * 0.72) continue;
     if (G.offers.some(o => o.tid === tid)) continue;
     G.offers.push({id:G.ev + "-" + tries, tid, mine, theirs});
   }
