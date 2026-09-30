@@ -122,7 +122,7 @@ const core4 = t => t.p.map(i=>P[i]).slice().sort((a,b)=>b.m-a.m || a.id-b.id).sl
 // Neutral balance = league average of real Season 2–5 teams. Season 1 players (no mode splits)
 // count as that average, so they neither help nor hurt this component.
 const NEUTRAL = (() => {
-  const v = T.filter(t => !t.fa && t.s>1 && t.p.length>=4).map(t => rawBalance(core4(t)).b).filter(x=>x!=null);
+  const v = T.filter(t => !t.fa && !t.cur && t.s>1 && t.p.length>=4).map(t => rawBalance(core4(t)).b).filter(x=>x!=null);
   return v.reduce((a,b)=>a+b,0)/v.length;
 })();
 function teamScore(picks){
@@ -206,7 +206,7 @@ function renderRail(){
 const isThin = t => t.p.length <= THIN;
 function spinPool(){
   const tk = taken();
-  return T.filter(t => !t.fa && t.p.some(i => !tk.has(P[i].c)) && (!S.spun || t.id!==S.spun.id));
+  return T.filter(t => !t.fa && !t.cur && t.p.some(i => !tk.has(P[i].c)) && (!S.spun || t.id!==S.spun.id));
 }
 // kind: "spin" | "respin" | "free"
 function spin(kind){
@@ -385,9 +385,9 @@ function mapWinProb(A,B,mode,fa,fb){
 }
 function mapScore(mode, pw){
   const close = 1 - Math.abs(pw-.5)*2;
-  if (mode==="HP") return [250, Math.round(120 + 125*Math.min(1, close*.7 + rand()*.45))];
-  if (mode==="SND") return [6, Math.min(5, Math.floor(rand()*(2+4*close)))];
-  return [3, Math.min(2, Math.floor(rand()*(1.2+2*close)))];
+  if (mode==="HP") return window.BTL.simHP(pw, rand, true).score;
+  if (mode==="SND") return window.BTL.simSND(pw, rand, true).score;
+  return window.BTL.simCTL(pw, rand, true).score;
 }
 // Zero-sum team kill/death totals per map, split among players by (shrunken) skill.
 // Real league lines rarely have a whole team over ~1.15 K/D, so ratings are pulled toward 1.0
@@ -420,7 +420,7 @@ function playSeries(A,B){
     let m, guard=0; do { m = pick(MAPS[mode]); } while (used.has(mode+m) && ++guard<20); used.add(mode+m);
     const p = mapWinProb(A,B,mode,fa,fb);
     const aWon = rand() < p;
-    const [hi,lo] = mapScore(mode, p);
+    const [hi,lo] = mapScore(mode, aWon ? p : 1-p);
     aWon ? wa++ : wb++;
     const lines = [];
     const ML = mapLines(A,B,mode,aWon); [[A,ML.A],[B,ML.B]].forEach(([e,L])=>{ if(e.me) e.ps.forEach((pl,i)=>lines.push([pl.id,L[i][0],L[i][1]])); });

@@ -20,7 +20,7 @@ add("s1","seasons","Only 1 season", e => e.seasons === 1);
 add("s2","seasons","2+ seasons", e => e.seasons >= 2);
 add("s3","seasons","3+ seasons", e => e.seasons >= 3);
 add("s4","seasons","4+ seasons", e => e.seasons >= 4);
-for (let n = 1; n <= 5; n++) add("p"+n, "played", "Played in Season " + n, e => !!e.sset[n]);
+for (let n = 1; n <= 6; n++) add("p"+n, "played", "Played in Season " + n, e => !!e.sset[n]);
 add("ring1","ring","Won a championship", e => e.champs >= 1);
 add("ring2","ring","2+ championships", e => e.champs >= 2);
 add("as1","as","Made an All-Star team", e => e.allstars >= 1);

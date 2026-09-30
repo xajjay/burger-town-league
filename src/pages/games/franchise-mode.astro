@@ -120,13 +120,13 @@ function blank(){ return {k:{HP:0,SND:0,CTL:0}, d:{HP:0,SND:0,CTL:0}, m:0, ip:0}
 
 /* ---------- match simulation ---------- */
 const MODES = ["HP","SND","CTL","HP","SND"], MODE_NAME = {HP:"Hardpoint", SND:"Search & Destroy", CTL:"Control"}, MAPS = {HP:["Checkmate","Raid","Garrison","Apocalypse","Moscow"], SND:["Raid","Standoff","Express","Moscow","Miami"], CTL:["Raid","Checkmate","Garrison"]};
-const BASE = {HP:24, SND:7, CTL:19}, ABSENT = 0.035;
+const BASE = {HP:24, SND:7, CTL:19}, ABSENT = 0.03, ABSENT_PO = 0.004;
 const talent = (c, mode) => Math.min(1.4, 1 + 0.45 * ((mode === "SND" ? c.sk : c.rk) - 1));
 function split(total, w){ const sum = w.reduce((a, b) => a + b, 0), raw = w.map(x => total * x / sum), out = raw.map(Math.floor); let rem = Math.round(total) - out.reduce((a, b) => a + b, 0); raw.map((r, i) => [r - out[i], i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (rem > 0){ out[i]++; rem--; } }); return out; }
 // who plays for a team in a match: starters, with the sub filling in for anyone who can't make it
 function rollLineup(tid, r){
   const t = G.teams[tid], sub = t.roster.find(i => t.lineup.indexOf(i) < 0), ids = t.lineup.slice(), notes = []; let subUsed = false;
-  if (sub) ids.forEach((id, k) => { if (!subUsed && r() < ABSENT){ ids[k] = sub; subUsed = true; notes.push({out:id, in:sub}); } });
+  if (sub) ids.forEach((id, k) => { if (!subUsed && r() < (G.phase === "playoffs" ? ABSENT_PO : ABSENT)){ ids[k] = sub; subUsed = true; notes.push({out:id, in:sub}); } });
   return {ids, notes};
 }
 function mkEnt(tid, lu){ return {tid, name:teamName(tid), user:G.teams[tid].user, ps:lu.ids.map(i => CARDS[i]), form:lu.ids.map(i => G.form[i]), notes:lu.notes}; }
@@ -147,13 +147,12 @@ function simSeries(A, Bt, bucket, r){
       const dv = Math.max(1, d[i]), ip = k[i] + dv, s = bucket[c.id];
       s.k[mode] += k[i]; s.d[mode] += dv; s.m++; s.ip += ip; lines[side].push([c.id, k[i], dv, ip]);
     }));
-    const close = 1 - Math.abs(p - .5) * 2, hi = mode === "HP" ? 250 : mode === "SND" ? 6 : 3;
-    const lo = mode === "HP" ? Math.round(120 + 125 * Math.min(1, close * .7 + r() * .45)) : mode === "SND" ? Math.min(5, Math.floor(r() * (2 + 4 * close))) : Math.min(2, Math.floor(r() * (1.2 + 2 * close)));
-    const seq = []; if (mode !== "HP"){ const w = [], l = []; for (let i = 0; i < hi; i++) w.push("W"); for (let i = 0; i < lo; i++) w.push("L"); const arr = B.shuffle(w, r); arr.length = arr.length; let ww = 0; const out = []; arr.forEach(x => out.push(x)); 
-      // last round always won by the winner
-      const idxL = out.lastIndexOf("W"); if (idxL !== out.length - 1){ out.splice(idxL, 1); out.push("W"); } seq.push.apply(seq, out); }
+    const close = 1 - Math.abs(p - .5) * 2; let hi, lo, seq = [], hp = null;
+    if (mode === "HP"){ const h = B.simHP(p, r, aWon); hi = null; hp = h.steps; var sc = h.score; }
+    else if (mode === "SND"){ const q = B.simSND(p, r, aWon); sc = q.score; seq = q.seq.map(x => ((x === "A") === aWon) ? "W" : "L"); }
+    else { sc = B.simCTL(p, r, aWon).score; }
     let mp; { const opts = MAPS[mode].filter(x => !usedMaps[mode + x]); mp = B.pick(opts.length ? opts : MAPS[mode], r); usedMaps[mode + mp] = 1; }
-    maps.push({mode, map:mp, score:aWon ? [hi, lo] : [lo, hi], aWon, seq, lines});
+    maps.push({mode, map:mp, score:sc, aWon, seq, hp, lines});
   }
   return {a:A.tid, b:Bt.tid, wa, wb, maps, notesA:A.notes, notesB:Bt.notes};
 }
@@ -520,7 +519,8 @@ async function animate(out){
   for (let i = 0; i < s.maps.length; i++){
     const m = s.maps[i], [fa, fb] = m.score, wi = m.aWon ? 0 : 1; let a = 0, b = 0;
     draw(i, 0, 0, "Map starting…"); await d(900); if (!alive()) return;
-    if (m.mode === "HP"){ const steps = 24; for (let t = 1; t <= steps; t++){ const f = t / steps; a = t === steps ? fa : Math.floor(fa * f); b = t === steps ? fb : Math.floor(fb * f); draw(i, a, b, "Holding the hill…"); await d(85); if (!alive()) return; } }
+    if (m.mode === "HP" && m.hp){ let pa = 0, pb = 0, ph = 0; for (const [x, y, hh] of m.hp){ const what = x > pa ? esc(teamName(s.a)) + " hold the hill" : y > pb ? esc(teamName(s.b)) + " hold the hill" : "contested"; if (hh !== ph){ ph = hh; } a = x; b = y; pa = x; pb = y; draw(i, a, b, "Hill " + hh + " · " + what); await d(120); if (!alive()) return; } }
+    else if (m.mode === "HP"){ const steps = 24; for (let t = 1; t <= steps; t++){ const f = t / steps; a = t === steps ? fa : Math.floor(fa * f); b = t === steps ? fb : Math.floor(fb * f); draw(i, a, b, "Holding the hill…"); await d(85); if (!alive()) return; } }
     else { for (const x of m.seq){ const winnerScores = x === "W"; ((winnerScores ? wi : 1 - wi) === 0) ? a++ : b++; draw(i, a, b, "Round " + (a + b) + ": " + esc(teamName(((winnerScores ? wi : 1 - wi) === 0) ? s.a : s.b)) + " win"); await d(560); if (!alive()) return; } }
     tw[wi]++; log.push('Map ' + (i + 1) + ' (' + MODE_NAME[m.mode] + ', ' + esc(m.map) + '): <b>' + esc(teamName(wi === 0 ? s.a : s.b)) + '</b> win ' + fa + '–' + fb); draw(i, fa, fb, "Map to " + esc(teamName(wi === 0 ? s.a : s.b)) + " · series " + tw[0] + "–" + tw[1]); await d(1200); if (!alive()) return;
   }

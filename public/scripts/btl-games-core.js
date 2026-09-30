@@ -200,6 +200,51 @@ function bracket(host,o){
   if(!host._brResize){host._brResize=1;window.addEventListener("resize",draw);}
 }
 
-window.BTL={bracket:bracket,LAUNCH:LAUNCH,SITE:SITE,esc:esc,store:store,etDate:etDate,dayNum:dayNum,shiftDay:shiftDay,hashStr:hashStr,rng:rng,shuffle:shuffle,pick:pick,norm:norm,
+/* ---- realistic map score models (calibrated to the league's real Map Results) ---- */
+function gz(r){var u=0;while(!u)u=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*r());}
+function clampN(x,a,b){return Math.max(a,Math.min(b,x));}
+/* Hardpoint: hills rotate every 60s, modelled in 5s blocks (12 per hill). Each block is held by A, held by B, or contested (no points).
+   Some hills are chaotic swaps, some are ordinary, and about a third are locked down for 40-60 points by one team. A team can run hot or cold for a hill or two, so big comebacks happen. The team that just held the old hill is LESS likely to own
+   the start of the next one (the other side has been rotating to set up), and a hold can be broken at any moment. No catch-up help either way. */
+function oneHP(p,r){
+  var rA=clampN(.5+(p-.5)*.35,.05,.95), a=0,b=0, steps=[], last=null, done=false, z=gz(r)*.32, rho=.3;
+  for(var h=0;h<30&&!done;h++){
+    z=rho*z+gz(r)*.32*Math.sqrt(1-rho*rho); /* a team can run hot or go cold for a hill or two */
+    var u=r(), stay=u<.2?.46:u<.54?.906:.65, rh=clampN(rA+z,.04,.96);
+    var wA=rh*(last==="A"?.5:1), wB=(1-rh)*(last==="B"?.5:1), wC=.295, t=r()*(wA+wB+wC), st=t<wA?"A":t<wA+wB?"B":"C";
+    for(var q=0;q<12&&!done;q++){
+      if(st==="A")a+=5; else if(st==="B")b+=5;
+      if(a>=250||b>=250){a=Math.min(a,250);b=Math.min(b,250);done=true;}
+      steps.push([a,b,h+1]);
+      if(r()>stay){
+        var xA=st==="A"?0:rh, xB=st==="B"?0:1-rh, xC=st==="C"?0:.49, t2=r()*(xA+xB+xC);
+        st=t2<xA?"A":t2<xA+xB?"B":"C";
+      }
+      if(q===11)last=(st==="A"||st==="B")?st:null;
+    }
+  }
+  return {aWon:a>b,score:[a,b],steps:steps};
+}
+function simHP(p,r,target){
+  var res;
+  for(var i=0;i<80;i++){res=oneHP(p,r);if(res.aWon===target)return res;}
+  return {aWon:target,score:[res.score[1],res.score[0]],steps:res.steps.map(function(x){return [x[1],x[0],x[2]];})};
+}
+/* first-to-N round modes (S&D to 6, Control to 3): plain round-by-round odds, S&D defence gets a small edge and sides swap each round. */
+function oneRounds(p,r,to,k,edge){
+  var rA=clampN(.5+(p-.5)*k,.05,.95), a=0,b=0, seq=[], rd=0;
+  while(a<to&&b<to){
+    var q=clampN(rA+(rd%2===0?edge:-edge),.03,.97), w=r()<q; if(w)a++; else b++; seq.push(w?"A":"B"); rd++;
+  }
+  return {aWon:a>b,score:[a,b],seq:seq};
+}
+function simRounds(p,r,target,to,k,edge){
+  var res;
+  for(var i=0;i<80;i++){res=oneRounds(p,r,to,k,edge);if(res.aWon===target)return res;}
+  return {aWon:target,score:[res.score[1],res.score[0]],seq:res.seq.map(function(x){return x==="A"?"B":"A";})};
+}
+function simSND(p,r,target){return simRounds(p,r,target,6,.51,.03);}
+function simCTL(p,r,target){return simRounds(p,r,target,3,1.5,0);}
+window.BTL={simHP:simHP,simSND:simSND,simCTL:simCTL,bracket:bracket,LAUNCH:LAUNCH,SITE:SITE,esc:esc,store:store,etDate:etDate,dayNum:dayNum,shiftDay:shiftDay,hashStr:hashStr,rng:rng,shuffle:shuffle,pick:pick,norm:norm,
   prep:prep,getRes:getRes,saveRes:saveRes,streak:streak,copy:copy,picker:picker,shell:shell};
 })();

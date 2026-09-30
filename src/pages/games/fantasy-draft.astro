@@ -173,10 +173,10 @@ B.shell({game:"fantasy-draft", start:function(ctx){
         const d = mean(A.ps.map(c => c.ovr)) - mean(Bt.ps.map(c => c.ovr)) + fa - fb + 6 * (modeAvg(A, mode) - modeAvg(Bt, mode)) + 0.12 * (mean(A.ps.map(c => c.ip)) - mean(Bt.ps.map(c => c.ip)));
         const p = 1 / (1 + Math.exp(-d / 6)), aWon = rand() < p; aWon ? wa++ : wb++;
         mapLines(A, Bt, mode, aWon, bucket);
-        const close = 1 - Math.abs(p - .5) * 2, hi = mode === "HP" ? 250 : mode === "SND" ? 6 : 3;
-        const lo = mode === "HP" ? Math.round(120 + 125 * Math.min(1, close * .7 + rand() * .45)) : mode === "SND" ? Math.min(5, Math.floor(rand() * (2 + 4 * close))) : Math.min(2, Math.floor(rand() * (1.2 + 2 * close)));
+        const close = 1 - Math.abs(p - .5) * 2; let sc;
+        if (mode === "HP") sc = B.simHP(p, rand, aWon).score; else if (mode === "SND") sc = B.simSND(p, rand, aWon).score; else sc = B.simCTL(p, rand, aWon).score;
         const opts = MAPS[mode].filter(x => !usedMaps[mode + x]), mp = B.pick(opts.length ? opts : MAPS[mode], rand); usedMaps[mode + mp] = 1;
-        maps.push({mode, map:mp, score:aWon ? [hi, lo] : [lo, hi]});
+        maps.push({mode, map:mp, score:sc});
       }
       return {A, B:Bt, wa, wb, maps, winner:wa > wb ? A : Bt, loser:wa > wb ? Bt : A};
     }
