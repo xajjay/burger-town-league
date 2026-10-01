@@ -122,13 +122,14 @@
       "avgSeasonOverall": 89.9,
       "playerOverall": 98,
       "accolades": "7 accolades: 1x MVP (S4); 1x Champion (S5); 5x All-Star (S1 First Team, S2 First Team, S3 First Team, S4 First Team, S5 First Team)",
-      "careerWar": 16.85,
+      "careerWar": 16.86,
       "war10": 1.52,
       "warRank": 3,
-      "warPlus": 16.95,
+      "warPlus": 16.96,
       "bestSeasonWar": 5.4,
       "seriesW": 18,
-      "seriesL": 10
+      "seriesL": 10,
+      "warPlus10": 1.528
     },
     {
       "player": "Ephrisy",
@@ -146,13 +147,14 @@
       "avgSeasonOverall": 93.5,
       "playerOverall": 97,
       "accolades": "5 accolades: 2x MVP (S2, S5); 1x Champion (S2); 2x All-Star (S2 First Team, S5 First Team)",
-      "careerWar": 15.13,
+      "careerWar": 15.14,
       "war10": 1.8,
       "warRank": 4,
-      "warPlus": 14.68,
+      "warPlus": 14.69,
       "bestSeasonWar": 7.39,
       "seriesW": 15,
-      "seriesL": 6
+      "seriesL": 6,
+      "warPlus10": 1.749
     },
     {
       "player": "Aj",
@@ -173,13 +175,14 @@
       "avgSeasonOverall": 86.1,
       "playerOverall": 96,
       "accolades": "7 accolades: 1x MVP (S1); 1x Champion (S1); 5x All-Star (S1 First Team, S4 First Team, S5 First Team, S2 Second Team, S3 Second Team)",
-      "careerWar": 20.4,
+      "careerWar": 20.42,
       "war10": 1.2,
       "warRank": 1,
-      "warPlus": 23.11,
+      "warPlus": 23.12,
       "bestSeasonWar": 5.65,
       "seriesW": 23,
-      "seriesL": 18
+      "seriesL": 18,
+      "warPlus10": 1.36
     },
     {
       "player": "Renicide",
@@ -200,13 +203,14 @@
       "avgSeasonOverall": 84.0,
       "playerOverall": 94,
       "accolades": "6 accolades: 1x Champion (S3); 5x All-Star (S1 First Team, S2 Second Team, S3 Second Team, S4 Second Team, S5 Second Team)",
-      "careerWar": 18.23,
+      "careerWar": 18.24,
       "war10": 1.19,
       "warRank": 2,
-      "warPlus": 16.58,
+      "warPlus": 16.6,
       "bestSeasonWar": 4.46,
       "seriesW": 15,
-      "seriesL": 20
+      "seriesL": 20,
+      "warPlus10": 1.085
     },
     {
       "player": "Acro Ace",
@@ -226,13 +230,14 @@
       "avgSeasonOverall": 86.4,
       "playerOverall": 94,
       "accolades": "3 accolades: 3x All-Star (S3 First Team, S2 Second Team, S4 Second Team)",
-      "careerWar": 13.89,
+      "careerWar": 13.91,
       "war10": 0.82,
       "warRank": 5,
-      "warPlus": 14.49,
-      "bestSeasonWar": 5.5,
+      "warPlus": 14.5,
+      "bestSeasonWar": 5.51,
       "seriesW": 22,
-      "seriesL": 18
+      "seriesL": 18,
+      "warPlus10": 0.858
     },
     {
       "player": "CrazieViews",
@@ -250,13 +255,14 @@
       "avgSeasonOverall": 91.1,
       "playerOverall": 93,
       "accolades": "2 accolades: 2x All-Star (S2 First Team, S4 First Team)",
-      "careerWar": 10.36,
+      "careerWar": 10.37,
       "war10": 1.38,
       "warRank": 7,
-      "warPlus": 9.81,
-      "bestSeasonWar": 4.49,
+      "warPlus": 9.82,
+      "bestSeasonWar": 4.5,
       "seriesW": 3,
-      "seriesL": 7
+      "seriesL": 7,
+      "warPlus10": 1.309
     },
     {
       "player": "Jmetree",
@@ -282,7 +288,8 @@
       "warPlus": 8.38,
       "bestSeasonWar": 3.37,
       "seriesW": 11,
-      "seriesL": 8
+      "seriesL": 8,
+      "warPlus10": 1.061
     },
     {
       "player": "Inkster",
@@ -300,13 +307,14 @@
       "avgSeasonOverall": 91.0,
       "playerOverall": 92,
       "accolades": "1 accolade: 1x All-Star (S5 First Team)",
-      "careerWar": 12.92,
+      "careerWar": 12.93,
       "war10": 1.75,
       "warRank": 6,
-      "warPlus": 13.13,
+      "warPlus": 13.14,
       "bestSeasonWar": 5.78,
       "seriesW": 13,
-      "seriesL": 9
+      "seriesL": 9,
+      "warPlus10": 1.775
     },
     {
       "player": "Aurora",
@@ -327,13 +335,14 @@
       "avgSeasonOverall": 81.3,
       "playerOverall": 90,
       "accolades": "4 accolades: 1x Champion (S3); 3x All-Star (S3 First Team, S1 Second Team, S5 Second Team)",
-      "careerWar": 6.92,
+      "careerWar": 6.93,
       "war10": 0.9,
       "warRank": 11,
-      "warPlus": 6.57,
+      "warPlus": 6.58,
       "bestSeasonWar": 2.5,
       "seriesW": 7,
-      "seriesL": 9
+      "seriesL": 9,
+      "warPlus10": 0.855
     },
     {
       "player": "Nastyy",
@@ -354,13 +363,14 @@
       "avgSeasonOverall": 77.7,
       "playerOverall": 86,
       "accolades": "3 accolades: 1x Champion (S4); 2x All-Star (S1 Second Team, S4 Second Team)",
-      "careerWar": 8.37,
+      "careerWar": 8.38,
       "war10": 0.54,
       "warRank": 9,
-      "warPlus": 7.79,
+      "warPlus": 7.8,
       "bestSeasonWar": 3.4,
       "seriesW": 18,
-      "seriesL": 19
+      "seriesL": 19,
+      "warPlus10": 0.503
     },
     {
       "player": "Crooked",
@@ -383,7 +393,8 @@
       "warPlus": 5.85,
       "bestSeasonWar": 3.58,
       "seriesW": 6,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": 2.018
     },
     {
       "player": "Waly",
@@ -401,13 +412,14 @@
       "avgSeasonOverall": 86.5,
       "playerOverall": 88,
       "accolades": "1 accolade: 1x All-Star (S2 First Team)",
-      "careerWar": 7.73,
+      "careerWar": 7.74,
       "war10": 0.92,
       "warRank": 10,
-      "warPlus": 7.39,
-      "bestSeasonWar": 5.59,
+      "warPlus": 7.41,
+      "bestSeasonWar": 5.6,
       "seriesW": 5,
-      "seriesL": 5
+      "seriesL": 5,
+      "warPlus10": 0.882
     },
     {
       "player": "Purp",
@@ -429,7 +441,8 @@
       "warPlus": 3.89,
       "bestSeasonWar": 3.89,
       "seriesW": 4,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 1.342
     },
     {
       "player": "Proxzify",
@@ -449,13 +462,14 @@
       "avgSeasonOverall": 80.4,
       "playerOverall": 86,
       "accolades": "",
-      "careerWar": 4.55,
+      "careerWar": 4.56,
       "war10": 0.43,
       "warRank": 17,
-      "warPlus": 4.16,
-      "bestSeasonWar": 1.74,
+      "warPlus": 4.18,
+      "bestSeasonWar": 1.75,
       "seriesW": 8,
-      "seriesL": 13
+      "seriesL": 13,
+      "warPlus10": 0.398
     },
     {
       "player": "Utopian",
@@ -482,7 +496,8 @@
       "warPlus": 3.2,
       "bestSeasonWar": 2.59,
       "seriesW": 8,
-      "seriesL": 17
+      "seriesL": 17,
+      "warPlus10": 0.323
     },
     {
       "player": "Starry",
@@ -506,7 +521,8 @@
       "warPlus": 3.91,
       "bestSeasonWar": 2.57,
       "seriesW": 8,
-      "seriesL": 4
+      "seriesL": 4,
+      "warPlus10": 0.831
     },
     {
       "player": "Kai",
@@ -524,13 +540,14 @@
       "avgSeasonOverall": 80.3,
       "playerOverall": 84,
       "accolades": "2 accolades: 2x Champion (S2, S4)",
-      "careerWar": 3.04,
-      "war10": 0.47,
-      "warRank": 26,
-      "warPlus": 2.88,
-      "bestSeasonWar": 2.67,
+      "careerWar": 3.05,
+      "war10": 0.48,
+      "warRank": 27,
+      "warPlus": 2.9,
+      "bestSeasonWar": 2.68,
       "seriesW": 3,
-      "seriesL": 8
+      "seriesL": 8,
+      "warPlus10": 0.453
     },
     {
       "player": "Habibi",
@@ -553,7 +570,8 @@
       "warPlus": 4.96,
       "bestSeasonWar": 3.2,
       "seriesW": 15,
-      "seriesL": 7
+      "seriesL": 7,
+      "warPlus10": 0.871
     },
     {
       "player": "Lurkens",
@@ -571,11 +589,12 @@
       "accolades": "2 accolades: 1x Champion (S5); 1x All-Star (S5 Second Team)",
       "careerWar": 3.02,
       "war10": 0.84,
-      "warRank": 27,
+      "warRank": 28,
       "warPlus": 3.2,
       "bestSeasonWar": 3.02,
       "seriesW": 10,
-      "seriesL": 6
+      "seriesL": 6,
+      "warPlus10": 0.889
     },
     {
       "player": "Lewy",
@@ -600,7 +619,8 @@
       "warPlus": 3.23,
       "bestSeasonWar": 1.22,
       "seriesW": 5,
-      "seriesL": 16
+      "seriesL": 16,
+      "warPlus10": 0.399
     },
     {
       "player": "Karnij",
@@ -618,12 +638,13 @@
       "playerOverall": 86,
       "accolades": "",
       "careerWar": 5.4,
-      "war10": 1.12,
+      "war10": 1.13,
       "warRank": 14,
-      "warPlus": 5.0,
+      "warPlus": 5.01,
       "bestSeasonWar": 3.34,
       "seriesW": 6,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 1.043
     },
     {
       "player": "EJ",
@@ -645,7 +666,8 @@
       "warPlus": 2.43,
       "bestSeasonWar": 2.17,
       "seriesW": 2,
-      "seriesL": 7
+      "seriesL": 7,
+      "warPlus10": 1.104
     },
     {
       "player": "DessieLoso",
@@ -661,13 +683,14 @@
       "avgSeasonOverall": 85.0,
       "playerOverall": 81,
       "accolades": "",
-      "careerWar": 2.76,
-      "war10": 1.31,
-      "warRank": 28,
-      "warPlus": 2.76,
-      "bestSeasonWar": 2.76,
+      "careerWar": 2.77,
+      "war10": 1.32,
+      "warRank": 29,
+      "warPlus": 2.77,
+      "bestSeasonWar": 2.77,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 1.317
     },
     {
       "player": "Thermo",
@@ -683,13 +706,14 @@
       "avgSeasonOverall": 85.0,
       "playerOverall": 81,
       "accolades": "1 accolade: 1x All-Star (S2 Second Team)",
-      "careerWar": 3.29,
-      "war10": 0.84,
+      "careerWar": 3.3,
+      "war10": 0.85,
       "warRank": 25,
-      "warPlus": 3.29,
-      "bestSeasonWar": 3.29,
+      "warPlus": 3.3,
+      "bestSeasonWar": 3.3,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.847
     },
     {
       "player": "Collision",
@@ -705,13 +729,14 @@
       "avgSeasonOverall": 85.0,
       "playerOverall": 81,
       "accolades": "",
-      "careerWar": 2.26,
-      "war10": 0.58,
-      "warRank": 31,
-      "warPlus": 2.26,
-      "bestSeasonWar": 2.26,
+      "careerWar": 3.29,
+      "war10": 0.84,
+      "warRank": 26,
+      "warPlus": 3.29,
+      "bestSeasonWar": 3.29,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.844
     },
     {
       "player": "Bubbles",
@@ -730,11 +755,12 @@
       "accolades": "2 accolades: 2x Champion (S3, S4)",
       "careerWar": 1.06,
       "war10": 0.35,
-      "warRank": 49,
+      "warRank": 48,
       "warPlus": 1.06,
       "bestSeasonWar": 0.81,
       "seriesW": 6,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.353
     },
     {
       "player": "Elive",
@@ -753,13 +779,14 @@
       "avgSeasonOverall": 78.3,
       "playerOverall": 81,
       "accolades": "",
-      "careerWar": 1.55,
+      "careerWar": 1.56,
       "war10": 0.29,
       "warRank": 39,
-      "warPlus": 1.55,
+      "warPlus": 1.56,
       "bestSeasonWar": 1.23,
       "seriesW": 1,
-      "seriesL": 7
+      "seriesL": 7,
+      "warPlus10": 0.289
     },
     {
       "player": "Pablo",
@@ -780,10 +807,11 @@
       "careerWar": 3.4,
       "war10": 0.53,
       "warRank": 23,
-      "warPlus": 4.68,
-      "bestSeasonWar": 1.47,
+      "warPlus": 4.69,
+      "bestSeasonWar": 1.48,
       "seriesW": 6,
-      "seriesL": 10
+      "seriesL": 10,
+      "warPlus10": 0.733
     },
     {
       "player": "Josh",
@@ -805,7 +833,8 @@
       "warPlus": 1.52,
       "bestSeasonWar": 1.79,
       "seriesW": 0,
-      "seriesL": 6
+      "seriesL": 6,
+      "warPlus10": 1.379
     },
     {
       "player": "Nuance",
@@ -821,13 +850,14 @@
       "avgSeasonOverall": 84.0,
       "playerOverall": 80,
       "accolades": "",
-      "careerWar": 2.6,
-      "war10": 0.68,
-      "warRank": 29,
-      "warPlus": 2.6,
-      "bestSeasonWar": 2.6,
+      "careerWar": 2.61,
+      "war10": 0.69,
+      "warRank": 30,
+      "warPlus": 2.61,
+      "bestSeasonWar": 2.61,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.688
     },
     {
       "player": "Godofwarfare",
@@ -849,7 +879,8 @@
       "warPlus": 2.52,
       "bestSeasonWar": 2.17,
       "seriesW": 8,
-      "seriesL": 4
+      "seriesL": 4,
+      "warPlus10": 1.008
     },
     {
       "player": "Nej",
@@ -867,12 +898,13 @@
       "playerOverall": 80,
       "accolades": "1 accolade: 1x All-Star (S1 Second Team)",
       "careerWar": 1.2,
-      "war10": 0.66,
-      "warRank": 44,
+      "war10": 0.67,
+      "warRank": 43,
       "warPlus": 1.2,
       "bestSeasonWar": 1.37,
       "seriesW": 0,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": 0.665
     },
     {
       "player": "Casperfy",
@@ -889,13 +921,14 @@
       "avgSeasonOverall": 79.3,
       "playerOverall": 80,
       "accolades": "1 accolade: 1x Champion (S2)",
-      "careerWar": 1.9,
-      "war10": 0.36,
+      "careerWar": 1.91,
+      "war10": 0.37,
       "warRank": 35,
-      "warPlus": 1.9,
+      "warPlus": 1.91,
       "bestSeasonWar": 1.21,
       "seriesW": 2,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": 0.367
     },
     {
       "player": "Boogey",
@@ -915,11 +948,12 @@
       "accolades": "",
       "careerWar": 0.71,
       "war10": 0.25,
-      "warRank": 55,
+      "warRank": 54,
       "warPlus": 0.71,
       "bestSeasonWar": 0.27,
       "seriesW": 5,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": 0.254
     },
     {
       "player": "Lazyy",
@@ -939,13 +973,14 @@
       "avgSeasonOverall": 75.4,
       "playerOverall": 80,
       "accolades": "",
-      "careerWar": 0.25,
+      "careerWar": 0.26,
       "war10": 0.04,
-      "warRank": 71,
-      "warPlus": 0.25,
+      "warRank": 70,
+      "warPlus": 0.26,
       "bestSeasonWar": 0.44,
       "seriesW": 7,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": 0.042
     },
     {
       "player": "Skapun",
@@ -963,11 +998,12 @@
       "accolades": "",
       "careerWar": 1.27,
       "war10": 1.59,
-      "warRank": 42,
+      "warRank": 41,
       "warPlus": 1.27,
       "bestSeasonWar": 1.27,
       "seriesW": 2,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 1.59
     },
     {
       "player": "Dez",
@@ -985,11 +1021,12 @@
       "accolades": "",
       "careerWar": 0.9,
       "war10": 0.69,
-      "warRank": 51,
+      "warRank": 50,
       "warPlus": 0.9,
       "bestSeasonWar": 0.9,
       "seriesW": 3,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.694
     },
     {
       "player": "AimKun",
@@ -1011,7 +1048,8 @@
       "warPlus": 1.99,
       "bestSeasonWar": 1.99,
       "seriesW": 2,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 1.17
     },
     {
       "player": "Docsukii",
@@ -1034,7 +1072,8 @@
       "warPlus": 3.92,
       "bestSeasonWar": 3.1,
       "seriesW": 3,
-      "seriesL": 13
+      "seriesL": 13,
+      "warPlus10": 0.817
     },
     {
       "player": "Hums",
@@ -1052,11 +1091,12 @@
       "accolades": "",
       "careerWar": 1.18,
       "war10": 0.47,
-      "warRank": 45,
+      "warRank": 44,
       "warPlus": 1.18,
       "bestSeasonWar": 1.18,
       "seriesW": 5,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": 0.473
     },
     {
       "player": "Andrix",
@@ -1075,11 +1115,12 @@
       "accolades": "",
       "careerWar": 2.29,
       "war10": 0.52,
-      "warRank": 30,
+      "warRank": 31,
       "warPlus": 2.82,
       "bestSeasonWar": 1.84,
       "seriesW": 14,
-      "seriesL": 7
+      "seriesL": 7,
+      "warPlus10": 0.641
     },
     {
       "player": "MVP",
@@ -1098,11 +1139,12 @@
       "accolades": "2 accolades: 2x Champion (S3, S4)",
       "careerWar": 0.86,
       "war10": 0.41,
-      "warRank": 52,
+      "warRank": 51,
       "warPlus": 0.86,
       "bestSeasonWar": 0.74,
       "seriesW": 2,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": 0.411
     },
     {
       "player": "Iconz",
@@ -1121,11 +1163,12 @@
       "accolades": "",
       "careerWar": 1.44,
       "war10": 0.49,
-      "warRank": 41,
+      "warRank": 40,
       "warPlus": 1.44,
       "bestSeasonWar": 1.56,
       "seriesW": 5,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 0.495
     },
     {
       "player": "Toremeant",
@@ -1150,7 +1193,8 @@
       "warPlus": -0.89,
       "bestSeasonWar": 0.08,
       "seriesW": 8,
-      "seriesL": 11
+      "seriesL": 11,
+      "warPlus10": -0.134
     },
     {
       "player": "Mayan",
@@ -1168,11 +1212,12 @@
       "accolades": "",
       "careerWar": 0.41,
       "war10": 0.69,
-      "warRank": 63,
+      "warRank": 62,
       "warPlus": 0.41,
       "bestSeasonWar": 0.41,
       "seriesW": 2,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.686
     },
     {
       "player": "NickBoston",
@@ -1190,11 +1235,12 @@
       "accolades": "",
       "careerWar": 1.07,
       "war10": 0.29,
-      "warRank": 47,
+      "warRank": 46,
       "warPlus": 1.29,
       "bestSeasonWar": 0.89,
       "seriesW": 4,
-      "seriesL": 8
+      "seriesL": 8,
+      "warPlus10": 0.348
     },
     {
       "player": "Leib",
@@ -1216,7 +1262,8 @@
       "warPlus": 1.72,
       "bestSeasonWar": 1.9,
       "seriesW": 14,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 0.493
     },
     {
       "player": "Nada",
@@ -1233,13 +1280,14 @@
       "avgSeasonOverall": 77.0,
       "playerOverall": 78,
       "accolades": "",
-      "careerWar": 0.34,
+      "careerWar": 0.35,
       "war10": 0.07,
-      "warRank": 67,
-      "warPlus": 0.34,
-      "bestSeasonWar": 1.22,
+      "warRank": 64,
+      "warPlus": 0.35,
+      "bestSeasonWar": 1.23,
       "seriesW": 1,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 0.074
     },
     {
       "player": "Grihmey",
@@ -1258,11 +1306,12 @@
       "accolades": "",
       "careerWar": 0.62,
       "war10": 0.19,
-      "warRank": 58,
+      "warRank": 57,
       "warPlus": 0.62,
       "bestSeasonWar": 1.19,
       "seriesW": 3,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 0.189
     },
     {
       "player": "Tubby",
@@ -1282,11 +1331,12 @@
       "accolades": "",
       "careerWar": 1.04,
       "war10": 0.31,
-      "warRank": 50,
+      "warRank": 49,
       "warPlus": 1.04,
-      "bestSeasonWar": 0.87,
+      "bestSeasonWar": 0.88,
       "seriesW": 3,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": 0.315
     },
     {
       "player": "Duffie",
@@ -1306,11 +1356,12 @@
       "accolades": "",
       "careerWar": 1.15,
       "war10": 0.24,
-      "warRank": 46,
+      "warRank": 45,
       "warPlus": 0.97,
       "bestSeasonWar": 0.88,
       "seriesW": 7,
-      "seriesL": 6
+      "seriesL": 6,
+      "warPlus10": 0.202
     },
     {
       "player": "Deceptions",
@@ -1328,11 +1379,12 @@
       "accolades": "",
       "careerWar": 0.84,
       "war10": 1.67,
-      "warRank": 53,
+      "warRank": 52,
       "warPlus": 0.84,
       "bestSeasonWar": 0.84,
       "seriesW": 2,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 1.676
     },
     {
       "player": "Phanatic",
@@ -1350,11 +1402,12 @@
       "accolades": "",
       "careerWar": 0.52,
       "war10": 0.74,
-      "warRank": 62,
+      "warRank": 61,
       "warPlus": 0.52,
       "bestSeasonWar": 0.52,
       "seriesW": 0,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 0.74
     },
     {
       "player": "TrapEU",
@@ -1376,7 +1429,8 @@
       "warPlus": 4.71,
       "bestSeasonWar": 3.44,
       "seriesW": 2,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.645
     },
     {
       "player": "JayDash",
@@ -1394,11 +1448,12 @@
       "accolades": "",
       "careerWar": 0.31,
       "war10": 0.35,
-      "warRank": 68,
+      "warRank": 67,
       "warPlus": 0.31,
       "bestSeasonWar": 0.31,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.349
     },
     {
       "player": "Zirow",
@@ -1416,11 +1471,12 @@
       "accolades": "",
       "careerWar": 0.13,
       "war10": 0.42,
-      "warRank": 75,
+      "warRank": 74,
       "warPlus": 0.13,
       "bestSeasonWar": 0.13,
       "seriesW": 0,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": 0.423
     },
     {
       "player": "Jealous",
@@ -1438,11 +1494,12 @@
       "accolades": "",
       "careerWar": 0.64,
       "war10": 0.19,
-      "warRank": 57,
+      "warRank": 56,
       "warPlus": 1.03,
       "bestSeasonWar": 0.64,
       "seriesW": 14,
-      "seriesL": 4
+      "seriesL": 4,
+      "warPlus10": 0.302
     },
     {
       "player": "Hazier",
@@ -1458,13 +1515,14 @@
       "avgSeasonOverall": 78.0,
       "playerOverall": 77,
       "accolades": "",
-      "careerWar": 1.45,
-      "war10": 0.34,
-      "warRank": 40,
-      "warPlus": 1.45,
-      "bestSeasonWar": 1.45,
+      "careerWar": 0.06,
+      "war10": 0.01,
+      "warRank": 76,
+      "warPlus": 0.06,
+      "bestSeasonWar": 0.06,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.015
     },
     {
       "player": "Dragon",
@@ -1487,7 +1545,8 @@
       "warPlus": 3.75,
       "bestSeasonWar": 0.86,
       "seriesW": 6,
-      "seriesL": 12
+      "seriesL": 12,
+      "warPlus10": 0.647
     },
     {
       "player": "Kfrankess",
@@ -1509,7 +1568,8 @@
       "warPlus": 0.35,
       "bestSeasonWar": 0.35,
       "seriesW": 0,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": 0.314
     },
     {
       "player": "Noti",
@@ -1527,13 +1587,14 @@
       "avgSeasonOverall": 68.7,
       "playerOverall": 72,
       "accolades": "",
-      "careerWar": 0.38,
+      "careerWar": 0.39,
       "war10": 0.06,
-      "warRank": 64,
-      "warPlus": 0.21,
+      "warRank": 63,
+      "warPlus": 0.22,
       "bestSeasonWar": 1.12,
       "seriesW": 1,
-      "seriesL": 7
+      "seriesL": 7,
+      "warPlus10": 0.035
     },
     {
       "player": "Dayz",
@@ -1550,13 +1611,14 @@
       "avgSeasonOverall": 74.8,
       "playerOverall": 77,
       "accolades": "1 accolade: 1x Champion (S1)",
-      "careerWar": 0.6,
+      "careerWar": 0.61,
       "war10": 0.24,
-      "warRank": 59,
-      "warPlus": 0.6,
+      "warRank": 58,
+      "warPlus": 0.61,
       "bestSeasonWar": 0.7,
       "seriesW": 3,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.243
     },
     {
       "player": "Python",
@@ -1576,11 +1638,12 @@
       "accolades": "",
       "careerWar": 0.31,
       "war10": 0.08,
-      "warRank": 70,
+      "warRank": 68,
       "warPlus": 0.31,
       "bestSeasonWar": 0.75,
       "seriesW": 3,
-      "seriesL": 4
+      "seriesL": 4,
+      "warPlus10": 0.078
     },
     {
       "player": "Xylow",
@@ -1602,7 +1665,8 @@
       "warPlus": -0.12,
       "bestSeasonWar": -0.12,
       "seriesW": 1,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.392
     },
     {
       "player": "Bleepa",
@@ -1621,13 +1685,14 @@
       "avgSeasonOverall": 72.0,
       "playerOverall": 77,
       "accolades": "",
-      "careerWar": -2.31,
+      "careerWar": -2.3,
       "war10": -0.27,
       "warRank": 127,
-      "warPlus": -2.33,
+      "warPlus": -2.32,
       "bestSeasonWar": -0.08,
       "seriesW": 5,
-      "seriesL": 13
+      "seriesL": 13,
+      "warPlus10": -0.27
     },
     {
       "player": "Kugo",
@@ -1651,7 +1716,8 @@
       "warPlus": -0.55,
       "bestSeasonWar": 0.47,
       "seriesW": 3,
-      "seriesL": 5
+      "seriesL": 5,
+      "warPlus10": -0.204
     },
     {
       "player": "Angelina",
@@ -1673,7 +1739,8 @@
       "warPlus": -0.17,
       "bestSeasonWar": -0.17,
       "seriesW": 0,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": -0.575
     },
     {
       "player": "Freak",
@@ -1691,11 +1758,12 @@
       "accolades": "",
       "careerWar": 0.25,
       "war10": 0.35,
-      "warRank": 72,
+      "warRank": 71,
       "warPlus": 0.25,
       "bestSeasonWar": 0.25,
       "seriesW": 1,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": 0.352
     },
     {
       "player": "Killfeed",
@@ -1714,11 +1782,12 @@
       "accolades": "",
       "careerWar": 0.2,
       "war10": 0.17,
-      "warRank": 73,
+      "warRank": 72,
       "warPlus": 0.2,
       "bestSeasonWar": 0.35,
       "seriesW": 0,
-      "seriesL": 5
+      "seriesL": 5,
+      "warPlus10": 0.166
     },
     {
       "player": "Kelp",
@@ -1736,11 +1805,12 @@
       "accolades": "",
       "careerWar": 1.23,
       "war10": 0.65,
-      "warRank": 43,
+      "warRank": 42,
       "warPlus": 1.23,
       "bestSeasonWar": 1.23,
       "seriesW": 1,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": 0.646
     },
     {
       "player": "Luvfern",
@@ -1762,7 +1832,8 @@
       "warPlus": 0.02,
       "bestSeasonWar": -0.02,
       "seriesW": 2,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 0.02
     },
     {
       "player": "Nacho",
@@ -1784,7 +1855,8 @@
       "warPlus": 0.03,
       "bestSeasonWar": 0.03,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.02
     },
     {
       "player": "Wrihs",
@@ -1802,11 +1874,12 @@
       "accolades": "",
       "careerWar": 0.56,
       "war10": 0.28,
-      "warRank": 61,
+      "warRank": 60,
       "warPlus": 0.56,
       "bestSeasonWar": 0.56,
       "seriesW": 2,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": 0.279
     },
     {
       "player": "Roll",
@@ -1828,7 +1901,8 @@
       "warPlus": -0.2,
       "bestSeasonWar": -0.2,
       "seriesW": 1,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": -0.145
     },
     {
       "player": "Mythycall",
@@ -1850,7 +1924,8 @@
       "warPlus": 0.32,
       "bestSeasonWar": 0.31,
       "seriesW": 2,
-      "seriesL": 6
+      "seriesL": 6,
+      "warPlus10": 0.177
     },
     {
       "player": "NickyB",
@@ -1868,11 +1943,12 @@
       "accolades": "",
       "careerWar": 1.07,
       "war10": 0.29,
-      "warRank": 47,
+      "warRank": 46,
       "warPlus": 1.29,
       "bestSeasonWar": 0.89,
       "seriesW": 3,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": 0.348
     },
     {
       "player": "User",
@@ -1890,11 +1966,12 @@
       "accolades": "",
       "careerWar": 0.56,
       "war10": 0.35,
-      "warRank": 60,
+      "warRank": 59,
       "warPlus": 0.56,
       "bestSeasonWar": 0.56,
       "seriesW": 1,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": 0.35
     },
     {
       "player": "Horror",
@@ -1917,7 +1994,8 @@
       "warPlus": -0.62,
       "bestSeasonWar": 0.14,
       "seriesW": 8,
-      "seriesL": 5
+      "seriesL": 5,
+      "warPlus10": -0.148
     },
     {
       "player": "Edot",
@@ -1940,7 +2018,8 @@
       "warPlus": 0.35,
       "bestSeasonWar": 0.26,
       "seriesW": 6,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": 0.195
     },
     {
       "player": "AGF",
@@ -1962,7 +2041,8 @@
       "warPlus": -0.05,
       "bestSeasonWar": -0.05,
       "seriesW": 0,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": -0.04
     },
     {
       "player": "Underwrld",
@@ -1985,7 +2065,8 @@
       "warPlus": -0.49,
       "bestSeasonWar": -0.16,
       "seriesW": 0,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": -0.407
     },
     {
       "player": "LT7",
@@ -2007,7 +2088,8 @@
       "warPlus": -0.2,
       "bestSeasonWar": -0.2,
       "seriesW": 0,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": -0.656
     },
     {
       "player": "Sergio",
@@ -2024,13 +2106,14 @@
       "avgSeasonOverall": 73.6,
       "playerOverall": 75,
       "accolades": "",
-      "careerWar": 0.74,
-      "war10": 0.18,
-      "warRank": 54,
-      "warPlus": 0.74,
-      "bestSeasonWar": 1.16,
+      "careerWar": 0.75,
+      "war10": 0.19,
+      "warRank": 53,
+      "warPlus": 0.75,
+      "bestSeasonWar": 1.17,
       "seriesW": 1,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 0.186
     },
     {
       "player": "IBO",
@@ -2052,7 +2135,8 @@
       "warPlus": -0.15,
       "bestSeasonWar": -0.15,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.181
     },
     {
       "player": "Shadow",
@@ -2074,7 +2158,8 @@
       "warPlus": -0.33,
       "bestSeasonWar": -0.17,
       "seriesW": 2,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": -0.474
     },
     {
       "player": "Stunless",
@@ -2092,11 +2177,12 @@
       "accolades": "",
       "careerWar": 0.1,
       "war10": 0.17,
-      "warRank": 76,
+      "warRank": 75,
       "warPlus": 0.1,
       "bestSeasonWar": 0.1,
       "seriesW": 0,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 0.17
     },
     {
       "player": "Anura",
@@ -2118,7 +2204,8 @@
       "warPlus": -0.21,
       "bestSeasonWar": -0.22,
       "seriesW": 2,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.419
     },
     {
       "player": "Ryanreplays",
@@ -2141,7 +2228,8 @@
       "warPlus": -0.77,
       "bestSeasonWar": -0.28,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.48
     },
     {
       "player": "Verb",
@@ -2165,7 +2253,8 @@
       "warPlus": -1.38,
       "bestSeasonWar": -0.26,
       "seriesW": 2,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": -0.917
     },
     {
       "player": "Avecti",
@@ -2187,7 +2276,8 @@
       "warPlus": -0.39,
       "bestSeasonWar": -0.39,
       "seriesW": 1,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.781
     },
     {
       "player": "Seno",
@@ -2203,13 +2293,14 @@
       "avgSeasonOverall": 74.0,
       "playerOverall": 74,
       "accolades": "",
-      "careerWar": 0.66,
+      "careerWar": 0.67,
       "war10": 0.15,
-      "warRank": 56,
-      "warPlus": 0.66,
-      "bestSeasonWar": 0.66,
+      "warRank": 55,
+      "warPlus": 0.67,
+      "bestSeasonWar": 0.67,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": 0.15
     },
     {
       "player": "Stim",
@@ -2228,11 +2319,12 @@
       "accolades": "",
       "careerWar": 0.18,
       "war10": 0.04,
-      "warRank": 74,
+      "warRank": 73,
       "warPlus": 0.16,
       "bestSeasonWar": 0.28,
       "seriesW": 7,
-      "seriesL": 10
+      "seriesL": 10,
+      "warPlus10": 0.038
     },
     {
       "player": "Kirchy",
@@ -2256,7 +2348,8 @@
       "warPlus": -0.05,
       "bestSeasonWar": 0.27,
       "seriesW": 6,
-      "seriesL": 4
+      "seriesL": 4,
+      "warPlus10": -0.012
     },
     {
       "player": "Dreamy",
@@ -2273,12 +2366,13 @@
       "playerOverall": 74,
       "accolades": "",
       "careerWar": -1.0,
-      "war10": -0.67,
+      "war10": -0.66,
       "warRank": 113,
       "warPlus": -1.0,
       "bestSeasonWar": -0.47,
       "seriesW": 0,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": -0.665
     },
     {
       "player": "Trap",
@@ -2301,7 +2395,8 @@
       "warPlus": 4.71,
       "bestSeasonWar": 3.44,
       "seriesW": 20,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 0.645
     },
     {
       "player": "Hyper",
@@ -2323,7 +2418,8 @@
       "warPlus": -0.32,
       "bestSeasonWar": -0.32,
       "seriesW": 1,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": -0.171
     },
     {
       "player": "Peach",
@@ -2346,7 +2442,8 @@
       "warPlus": -1.79,
       "bestSeasonWar": 0.36,
       "seriesW": 15,
-      "seriesL": 10
+      "seriesL": 10,
+      "warPlus10": -0.293
     },
     {
       "player": "Soup",
@@ -2368,7 +2465,8 @@
       "warPlus": -0.59,
       "bestSeasonWar": -0.76,
       "seriesW": 6,
-      "seriesL": 6
+      "seriesL": 6,
+      "warPlus10": -0.255
     },
     {
       "player": "AlexthekillahH",
@@ -2390,7 +2488,8 @@
       "warPlus": -0.8,
       "bestSeasonWar": -0.8,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.725
     },
     {
       "player": "Chemwreck",
@@ -2407,13 +2506,14 @@
       "avgSeasonOverall": 69.0,
       "playerOverall": 71,
       "accolades": "",
-      "careerWar": -0.44,
+      "careerWar": -0.43,
       "war10": -0.31,
       "warRank": 95,
-      "warPlus": -0.44,
+      "warPlus": -0.43,
       "bestSeasonWar": 0.53,
       "seriesW": 1,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.308
     },
     {
       "player": "Realm",
@@ -2436,7 +2536,8 @@
       "warPlus": 0.49,
       "bestSeasonWar": 0.2,
       "seriesW": 10,
-      "seriesL": 8
+      "seriesL": 8,
+      "warPlus10": 0.09
     },
     {
       "player": "Cold",
@@ -2458,7 +2559,8 @@
       "warPlus": -0.76,
       "bestSeasonWar": -0.76,
       "seriesW": 0,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": -0.637
     },
     {
       "player": "Scare",
@@ -2481,7 +2583,8 @@
       "warPlus": -1.43,
       "bestSeasonWar": -0.34,
       "seriesW": 2,
-      "seriesL": 4
+      "seriesL": 4,
+      "warPlus10": -0.574
     },
     {
       "player": "Luke B",
@@ -2503,7 +2606,8 @@
       "warPlus": -0.41,
       "bestSeasonWar": -0.41,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.58
     },
     {
       "player": "Cholo",
@@ -2526,7 +2630,8 @@
       "warPlus": -0.67,
       "bestSeasonWar": 0.04,
       "seriesW": 2,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": -0.959
     },
     {
       "player": "Sybil",
@@ -2548,7 +2653,8 @@
       "warPlus": -0.31,
       "bestSeasonWar": -0.31,
       "seriesW": 0,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": -0.776
     },
     {
       "player": "Bebo",
@@ -2566,12 +2672,13 @@
       "playerOverall": 70,
       "accolades": "",
       "careerWar": -1.0,
-      "war10": -0.46,
+      "war10": -0.45,
       "warRank": 115,
       "warPlus": -1.0,
       "bestSeasonWar": 0.02,
       "seriesW": 0,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": -0.453
     },
     {
       "player": "i2Dreamy",
@@ -2588,12 +2695,13 @@
       "playerOverall": 70,
       "accolades": "",
       "careerWar": -1.0,
-      "war10": -0.67,
+      "war10": -0.66,
       "warRank": 113,
       "warPlus": -1.0,
       "bestSeasonWar": -0.47,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.665
     },
     {
       "player": "Zylix",
@@ -2615,7 +2723,8 @@
       "warPlus": -0.27,
       "bestSeasonWar": -0.27,
       "seriesW": 2,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.392
     },
     {
       "player": "Snapple",
@@ -2637,7 +2746,8 @@
       "warPlus": -0.46,
       "bestSeasonWar": -0.26,
       "seriesW": 0,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": -1.546
     },
     {
       "player": "2fly",
@@ -2654,13 +2764,14 @@
       "avgSeasonOverall": 67.7,
       "playerOverall": 69,
       "accolades": "",
-      "careerWar": -1.7,
+      "careerWar": -1.69,
       "war10": -0.89,
       "warRank": 125,
-      "warPlus": -1.7,
+      "warPlus": -1.69,
       "bestSeasonWar": -0.7,
       "seriesW": 2,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.891
     },
     {
       "player": "Secret",
@@ -2678,13 +2789,14 @@
       "avgSeasonOverall": 68.8,
       "playerOverall": 69,
       "accolades": "1 accolade: 1x Champion (S2)",
-      "careerWar": -1.54,
+      "careerWar": -1.53,
       "war10": -1.28,
       "warRank": 123,
-      "warPlus": -1.54,
+      "warPlus": -1.53,
       "bestSeasonWar": -0.12,
       "seriesW": 0,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": -1.278
     },
     {
       "player": "Robi",
@@ -2706,7 +2818,8 @@
       "warPlus": -0.48,
       "bestSeasonWar": -0.48,
       "seriesW": 0,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": -1.204
     },
     {
       "player": "Zico",
@@ -2728,7 +2841,8 @@
       "warPlus": -0.64,
       "bestSeasonWar": -0.64,
       "seriesW": 0,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": -2.138
     },
     {
       "player": "Jumpz",
@@ -2751,7 +2865,8 @@
       "warPlus": -1.46,
       "bestSeasonWar": -0.56,
       "seriesW": 0,
-      "seriesL": 1
+      "seriesL": 1,
+      "warPlus10": -1.825
     },
     {
       "player": "Tonychickenparm",
@@ -2773,7 +2888,8 @@
       "warPlus": -1.56,
       "bestSeasonWar": -1.6,
       "seriesW": 8,
-      "seriesL": 6
+      "seriesL": 6,
+      "warPlus10": -0.6
     },
     {
       "player": "Kelpmeltz",
@@ -2795,7 +2911,8 @@
       "warPlus": -0.49,
       "bestSeasonWar": -0.49,
       "seriesW": 0,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": -1.234
     },
     {
       "player": "Versaii",
@@ -2817,7 +2934,8 @@
       "warPlus": -1.25,
       "bestSeasonWar": -1.06,
       "seriesW": 0,
-      "seriesL": 6
+      "seriesL": 6,
+      "warPlus10": -1.133
     },
     {
       "player": "huxx",
@@ -2834,12 +2952,13 @@
       "playerOverall": 63,
       "accolades": "",
       "careerWar": -0.47,
-      "war10": -0.23,
+      "war10": -0.22,
       "warRank": 96,
       "warPlus": -0.47,
       "bestSeasonWar": -0.47,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.222
     },
     {
       "player": "Grimzey",
@@ -2861,7 +2980,8 @@
       "warPlus": -0.99,
       "bestSeasonWar": -0.99,
       "seriesW": 0,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": -2.481
     },
     {
       "player": "Shasta",
@@ -2877,13 +2997,14 @@
       "avgSeasonOverall": 61.0,
       "playerOverall": 61,
       "accolades": "",
-      "careerWar": -2.17,
+      "careerWar": -2.16,
       "war10": -0.94,
       "warRank": 126,
-      "warPlus": -2.17,
-      "bestSeasonWar": -2.17,
+      "warPlus": -2.16,
+      "bestSeasonWar": -2.16,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -0.94
     },
     {
       "player": "Kael",
@@ -2905,7 +3026,8 @@
       "warPlus": -1.43,
       "bestSeasonWar": -1.1,
       "seriesW": 0,
-      "seriesL": 4
+      "seriesL": 4,
+      "warPlus10": -2.045
     },
     {
       "player": "Jah",
@@ -2927,7 +3049,8 @@
       "warPlus": -1.42,
       "bestSeasonWar": -1.36,
       "seriesW": 0,
-      "seriesL": 4
+      "seriesL": 4,
+      "warPlus10": -1.778
     },
     {
       "player": "N8DOGG",
@@ -2943,13 +3066,14 @@
       "avgSeasonOverall": 54.0,
       "playerOverall": 54,
       "accolades": "",
-      "careerWar": -0.87,
+      "careerWar": -0.86,
       "war10": -2.16,
       "warRank": 111,
-      "warPlus": -0.87,
-      "bestSeasonWar": -0.87,
+      "warPlus": -0.86,
+      "bestSeasonWar": -0.86,
       "seriesW": 0,
-      "seriesL": 0
+      "seriesL": 0,
+      "warPlus10": -2.161
     },
     {
       "player": "Hitta",
@@ -2971,7 +3095,8 @@
       "warPlus": 3.91,
       "bestSeasonWar": 4.09,
       "seriesW": 5,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": 1.222
     },
     {
       "player": "Moon",
@@ -2993,7 +3118,8 @@
       "warPlus": -0.59,
       "bestSeasonWar": -0.67,
       "seriesW": 1,
-      "seriesL": 3
+      "seriesL": 3,
+      "warPlus10": -0.366
     },
     {
       "player": "Chadwick",
@@ -3015,7 +3141,8 @@
       "warPlus": -0.64,
       "bestSeasonWar": -0.51,
       "seriesW": 1,
-      "seriesL": 2
+      "seriesL": 2,
+      "warPlus10": -0.583
     }
   ],
   "aliasMap": {
@@ -3177,7 +3304,7 @@
       "allStar2": 0,
       "legacyScore": 108.93,
       "accolades": "5 accolades: 2x MVP (S2, S5); 1x Champion (S2); 2x All-Star (S2 First Team, S5 First Team)",
-      "careerWar": 15.13,
+      "careerWar": 15.14,
       "war10": 1.8
     },
     {
@@ -3195,7 +3322,7 @@
       "allStar2": 0,
       "legacyScore": 106.01,
       "accolades": "7 accolades: 1x MVP (S4); 1x Champion (S5); 5x All-Star (S1 First Team, S2 First Team, S3 First Team, S4 First Team, S5 First Team)",
-      "careerWar": 16.85,
+      "careerWar": 16.86,
       "war10": 1.52
     },
     {
@@ -3213,7 +3340,7 @@
       "allStar2": 2,
       "legacyScore": 92.22,
       "accolades": "7 accolades: 1x MVP (S1); 1x Champion (S1); 5x All-Star (S1 First Team, S4 First Team, S5 First Team, S2 Second Team, S3 Second Team)",
-      "careerWar": 20.4,
+      "careerWar": 20.42,
       "war10": 1.2
     },
     {
@@ -3249,7 +3376,7 @@
       "allStar2": 4,
       "legacyScore": 61.81,
       "accolades": "6 accolades: 1x Champion (S3); 5x All-Star (S1 First Team, S2 Second Team, S3 Second Team, S4 Second Team, S5 Second Team)",
-      "careerWar": 18.23,
+      "careerWar": 18.24,
       "war10": 1.19
     },
     {
@@ -3267,7 +3394,7 @@
       "allStar2": 2,
       "legacyScore": 52.06,
       "accolades": "4 accolades: 1x Champion (S3); 3x All-Star (S3 First Team, S1 Second Team, S5 Second Team)",
-      "careerWar": 6.92,
+      "careerWar": 6.93,
       "war10": 0.9
     },
     {
@@ -3285,7 +3412,7 @@
       "allStar2": 2,
       "legacyScore": 48.84,
       "accolades": "3 accolades: 3x All-Star (S3 First Team, S2 Second Team, S4 Second Team)",
-      "careerWar": 13.89,
+      "careerWar": 13.91,
       "war10": 0.82
     },
     {
@@ -3303,7 +3430,7 @@
       "allStar2": 2,
       "legacyScore": 39.68,
       "accolades": "3 accolades: 1x Champion (S4); 2x All-Star (S1 Second Team, S4 Second Team)",
-      "careerWar": 8.37,
+      "careerWar": 8.38,
       "war10": 0.54
     },
     {
@@ -4855,8 +4982,8 @@
             "All-Star First Team"
           ],
           "allStar": "1st Team",
-          "war": 4.488,
-          "war10": 1.4477,
+          "war": 4.4984,
+          "war10": 1.4511,
           "warRank": 5
         },
         {
@@ -4880,8 +5007,8 @@
             "Season Champion"
           ],
           "allStar": "1st Team",
-          "war": 6.7922,
-          "war10": 1.9406,
+          "war": 6.8038,
+          "war10": 1.944,
           "warRank": 1
         },
         {
@@ -4901,8 +5028,8 @@
           "seriesPlayed": 4,
           "honors": [],
           "allStar": "",
-          "war": 2.0543,
-          "war10": 1.3695,
+          "war": 2.0593,
+          "war10": 1.3729,
           "warRank": 15
         },
         {
@@ -4924,8 +5051,8 @@
             "All-Star First Team"
           ],
           "allStar": "1st Team",
-          "war": 5.5902,
-          "war10": 1.3,
+          "war": 5.6047,
+          "war10": 1.3034,
           "warRank": 2
         },
         {
@@ -4945,9 +5072,9 @@
           "seriesPlayed": 4,
           "honors": [],
           "allStar": "",
-          "war": 2.8876,
-          "war10": 1.8048,
-          "warRank": 9
+          "war": 2.893,
+          "war10": 1.8081,
+          "warRank": 10
         },
         {
           "player": "Acro Ace",
@@ -4968,8 +5095,8 @@
             "All-Star Second Team"
           ],
           "allStar": "2nd Team",
-          "war": 5.4953,
-          "war10": 1.1692,
+          "war": 5.5109,
+          "war10": 1.1725,
           "warRank": 3
         },
         {
@@ -4991,8 +5118,8 @@
             "All-Star First Team"
           ],
           "allStar": "1st Team",
-          "war": 3.5041,
-          "war10": 1.2083,
+          "war": 3.5138,
+          "war10": 1.2117,
           "warRank": 7
         },
         {
@@ -5012,9 +5139,9 @@
           "seriesPlayed": 5,
           "honors": [],
           "allStar": "",
-          "war": 2.7589,
-          "war10": 1.3138,
-          "warRank": 11
+          "war": 2.766,
+          "war10": 1.3171,
+          "warRank": 12
         },
         {
           "player": "Thermo",
@@ -5035,8 +5162,8 @@
             "All-Star Second Team"
           ],
           "allStar": "2nd Team",
-          "war": 3.2893,
-          "war10": 0.8434,
+          "war": 3.3025,
+          "war10": 0.8468,
           "warRank": 8
         },
         {
@@ -5056,9 +5183,9 @@
           "seriesPlayed": 9,
           "honors": [],
           "allStar": "",
-          "war": 2.2589,
-          "war10": 0.5792,
-          "warRank": 14
+          "war": 3.2924,
+          "war10": 0.8442,
+          "warRank": 9
         },
         {
           "player": "Nuance",
@@ -5077,9 +5204,9 @@
           "seriesPlayed": 10,
           "honors": [],
           "allStar": "",
-          "war": 2.6014,
-          "war10": 0.6846,
-          "warRank": 13
+          "war": 2.6141,
+          "war10": 0.6879,
+          "warRank": 14
         },
         {
           "player": "Aj",
@@ -5100,8 +5227,8 @@
             "All-Star Second Team"
           ],
           "allStar": "2nd Team",
-          "war": 4.7418,
-          "war10": 1.0089,
+          "war": 4.7574,
+          "war10": 1.0122,
           "warRank": 4
         },
         {
@@ -5121,9 +5248,9 @@
           "seriesPlayed": 3,
           "honors": [],
           "allStar": "",
-          "war": 1.2184,
-          "war10": 0.9372,
-          "warRank": 20
+          "war": 1.2228,
+          "war10": 0.9406,
+          "warRank": 19
         },
         {
           "player": "Tubby",
@@ -5142,9 +5269,9 @@
           "seriesPlayed": 3,
           "honors": [],
           "allStar": "",
-          "war": 0.8736,
-          "war10": 0.8736,
-          "warRank": 24
+          "war": 0.877,
+          "war10": 0.877,
+          "warRank": 23
         },
         {
           "player": "Kai",
@@ -5165,9 +5292,9 @@
             "Season Champion"
           ],
           "allStar": "",
-          "war": 2.6726,
-          "war10": 0.7636,
-          "warRank": 12
+          "war": 2.6842,
+          "war10": 0.7669,
+          "warRank": 13
         },
         {
           "player": "Renicide",
@@ -5188,8 +5315,8 @@
             "All-Star Second Team"
           ],
           "allStar": "2nd Team",
-          "war": 3.9894,
-          "war10": 0.973,
+          "war": 4.0032,
+          "war10": 0.9764,
           "warRank": 6
         },
         {
@@ -5209,8 +5336,8 @@
           "seriesPlayed": 10,
           "honors": [],
           "allStar": "",
-          "war": 1.7405,
-          "war10": 0.4351,
+          "war": 1.7539,
+          "war10": 0.4385,
           "warRank": 16
         },
         {
@@ -5230,9 +5357,9 @@
           "seriesPlayed": 10,
           "honors": [],
           "allStar": "",
-          "war": 2.7675,
-          "war10": 0.675,
-          "warRank": 10
+          "war": 2.7813,
+          "war10": 0.6784,
+          "warRank": 11
         },
         {
           "player": "JayDash",
@@ -5251,9 +5378,9 @@
           "seriesPlayed": 2,
           "honors": [],
           "allStar": "",
-          "war": 0.3112,
-          "war10": 0.3458,
-          "warRank": 28
+          "war": 0.3142,
+          "war10": 0.3491,
+          "warRank": 27
         },
         {
           "player": "Nada",
@@ -5272,9 +5399,9 @@
           "seriesPlayed": 9,
           "honors": [],
           "allStar": "",
-          "war": 1.219,
-          "war10": 0.3386,
-          "warRank": 19
+          "war": 1.2309,
+          "war10": 0.3419,
+          "warRank": 18
         },
         {
           "player": "Boogey",
@@ -5293,9 +5420,9 @@
           "seriesPlayed": 2,
           "honors": [],
           "allStar": "",
-          "war": 0.2478,
-          "war10": 0.354,
-          "warRank": 29
+          "war": 0.2501,
+          "war10": 0.3573,
+          "warRank": 28
         },
         {
           "player": "Hazier",
@@ -5314,9 +5441,9 @@
           "seriesPlayed": 10,
           "honors": [],
           "allStar": "",
-          "war": 1.4513,
-          "war10": 0.3375,
-          "warRank": 18
+          "war": 0.0629,
+          "war10": 0.0146,
+          "warRank": 30
         },
         {
           "player": "Pablo",
@@ -5337,8 +5464,8 @@
             "Season Champion"
           ],
           "allStar": "",
-          "war": 1.4699,
-          "war10": 0.5249,
+          "war": 1.4792,
+          "war10": 0.5283,
           "warRank": 17
         },
         {
@@ -5358,9 +5485,9 @@
           "seriesPlayed": 6,
           "honors": [],
           "allStar": "",
-          "war": 0.3262,
-          "war10": 0.1554,
-          "warRank": 27
+          "war": 0.3332,
+          "war10": 0.1587,
+          "warRank": 26
         },
         {
           "player": "Casperfy",
@@ -5381,9 +5508,9 @@
             "Season Champion"
           ],
           "allStar": "",
-          "war": 0.6839,
-          "war10": 0.2137,
-          "warRank": 25
+          "war": 0.6945,
+          "war10": 0.217,
+          "warRank": 24
         },
         {
           "player": "Nacho",
@@ -5402,8 +5529,8 @@
           "seriesPlayed": 5,
           "honors": [],
           "allStar": "",
-          "war": 0.0289,
-          "war10": 0.017,
+          "war": 0.0345,
+          "war10": 0.0203,
           "warRank": 31
         },
         {
@@ -5423,9 +5550,9 @@
           "seriesPlayed": 7,
           "honors": [],
           "allStar": "",
-          "war": 0.9094,
-          "war10": 0.3498,
-          "warRank": 23
+          "war": 0.918,
+          "war10": 0.3531,
+          "warRank": 22
         },
         {
           "player": "Utopian",
@@ -5444,9 +5571,9 @@
           "seriesPlayed": 2,
           "honors": [],
           "allStar": "",
-          "war": 0.1903,
-          "war10": 0.2379,
-          "warRank": 30
+          "war": 0.193,
+          "war10": 0.2413,
+          "warRank": 29
         },
         {
           "player": "Sergio",
@@ -5465,9 +5592,9 @@
           "seriesPlayed": 7,
           "honors": [],
           "allStar": "",
-          "war": 1.1581,
-          "war10": 0.3993,
-          "warRank": 21
+          "war": 1.1678,
+          "war10": 0.4027,
+          "warRank": 20
         },
         {
           "player": "Noti",
@@ -5486,9 +5613,9 @@
           "seriesPlayed": 7,
           "honors": [],
           "allStar": "",
-          "war": 1.1059,
-          "war10": 0.3949,
-          "warRank": 22
+          "war": 1.1152,
+          "war10": 0.3983,
+          "warRank": 21
         },
         {
           "player": "Seno",
@@ -5507,9 +5634,9 @@
           "seriesPlayed": 12,
           "honors": [],
           "allStar": "",
-          "war": 0.6599,
-          "war10": 0.1467,
-          "warRank": 26
+          "war": 0.6748,
+          "war10": 0.15,
+          "warRank": 25
         },
         {
           "player": "Lazyy",
@@ -5528,8 +5655,8 @@
           "seriesPlayed": 7,
           "honors": [],
           "allStar": "",
-          "war": 0.0115,
-          "war10": 0.0044,
+          "war": 0.0201,
+          "war10": 0.0077,
           "warRank": 32
         },
         {
@@ -5549,8 +5676,8 @@
           "seriesPlayed": 7,
           "honors": [],
           "allStar": "",
-          "war": -0.5539,
-          "war10": -0.2052,
+          "war": -0.5448,
+          "war10": -0.2018,
           "warRank": 47
         },
         {
@@ -5570,8 +5697,8 @@
           "seriesPlayed": 3,
           "honors": [],
           "allStar": "",
-          "war": -0.1711,
-          "war10": -0.2445,
+          "war": -0.1688,
+          "war10": -0.2412,
           "warRank": 39
         },
         {
@@ -5591,8 +5718,8 @@
           "seriesPlayed": 2,
           "honors": [],
           "allStar": "",
-          "war": -0.1479,
-          "war10": -0.1848,
+          "war": -0.1451,
+          "war10": -0.1814,
           "warRank": 38
         },
         {
@@ -5612,8 +5739,8 @@
           "seriesPlayed": 4,
           "honors": [],
           "allStar": "",
-          "war": -0.5758,
-          "war10": -0.3839,
+          "war": -0.5708,
+          "war10": -0.3805,
           "warRank": 48
         },
         {
@@ -5633,8 +5760,8 @@
           "seriesPlayed": 4,
           "honors": [],
           "allStar": "",
-          "war": -0.0962,
-          "war10": -0.074,
+          "war": -0.092,
+          "war10": -0.0707,
           "warRank": 37
         },
         {
@@ -5654,8 +5781,8 @@
           "seriesPlayed": 5,
           "honors": [],
           "allStar": "",
-          "war": -1.0212,
-          "war10": -0.5375,
+          "war": -1.0149,
+          "war10": -0.5341,
           "warRank": 54
         },
         {
@@ -5675,8 +5802,8 @@
           "seriesPlayed": 2,
           "honors": [],
           "allStar": "",
-          "war": -0.3269,
-          "war10": -0.467,
+          "war": -0.3246,
+          "war10": -0.4637,
           "warRank": 40
         },
         {
@@ -5696,8 +5823,8 @@
           "seriesPlayed": 2,
           "honors": [],
           "allStar": "",
-          "war": -0.4736,
-          "war10": -0.592,
+          "war": -0.4708,
+          "war10": -0.5886,
           "warRank": 44
         },
         {
@@ -5717,8 +5844,8 @@
           "seriesPlayed": 5,
           "honors": [],
           "allStar": "",
-          "war": -0.473,
-          "war10": -0.2252,
+          "war": -0.4659,
+          "war10": -0.2218,
           "warRank": 43
         },
         {
@@ -5738,8 +5865,8 @@
           "seriesPlayed": 2,
           "honors": [],
           "allStar": "",
-          "war": -0.4081,
-          "war10": -0.583,
+          "war": -0.4058,
+          "war10": -0.5797,
           "warRank": 41
         },
         {
@@ -5759,8 +5886,8 @@
           "seriesPlayed": 3,
           "honors": [],
           "allStar": "",
-          "war": -0.9642,
-          "war10": -0.8765,
+          "war": -0.9604,
+          "war10": -0.8731,
           "warRank": 52
         },
         {
@@ -5780,8 +5907,8 @@
           "seriesPlayed": 6,
           "honors": [],
           "allStar": "",
-          "war": -2.1704,
-          "war10": -0.9437,
+          "war": -2.1628,
+          "war10": -0.9403,
           "warRank": 55
         },
         {
@@ -5801,8 +5928,8 @@
           "seriesPlayed": 3,
           "honors": [],
           "allStar": "",
-          "war": -0.483,
-          "war10": -0.4391,
+          "war": -0.4793,
+          "war10": -0.4357,
           "warRank": 45
         },
         {
@@ -5822,8 +5949,8 @@
           "seriesPlayed": 3,
           "honors": [],
           "allStar": "",
-          "war": -0.9957,
-          "war10": -0.9052,
+          "war": -0.992,
+          "war10": -0.9019,
           "warRank": 53
         },
         {
@@ -5843,8 +5970,8 @@
           "seriesPlayed": 1,
           "honors": [],
           "allStar": "",
-          "war": -0.4877,
-          "war10": -1.2194,
+          "war": -0.4864,
+          "war10": -1.216,
           "warRank": 46
         },
         {
@@ -5866,8 +5993,8 @@
             "Season Champion"
           ],
           "allStar": "",
-          "war": -0.4652,
-          "war10": -1.163,
+          "war": -0.4639,
+          "war10": -1.1596,
           "warRank": 42
         },
         {
@@ -5887,8 +6014,8 @@
           "seriesPlayed": 1,
           "honors": [],
           "allStar": "",
-          "war": -0.7174,
-          "war10": -1.7934,
+          "war": -0.716,
+          "war10": -1.79,
           "warRank": 49
         },
         {
@@ -5908,8 +6035,8 @@
           "seriesPlayed": 2,
           "honors": [],
           "allStar": "",
-          "war": -0.9004,
-          "war10": -1.8008,
+          "war": -0.8986,
+          "war10": -1.7972,
           "warRank": 51
         },
         {
@@ -5929,8 +6056,8 @@
           "seriesPlayed": 1,
           "honors": [],
           "allStar": "",
-          "war": -0.8656,
-          "war10": -2.164,
+          "war": -0.8643,
+          "war10": -2.1606,
           "warRank": 50
         },
         {
@@ -8988,7 +9115,8 @@
           "plantsPerSnd": 0.1111,
           "defusesPerSnd": 0.4444,
           "objKillsPerCtl": 16.625,
-          "dmgPer10": 4859.6368
+          "dmgPer10": 4859.6368,
+          "warPlus10": 2.0398
         },
         {
           "player": "Hype",
@@ -9018,7 +9146,8 @@
           "plantsPerSnd": 0.3333,
           "defusesPerSnd": 0.3333,
           "objKillsPerCtl": 17.5,
-          "dmgPer10": 4893.0636
+          "dmgPer10": 4893.0636,
+          "warPlus10": 1.5709
         },
         {
           "player": "Aj",
@@ -9047,7 +9176,8 @@
           "plantsPerSnd": 1.3,
           "defusesPerSnd": 0.2,
           "objKillsPerCtl": 18.9,
-          "dmgPer10": 4716.5469
+          "dmgPer10": 4716.5469,
+          "warPlus10": 1.9896
         },
         {
           "player": "Inkster",
@@ -9076,7 +9206,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.6,
           "objKillsPerCtl": 17.625,
-          "dmgPer10": 4333.9806
+          "dmgPer10": 4333.9806,
+          "warPlus10": 1.8797
         },
         {
           "player": "Habibi",
@@ -9105,7 +9236,8 @@
           "plantsPerSnd": 0.75,
           "defusesPerSnd": 0.125,
           "objKillsPerCtl": 12.1429,
-          "dmgPer10": 4605.2195
+          "dmgPer10": 4605.2195,
+          "warPlus10": 0.9975
         },
         {
           "player": "Lurkens",
@@ -9135,7 +9267,8 @@
           "plantsPerSnd": 0.1429,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 15.1667,
-          "dmgPer10": 4578.8063
+          "dmgPer10": 4578.8063,
+          "warPlus10": 0.8892
         },
         {
           "player": "Renicide",
@@ -9164,7 +9297,8 @@
           "plantsPerSnd": 0.1111,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 18.1667,
-          "dmgPer10": 4263.8118
+          "dmgPer10": 4263.8118,
+          "warPlus10": 1.236
         },
         {
           "player": "Acro Ace",
@@ -9191,7 +9325,8 @@
           "plantsPerSnd": 0.1667,
           "defusesPerSnd": 0.0833,
           "objKillsPerCtl": 14.6364,
-          "dmgPer10": 3915.8066
+          "dmgPer10": 3915.8066,
+          "warPlus10": 0.2975
         },
         {
           "player": "Godofwarfare",
@@ -9218,7 +9353,8 @@
           "plantsPerSnd": 0.5,
           "defusesPerSnd": 0.125,
           "objKillsPerCtl": 14.6667,
-          "dmgPer10": 3706.7459
+          "dmgPer10": 3706.7459,
+          "warPlus10": 1.0083
         },
         {
           "player": "Aurora",
@@ -9247,7 +9383,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 8.0,
-          "dmgPer10": 3632.4675
+          "dmgPer10": 3632.4675,
+          "warPlus10": 1.3235
         },
         {
           "player": "Andrix",
@@ -9274,7 +9411,8 @@
           "plantsPerSnd": 0.5556,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 12.125,
-          "dmgPer10": 4500.9719
+          "dmgPer10": 4500.9719,
+          "warPlus10": 0.6965
         },
         {
           "player": "EJ",
@@ -9301,7 +9439,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.3333,
           "objKillsPerCtl": 11.5,
-          "dmgPer10": 3806.1244
+          "dmgPer10": 3806.1244,
+          "warPlus10": 1.3231
         },
         {
           "player": "Jealous",
@@ -9328,7 +9467,8 @@
           "plantsPerSnd": 0.4444,
           "defusesPerSnd": 0.1111,
           "objKillsPerCtl": 13.625,
-          "dmgPer10": 3730.3003
+          "dmgPer10": 3730.3003,
+          "warPlus10": 0.3022
         },
         {
           "player": "Leib",
@@ -9357,7 +9497,8 @@
           "plantsPerSnd": 0.6667,
           "defusesPerSnd": 0.1667,
           "objKillsPerCtl": 16.6667,
-          "dmgPer10": 4158.5393
+          "dmgPer10": 4158.5393,
+          "warPlus10": 0.4929
         },
         {
           "player": "Docsukii",
@@ -9384,7 +9525,8 @@
           "plantsPerSnd": 0.4,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 12.5,
-          "dmgPer10": 4011.712
+          "dmgPer10": 4011.712,
+          "warPlus10": 0.6197
         },
         {
           "player": "Nastyy",
@@ -9411,7 +9553,8 @@
           "plantsPerSnd": 0.3,
           "defusesPerSnd": 0.2,
           "objKillsPerCtl": 11.6667,
-          "dmgPer10": 3849.2479
+          "dmgPer10": 3849.2479,
+          "warPlus10": 0.1872
         },
         {
           "player": "NickBoston",
@@ -9438,7 +9581,8 @@
           "plantsPerSnd": 0.7143,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 20.6667,
-          "dmgPer10": 4219.0813
+          "dmgPer10": 4219.0813,
+          "warPlus10": 0.5253
         },
         {
           "player": "Pablo",
@@ -9465,7 +9609,8 @@
           "plantsPerSnd": 0.5,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 15.75,
-          "dmgPer10": 3412.118
+          "dmgPer10": 3412.118,
+          "warPlus10": 1.2647
         },
         {
           "player": "Peach",
@@ -9492,7 +9637,8 @@
           "plantsPerSnd": 0.5,
           "defusesPerSnd": 0.2,
           "objKillsPerCtl": 12.7,
-          "dmgPer10": 3909.2696
+          "dmgPer10": 3909.2696,
+          "warPlus10": -0.4861
         },
         {
           "player": "Josh",
@@ -9519,7 +9665,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.3333,
           "objKillsPerCtl": 16.0,
-          "dmgPer10": 5555.6757
+          "dmgPer10": 5555.6757,
+          "warPlus10": 1.3787
         },
         {
           "player": "Dragon",
@@ -9546,7 +9693,8 @@
           "plantsPerSnd": 0.5714,
           "defusesPerSnd": 0.1429,
           "objKillsPerCtl": 18.0,
-          "dmgPer10": 3786.2096
+          "dmgPer10": 3786.2096,
+          "warPlus10": 0.4579
         },
         {
           "player": "Lewy",
@@ -9573,7 +9721,8 @@
           "plantsPerSnd": 0.2,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 13.5,
-          "dmgPer10": 3978.4361
+          "dmgPer10": 3978.4361,
+          "warPlus10": 0.0611
         },
         {
           "player": "Trap",
@@ -9602,7 +9751,8 @@
           "plantsPerSnd": 1.5,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 11.8333,
-          "dmgPer10": 3686.8497
+          "dmgPer10": 3686.8497,
+          "warPlus10": 0.2839
         },
         {
           "player": "Mythycall",
@@ -9629,7 +9779,8 @@
           "plantsPerSnd": 0.6667,
           "defusesPerSnd": 0.3333,
           "objKillsPerCtl": 11.5,
-          "dmgPer10": 4623.0
+          "dmgPer10": 4623.0,
+          "warPlus10": 0.1766
         },
         {
           "player": "Skapun",
@@ -9656,7 +9807,8 @@
           "plantsPerSnd": null,
           "defusesPerSnd": null,
           "objKillsPerCtl": null,
-          "dmgPer10": null
+          "dmgPer10": null,
+          "warPlus10": 1.5896
         },
         {
           "player": "Bleepa",
@@ -9683,7 +9835,8 @@
           "plantsPerSnd": 0.75,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 12.8,
-          "dmgPer10": 3458.5507
+          "dmgPer10": 3458.5507,
+          "warPlus10": -0.0422
         },
         {
           "player": "Soup",
@@ -9710,7 +9863,8 @@
           "plantsPerSnd": 0.4286,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 18.6667,
-          "dmgPer10": 4246.6746
+          "dmgPer10": 4246.6746,
+          "warPlus10": -0.255
         },
         {
           "player": "Proxzify",
@@ -9737,7 +9891,8 @@
           "plantsPerSnd": 0.25,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 9.6667,
-          "dmgPer10": 3222.8656
+          "dmgPer10": 3222.8656,
+          "warPlus10": 0.0538
         },
         {
           "player": "Tonychickenparm",
@@ -9764,7 +9919,8 @@
           "plantsPerSnd": 0.875,
           "defusesPerSnd": 0.125,
           "objKillsPerCtl": 12.0,
-          "dmgPer10": 4037.9582
+          "dmgPer10": 4037.9582,
+          "warPlus10": -0.6003
         },
         {
           "player": "Stim",
@@ -9791,7 +9947,8 @@
           "plantsPerSnd": 0.6,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 9.75,
-          "dmgPer10": 4666.129
+          "dmgPer10": 4666.129,
+          "warPlus10": -0.0571
         },
         {
           "player": "Horror",
@@ -9818,7 +9975,8 @@
           "plantsPerSnd": 0.5,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 13.5,
-          "dmgPer10": 3830.5233
+          "dmgPer10": 3830.5233,
+          "warPlus10": 0.0763
         },
         {
           "player": "Realm",
@@ -9845,7 +10003,8 @@
           "plantsPerSnd": 1.1667,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 8.0,
-          "dmgPer10": 3041.6521
+          "dmgPer10": 3041.6521,
+          "warPlus10": -0.0569
         },
         {
           "player": "Edot",
@@ -9872,7 +10031,8 @@
           "plantsPerSnd": 0.4,
           "defusesPerSnd": 0.2,
           "objKillsPerCtl": 21.0,
-          "dmgPer10": 4122.883
+          "dmgPer10": 4122.883,
+          "warPlus10": 0.205
         },
         {
           "player": "Kai",
@@ -9899,7 +10059,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.3333,
           "objKillsPerCtl": 17.0,
-          "dmgPer10": 4511.3636
+          "dmgPer10": 4511.3636,
+          "warPlus10": -0.1687
         },
         {
           "player": "Toremeant",
@@ -9926,7 +10087,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 3.0,
-          "dmgPer10": 4010.8108
+          "dmgPer10": 4010.8108,
+          "warPlus10": -0.1331
         },
         {
           "player": "Utopian",
@@ -9953,7 +10115,8 @@
           "plantsPerSnd": 0.75,
           "defusesPerSnd": 0.25,
           "objKillsPerCtl": 8.3333,
-          "dmgPer10": 3028.3286
+          "dmgPer10": 3028.3286,
+          "warPlus10": -0.4951
         },
         {
           "player": "Luvfern",
@@ -9980,7 +10143,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 7.0,
-          "dmgPer10": 3565.2229
+          "dmgPer10": 3565.2229,
+          "warPlus10": 0.0205
         },
         {
           "player": "Jmetree",
@@ -10007,7 +10171,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 17.0,
-          "dmgPer10": 4768.3019
+          "dmgPer10": 4768.3019,
+          "warPlus10": 1.2298
         },
         {
           "player": "Deceptions",
@@ -10034,7 +10199,8 @@
           "plantsPerSnd": 1.0,
           "defusesPerSnd": 1.0,
           "objKillsPerCtl": 8.0,
-          "dmgPer10": 4547.5921
+          "dmgPer10": 4547.5921,
+          "warPlus10": 1.6762
         },
         {
           "player": "Killfeed",
@@ -10061,7 +10227,8 @@
           "plantsPerSnd": 1.5,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 14.5,
-          "dmgPer10": 4183.6364
+          "dmgPer10": 4183.6364,
+          "warPlus10": -0.2119
         },
         {
           "player": "Shadow",
@@ -10088,7 +10255,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 14.0,
-          "dmgPer10": 4569.5946
+          "dmgPer10": 4569.5946,
+          "warPlus10": -0.4742
         },
         {
           "player": "Versaii",
@@ -10115,7 +10283,8 @@
           "plantsPerSnd": 0.6667,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 11.5,
-          "dmgPer10": 3559.9407
+          "dmgPer10": 3559.9407,
+          "warPlus10": -1.133
         },
         {
           "player": "Anura",
@@ -10142,7 +10311,8 @@
           "plantsPerSnd": 1.5,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 17.0,
-          "dmgPer10": 3733.9943
+          "dmgPer10": 3733.9943,
+          "warPlus10": -0.4186
         },
         {
           "player": "Duffie",
@@ -10169,7 +10339,8 @@
           "plantsPerSnd": 1.0,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 1.0,
-          "dmgPer10": 4342.1656
+          "dmgPer10": 4342.1656,
+          "warPlus10": -0.7459
         },
         {
           "player": "Lazyy",
@@ -10196,7 +10367,8 @@
           "plantsPerSnd": null,
           "defusesPerSnd": null,
           "objKillsPerCtl": null,
-          "dmgPer10": null
+          "dmgPer10": null,
+          "warPlus10": -0.4615
         },
         {
           "player": "Jah",
@@ -10223,7 +10395,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 12.0,
-          "dmgPer10": 2742.7056
+          "dmgPer10": 2742.7056,
+          "warPlus10": -1.7779
         },
         {
           "player": "Kael",
@@ -10250,7 +10423,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 7.5,
-          "dmgPer10": 3331.2397
+          "dmgPer10": 3331.2397,
+          "warPlus10": -2.0446
         },
         {
           "player": "Kugo",
@@ -10279,7 +10453,8 @@
           "plantsPerSnd": null,
           "defusesPerSnd": null,
           "objKillsPerCtl": null,
-          "dmgPer10": null
+          "dmgPer10": null,
+          "warPlus10": -1.3017
         },
         {
           "player": "Kelpmeltz",
@@ -10306,7 +10481,8 @@
           "plantsPerSnd": null,
           "defusesPerSnd": null,
           "objKillsPerCtl": null,
-          "dmgPer10": null
+          "dmgPer10": null,
+          "warPlus10": -1.2338
         },
         {
           "player": "Cholo",
@@ -10333,7 +10509,8 @@
           "plantsPerSnd": null,
           "defusesPerSnd": null,
           "objKillsPerCtl": null,
-          "dmgPer10": 3693.2358
+          "dmgPer10": 3693.2358,
+          "warPlus10": -0.3266
         },
         {
           "player": "Snapple",
@@ -10360,7 +10537,8 @@
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
           "objKillsPerCtl": 10.0,
-          "dmgPer10": 3343.2432
+          "dmgPer10": 3343.2432,
+          "warPlus10": -1.546
         },
         {
           "player": "Grimzey",
@@ -10387,7 +10565,8 @@
           "plantsPerSnd": null,
           "defusesPerSnd": null,
           "objKillsPerCtl": null,
-          "dmgPer10": null
+          "dmgPer10": null,
+          "warPlus10": -2.4815
         }
       ],
       "standings": [
@@ -10783,6 +10962,7 @@
           "war10": 1.5743,
           "warRank": 1,
           "warPlus": 4.4164,
+          "warPlus10": 1.6357,
           "hillPerHp": 66.7273,
           "plantsPerSnd": 0.7,
           "defusesPerSnd": 0.2,
@@ -10810,6 +10990,7 @@
           "war10": 1.1466,
           "warRank": 7,
           "warPlus": 2.6213,
+          "warPlus10": 0.9708,
           "hillPerHp": 47.3636,
           "plantsPerSnd": 0.6,
           "defusesPerSnd": 0.2,
@@ -10837,6 +11018,7 @@
           "war10": 1.0125,
           "warRank": 6,
           "warPlus": 2.9464,
+          "warPlus10": 0.8928,
           "hillPerHp": 51.6667,
           "plantsPerSnd": 0.25,
           "defusesPerSnd": 0.125,
@@ -10864,6 +11046,7 @@
           "war10": 0.864,
           "warRank": 4,
           "warPlus": 4.1664,
+          "warPlus10": 0.992,
           "hillPerHp": 81.7333,
           "plantsPerSnd": 0.4545,
           "defusesPerSnd": 0.1818,
@@ -10891,6 +11074,7 @@
           "war10": 1.21,
           "warRank": 8,
           "warPlus": 2.4691,
+          "warPlus10": 0.9876,
           "hillPerHp": 48.8889,
           "plantsPerSnd": 0.3333,
           "defusesPerSnd": 0.0,
@@ -10918,6 +11102,7 @@
           "war10": 1.0702,
           "warRank": 3,
           "warPlus": 3.2044,
+          "warPlus10": 0.8901,
           "hillPerHp": 45.0769,
           "plantsPerSnd": 0.1111,
           "defusesPerSnd": 0.1111,
@@ -10945,6 +11130,7 @@
           "war10": 0.9299,
           "warRank": 10,
           "warPlus": 1.5633,
+          "warPlus10": 0.7106,
           "hillPerHp": 44.6667,
           "plantsPerSnd": 0.125,
           "defusesPerSnd": 0.125,
@@ -10972,6 +11158,7 @@
           "war10": 0.4589,
           "warRank": 14,
           "warPlus": 0.2613,
+          "warPlus10": 0.201,
           "hillPerHp": 50.0,
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
@@ -10999,6 +11186,7 @@
           "war10": 0.6487,
           "warRank": 15,
           "warPlus": 0.4842,
+          "warPlus10": 0.538,
           "hillPerHp": 58.5,
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
@@ -11026,6 +11214,7 @@
           "war10": 1.2792,
           "warRank": 2,
           "warPlus": 3.909,
+          "warPlus10": 1.2216,
           "hillPerHp": 60.7692,
           "plantsPerSnd": 0.25,
           "defusesPerSnd": 0.3333,
@@ -11053,6 +11242,7 @@
           "war10": 0.8145,
           "warRank": 9,
           "warPlus": 1.9712,
+          "warPlus10": 0.7301,
           "hillPerHp": 58.4545,
           "plantsPerSnd": 0.7,
           "defusesPerSnd": 0.1,
@@ -11080,6 +11270,7 @@
           "war10": 0.8038,
           "warRank": 11,
           "warPlus": 2.6055,
+          "warPlus10": 1.0422,
           "hillPerHp": 83.6,
           "plantsPerSnd": 1.0,
           "defusesPerSnd": 0.0,
@@ -11107,6 +11298,7 @@
           "war10": 0.9542,
           "warRank": 5,
           "warPlus": 3.182,
+          "warPlus10": 0.8839,
           "hillPerHp": 60.0,
           "plantsPerSnd": 0.1538,
           "defusesPerSnd": 0.3846,
@@ -11134,6 +11326,7 @@
           "war10": 0.2375,
           "warRank": 13,
           "warPlus": 2.7439,
+          "warPlus10": 0.7622,
           "hillPerHp": 104.4667,
           "plantsPerSnd": 1.0,
           "defusesPerSnd": 0.2308,
@@ -11161,6 +11354,7 @@
           "war10": 0.4746,
           "warRank": 12,
           "warPlus": 0.9835,
+          "warPlus10": 0.3934,
           "hillPerHp": 57.1111,
           "plantsPerSnd": 0.8333,
           "defusesPerSnd": 0.0,
@@ -11188,6 +11382,7 @@
           "war10": -0.0928,
           "warRank": 26,
           "warPlus": -0.0149,
+          "warPlus10": -0.0115,
           "hillPerHp": 75.1667,
           "plantsPerSnd": 0.5,
           "defusesPerSnd": 0.0,
@@ -11215,6 +11410,7 @@
           "war10": -0.0181,
           "warRank": 25,
           "warPlus": 0.062,
+          "warPlus10": 0.0365,
           "hillPerHp": 73.8,
           "plantsPerSnd": 0.25,
           "defusesPerSnd": 0.25,
@@ -11242,6 +11438,7 @@
           "war10": 0.1633,
           "warRank": 16,
           "warPlus": 0.1101,
+          "warPlus10": 0.0501,
           "hillPerHp": 64.2222,
           "plantsPerSnd": 0.125,
           "defusesPerSnd": 0.0,
@@ -11269,6 +11466,7 @@
           "war10": 0.0561,
           "warRank": 17,
           "warPlus": 0.5891,
+          "warPlus10": 0.1636,
           "hillPerHp": 80.3333,
           "plantsPerSnd": 0.4615,
           "defusesPerSnd": 0.2308,
@@ -11296,6 +11494,7 @@
           "war10": -0.406,
           "warRank": 32,
           "warPlus": -0.7195,
+          "warPlus10": -0.2481,
           "hillPerHp": 80.1,
           "plantsPerSnd": 0.875,
           "defusesPerSnd": 0.25,
@@ -11323,6 +11522,7 @@
           "war10": -0.4166,
           "warRank": 28,
           "warPlus": -0.5855,
+          "warPlus10": -0.3659,
           "hillPerHp": 73.3333,
           "plantsPerSnd": 0.2,
           "defusesPerSnd": 0.0,
@@ -11350,6 +11550,7 @@
           "war10": -0.7758,
           "warRank": 31,
           "warPlus": -1.0946,
+          "warPlus10": -0.842,
           "hillPerHp": 58.0,
           "plantsPerSnd": 1.0,
           "defusesPerSnd": 0.0,
@@ -11377,6 +11578,7 @@
           "war10": -0.2783,
           "warRank": 29,
           "warPlus": -0.5646,
+          "warPlus10": -0.2258,
           "hillPerHp": 75.7778,
           "plantsPerSnd": 0.8333,
           "defusesPerSnd": 0.1667,
@@ -11404,6 +11606,7 @@
           "war10": -0.5736,
           "warRank": 30,
           "warPlus": -1.1682,
+          "warPlus10": -0.7301,
           "hillPerHp": 56.0,
           "plantsPerSnd": 0.0,
           "defusesPerSnd": 0.0,
@@ -11431,6 +11634,7 @@
           "war10": -0.4593,
           "warRank": 27,
           "warPlus": -0.6416,
+          "warPlus10": -0.5833,
           "hillPerHp": 57.25,
           "plantsPerSnd": 0.3333,
           "defusesPerSnd": 0.6667,
@@ -11458,6 +11662,7 @@
           "war10": -0.8805,
           "warRank": 33,
           "warPlus": -2.0235,
+          "warPlus10": -0.9636,
           "hillPerHp": 63.3,
           "plantsPerSnd": 0.5,
           "defusesPerSnd": 0.1667,

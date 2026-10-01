@@ -1,7 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
-import { rulebookUrl, isHofPlayer, hasSuperBurger, seasonStats, isKnownPlayer } from '../../data/leagueData.js';
+import { rulebookUrl, isHofPlayer, hasSuperBurger, seasonStats, isKnownPlayer, teamAbbr } from '../../data/leagueData.js';
+import { objectiveColumns } from '../../data/statColumns.js';
+// same layout as Season 5, sorted by K/D by default
+const s6Cols = objectiveColumns.map(c => ({ ...c, defaultSort: c.label === 'K/D' }));
 import season6 from '../../data/season6.json';
 import season6Matches from '../../data/season6-matches.json';
 
@@ -56,9 +59,9 @@ for (const r of seasonStats[6] || []) {
 const season6PlayerStats = Object.values(playerAggregates)
   .map(p => {
     const w = s6Workbook[normName(p.player)] || {};
-    return { ...p, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills, link: w.player && isKnownPlayer(w.player) ? w.player : p.player,
-      overall: w.overall ?? null, war: w.war ?? null, warPlus: w.warPlus ?? null, hill: w.hillPerHp ?? null,
-      plants: w.plantsPerSnd ?? null, defuses: w.defusesPerSnd ?? null, objKills: w.objKillsPerCtl ?? null };
+    // workbook fields (overall, WAR+, mode K/Ds, objective stats) + live kills/deaths/series from recorded series
+    const { player: _wp, team: _wt, kills: _wk, deaths: _wd, kd: _wkd, seriesPlayed: _ws, maps: _wm, ...wb } = w;
+    return { ...wb, ...p, team: _wt || p.team, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills, link: w.player && isKnownPlayer(w.player) ? w.player : p.player };
   })
   .sort((a, b) => b.kd - a.kd);
 
@@ -177,7 +180,7 @@ const seriesColumn = {
           <h1 class="script-heading" style="margin-bottom: 8px;">Player Stats</h1>
           <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 24px;">
             {season6PlayerStats.length > 0
-              ? 'Kills, deaths and K/D update automatically after every recorded series. OVR, WAR (Wins Above Replacement), WAR+ (adds objective play) and objective stats come from the league workbook.'
+              ? 'K/D and series played update automatically after every recorded series. OVR, WAR+ (Wins Above Replacement plus objective play), WAR+/10 (per 10 maps), mode K/Ds and objective stats come from the league workbook. SnD Objectives = plants + defuses per SnD map.'
               : 'Will populate here as soon as the first series is played.'}
           </p>
         </>
@@ -194,35 +197,19 @@ const seriesColumn = {
               <tr>
                 <th data-sort="text">Player</th>
                 <th data-sort="text">Team</th>
-                <th data-sort="num">Kills</th>
-                <th data-sort="num">Deaths</th>
-                <th data-sort="num" data-dir="desc" class="sorted-desc">K/D</th>
-                <th data-sort="num">Series Played</th>
-                <th data-sort="num" title="Season overall rating">OVR</th>
-                <th data-sort="num" title="Wins Above Replacement">WAR</th>
-                <th data-sort="num" title="WAR plus objective value">WAR+</th>
-                <th data-sort="num" title="Hill time per Hardpoint map (sec)">Hill/HP</th>
-                <th data-sort="num" title="Plants per SnD map">Plants</th>
-                <th data-sort="num" title="Defuses per SnD map">Defuses</th>
-                <th data-sort="num" title="Objective kills per Control map">Obj K/CTL</th>
+                {s6Cols.map(c => (
+                  <th data-sort="num" title={c.title} data-dir={c.defaultSort ? 'desc' : undefined} class={c.defaultSort ? 'sorted-desc' : undefined}>{c.label}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
               {season6PlayerStats.map(p => (
                 <tr>
                   <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.link)}`} class={`${isHofPlayer(p.link) ? 'hof-name' : ''} ${hasSuperBurger(p.link) ? 'superburger-name' : ''}`}>{p.player}</a></td>
-                  <td>{p.team}</td>
-                  <td data-value={p.kills}>{p.kills}</td>
-                  <td data-value={p.deaths}>{p.deaths}</td>
-                  <td data-value={p.kd} style="color: var(--gold); font-weight: 700;">{p.kd.toFixed(2)}</td>
-                  <td data-value={p.seriesPlayed}>{p.seriesPlayed}</td>
-                  <td data-value={p.overall ?? ''} style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
-                  <td data-value={p.war ?? ''}>{p.war != null ? p.war.toFixed(2) : 'N/A'}</td>
-                  <td data-value={p.warPlus ?? ''}>{p.warPlus != null ? p.warPlus.toFixed(2) : 'N/A'}</td>
-                  <td data-value={p.hill ?? ''}>{p.hill != null ? Math.round(p.hill) : 'N/A'}</td>
-                  <td data-value={p.plants ?? ''}>{p.plants != null ? p.plants.toFixed(2) : 'N/A'}</td>
-                  <td data-value={p.defuses ?? ''}>{p.defuses != null ? p.defuses.toFixed(2) : 'N/A'}</td>
-                  <td data-value={p.objKills ?? ''}>{p.objKills != null ? p.objKills.toFixed(1) : 'N/A'}</td>
+                  <td data-value={p.team} title={p.team}>{teamAbbr(p.team)}</td>
+                  {s6Cols.map(c => (
+                    <td data-value={c.value(p) ?? ''} style={c.gold ? 'color: var(--gold); font-weight: 700;' : undefined}>{c.show(p)}</td>
+                  ))}
                 </tr>
               ))}
             </tbody>

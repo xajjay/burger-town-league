@@ -61,7 +61,7 @@ export const playerRoles = {
   "EJ": "SMG",
   "DessieLoso": "SMG",
   "Thermo": "SMG",
-  "Collision": "AR",
+  "Collision": "SMG",
   "Bubbles": "AR",
   "Elive": "AR",
   "Pablo": "SMG",
@@ -94,7 +94,7 @@ export const playerRoles = {
   "JayDash": "AR",
   "Zirow": "AR",
   "Jealous": "AR",
-  "Hazier": "SMG",
+  "Hazier": "AR",
   "Dragon": "AR",
   "Kfrankess": "AR",
   "Noti": "SMG",
@@ -167,6 +167,26 @@ export const playerRoles = {
   "Moon": "AR",
   "Latinooo": "AR",
 };
+// 3-letter team codes for stat tables (full name shows on hover)
+const TEAM_ABBR = {
+  'Berlin KAOS': 'BER', 'Boston Excane': 'BOS', 'Deerfield Koshers': 'DEE', 'Houston Spartans': 'HOU',
+  'New York Ferocity': 'NYF', 'Phoenix Hurrah': 'PHX', 'Seattle Skies': 'SEA', 'Vegas Vanity': 'VEG',
+  'Buffalo Brutes': 'BUF', 'Charlotte SYG': 'CLT', 'Los Angeles NewLook': 'LAN', 'Mexico City Warriors': 'MEX',
+  'Minneapolis Mighty Ducks': 'MIN', 'Tampa Red Wolves': 'TPA', 'Free Agent': 'FA',
+  'Chicago Canes': 'CHI', 'Nashville Whiskey': 'NSH', 'New Orleans No Legs Academy': 'NOL', 'New York G Pieces': 'NYG',
+  'Seattle Aces': 'SEA', 'Bronx Bombers': 'BRX', 'Honolulu Hummingbirds': 'HNL', 'LA Reapers': 'LAR',
+  'Nashville Iron Boots': 'NSH', "New York Freaky D's": 'NYF', 'POBO Chicago': 'CHI', 'San Francisco Proxzymines': 'SFP',
+  'St. Petersburg Mafia': 'STP', 'WCi LA': 'WCI',
+  'Atlanta Reign': 'ATL', 'Brooklyn Empire': 'BKN', 'Chicago Syndicate': 'CHI', 'Detroit Dirty Dogs': 'DET',
+  'Houston Havoc': 'HOU', 'Los Angeles Nova': 'LAN', 'NOLA Knights': 'NOL', 'Nashville Mighty Ducks': 'NSH',
+  'New York Ascend': 'NYA', 'Oklahoma City Spartans': 'OKC', 'Rutland Grizzlies': 'RUT',
+  'San Jose Cougars': 'SJC', 'Miami Reapers': 'MIA', 'Newark Stars': 'NWK', 'London Royal Ravens': 'LDN',
+};
+export function teamAbbr(name) {
+  if (!name) return '';
+  return TEAM_ABBR[name] || name.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase();
+}
+
 export function getPlayerRole(name) {
   return playerRoles[name] || null;
 }
@@ -226,6 +246,8 @@ export const seasonStats = Object.fromEntries(
         war10: p.war10 ?? null,
         warRank: p.warRank ?? null,
         warPlus: p.warPlus ?? null,
+        warPlus10: p.warPlus10 ?? null,
+        displayName: p.displayName ?? p.player,
         hillPerHp: p.hillPerHp ?? null,
         plantsPerSnd: p.plantsPerSnd ?? null,
         defusesPerSnd: p.defusesPerSnd ?? null,
@@ -296,6 +318,7 @@ export const careerStats = raw.career
     war10: c.war10 ?? null,
     warRank: c.warRank ?? null,
     warPlus: c.warPlus ?? null,
+    warPlus10: c.warPlus10 ?? null,
     bestSeasonWar: c.bestSeasonWar ?? null,
     seriesW: c.seriesW ?? null,
     seriesL: c.seriesL ?? null,

@@ -351,6 +351,9 @@ section + section { border-top: 1px solid var(--line); }
 .stat-table a:hover { color: var(--gold); }
 
 .table-scroll { overflow-x: auto; border: 1px solid var(--line); }
+/* Horizontal scrollbar on TOP of stat tables: flip the scroll box, then flip its contents back */
+.table-scroll { transform: rotateX(180deg); }
+.table-scroll > * { transform: rotateX(180deg); }
 .table-scroll .stat-table { min-width: 640px; }
 
 .rank-1 { color: var(--gold); font-weight: 700; }
