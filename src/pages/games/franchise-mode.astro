@@ -14,7 +14,7 @@ import DATA from '../../data/game-12-0.json';
 <script is:inline src="/scripts/btl-games-core.js"></script>
 <script is:inline define:vars={{ DATA }}>
 (function(){
-const B = BTL, esc = B.esc, D = B.prep({players:DATA.players.filter(p => !p.prov), teams:DATA.teams}), NT = 12, ROUNDS = 5, SAVE = "btlg-franchise-v1";
+const B = BTL, esc = B.esc, D = B.prep({players:DATA.players, teams:DATA.teams}), NT = 12, ROUNDS = 5, SAVE = "btlg-franchise-v1";
 const f2 = v => v.toFixed(2), f1 = v => v.toFixed(1), gm = B.norm;
 const mean = a => a.reduce((x, y) => x + y, 0) / a.length, sd = a => { const m = mean(a); return Math.sqrt(mean(a.map(x => (x - m) * (x - m)))) || 1; };
 function gauss(r){ let u = 0, v = 0; while (!u) u = r(); while (!v) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }

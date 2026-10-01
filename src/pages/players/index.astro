@@ -45,6 +45,8 @@ function awardsFor(player) {
               <th data-sort="text">Role</th>
               <th data-sort="num" data-dir="desc" class="sorted-desc">Lifetime OVR</th>
               <th data-sort="num">Career K/D</th>
+              <th data-sort="num" title="Career Wins Above Replacement">Career WAR</th>
+              <th data-sort="num" title="WAR per 10 maps">WAR/10</th>
               <th data-sort="num">Seasons</th>
               <th>Awards</th>
             </tr>
@@ -56,6 +58,8 @@ function awardsFor(player) {
                 <td data-value={getPlayerRole(p.player) || ''}>{getPlayerRole(p.player) || 'N/A'}</td>
                 <td data-value={p.overall ?? ''} style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
                 <td data-value={p.kd}>{p.kd.toFixed(2)}</td>
+                <td data-value={p.careerWar ?? ''}>{p.careerWar != null ? p.careerWar.toFixed(1) : 'N/A'}</td>
+                <td data-value={p.war10 ?? ''}>{p.war10 != null ? p.war10.toFixed(2) : 'N/A'}</td>
                 <td data-value={p.seasons.length}>{p.seasons.map(s => `S${s}`).join(', ')}</td>
                 <td>{awardsFor(p.player).map(a => <span class="badge badge-gold">{a}</span>)}</td>
               </tr>

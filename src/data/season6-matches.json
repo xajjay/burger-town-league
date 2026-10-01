@@ -143,6 +143,35 @@
       ]
     },
     {
+      "slug": "playoffs-newark-stars-vs-miami-reapers",
+      "phase": "playoffs",
+      "round": "Losers Round 2",
+      "name": "Newark Stars vs Miami Reapers",
+      "teamA": "Newark Stars",
+      "teamB": "Miami Reapers",
+      "seriesScore": "2-3",
+      "winner": "Miami Reapers",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/mJjQUxh1wsM",
+      "maps": [
+        { "mapNum": 1, "map": "Moscow", "mode": "Hardpoint", "teamAScore": 206, "teamBScore": 250, "winner": "Miami Reapers" },
+        { "mapNum": 2, "map": "Express", "mode": "Search & Destroy", "teamAScore": 4, "teamBScore": 6, "winner": "Miami Reapers" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 3, "teamBScore": 1, "winner": "Newark Stars" },
+        { "mapNum": 4, "map": "Apocalypse", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 228, "winner": "Newark Stars" },
+        { "mapNum": 5, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 3, "teamBScore": 6, "winner": "Miami Reapers" }
+      ],
+      "players": [
+        { "player": "CrazieViews", "team": "Newark Stars", "kills": 112, "deaths": 90, "perMap": [27, 7, 31, 36, 11], "perMapDeaths": [27, 7, 20, 29, 7] },
+        { "player": "Utopian", "team": "Newark Stars", "kills": 75, "deaths": 93, "perMap": [18, 8, 21, 25, 3], "perMapDeaths": [23, 7, 28, 27, 8] },
+        { "player": "Lewy", "team": "Newark Stars", "kills": 96, "deaths": 102, "perMap": [24, 8, 30, 30, 4], "perMapDeaths": [30, 8, 25, 30, 9] },
+        { "player": "Toremeant", "team": "Newark Stars", "kills": 74, "deaths": 91, "perMap": [17, 4, 26, 25, 2], "perMapDeaths": [26, 8, 26, 24, 7] },
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 114, "deaths": 90, "perMap": [33, 14, 27, 31, 9], "perMapDeaths": [20, 6, 26, 34, 4] },
+        { "player": "Horror", "team": "Miami Reapers", "kills": 90, "deaths": 98, "perMap": [22, 6, 23, 29, 10], "perMapDeaths": [22, 8, 33, 27, 8] },
+        { "player": "Karnij", "team": "Miami Reapers", "kills": 91, "deaths": 80, "perMap": [28, 5, 23, 28, 7], "perMapDeaths": [19, 6, 23, 27, 5] },
+        { "player": "Acro Ace", "team": "Miami Reapers", "kills": 80, "deaths": 89, "perMap": [23, 5, 26, 22, 4], "perMapDeaths": [25, 7, 26, 28, 3] }
+      ]
+    },
+    {
       "slug": "nashville-mighty-ducks-vs-san-jose-cougars-2",
       "week": 3,
       "name": "Nashville Mighty Ducks vs San Jose Cougars",

@@ -2,7 +2,7 @@
 
 Usage:  python scripts/games/build_12-0_data.py path/to/CW_Draft_League_History.xlsx
 Needs:  pip install openpyxl
-Re-run whenever the workbook's Season 1-5 sheets, Player Info roles, or All Seasons aliases change.
+Re-run whenever the workbook's Season 1-6 sheets, Player Info roles, or All Seasons aliases change.
 """
 import openpyxl, re, json, collections
 import sys, os
@@ -11,13 +11,18 @@ OUT = sys.argv[2] if len(sys.argv)>2 else os.path.join(os.path.dirname(__file__)
 wb=openpyxl.load_workbook(WB,data_only=True)
 def num(x):
     return float(x) if isinstance(x,(int,float)) else None
+def hdr(rows, i=2):
+    # column index by header name, so inserted workbook columns (WAR etc.) don't break this script
+    return {str(h).strip(): j for j, h in enumerate(rows[i]) if h is not None}
 # alias map from All Seasons
 alias={}
 canon_list=[]
-for r in wb['All Seasons'].iter_rows(min_row=4,values_only=True):
+_as=list(wb['All Seasons'].iter_rows(values_only=True)); _ax=hdr(_as)
+_keys=[j for h,j in _ax.items() if h.startswith('Key ')]
+for r in _as[3:]:
     if not r[0] or not r[1]: continue
     c=r[0]; canon_list.append(c)
-    for k in (r[0],r[15],r[16],r[17]):
+    for k in [r[0]]+[r[j] for j in _keys]:
         if k: alias[str(k).strip().lower()]=c
 alias.update({'starry':alias.get('starry','Starry'),'baldie':alias.get('starry','Starry')})
 roles={}
@@ -27,12 +32,13 @@ def canon(n): return alias.get(str(n).strip().lower(), str(n).strip())
 seasons={}
 for s in range(1,6):
     rows=list(wb['Season %d'%s].iter_rows(values_only=True))
+    hx=hdr(rows); iO=hx['Player Overall']; iN=hx['Notes']; iW=hx.get('WAR')
     players={}
     for r in rows[3:]:
         if r[0] and str(r[0]).startswith('Final'): break
-        if not r[0] or r[0]=='Player' or num(r[11]) is None: continue
+        if not r[0] or r[0]=='Player' or num(r[iO]) is None: continue
         if s==5 and num(r[4]) is None: continue
-        players[str(r[0]).strip().lower()]=dict(name=str(r[0]).strip(),abbr=r[1],k=num(r[2]),d=num(r[3]),ip=num(r[9]),kd=num(r[4]),maps=num(r[5]),hp=num(r[6]),snd=num(r[7]),ctl=num(r[8]),ovr=int(r[11]),notes=r[12] or '')
+        players[str(r[0]).strip().lower()]=dict(name=str(r[0]).strip(),abbr=r[1],k=num(r[2]),d=num(r[3]),ip=num(r[9]),kd=num(r[4]),maps=num(r[5]),hp=num(r[6]),snd=num(r[7]),ctl=num(r[8]),ovr=int(r[iO]),notes=r[iN] or '',war=num(r[iW]) if iW is not None else None)
     # team blocks
     teams=[]; cur=None
     for i,r in enumerate(rows):
@@ -106,7 +112,7 @@ for s,S in raw['seasons'].items():
             else: resp=hp if hp is not None else ctl
             role=roles.get(c) or 'FLEX'
             pid=len(players)
-            players.append(dict(id=pid,n=p['name'],c=c,s=s,t=len(teams),r=role,o=p['ovr'],kd=round(p['kd'],3),
+            players.append(dict(id=pid,n=p['name'],c=c,s=s,t=len(teams),r=role,o=p['ovr'],kd=round(p['kd'],3),w=None if p.get('war') is None else round(p['war'],2),
                 ip=None if p['ip'] is None else round(p['ip'],2), k=int(p['k'] or 0), d=int(p['d'] or 0), rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(p['maps'] or 0), a=acc))
             ids.append(pid)
         fin=t['finish']
@@ -127,13 +133,13 @@ for s,S in raw['seasons'].items():
         hp,ctl,snd=p['hp'],p['ctl'],p['snd']
         resp=(2*hp+ctl)/3 if hp is not None and ctl is not None else (hp if hp is not None else ctl)
         pid=len(players)
-        players.append(dict(id=pid,n=n,c=c,s=s,t=len(teams),r=roles.get(c) or 'AR',o=p['ovr'],kd=round(p['kd'],3),
+        players.append(dict(id=pid,n=n,c=c,s=s,t=len(teams),r=roles.get(c) or 'AR',o=p['ovr'],kd=round(p['kd'],3),w=None if p.get('war') is None else round(p['war'],2),
             ip=None if p['ip'] is None else round(p['ip'],2), k=int(p['k'] or 0), d=int(p['d'] or 0), rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(p['maps'] or 0), a=[]))
         ids.append(pid)
     if ids: teams.append(dict(id=len(teams),s=s,name='Free Agent',fin=None,rank=None,champ=False,ru=False,p=ids,fa=True))
 # ---- Season 6 (in progress): stats + rosters only. Overalls are provisional and accolades are not awarded yet,
 #      so these rows are flagged prov=True and only used by games that do not need them. ----
-rows6=list(wb['Season 6'].iter_rows(values_only=True))
+rows6=list(wb['Season 6'].iter_rows(values_only=True)); h6=hdr(rows6); iW6=h6.get('WAR')
 stats6={}
 for r in rows6[3:]:
     if r[0] and str(r[0]).startswith('Team Rosters'): break
@@ -158,7 +164,7 @@ for i,r in enumerate(rows6[:70]):
             resp=(2*hp+ctl)/3 if hp is not None and ctl is not None else (hp if hp is not None else ctl)
             ov=num(q[11])
             pid=len(players)
-            players.append(dict(id=pid,n=n,c=c,s=6,t=len(teams),r=roles.get(c) or 'AR',o=int(ov) if ov else 0,kd=round(num(q[4]),3),
+            players.append(dict(id=pid,n=n,c=c,s=6,t=len(teams),r=roles.get(c) or 'AR',o=int(ov) if ov else 0,kd=round(num(q[4]),3),w=None if iW6 is None or num(q[iW6]) is None else round(num(q[iW6]),2),
                 ip=None if num(q[9]) is None else round(num(q[9]),2), k=int(num(q[2]) or 0), d=int(num(q[3]) or 0), rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(num(q[5]) or 0), a=[], prov=True))
             ids.append(pid)
         if ids: teams.append(dict(id=len(teams),s=6,name=tname,fin=None,rank=None,champ=False,ru=False,p=ids,fa=False,cur=True))

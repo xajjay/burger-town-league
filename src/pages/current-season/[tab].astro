@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { currentSeasonTabs } from '../../data/currentSeasonTabs.js';
-import { rulebookUrl, isHofPlayer, hasSuperBurger } from '../../data/leagueData.js';
+import { rulebookUrl, isHofPlayer, hasSuperBurger, seasonStats, isKnownPlayer } from '../../data/leagueData.js';
 import season6 from '../../data/season6.json';
 import season6Matches from '../../data/season6-matches.json';
 
@@ -45,8 +45,21 @@ for (const series of season6Matches.series) {
     agg.team = p.team; // keep most recent team in case of a trade
   }
 }
+// Workbook-derived Season 6 numbers (overall, WAR, objective stats) from real_data.json,
+// matched by either the site name or the workbook spelling (e.g. Scary -> Scare).
+const normName = (n) => (n || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const s6Workbook = {};
+for (const r of seasonStats[6] || []) {
+  s6Workbook[normName(r.player)] = r;
+  if (r.displayName) s6Workbook[normName(r.displayName)] ||= r;
+}
 const season6PlayerStats = Object.values(playerAggregates)
-  .map(p => ({ ...p, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills }))
+  .map(p => {
+    const w = s6Workbook[normName(p.player)] || {};
+    return { ...p, kd: p.deaths > 0 ? p.kills / p.deaths : p.kills, link: w.player && isKnownPlayer(w.player) ? w.player : p.player,
+      overall: w.overall ?? null, war: w.war ?? null, warPlus: w.warPlus ?? null, hill: w.hillPerHp ?? null,
+      plants: w.plantsPerSnd ?? null, defuses: w.defusesPerSnd ?? null, objKills: w.objKillsPerCtl ?? null };
+  })
   .sort((a, b) => b.kd - a.kd);
 
 // Season records — matches the workbook's methodology: Hardpoint/SnD/Control
@@ -164,7 +177,7 @@ const seriesColumn = {
           <h1 class="script-heading" style="margin-bottom: 8px;">Player Stats</h1>
           <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 24px;">
             {season6PlayerStats.length > 0
-              ? 'Updates automatically after every series that gets recorded.'
+              ? 'Kills, deaths and K/D update automatically after every recorded series. OVR, WAR (Wins Above Replacement), WAR+ (adds objective play) and objective stats come from the league workbook.'
               : 'Will populate here as soon as the first series is played.'}
           </p>
         </>
@@ -185,17 +198,31 @@ const seriesColumn = {
                 <th data-sort="num">Deaths</th>
                 <th data-sort="num" data-dir="desc" class="sorted-desc">K/D</th>
                 <th data-sort="num">Series Played</th>
+                <th data-sort="num" title="Season overall rating">OVR</th>
+                <th data-sort="num" title="Wins Above Replacement">WAR</th>
+                <th data-sort="num" title="WAR plus objective value">WAR+</th>
+                <th data-sort="num" title="Hill time per Hardpoint map (sec)">Hill/HP</th>
+                <th data-sort="num" title="Plants per SnD map">Plants</th>
+                <th data-sort="num" title="Defuses per SnD map">Defuses</th>
+                <th data-sort="num" title="Objective kills per Control map">Obj K/CTL</th>
               </tr>
             </thead>
             <tbody>
               {season6PlayerStats.map(p => (
                 <tr>
-                  <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.player)}`} class={`${isHofPlayer(p.player) ? 'hof-name' : ''} ${hasSuperBurger(p.player) ? 'superburger-name' : ''}`}>{p.player}</a></td>
+                  <td data-value={p.player}><a href={`/players/${encodeURIComponent(p.link)}`} class={`${isHofPlayer(p.link) ? 'hof-name' : ''} ${hasSuperBurger(p.link) ? 'superburger-name' : ''}`}>{p.player}</a></td>
                   <td>{p.team}</td>
                   <td data-value={p.kills}>{p.kills}</td>
                   <td data-value={p.deaths}>{p.deaths}</td>
                   <td data-value={p.kd} style="color: var(--gold); font-weight: 700;">{p.kd.toFixed(2)}</td>
                   <td data-value={p.seriesPlayed}>{p.seriesPlayed}</td>
+                  <td data-value={p.overall ?? ''} style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
+                  <td data-value={p.war ?? ''}>{p.war != null ? p.war.toFixed(2) : 'N/A'}</td>
+                  <td data-value={p.warPlus ?? ''}>{p.warPlus != null ? p.warPlus.toFixed(2) : 'N/A'}</td>
+                  <td data-value={p.hill ?? ''}>{p.hill != null ? Math.round(p.hill) : 'N/A'}</td>
+                  <td data-value={p.plants ?? ''}>{p.plants != null ? p.plants.toFixed(2) : 'N/A'}</td>
+                  <td data-value={p.defuses ?? ''}>{p.defuses != null ? p.defuses.toFixed(2) : 'N/A'}</td>
+                  <td data-value={p.objKills ?? ''}>{p.objKills != null ? p.objKills.toFixed(1) : 'N/A'}</td>
                 </tr>
               ))}
             </tbody>
@@ -268,15 +295,17 @@ const seriesColumn = {
           <div class="bracket-col" style="flex: 0 0 220px; align-self: center;">
             <p style="color: var(--paper-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px;">Losers Round 2</p>
             <div class="pixel-card bracket-match">
-              <p class="bracket-team" style="margin: 0 0 6px;">Miami Reapers</p>
-              <p class="bracket-team" style="margin: 0;">Newark Stars</p>
+              <a href="/current-season/series/playoffs-newark-stars-vs-miami-reapers" style="text-decoration: none; display: block;">
+                <p class="bracket-team" style="margin: 0 0 6px; font-weight: 700;"><span style="color: var(--paper-dim); font-weight: 400;">2</span> Miami Reapers <span style="float: right; color: var(--gold);">✓</span></p>
+                <p class="bracket-team" style="margin: 0; color: var(--paper-dim);"><span>6</span> Newark Stars <span style="float: right;">2-3</span></p>
+              </a>
             </div>
           </div>
           <div class="bracket-col" style="flex: 0 0 220px; align-self: center;">
             <p style="color: var(--paper-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px;">Losers Round 3</p>
             <div class="pixel-card bracket-match">
               <p class="bracket-team" style="margin: 0 0 6px;"><span style="color: var(--paper-dim);">3</span> Detroit Dirty Dogs</p>
-              <p class="bracket-team" style="margin: 0; color: var(--paper-dim); font-style: italic;">Winner of Losers R2</p>
+              <p class="bracket-team" style="margin: 0;"><span style="color: var(--paper-dim);">2</span> Miami Reapers</p>
             </div>
           </div>
         </div>

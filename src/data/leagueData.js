@@ -14,7 +14,11 @@ export const social = {
 export const signupFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd7tkxczxplrqFmBzXphCzQNQWONYlR2EXZDfsj4YzTcbUsFQ/viewform?pli=1&pli=1";
 export const rulebookUrl = "https://docs.google.com/document/d/1yFZNfyt_Fgq2tdFr63N2HR-z9iS_tohesAoDdQuprwM/edit?tab=t.0";
 
-export const seasonYears = { 1: 2023, 2: 2023, 3: 2024, 4: 2024, 5: 2026 };
+export const seasonYears = { 1: 2023, 2: 2023, 3: 2024, 4: 2024, 5: 2026, 6: 2026 };
+// Season 6 (BTL Season 1) is in progress: its stats show on player cards / career totals,
+// but it has no /season/6 page yet and no awards (Super Burger etc.) until it's final.
+export const currentSeasonId = 6;
+export const completedSeasonIds = ['1', '2', '3', '4', '5'];
 export const upcomingSeasonLabel = "BTL Season 1";
 export const upcomingSeasonYear = 2026;
 
@@ -159,6 +163,9 @@ export const playerRoles = {
   "N8DOGG": "AR",
   "Chadwick": "SMG",
   "Aldo": "SMG",
+  "Hitta": "SMG",
+  "Moon": "AR",
+  "Latinooo": "AR",
 };
 export function getPlayerRole(name) {
   return playerRoles[name] || null;
@@ -185,7 +192,7 @@ const mvpBySeason = Object.fromEntries(raw.mvps.map(m => [m.season, resolveName(
 
 const REMOVED_PLAYERS = new Set(['anura']); // left the league; excluded entirely per request
 
-export const seasons = ['1', '2', '3', '4', '5'].map(sid => ({
+export const seasons = completedSeasonIds.map(sid => ({
   id: Number(sid),
   name: `Season ${sid}`,
   year: seasonYears[Number(sid)],
@@ -215,6 +222,16 @@ export const seasonStats = Object.fromEntries(
         ctlKd: p.ctlKd,
         respawnKd: (p.hpKd != null && p.ctlKd != null) ? (p.hpKd + p.ctlKd) / 2 : null,
         interactionsPerMap: p.interactionsPerMap,
+        war: p.war ?? null,
+        war10: p.war10 ?? null,
+        warRank: p.warRank ?? null,
+        warPlus: p.warPlus ?? null,
+        hillPerHp: p.hillPerHp ?? null,
+        plantsPerSnd: p.plantsPerSnd ?? null,
+        defusesPerSnd: p.defusesPerSnd ?? null,
+        objKillsPerCtl: p.objKillsPerCtl ?? null,
+        dmgPer10: p.dmgPer10 ?? null,
+        seriesPlayed: p.seriesPlayed ?? null,
         allStar: p.allStar,
         honors: [...p.honors],
       })),
@@ -275,6 +292,13 @@ export const careerStats = raw.career
     maps: c.maps,
     avgSeasonOverall: c.avgSeasonOverall,
     overall: c.playerOverall,
+    careerWar: c.careerWar ?? null,
+    war10: c.war10 ?? null,
+    warRank: c.warRank ?? null,
+    warPlus: c.warPlus ?? null,
+    bestSeasonWar: c.bestSeasonWar ?? null,
+    seriesW: c.seriesW ?? null,
+    seriesL: c.seriesL ?? null,
     accolades: c.accolades,
   }));
 
@@ -308,6 +332,7 @@ export function getAllStarCount(name) {
 // "Super Burger" — a tongue-in-cheek honor for whoever has the LOWEST Overall in each season.
 // Injected directly into that season's honors + the player's per-season honors map.
 for (const [sid, players] of Object.entries(seasonStats)) {
+  if (!completedSeasonIds.includes(String(sid))) continue; // no awards for the season in progress
   const withOverall = players.filter(p => p.overall != null);
   if (!withOverall.length) continue;
   const minOverall = Math.min(...withOverall.map(p => p.overall));

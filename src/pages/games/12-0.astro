@@ -3,14 +3,14 @@ import Base from '../../layouts/Base.astro';
 import '../../styles/game-12-0.css';
 import DATA from '../../data/game-12-0.json';
 ---
-<Base title="12-0 | Burger Town Leagues" description="Spin real teams from Seasons 1-5, draft 2 ARs and 2 SMGs, and run a double-elimination bracket against the best teams in league history.">
+<Base title="12-0 | Burger Town Leagues" description="Spin real teams from Seasons 1-6, draft 2 ARs and 2 SMGs, and run a double-elimination bracket against the best teams in league history.">
 <div class="g120">
 <div class="wrap gwrap">
   <header class="top">
     <div class="gbrand">
       <a class="eyebrow" href="/games" style="text-decoration:none">Games</a>
       <h1 class="script-heading">12<span class="dash">–</span>0</h1>
-      <p class="tag">Spin a team from Seasons 1–5, draft one player off it, and repeat until you have 2 ARs and 2 SMGs. Then run an 8-team double-elimination bracket against the best real teams in league history.</p>
+      <p class="tag">Spin a team from Seasons 1–6, draft one player off it, and repeat until you have 2 ARs and 2 SMGs. Then run an 8-team double-elimination bracket against the best real teams in league history.</p>
     </div>
     <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
       <div class="modes" role="tablist" aria-label="Game mode">
@@ -48,7 +48,7 @@ import DATA from '../../data/game-12-0.json';
     </div>
     <div class="cards" id="cards"></div>
     <ol class="rules" id="rules">
-      <li>Each spin lands on a real team from one of the five completed seasons. Pick one player from that roster.</li>
+      <li>Each spin lands on a real team from any of the six seasons, including this season's BTL teams (Season 6). Pick one player from that roster.</li>
       <li>Your roster needs 2 ARs and 2 SMGs. Once a role is full, anyone else you take from that role plays off-role at −3 overall.</li>
       <li>You can only draft a player once, whichever season or name you take him under.</li>
       <li>Land on a folded team with 1–2 players and you get a free respin in every mode.</li>
@@ -207,7 +207,7 @@ function renderRail(){
 const isThin = t => t.p.length <= THIN;
 function spinPool(){
   const tk = taken();
-  return T.filter(t => !t.fa && !t.cur && t.p.some(i => !tk.has(P[i].c)) && (!S.spun || t.id!==S.spun.id));
+  return T.filter(t => !t.fa && t.p.some(i => !tk.has(P[i].c)) && (!S.spun || t.id!==S.spun.id));
 }
 // kind: "spin" | "respin" | "free"
 function spin(kind){

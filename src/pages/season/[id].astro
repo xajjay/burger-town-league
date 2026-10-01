@@ -13,6 +13,7 @@ const stats = [...(seasonStats[seasonId] || [])].sort((a, b) => (b.overall ?? -1
 const seasonStandings = standings[seasonId] || [];
 const seasonSeries = seriesList.filter(s => s.season === seasonId);
 const records = seasonRecords[String(seasonId)] || [];
+const hasObj = stats.some(p => p.warPlus != null || p.hillPerHp != null);
 
 const historyTabs = [
   { href: "/history", label: "Draft League History" },
@@ -41,7 +42,7 @@ const currentPath = Astro.url.pathname;
   <section>
     <div class="wrap">
       <h2 class="section-title">Player Stats</h2>
-      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Click any column header to sort. Sorted by Overall by default.</p>
+      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Click any column header to sort. Sorted by Overall by default. WAR = Wins Above Replacement{hasObj ? '; WAR+ adds objective play (hill time, plants, defuses, objective kills)' : ''}.</p>
       <div class="table-scroll">
         <table class="stat-table sortable-table">
           <thead>
@@ -54,6 +55,13 @@ const currentPath = Astro.url.pathname;
               <th data-sort="num">Interactions</th>
               <th data-sort="num">Maps</th>
               <th data-sort="num" data-dir="desc" class="sorted-desc">OVR</th>
+              <th data-sort="num" title="Wins Above Replacement">WAR</th>
+              <th data-sort="num">WAR/10</th>
+              {hasObj && <th data-sort="num" title="WAR plus objective value">WAR+</th>}
+              {hasObj && <th data-sort="num" title="Hill time per Hardpoint map (sec)">Hill/HP</th>}
+              {hasObj && <th data-sort="num" title="Plants per SnD map">Plants</th>}
+              {hasObj && <th data-sort="num" title="Defuses per SnD map">Defuses</th>}
+              {hasObj && <th data-sort="num" title="Objective kills per Control map">Obj K/CTL</th>}
               <th>Honors</th>
             </tr>
           </thead>
@@ -68,6 +76,13 @@ const currentPath = Astro.url.pathname;
                 <td data-value={p.interactionsPerMap ?? ''}>{p.interactionsPerMap != null ? p.interactionsPerMap.toFixed(1) : 'N/A'}</td>
                 <td data-value={p.maps}>{p.maps}</td>
                 <td data-value={p.overall ?? ''} style="color: var(--gold); font-weight: 700;">{p.overall ?? 'N/A'}</td>
+                <td data-value={p.war ?? ''}>{p.war != null ? p.war.toFixed(2) : 'N/A'}</td>
+                <td data-value={p.war10 ?? ''}>{p.war10 != null ? p.war10.toFixed(2) : 'N/A'}</td>
+                {hasObj && <td data-value={p.warPlus ?? ''}>{p.warPlus != null ? p.warPlus.toFixed(2) : 'N/A'}</td>}
+                {hasObj && <td data-value={p.hillPerHp ?? ''}>{p.hillPerHp != null ? Math.round(p.hillPerHp) : 'N/A'}</td>}
+                {hasObj && <td data-value={p.plantsPerSnd ?? ''}>{p.plantsPerSnd != null ? p.plantsPerSnd.toFixed(2) : 'N/A'}</td>}
+                {hasObj && <td data-value={p.defusesPerSnd ?? ''}>{p.defusesPerSnd != null ? p.defusesPerSnd.toFixed(2) : 'N/A'}</td>}
+                {hasObj && <td data-value={p.objKillsPerCtl ?? ''}>{p.objKillsPerCtl != null ? p.objKillsPerCtl.toFixed(1) : 'N/A'}</td>}
                 <td>{p.honors.map(h => <span class="badge badge-gold">{h}</span>)}</td>
               </tr>
             ))}

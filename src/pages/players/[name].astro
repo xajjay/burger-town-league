@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { careerStats, perPlayerSeasonHonors, seasonStats, getPlayerPhoto, getHofEntry, getAllStarCount, getSpecialBadges, tournamentWinners, getPlayerRole } from '../../data/leagueData.js';
+import { currentSeasonId, careerStats, perPlayerSeasonHonors, seasonStats, getPlayerPhoto, getHofEntry, getAllStarCount, getSpecialBadges, tournamentWinners, getPlayerRole } from '../../data/leagueData.js';
 
 export function getStaticPaths() {
   return careerStats.map(p => ({ params: { name: p.player } }));
@@ -23,6 +23,14 @@ const seasonRows = player
         deaths: row?.deaths,
         maps: row?.maps,
         overall: row?.overall,
+        war: row?.war,
+        warPlus: row?.warPlus,
+        hill: row?.hillPerHp,
+        plants: row?.plantsPerSnd,
+        defuses: row?.defusesPerSnd,
+        objKills: row?.objKillsPerCtl,
+        inProgress: Number(sid) === currentSeasonId,
+        href: Number(sid) === currentSeasonId ? '/current-season/player-stats' : `/season/${sid}`,
         honors: honorsBySeason[sid] || [],
       };
     })
@@ -104,6 +112,12 @@ const role = player ? getPlayerRole(player.player) : null;
                 <span class="player-card-stat-value">{player.maps.toLocaleString()}</span>
                 <span class="player-card-stat-label">Maps Played</span>
               </div>
+              {player.careerWar != null && (
+                <div class="player-card-stat" title={player.warRank ? `#${player.warRank} in career WAR` : ''}>
+                  <span class="player-card-stat-value">{player.careerWar.toFixed(1)}</span>
+                  <span class="player-card-stat-label">Career WAR</span>
+                </div>
+              )}
               <div class="player-card-stat">
                 <span class="player-card-stat-value">{player.seasons.length}</span>
                 <span class="player-card-stat-label">Season{player.seasons.length !== 1 ? 's' : ''}</span>
@@ -141,23 +155,30 @@ const role = player ? getPlayerRole(player.player) : null;
           <h2 class="section-title">Season-by-Season</h2>
           <div class="table-scroll">
             <table class="stat-table">
-              <thead><tr><th>Season</th><th>Team</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Maps</th><th>OVR</th><th>Honors</th></tr></thead>
+              <thead><tr><th>Season</th><th>Team</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Maps</th><th>OVR</th><th title="Wins Above Replacement">WAR</th><th title="WAR plus objective value (S5+)">WAR+</th><th title="Hill time per Hardpoint map, seconds (S5+)">Hill/HP</th><th title="Plants per SnD map (S5+)">Plants</th><th title="Defuses per SnD map (S5+)">Defuses</th><th title="Objective kills per Control map (S5+)">Obj K/CTL</th><th>Honors</th></tr></thead>
               <tbody>
                 {seasonRows.map(r => (
                   <tr>
-                    <td><a href={`/season/${r.season}`}>Season {r.season}</a></td>
+                    <td><a href={r.href}>Season {r.season}</a>{r.inProgress && <span style="color: var(--paper-dim); font-size: 0.7rem; margin-left: 4px;">(in progress)</span>}</td>
                     <td>{r.team}</td>
                     <td>{r.kills ?? 'N/A'}</td>
                     <td>{r.deaths ?? 'N/A'}</td>
                     <td>{r.kd?.toFixed(2) ?? 'N/A'}</td>
                     <td>{r.maps ?? 'N/A'}</td>
                     <td style="color: var(--gold); font-weight: 700;">{r.overall ?? 'N/A'}</td>
+                    <td>{r.war != null ? r.war.toFixed(2) : 'N/A'}</td>
+                    <td>{r.warPlus != null ? r.warPlus.toFixed(2) : '—'}</td>
+                    <td>{r.hill != null ? Math.round(r.hill) : '—'}</td>
+                    <td>{r.plants != null ? r.plants.toFixed(2) : '—'}</td>
+                    <td>{r.defuses != null ? r.defuses.toFixed(2) : '—'}</td>
+                    <td>{r.objKills != null ? r.objKills.toFixed(1) : '—'}</td>
                     <td>{r.honors.map(h => <span class="badge badge-gold">{h}</span>)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <p style="color: var(--paper-dim); font-size: 0.8rem; margin-top: 10px;">WAR = Wins Above Replacement (map wins a player adds over a replacement-level player). WAR+ adds objective play; objective stats are tracked from Season 5 on.</p>
         </>
       ) : (
         <p>Player not found. <a href="/players">Browse all players</a>.</p>

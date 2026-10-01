@@ -14,7 +14,7 @@ import DATA from '../../data/game-12-0.json';
 <script is:inline src="/scripts/btl-games-core.js"></script>
 <script is:inline define:vars={{ DATA }}>
 (function(){
-const B = BTL, esc = B.esc, D = B.prep({players:DATA.players.filter(p => !p.prov), teams:DATA.teams}), ROUNDS = 4, NT = 12;
+const B = BTL, esc = B.esc, D = B.prep({players:DATA.players, teams:DATA.teams}), ROUNDS = 4, NT = 12;
 const f2 = v => v.toFixed(2), f1 = v => v.toFixed(1);
 const gm = B.norm;
 
