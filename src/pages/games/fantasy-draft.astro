@@ -198,7 +198,9 @@ B.shell({game:"fantasy-draft", start:function(ctx){
       {id:"L6", r:"Losers final", a:["w","L5"], b:["l","W7"]}, {id:"GF", r:"Grand final", a:["w","W7"], b:["w","L6"]}];
     const res = {}, who = ref => ref[0] === "s" ? seeds[ref[1]] : ref[0] === "w" ? res[ref[1]].winner : res[ref[1]].loser;
     LAYOUT.forEach(m => { res[m.id] = series(who(m.a), who(m.b), po); });
-    const champ = res.GF.winner, runner = res.GF.loser;
+    // bracket reset: the losers-bracket team has to win the grand final twice
+    if (res.GF.winner === res.L6.winner){ LAYOUT.push({id:"GF2", r:"Grand final reset", a:["w","L6"], b:["w","W7"]}); res.GF2 = series(res.L6.winner, res.W7.winner, po); }
+    const fin = res.GF2 || res.GF, champ = fin.winner, runner = fin.loser;
     const PLACE = {L1:"7th–8th", L2:"7th–8th", L3:"5th–6th", L4:"5th–6th", L5:"4th", L6:"3rd"}, place = {};
     Object.keys(PLACE).forEach(k => { place[res[k].loser.id] = PLACE[k]; }); place[champ.id] = "Champions"; place[runner.id] = "Runner-up";
     stand.forEach((e, i) => { if (i >= 8) place[e.id] = "Missed playoffs"; });

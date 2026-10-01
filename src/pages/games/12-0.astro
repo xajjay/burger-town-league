@@ -429,7 +429,8 @@ function playSeries(A,B){
   }
   return {A,B,wa,wb,maps, winner: wa>wb?A:B, loser: wa>wb?B:A};
 }
-// 8-team double elimination, every series best of 5, no bracket reset.
+// 8-team double elimination, every series best of 5. If the losers-bracket team wins the
+// grand final, the bracket resets: a second best of 5 (GF2) decides the title.
 const LAYOUT = [
   {id:"W1", r:"Winners R1", a:["s",0], b:["s",7]},
   {id:"W2", r:"Winners R1", a:["s",3], b:["s",4]},
@@ -446,8 +447,9 @@ const LAYOUT = [
   {id:"L6", r:"Losers final", a:["w","L5"], b:["l","W7"]},
   {id:"GF", r:"Grand final", a:["w","W7"], b:["w","L6"]},
 ];
-const ELIM_PLACE = {L1:"7th–8th", L2:"7th–8th", L3:"5th–6th", L4:"5th–6th", L5:"4th", L6:"3rd", GF:"2nd"};
-const COLS = [["Winners R1"],["Winners semis","Losers R1"],["Winners final","Losers R2"],["Losers R3"],["Losers final"],["Grand final"]];
+const GF_RESET = {id:"GF2", r:"Grand final reset", a:["w","L6"], b:["w","W7"]};
+const ELIM_PLACE = {L1:"7th–8th", L2:"7th–8th", L3:"5th–6th", L4:"5th–6th", L5:"4th", L6:"3rd", GF:"2nd", GF2:"2nd"};
+const COLS = [["Winners R1"],["Winners semis","Losers R1"],["Winners final","Losers R2"],["Losers R3"],["Losers final"],["Grand final"],["Grand final reset"]];
 
 function runBracket(instant){
   if (S.bracket) clearTimeout(S.bracket.timer);
@@ -455,18 +457,20 @@ function runBracket(instant){
   const seeds = field();
   const res = {};
   const who = ref => ref[0]==="s" ? seeds[ref[1]] : ref[0]==="w" ? res[ref[1]].winner : res[ref[1]].loser;
+  const layout = LAYOUT.slice();
   LAYOUT.forEach(m => { res[m.id] = playSeries(who(m.a), who(m.b)); });
+  if (res.GF.winner === res.L6.winner){ layout.push(GF_RESET); res.GF2 = playSeries(who(GF_RESET.a), who(GF_RESET.b)); }
   rand = Math.random;
-  S.bracket = {seeds, res, shown: instant ? LAYOUT.length : 0};
+  S.bracket = {seeds, res, layout, shown: instant ? layout.length : 0};
   $("rating-actions") && ($("rating-actions").hidden = isDaily());
   if (instant) renderBracket(false); else { renderBracket(false); revealNext(); }
 }
 function revealNext(){
-  const B = S.bracket; if (!B || B.shown >= LAYOUT.length) return;
+  const B = S.bracket; if (!B || B.shown >= B.layout.length) return;
   B.shown++; renderBracket(true);
-  if (B.shown < LAYOUT.length) B.timer = setTimeout(revealNext, reduceMotion() ? 0 : 520);
+  if (B.shown < B.layout.length) B.timer = setTimeout(revealNext, reduceMotion() ? 0 : 520);
 }
-function skipAhead(){ const B=S.bracket; clearTimeout(B.timer); B.shown = LAYOUT.length; renderBracket(false); }
+function skipAhead(){ const B=S.bracket; clearTimeout(B.timer); B.shown = B.layout.length; renderBracket(false); }
 
 function seriesHTML(m, visible, isFresh){
   const r = S.bracket.res[m.id];
@@ -480,11 +484,11 @@ function myRun(){
   const {res} = S.bracket;
   let place = "1st", sw=0, sl=0, mw=0, ml=0; const stat = {}; const path = [];
   S.picks.forEach(x=>stat[x.p.id]={p:x.p,k:0,d:0,maps:0});
-  LAYOUT.forEach(m=>{
+  S.bracket.layout.forEach(m=>{
     const r = res[m.id]; if (!(r.A.me || r.B.me)) return;
     const w = r.A.me ? r.wa : r.wb, l = r.A.me ? r.wb : r.wa;
     mw+=w; ml+=l; path.push([m.id,w,l]);
-    if (w>l) sw++; else { sl++; if (sl>=2 || m.id==="GF") place = ELIM_PLACE[m.id]; }
+    if (w>l) sw++; else { sl++; if (sl>=2) place = ELIM_PLACE[m.id]; }
     r.maps.forEach(x=>x.lines.forEach(([id,k,d])=>{ stat[id].k+=k; stat[id].d+=d; stat[id].maps++; }));
   });
   return {place, sw, sl, mw, ml, stat, path};
@@ -498,10 +502,10 @@ function shareText(R){
   return `${head}\n${finish} · maps ${R.mw}-${R.ml} · OVR ${sc.total.toFixed(1)}\n${squares}\n||${roster}||\n${SITE}`;
 }
 function renderBracket(animLast){
-  const B = S.bracket; const done = B.shown >= LAYOUT.length;
-  const shownIds = new Set(LAYOUT.slice(0,B.shown).map(m=>m.id));
-  const lastId = LAYOUT[B.shown-1] && LAYOUT[B.shown-1].id;
-  const cols = COLS.map(names => `<div class="round">${names.map(n=>`<h3>${n}</h3>${LAYOUT.filter(m=>m.r===n).map(m=>seriesHTML(m, shownIds.has(m.id), animLast && m.id===lastId)).join("")}`).join("")}</div>`).join("");
+  const B = S.bracket, L = B.layout; const done = B.shown >= L.length;
+  const shownIds = new Set(L.slice(0,B.shown).map(m=>m.id));
+  const lastId = L[B.shown-1] && L[B.shown-1].id;
+  const cols = COLS.filter(names => names.some(n => L.some(m => m.r===n))).map(names => `<div class="round">${names.map(n=>`<h3>${n}</h3>${L.filter(m=>m.r===n).map(m=>seriesHTML(m, shownIds.has(m.id), animLast && m.id===lastId)).join("")}`).join("")}</div>`).join("");
   let result = "";
   if (done){
     const R = myRun();
@@ -539,7 +543,7 @@ function renderBracket(animLast){
   $("bracket").innerHTML = `${result}
     <div class="panel"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h2>Playoffs · double elimination</h2>
       ${done?"":`<button class="gbtn ghost" id="skip">Skip to result</button>`}</div>
-      <p class="hint">Every series is best of 5 (Hardpoint, SnD, Control, Hardpoint, SnD). Grand final has no bracket reset. Tap “Maps” on any series for the map-by-map.</p>
+      <p class="hint">Every series is best of 5 (Hardpoint, SnD, Control, Hardpoint, SnD). If the losers-bracket team wins the grand final, the bracket resets and a second best of 5 decides the title. Tap “Maps” on any series for the map-by-map.</p>
       <div class="scroll"><div class="rounds">${cols}</div></div></div>
     <div class="panel"><h2>Seeding</h2>${seedsHTML(B.seeds)}</div>`;
   const sc = $("bracket").querySelector(".rounds"); if (sc) sc.parentElement.scrollLeft = prevScroll;

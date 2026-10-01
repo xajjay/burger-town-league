@@ -165,16 +165,20 @@ function commitGame(rd, a, b, bucketName, r, detail, luA, luB){
 }
 
 /* ---------- season flow ---------- */
-const LAYOUT = [
+const BASE_LAYOUT = [
   {id:"W1", r:"Winners R1", a:["s",0], b:["s",7]}, {id:"W2", r:"Winners R1", a:["s",3], b:["s",4]}, {id:"W3", r:"Winners R1", a:["s",1], b:["s",6]}, {id:"W4", r:"Winners R1", a:["s",2], b:["s",5]},
   {id:"W5", r:"Winners semis", a:["w","W1"], b:["w","W2"]}, {id:"W6", r:"Winners semis", a:["w","W3"], b:["w","W4"]}, {id:"L1", r:"Losers R1", a:["l","W1"], b:["l","W2"]}, {id:"L2", r:"Losers R1", a:["l","W3"], b:["l","W4"]},
   {id:"L3", r:"Losers R2", a:["w","L1"], b:["l","W6"]}, {id:"L4", r:"Losers R2", a:["w","L2"], b:["l","W5"]}, {id:"W7", r:"Winners final", a:["w","W5"], b:["w","W6"]}, {id:"L5", r:"Losers R3", a:["w","L3"], b:["w","L4"]},
   {id:"L6", r:"Losers final", a:["w","L5"], b:["l","W7"]}, {id:"GF", r:"Grand final", a:["w","W7"], b:["w","L6"]}];
+// Bracket reset: if the losers-bracket team wins the grand final, a second best of 5 (GF2) is played.
+const GF_RESET = {id:"GF2", r:"Grand final reset", a:["w","L6"], b:["w","W7"]};
+const poLayout = () => { const gf = G.poRes && G.poRes.GF, l6 = G.poRes && G.poRes.L6; return gf && l6 && winnerOf(gf) === winnerOf(l6) ? BASE_LAYOUT.concat([GF_RESET]) : BASE_LAYOUT; };
 const winnerOf = res => res.wa > res.wb ? res.a : res.b, loserOf = res => res.wa > res.wb ? res.b : res.a;
 const refTeam = ref => ref[0] !== "s" && !G.poRes[ref[1]] ? null : ref[0] === "s" ? G.seeds[ref[1]] : ref[0] === "w" ? winnerOf(G.poRes[ref[1]]) : loserOf(G.poRes[ref[1]]);
 const standings = () => G.teams.slice().sort((a, b) => b.w - a.w || (b.mw - b.ml) - (a.mw - a.ml) || G.tb[b.id] - G.tb[a.id]);
 const userPair = rd => G.sched[rd].pairs.find(p => p.indexOf(userId()) >= 0);
-const eliminated = () => { const u = userId(); return LAYOUT.some(m => G.poRes[m.id] && (m.id[0] === "L" || m.id === "GF") && loserOf(G.poRes[m.id]) === u); };
+// out after two playoff series losses (double elimination; the grand final can reset)
+const eliminated = () => { const u = userId(); return poLayout().filter(m => G.poRes[m.id] && loserOf(G.poRes[m.id]) === u).length >= 2; };
 
 function preparePending(){
   if (G.pending) return;
@@ -182,7 +186,7 @@ function preparePending(){
     const pr = userPair(G.rIdx), r = evr();
     G.pending = {kind:"reg", rd:G.rIdx, a:pr[0], b:pr[1], luA:rollLineup(pr[0], r), luB:rollLineup(pr[1], r)};
   } else if (G.phase === "playoffs"){
-    const m = LAYOUT[G.poIdx], a = refTeam(m.a), b = refTeam(m.b), r = evr();
+    const m = poLayout()[G.poIdx], a = refTeam(m.a), b = refTeam(m.b), r = evr();
     G.pending = {kind:"po", m:m.id, a, b, luA:rollLineup(a, r), luB:rollLineup(b, r)};
   }
   save();
@@ -203,8 +207,8 @@ function runPending(){
   const out = {P, s}; G.last = {P, s}; G.pending = null; save(); return out;
 }
 function autoPO(untilUser){
-  while (G.poIdx < LAYOUT.length){
-    const m = LAYOUT[G.poIdx], a = refTeam(m.a), b = refTeam(m.b), u = userId();
+  while (G.poIdx < poLayout().length){
+    const m = poLayout()[G.poIdx], a = refTeam(m.a), b = refTeam(m.b), u = userId();
     if (untilUser && (a === u || b === u) && !eliminated()) break;
     const r = evr(), s = simSeries(mkEnt(a, rollLineup(a, r)), mkEnt(b, rollLineup(b, r)), G.po, r);
     G.poRes[m.id] = {a, b, wa:s.wa, wb:s.wb, detail:null}; G.poIdx++;
@@ -213,8 +217,8 @@ function autoPO(untilUser){
 }
 function beginPlayoffs(){ G.seeds = standings().slice(0, 8).map(t => t.id); G.phase = "playoffs"; G.poIdx = 0; G.poRes = {}; G.tab = "schedule"; if (!G.seeds.includes(userId())) autoPO(false); else autoPO(true); save(); }
 function checkDone(){
-  if (G.poIdx >= LAYOUT.length && G.phase !== "done"){
-    const gf = G.poRes.GF; G.champ = winnerOf(gf); G.runner = loserOf(gf);
+  if (G.poIdx >= poLayout().length && G.phase !== "done"){
+    const gf = G.poRes.GF2 || G.poRes.GF; G.champ = winnerOf(gf); G.runner = loserOf(gf);
     const pool = G.teams[G.champ].roster.map(i => ({c:CARDS[i], t:tot(G.po, i)})).filter(x => x.t.maps > 0).sort((a, b) => b.t.kd - a.t.kd);
     G.fmvp = pool.length ? pool[0].c.id : null; G.phase = "done";
   }
@@ -362,7 +366,7 @@ function nextActionHTML(){
   }
   if (G.phase === "awards") return btn("playoffs", "Begin the playoffs", "primary");
   if (G.phase === "playoffs"){
-    const m = LAYOUT[G.poIdx], a = refTeam(m.a), b = refTeam(m.b);
+    const m = poLayout()[G.poIdx], a = refTeam(m.a), b = refTeam(m.b);
     if ((a === u || b === u) && !eliminated()) return btn("preview", "Play " + m.r + " vs " + esc(teamName(a === u ? b : a)), "primary");
     return btn("simpo", eliminated() || G.seeds.indexOf(u) < 0 ? "Sim the rest of the playoffs" : "Sim to my next series", "primary");
   }
@@ -382,9 +386,9 @@ function renderHub(){
   if (G.phase === "playoffs" || G.phase === "done") { const host = root.querySelector("#bkhost"); if (host) drawBracket(host); }
 }
 function drawBracket(host, current){
-  const res = {}; LAYOUT.forEach(m => { const r = G.poRes[m.id]; if (r) res[m.id] = {A:{id:r.a, name:teamName(r.a), user:G.teams[r.a].user}, B:{id:r.b, name:teamName(r.b), user:G.teams[r.b].user}, wa:r.wa, wb:r.wb}; });
+  const res = {}; poLayout().forEach(m => { const r = G.poRes[m.id]; if (r) res[m.id] = {A:{id:r.a, name:teamName(r.a), user:G.teams[r.a].user}, B:{id:r.b, name:teamName(r.b), user:G.teams[r.b].user}, wa:r.wa, wb:r.wb}; });
   const ent = id => id == null ? null : {id, name:teamName(id), user:G.teams[id].user};
-  const slots = id => { const m = LAYOUT.find(x => x.id === id); if (!m) return [null, null]; return [ent(refTeam(m.a)), ent(refTeam(m.b))]; };
+  const slots = id => { const m = poLayout().find(x => x.id === id); if (!m) return [null, null]; return [ent(refTeam(m.a)), ent(refTeam(m.b))]; };
   B.bracket(host, {res, slots, current, name:e => (e.user ? "★ " : "") + e.name, seed:e => G.seeds.indexOf(e.id) + 1, isMe:e => e.user});
 }
 function pl(id, extra){ const c = CARDS[id]; return '<b>' + esc(c.name) + '</b>' + (extra || ""); }
@@ -484,7 +488,7 @@ function lineupHTML(tid, lu){ const subs = lu.notes.map(n => n.in);
 function renderMatch(){
   if (view.mstage === "preview"){
     const P = G.pending; if (!P){ view.screen = null; return render(); }
-    const title = P.kind === "reg" ? "Week " + G.week + " · Match " + (G.rIdx % 2 + 1) : LAYOUT.find(m => m.id === P.m).r + " · " + P.m;
+    const title = P.kind === "reg" ? "Week " + G.week + " · Match " + (G.rIdx % 2 + 1) : poLayout().find(m => m.id === P.m).r + " · " + P.m;
     root.innerHTML = panel(title, '<div style="font-size:26px;font-weight:800;text-align:center">' + esc(teamName(P.a)) + ' <span style="color:var(--muted)">vs</span> ' + esc(teamName(P.b)) + '</div><div class="status" style="text-align:center">Best of 5: Hardpoint, Search & Destroy, Control, Hardpoint, Search & Destroy</div>') +
       panel("Tonight's lineups", '<div class="twocol">' + lineupHTML(P.a, P.luA) + lineupHTML(P.b, P.luB) + '</div>') + (P.kind === "po" ? panel("Playoff bracket", '<div id="bkprev"></div>') : "") + '<div class="gm-actions">' + btn("startmatch", "Start the match", "primary") + btn("back", "Back", "ghost") + '</div>';
     if (P.kind === "po"){ const h2 = root.querySelector("#bkprev"); if (h2) drawBracket(h2, P.m); }

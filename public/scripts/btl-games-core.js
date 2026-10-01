@@ -162,8 +162,8 @@ function shell(o){
 
 /* ---- double-elimination bracket (Challonge-style, with connector lines) ---- */
 var BR_WIN=[["W1","W2","W3","W4"],["W5","W6"],["W7"],["GF"]], BR_LOS=[["L1","L2"],["L3","L4"],["L5"],["L6"]];
-var BR_FEED={W5:["W1","W2"],W6:["W3","W4"],W7:["W5","W6"],L3:["L1"],L4:["L2"],L5:["L3","L4"],L6:["L5"],GF:["W7","L6"]};
-var BR_SRC={W5:['Winner W1','Winner W2'],W6:['Winner W3','Winner W4'],L1:['Loser W1','Loser W2'],L2:['Loser W3','Loser W4'],L3:['Winner L1','Loser W6'],L4:['Winner L2','Loser W5'],W7:['Winner W5','Winner W6'],L5:['Winner L3','Winner L4'],L6:['Winner L5','Loser W7'],GF:['Winner W7','Winner L6'],W1:['Seed 1','Seed 8'],W2:['Seed 4','Seed 5'],W3:['Seed 2','Seed 7'],W4:['Seed 3','Seed 6']};
+var BR_FEED={W5:["W1","W2"],W6:["W3","W4"],W7:["W5","W6"],L3:["L1"],L4:["L2"],L5:["L3","L4"],L6:["L5"],GF:["W7","L6"],GF2:["GF"]};
+var BR_SRC={W5:['Winner W1','Winner W2'],W6:['Winner W3','Winner W4'],L1:['Loser W1','Loser W2'],L2:['Loser W3','Loser W4'],L3:['Winner L1','Loser W6'],L4:['Winner L2','Loser W5'],W7:['Winner W5','Winner W6'],L5:['Winner L3','Winner L4'],L6:['Winner L5','Loser W7'],GF:['Winner W7','Winner L6'],GF2:['Winner L6','Winner W7'],W1:['Seed 1','Seed 8'],W2:['Seed 4','Seed 5'],W3:['Seed 2','Seed 7'],W4:['Seed 3','Seed 6']};
 var BR_TITLES={W:["Winners round 1","Winners semifinals","Winners final","Grand final"],L:["Losers round 1","Losers round 2","Losers round 3","Losers final"]};
 function bracket(host,o){
   var res=o.res, nm=o.name||function(e){return e.name;}, seedOf=o.seed||function(){return "";}, me=o.isMe||function(){return false;};
@@ -181,7 +181,10 @@ function bracket(host,o){
   function section(cols,titles,cls){
     return '<div class="bsec '+cls+'">'+cols.map(function(c,i){return '<div class="bcol"><div class="btitle">'+titles[i]+'</div><div class="bmatches">'+c.map(match).join("")+'</div></div>';}).join("")+'</div>';
   }
-  host.innerHTML='<div class="bk"><svg class="bsvg" aria-hidden="true"></svg><div class="bhead">Winners bracket</div>'+section(BR_WIN,BR_TITLES.W,"win")+'<div class="bhead">Losers bracket</div>'+section(BR_LOS,BR_TITLES.L,"los")+'</div>';
+  /* bracket reset: if the losers-bracket team wins the grand final, a second best of 5 (GF2) decides the title */
+  var rs=o.slots?(o.slots("GF2")||[]):[], hasReset=!!res.GF2||!!(rs[0]||rs[1]);
+  var wCols=hasReset?BR_WIN.concat([["GF2"]]):BR_WIN, wTitles=hasReset?BR_TITLES.W.concat(["Grand final reset"]):BR_TITLES.W;
+  host.innerHTML='<div class="bk"><svg class="bsvg" aria-hidden="true"></svg><div class="bhead">Winners bracket</div>'+section(wCols,wTitles,"win")+'<div class="bhead">Losers bracket</div>'+section(BR_LOS,BR_TITLES.L,"los")+'</div>';
   function draw(){
     var bk=host.querySelector(".bk"), svg=host.querySelector(".bsvg"); if(!bk)return;
     var b=bk.getBoundingClientRect(); svg.setAttribute("width",bk.scrollWidth); svg.setAttribute("height",bk.scrollHeight);
