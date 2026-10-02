@@ -29,7 +29,7 @@ const sorted = [...careerStats].sort((a, b) => (b.overall ?? -1) - (a.overall ??
 
   <section>
     <div class="wrap">
-      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Click any column header to sort. Sorted by Overall by default.</p>
+      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Click any column header to sort. Sorted by Overall by default. Overall here is the career overall: the player's season overalls (70% his average, 30% his best three), pulled toward a typical level for short careers, plus longevity (up to +4) and accolades (up to +8). 99 would be a perfect six-season career, so nobody has one. Season 1 stats are playoffs only.</p>
       <div class="table-scroll">
         <table class="stat-table sortable-table">
           <thead>

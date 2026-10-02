@@ -53,6 +53,7 @@ import DATA from '../../data/game-12-0.json';
       <li>You can only draft a player once, whichever season or name you take him under.</li>
       <li>Land on a folded team with 1–2 players and you get a free respin in every mode.</li>
       <li>Team overall = player average, plus small boosts for real-teammate chemistry, balance between respawn and SnD K/D, and accolades.</li>
+      <li>Season overalls are on one all-era scale, so a 90 means the same in any season. Season 1 cards use playoff stats only (regular-season stats were never recorded) and are rated against the Season 1 playoff field.</li>
       <li>The daily challenge gives everyone the same spins and the same opponents. One run per day, resets at midnight Eastern.</li>
     </ol>
   </div>
@@ -250,7 +251,7 @@ function statsBlock(p){
 function renderSpun(){
   const t = S.spun;
   const hide = hideStats();
-  $("reel-season").textContent = `SEASON ${t.s} · PICK ${S.picks.length+1} OF 4`;
+  $("reel-season").textContent = `SEASON ${t.s}${t.s===1?" (PLAYOFF STATS ONLY)":""} · PICK ${S.picks.length+1} OF 4`;
   $("reel-team").textContent = t.name;
   $("reel-meta").textContent = teamLine(t);
   const tk = taken();

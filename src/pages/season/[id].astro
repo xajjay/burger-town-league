@@ -44,7 +44,10 @@ const currentPath = Astro.url.pathname;
   <section>
     <div class="wrap">
       <h2 class="section-title">Player Stats</h2>
-      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Click any column header to sort. Sorted by Overall by default. WAR = Wins Above Replacement{hasObj ? '; WAR+ adds objective play (hill time, plants, defuses, objective kills)' : ''}.</p>
+      <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 12px;">Click any column header to sort. Sorted by Overall by default. WAR = Wins Above Replacement{hasObj ? '; WAR+ adds objective play (hill time, plants, defuses, objective kills)' : ''}. OVR rates the whole season on one all-era scale: slaying in each mode against the league, strength of the opponents actually faced, how hard the K/D is to reach on an SMG, objective play (Season 5 on) and sample size, adjusted for how strong that season's league was, so a 90 means the same in any season{seasonId === 1 ? ' (Season 1 is rated on its own)' : ''}.</p>
+      {seasonId === 1 && (
+        <p class="s1-note" style="border-left: 3px solid var(--gold); padding: 8px 12px; margin-bottom: 12px; font-size: 0.85rem;"><strong>Season 1 stats are playoffs only.</strong> Regular-season stats were not recorded, so every number here (maps, K/D, overall) comes from the 10 playoff series, and there are no per-mode K/Ds. Season 1 overalls are rated against the Season 1 playoff field only, not adjusted against other seasons.</p>
+      )}
       <div class="table-scroll">
         <table class="stat-table sortable-table">
           <thead>

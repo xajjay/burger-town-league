@@ -159,7 +159,7 @@ const role = player ? getPlayerRole(player.player) : null;
               <tbody>
                 {seasonRows.map(r => (
                   <tr>
-                    <td><a href={r.href}>Season {r.season}</a>{r.inProgress && <span style="color: var(--paper-dim); font-size: 0.7rem; margin-left: 4px;">(in progress)</span>}</td>
+                    <td><a href={r.href}>Season {r.season}</a>{r.inProgress && <span style="color: var(--paper-dim); font-size: 0.7rem; margin-left: 4px;">(in progress)</span>}{Number(r.season) === 1 && <span style="color: var(--paper-dim); font-size: 0.7rem; margin-left: 4px;">(playoffs only)</span>}</td>
                     <td>{r.team}</td>
                     <td>{r.kills ?? 'N/A'}</td>
                     <td>{r.deaths ?? 'N/A'}</td>
@@ -178,7 +178,7 @@ const role = player ? getPlayerRole(player.player) : null;
               </tbody>
             </table>
           </div>
-          <p style="color: var(--paper-dim); font-size: 0.8rem; margin-top: 10px;">WAR = Wins Above Replacement (map wins a player adds over a replacement-level player). WAR+ adds objective play; objective stats are tracked from Season 5 on.</p>
+          <p style="color: var(--paper-dim); font-size: 0.8rem; margin-top: 10px;">WAR = Wins Above Replacement (map wins a player adds over a replacement-level player). WAR+ adds objective play; objective stats are tracked from Season 5 on. Season overalls are on one all-era scale (Season 1 is rated on its own). Season 1 stats are playoffs only.</p>
         </>
       ) : (
         <p>Player not found. <a href="/players">Browse all players</a>.</p>
