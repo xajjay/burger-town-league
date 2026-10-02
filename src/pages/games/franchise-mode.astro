@@ -308,6 +308,13 @@ const sleep = ms => new Promise(r => setTimeout(r, ms * SPEEDS[view.speed].f));
 function speedRow(){ return '<div class="spdrow"><span class="lab">Sim speed</span>' + Object.keys(SPEEDS).map(k => '<button class="chip" data-act="speed" data-arg="' + k + '" aria-pressed="' + (view.speed === k) + '">' + SPEEDS[k].label + '</button>').join("") + '</div>'; }
 
 function render(){
+  try { renderInner(); }
+  catch (e){
+    console.error(e);
+    root.innerHTML = '<div class="panel"><div class="label">Something went wrong</div><p class="status">This saved franchise could not be loaded, most likely because it was made with an older version of the game.</p><div class="gm-actions">' + btn("reset2", "Start a new franchise", "primary") + '</div></div>';
+  }
+}
+function renderInner(){
   if (!G) return renderSetup();
   if (view.screen === "match") return renderMatch();
   if (G.phase === "draft") return renderDraft();
@@ -581,6 +588,14 @@ root.addEventListener("change", e => {
 });
 root.addEventListener("input", e => { const s = e.target.closest('[data-sel="faq"]'); if (s){ view.faQ = s.value; const pos = s.selectionStart; render(); const n = root.querySelector('[data-sel="faq"]'); if (n){ n.focus(); n.setSelectionRange(pos, pos); } } });
 G = load();
+// Saves made before new players were added to the card pool (e.g. Season 6) have no stat lines for
+// them; give every current card an empty line so old franchises keep working. A save that references a
+// player who no longer exists can't be repaired, so it is set aside and a new franchise starts.
+if (G){
+  const ids = [].concat(...G.teams.map(t => t.roster || []), G.picks || []);
+  if (ids.some(i => !CARDS[i])){ try { localStorage.setItem(SAVE + "-old", JSON.stringify(G)); localStorage.removeItem(SAVE); } catch(e){} G = null; }
+  else { G.reg = G.reg || {}; G.po = G.po || {}; G.form = G.form || {}; LIST.forEach(c => { if (!G.reg[c.id]) G.reg[c.id] = blank(); if (!G.po[c.id]) G.po[c.id] = blank(); if (G.form[c.id] == null) G.form[c.id] = 1; }); }
+}
 window.__fm = {get G(){ return G; }, CARDS, LIST, evalTrade, sumV};
 render();
 })();
