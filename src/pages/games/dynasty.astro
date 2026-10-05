@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import GameFrame from '../../components/GameFrame.astro';
+import '../../styles/games.css';
+import '../../styles/dynasty.css';
+import DATA from '../../data/game-dynasty.json';
+---
+<Base title="Dynasty | Burger Town Leagues" description="Run a Burger Town franchise for as many seasons as you want: fantasy draft, budgets and contracts, trades, free agency, rookie classes, an Academy league, legacy scores and a Hall of Fame.">
+<GameFrame title="Dynasty" tagline="A full franchise mode built on real BTL players. Draft, manage money and contracts, trade, develop rookies and chase titles season after season." modes={false}>
+  <div slot="rules" class="rules">
+    <span><b>16 teams · 4 pools · 5 weeks of 2 matches · 12-team double elimination.</b> Then a 3-week offseason: options, progression, rookies and free agency.</span>
+    <span>Progress saves in this browser (3 slots). Export a save file to back it up.</span>
+  </div>
+</GameFrame>
+<script is:inline define:vars={{ DATA }}>window.DYN_DATA = DATA;</script>
+<script is:inline src="/scripts/dynasty/lz-string.min.js"></script>
+<script is:inline src="/scripts/dynasty/dyn-core.js"></script>
+<script is:inline src="/scripts/dynasty/dyn-sim.js"></script>
+<script is:inline src="/scripts/dynasty/dyn-market.js"></script>
+<script is:inline src="/scripts/dynasty/dyn-off.js"></script>
+<script is:inline src="/scripts/dynasty/dyn-news.js"></script>
+<script is:inline src="/scripts/dynasty/dyn-save.js"></script>
+<script is:inline src="/scripts/dynasty/dyn-ui-base.js"></script>
+<script is:inline src="/scripts/dynasty/dyn-ui.js"></script>
+</Base>

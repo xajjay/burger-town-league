@@ -1,0 +1,235 @@
+{
+ "Acro Ace": {
+  "availability": "Sometimes busy",
+  "best": "Hardpoint",
+  "consistency": "Normal",
+  "flags": [
+   "glue"
+  ],
+  "persona": "Loyalty",
+  "stage": "Veteran",
+  "style": "Slow / anchor",
+  "teammate": "Great vibes",
+  "tier": "Strong #2"
+ },
+ "Aj": {
+  "availability": "Always there",
+  "best": "Hardpoint",
+  "consistency": "Very consistent",
+  "flags": [
+   "objplus"
+  ],
+  "persona": "Winning",
+  "stage": "Prime",
+  "style": "Balanced",
+  "teammate": "Good",
+  "tier": "Star / captain"
+ },
+ "Aurora": {
+  "availability": "Often busy",
+  "best": "Hardpoint",
+  "consistency": "Normal",
+  "flags": [
+   "lead",
+   "work",
+   "mistakes",
+   "clutch"
+  ],
+  "persona": "Money",
+  "stage": "Prime",
+  "style": "Aggressive",
+  "teammate": "Good",
+  "tier": "Star / captain"
+ },
+ "Bleepa": {
+  "flags": [
+   "unselfish"
+  ],
+  "persona": "Balanced",
+  "teammate": "Great vibes",
+  "tier": "Depth / sub"
+ },
+ "Chadwick": {
+  "flags": [
+   "debut"
+  ]
+ },
+ "CrazieViews": {
+  "flags": [
+   "lead",
+   "iq",
+   "rust",
+   "conflict"
+  ]
+ },
+ "Crooked": {
+  "flags": [
+   "lead",
+   "iq",
+   "rust",
+   "clutch"
+  ]
+ },
+ "Deceptions": {
+  "best": "Hardpoint",
+  "stage": "Young / still improving"
+ },
+ "Docsukii": {
+  "flags": [
+   "glue"
+  ]
+ },
+ "Ephrisy": {
+  "availability": "Always there",
+  "best": "All modes",
+  "consistency": "Very consistent",
+  "flags": [
+   "work",
+   "lazy"
+  ],
+  "persona": "Balanced",
+  "stage": "Prime",
+  "style": "Balanced",
+  "teammate": "Great vibes",
+  "tier": "Star / captain"
+ },
+ "Habibi": {
+  "flags": [
+   "debut",
+   "glue"
+  ]
+ },
+ "Hype": {
+  "availability": "Sometimes busy",
+  "best": "Hardpoint",
+  "consistency": "Very consistent",
+  "persona": "Money",
+  "stage": "Prime",
+  "style": "Aggressive",
+  "teammate": "Good",
+  "tier": "Star / captain"
+ },
+ "Inkster": {
+  "availability": "Sometimes busy",
+  "best": "SnD",
+  "consistency": "Very consistent",
+  "persona": "Balanced",
+  "stage": "Prime",
+  "style": "Balanced",
+  "teammate": "Good",
+  "tier": "Star / captain"
+ },
+ "Jmetree": {
+  "availability": "Often busy",
+  "best": "All modes",
+  "consistency": "Normal",
+  "flags": [
+   "lead",
+   "objminus",
+   "unselfish"
+  ],
+  "persona": "Winning",
+  "stage": "Prime",
+  "style": "Balanced",
+  "teammate": "Great vibes",
+  "tier": "Strong #2"
+ },
+ "Karnij": {
+  "flags": [
+   "rust",
+   "debut"
+  ]
+ },
+ "Lewy": {
+  "availability": "Sometimes busy",
+  "best": "SnD",
+  "consistency": "Streaky",
+  "flags": [
+   "work",
+   "mistakes",
+   "conflict"
+  ],
+  "persona": "Money",
+  "stage": "Prime",
+  "style": "Aggressive",
+  "teammate": "Hard to play with",
+  "tier": "Strong #2"
+ },
+ "Nastyy": {
+  "availability": "Always there",
+  "best": "SnD",
+  "consistency": "Streaky",
+  "flags": [
+   "lazy"
+  ],
+  "persona": "Balanced",
+  "stage": "Older / declining",
+  "style": "Fast-paced",
+  "teammate": "Hard to play with",
+  "tier": "3rd / 4th man"
+ },
+ "Peach": {
+  "flags": [
+   "work",
+   "debut"
+  ]
+ },
+ "Proxzify": {
+  "availability": "Sometimes busy",
+  "best": "All modes",
+  "consistency": "Normal",
+  "flags": [
+   "iq"
+  ],
+  "persona": "Balanced",
+  "stage": "Veteran",
+  "style": "Slow / anchor",
+  "teammate": "Good",
+  "tier": "3rd / 4th man"
+ },
+ "Renicide": {
+  "availability": "Always there",
+  "best": "SnD",
+  "consistency": "Normal",
+  "flags": [
+   "unselfish"
+  ],
+  "persona": "Winning",
+  "stage": "Prime",
+  "style": "Fast-paced",
+  "teammate": "Great vibes",
+  "tier": "Star / captain"
+ },
+ "Toremeant": {
+  "best": "All modes",
+  "consistency": "Normal",
+  "flags": [
+   "mistakes"
+  ],
+  "stage": "Prime",
+  "style": "Balanced",
+  "teammate": "Good",
+  "tier": "3rd / 4th man"
+ },
+ "Utopian": {
+  "availability": "Always there",
+  "best": "Hardpoint",
+  "consistency": "Streaky",
+  "flags": [
+   "unselfish",
+   "glue"
+  ],
+  "persona": "Loyalty",
+  "stage": "Veteran",
+  "style": "Balanced",
+  "teammate": "Great vibes",
+  "tier": "3rd / 4th man"
+ },
+ "Waly": {
+  "flags": [
+   "iq",
+   "clutch",
+   "conflict"
+  ]
+ }
+}
