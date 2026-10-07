@@ -104,9 +104,9 @@ DY.recordOrder = function(){
   return rows.sort(function(a, b){ return (a.w - a.l) - (b.w - b.l) || a.md - b.md || a.mw - b.mw || a.id - b.id; }).map(function(r){ return r.id; });
 };
 DY.projSlot = function(orig){ var g = G(), d = g.off && g.off.draft; if (d){ var i = d.slots.findIndex(function(s){ return s.orig === orig; }); if (i >= 0) return i + 1; } return DY.recordOrder().indexOf(orig) + 1; };
-// only the 8 worst records draft; the 6 worst are in the lottery for picks 1-4 (odds at #1 below)
-DY.DRAFT_TEAMS = 8; DY.LOTTO_TEAMS = 6;
-DY.LOTTO_W = [30, 24, 18, 13, 9, 6];
+// only the 8 worst records draft; the 4 worst are in the lottery for picks 1-4 (odds at #1 below; picks 2-4 drawn with the same weights)
+DY.DRAFT_TEAMS = 8; DY.LOTTO_TEAMS = 4;
+DY.LOTTO_W = [60, 20, 12.5, 7.5];
 DY.lotteryOdds = function(){ return DY.recordOrder().slice(0, DY.LOTTO_TEAMS).map(function(id, i){ return {tid:id, w:DY.LOTTO_W[i]}; }); };
 // a pick's worth by where its original team sits: bottom 8 = a real pick, 9-12 = a long shot, top 4 = basically nothing
 function slotWorth(s){ if (s > 12) return 1; if (s > DY.DRAFT_TEAMS) return 8; return 30 + 160 * Math.pow((DY.DRAFT_TEAMS + 1 - s) / DY.DRAFT_TEAMS, 1.5); }    // #1 ≈ $190k, #8 ≈ $37k
