@@ -49,8 +49,11 @@ DY.beginOffseason = function(){
   DY.retirements();
   DY.progression();
   DY.hofInductions();
+  DY.retireJerseys(g.off.retired);
+  DY.trqOffseason();
   DY.contractsRollover();
-  DY.rookieClass();
+  DY.bondsOffseason();
+  DY.promoteClass();
   DY.setTags(false);
   DY.offseasonNews();
 };
@@ -93,8 +96,10 @@ var GROW = [[19, .32], [20, .3], [21, .27], [22, .23], [23, .19], [24, .14], [25
 var DECL = [[26, 0], [27, .3], [28, .7], [29, 1.15], [30, 1.7], [31, 2.3], [32, 2.9], [33, 3.6], [99, 4.4]];
 var lookup = function(tab, a){ for (var i = 0; i < tab.length; i++) if (a <= tab[i][0]) return tab[i][1]; return tab[tab.length - 1][1]; };
 DY.develop = function(p){
-  var a = p.age, old = p.ovr, ev = null;
-  var growth = Math.max(0, p.ceil - p.ovr) * lookup(GROW, a), decl = lookup(DECL, a) * (1.15 - p.work / 260);
+  var a = p.age, ev = null;
+  if (p.ovrAdj) { p.ovrAdj *= 0.85; DY.setOvr(p); }
+  var old = p.ovr;
+  var growth = Math.max(0, p.ceil - p.ovr) * lookup(GROW, a) * (p.ovr >= 92 ? 0.45 : p.ovr >= 88 ? 0.7 : 1), decl = lookup(DECL, a) * (1.15 - p.work / 260);
   var perf = (p.perf || 0) * (a <= 25 ? 0.22 : 0.14), work = (p.work - 65) / 30 * 0.7;
   var noise = gauss() * (0.8 + (100 - p.cons) / 70);
   var d = growth - decl + perf + work + noise;
@@ -122,7 +127,8 @@ DY.develop = function(p){
 DY.progression = function(){
   var g = G();
   DY.active().forEach(function(p){
-    var r = DY.develop(p); g.off.prog[p.id] = {d:Math.round(r.d * 10) / 10, ev:r.ev, from:Math.round(r.from), to:Math.round(r.to)};
+    var r = DY.develop(p), evo = p.yrs >= 1 && DY.evolve ? DY.evolve(p) : [];
+    g.off.prog[p.id] = {d:Math.round(r.d * 10) / 10, ev:r.ev, from:Math.round(r.from), to:Math.round(r.to), evo:evo.length ? evo : undefined};
     if (r.ev === "boom" && p.ovr >= 80) DY.addLog(p, "Breakout offseason (+" + r.d.toFixed(1) + " OVR).");
     if (r.ev === "bust" || r.ev === "cliff") DY.addLog(p, r.ev === "cliff" ? "Fell off a cliff this offseason (" + r.d.toFixed(1) + " OVR)." : "Development stalled this offseason.");
     p.age++; p.yrs++;
@@ -140,6 +146,14 @@ DY.legacyParts = function(p){
   peak = Math.max(peak, Math.round(p.ovr));
   var acc = sum(p.acc.map(function(a){ return DY.ACC_PTS[a.a] || 0; }));
   return {talent:talent + Math.max(0, peak - 85), stats:Math.max(0, war) * 0.8 + kills / 1000, acc:acc};
+};
+// legacy earned only while playing for one franchise (seasons + trophies won there)
+DY.teamLegacy = function(p, t){
+  var on = function(tm){ return tm && String(tm).split("/").indexOf(t.abbr) >= 0; };
+  var talent = 0, war = 0, kills = 0, peak = 0, n = 0;
+  p.car.forEach(function(c){ if (c.lvl !== "BTL" || !on(c.tm)) return; var reg = DY.uS(c.reg), po = DY.uS(c.po); n++; if (reg && reg.m >= 10) talent += Math.max(0, (c.so || 0) - 80) * 0.5; if (reg){ war += reg.war || 0; kills += reg.k || 0; } if (po){ war += (po.war || 0) * 1.3; kills += po.k || 0; } peak = Math.max(peak, c.ovr || 0); });
+  var acc = sum(p.acc.filter(function(a){ return a.t === t.abbr; }).map(function(a){ return DY.ACC_PTS[a.a] || 0; }));
+  return {score:Math.round((talent + Math.max(0, peak - 85) * 0.5 + Math.max(0, war) * 0.8 + kills / 1000 + acc) * 10) / 10, seasons:n, acc:p.acc.filter(function(a){ return a.t === t.abbr; })};
 };
 DY.legacy = function(p){ var x = DY.legacyParts(p); return Math.round((x.talent + x.stats + x.acc) * 10) / 10; };
 DY.HOF_LEGACY = 150;
@@ -169,11 +183,12 @@ DY.contractsRollover = function(){
   // player options decided by the players now; CPU team options decided now too. The user decides theirs in the "Options" step.
   Object.keys(g.off.opts).forEach(function(id){
     var o = g.off.opts[id], p = g.P[id], t = g.teams[o.tid];
-    if (o.type === "1+1P"){
+    if (DY.ctype(o.type).o === "P"){
       var mv = DY.marketValue(p), out = DY.teamOutlook(t), optOut = (mv > p.con.sal * 1.15 && p.pri.money >= 0.25) || (out < 0.35 && p.pri.win >= 0.35) || p.rel < 25;
       o.decided = true; o.exercise = !optOut; if (optOut){ DY.addLog(p, "Declined his player option."); expire(p); } else { exercise(p); DY.addLog(p, "Picked up his player option."); }
     } else if (!t.user || g.settings.auto){
       var keep = DY.tradeValue(p, t) >= p.con.sal * (t.tag === "Rebuilding" ? 1.4 : 1.05) && (t.tag !== "Rebuilding" || p.age <= 26 || p.con.sal <= 120);
+      if (keep && DY.draftMinded && DY.draftMinded(t) && p.id === DY.weakestOption(t.id) && DY.knownOvr(p) < 86) keep = false;   // clear a spot for the draft
       o.decided = true; o.exercise = keep; if (keep){ exercise(p); DY.addLog(p, t.name + " exercised his team option."); } else { DY.addLog(p, t.name + " declined his team option."); expire(p); }
     }
   });
@@ -182,6 +197,8 @@ function exercise(p){ p.con.yrs = 1; p.con.opt = false; p.con.optDone = true; }
 function expire(p){
   var g = G(), t = g.teams[p.team];
   t.roster = t.roster.filter(function(i){ return i !== p.id; }); t.lineup = t.lineup.filter(function(i){ return i !== p.id; });
+  DY.leaveTeam(p, t.id, "expire");
+  if (p.con && p.con.rookie) p.rfa = t.id;          // coming off a rookie deal: restricted free agent (his team can match)
   p.formerTeam = t.id; p.relMem = p.rel; p.team = null; p.con = null; p.status = "fa"; p.minor = null;
   p.faSince = g.season;
 }
@@ -196,15 +213,22 @@ DY.pendingUserOptions = function(){ var g = G(); return Object.keys(g.off.opts).
 /* =====================================================================================
    ROOKIE CLASS — scouted, ranked, never guaranteed
    ===================================================================================== */
-var ARCH = [["gen", .035], ["star", .1], ["starter", .22], ["gem", .1], ["bust", .12], ["serv", .425]];
-DY.ARCH_NAME = {gen:"Generational", star:"Future star", starter:"Starter", gem:"Hidden gem", bust:"Bust", serv:"Serviceable"};
-DY.rookieClass = function(){
+var ARCH = [["gen", .03], ["star", .09], ["starter", .2], ["gem", .09], ["bust", .12], ["serv", .32], ["scrub", .15]];
+DY.ARCH = ARCH;
+DY.ARCH_NAME = {gen:"Generational", star:"Future star", starter:"Starter", gem:"Hidden gem", bust:"Bust", serv:"Serviceable", scrub:"Long shot"};
+// prospects = true: the next class is created at the start of a season so teams can scout it all year.
+// Otherwise (old saves) the class is created at the start of the offseason, as before.
+DY.ARCH_CAP = {gen:2, star:4, gem:3};       // high-ceiling talent is limited per class (max 5 generational + future stars), ceilings themselves aren't capped
+DY.rookieClass = function(prospects){
   var g = G(), taken = {}; DY.allP().forEach(function(p){ taken[p.n.toLowerCase()] = 1; });
-  var activeN = DY.active().length, n = clamp(134 - activeN + rint(1, 4), 8, 16);
-  var list = [];
+  var activeN = DY.active().length, n = clamp((prospects ? 152 : 142) - activeN + rint(1, 4), 10, 16);
+  var list = [], cnt = {};
   for (var i = 0; i < n; i++){
     var arche = wpick(ARCH, function(x){ return x[1]; })[0];
-    list.push(arche);
+    if (arche === "gen" && (cnt.gen || 0) >= 1 && !chance(0.25)) arche = "star";        // two generational talents in one class is rare
+    if (DY.ARCH_CAP[arche] != null && (cnt[arche] || 0) >= DY.ARCH_CAP[arche]) arche = "starter";
+    if ((arche === "gen" || arche === "star") && (cnt.gen || 0) + (cnt.star || 0) >= 5) arche = "starter";
+    cnt[arche] = (cnt[arche] || 0) + 1; list.push(arche);
   }
   if (list.indexOf("gen") < 0 && list.indexOf("star") < 0 && chance(0.6)) list[list.indexOf("starter") >= 0 ? list.indexOf("starter") : 0] = "star";
   var out = list.map(function(arche){
@@ -214,8 +238,9 @@ DY.rookieClass = function(){
     else if (arche === "starter"){ o = rr(71, 78); c = rr(82, 88); }
     else if (arche === "gem"){ o = rr(65, 72); c = rr(85, 92); }
     else if (arche === "bust"){ o = rr(70, 78); c = o + rr(0, 2.5); }
+    else if (arche === "scrub"){ o = rr(56, 64); c = o + rr(1, 5); }
     else { o = rr(62, 73); c = o + rr(3, 8); }
-    p.role = chance(0.56) ? "AR" : "SMG";
+    p.role = chance(0.5) ? "AR" : "SMG";
     var spec = pick(["gun", "hp", "snd", "ctl", "obj", null]);
     p.at = {gun:o - 1 + gauss() * 4.5, hp:o - 1 + gauss() * 4.5, snd:o - 1 + gauss() * 5, ctl:o - 1 + gauss() * 4.5, obj:(p.role === "SMG" ? 72 : 63) + (o - 76) * 0.3 + gauss() * 8};
     if (spec) p.at[spec] += rr(4, 8);
@@ -237,11 +262,13 @@ DY.rookieClass = function(){
     var kd = clamp(0.74 + (p.ovr - 60) * 0.017 + gauss() * 0.07, 0.6, 1.6);
     p.rookie = {cls:g.season + 1, hidden:true, est:Math.round(est * 10) / 10, estC:estC, arche:arche, holdout:hold,
       scout:{kd:Math.round(kd * 100) / 100, snd:Math.round(clamp(kd + (p.at.snd - p.ovr) * 0.014 + gauss() * 0.1, .5, 2) * 100) / 100, resp:Math.round(clamp(kd + (p.at.hp - p.ovr) * 0.01 + gauss() * 0.05, .5, 1.7) * 100) / 100, ip:Math.round((35 + (p.entry - 50) * 0.12 + gauss() * 2) * 10) / 10, maps:rint(40, 140)}};
-    p.status = "fa"; p.team = null; p.minor = null;
+    p.status = prospects ? "prospect" : "fa"; p.team = null; p.minor = null;
     g.P[p.id] = p; return p;
   });
+  DY.assignMentors(out);
   out.sort(function(a, b){ return (b.rookie.estC * 0.62 + b.rookie.est * 0.38) - (a.rookie.estC * 0.62 + a.rookie.est * 0.38); });
-  out.forEach(function(p, i){ p.rookie.rank = i + 1; DY.addLog(p, "Entered the league as the #" + (i + 1) + " prospect in the Season " + (g.season + 1) + " class (" + p.potG + " potential)."); });
+  out.forEach(function(p, i){ p.rookie.rank = i + 1; DY.addLog(p, "Ranked the #" + (i + 1) + " prospect in the Season " + (g.season + 1) + " class."); });
+  if (prospects) return out;
   g.off.rookies = out.map(function(p){ return p.id; });
 };
 
@@ -253,7 +280,8 @@ DY.startFreeAgency = function(){
   var g = G();
   // any undecided user options default to "exercise"
   DY.pendingUserOptions().forEach(function(id){ DY.userOption(id, true); });
-  g.off.stage = "fa"; g.off.week = 1; g.fa = {offers:{}, log:[]};
+  DY.settleDraft();
+  g.off.stage = "fa"; g.off.week = 1; g.fa = {offers:{}, log:[], rfa:{}};
   DY.cpuFaOffers();
   DY.cpuOffersToUser();
 };
@@ -261,7 +289,7 @@ DY.faOffersFor = function(pid){ var g = G(); return (g.fa && g.fa.offers[pid]) |
 DY.committed = function(t){ var g = G(), c = 0; if (!g.fa) return 0; Object.keys(g.fa.offers).forEach(function(pid){ g.fa.offers[pid].forEach(function(o){ if (o.tid === t.id) c += o.sal; }); }); return c; };
 DY.openSlots = function(t){ return DY.ROSTER - t.roster.length; };
 DY.userFaOffer = function(pid, sal, type){
-  var g = G(), t = DY.userT(), p = g.P[pid];
+  var g = G(), t = DY.userT(), p = g.P[pid], vt = DY.validType(type); if (vt) return {err:vt};
   if (g.phase !== "offseason" || g.off.stage !== "fa") return {err:"Free agency isn't open."};
   if (p.team != null) return {err:"He's under contract."};
   sal = Math.round(sal / 5) * 5;
@@ -281,6 +309,8 @@ function teamFaValue(t, p){
   var ko = DY.knownOvr(p), kc = DY.knownCeil(p), v = ko;
   if (t.tag === "Rebuilding") v += (p.age <= 23 ? (kc - ko) * 0.6 : -Math.max(0, p.age - 26) * 1.2);
   else if (t.tag === "Buying") v += p.age <= 23 ? (kc - ko) * 0.3 : 0;
+  if (t.plan === "draft") v += p.age <= 23 ? (kc - ko) * 0.3 : -Math.max(0, p.age - 27) * 0.8;
+  if (p.rfa === t.id || (p.drafted && p.drafted.tid === t.id)) v += 4;        // bring the home-grown guy back
   else v += p.age <= 22 ? (kc - ko) * 0.15 : 0;
   // need: role + weakest mode
   var c = DY.roleCounts(t.roster);
@@ -300,7 +330,7 @@ DY.cpuFaOffers = function(){
       if (!worst) return;
     }
     var mine = Object.keys(g.fa.offers).filter(function(k){ return g.fa.offers[k].some(function(o){ return o.tid === t.id; }); }).length;
-    var maxOffers = (slots > 0 ? slots + 1 : DY.space(t) > 300 ? 2 : 1) - mine; if (maxOffers <= 0) return;
+    var maxOffers = (slots > 0 ? slots + 1 : DY.space(t) > 300 ? 2 : 1) + (t.plan === "fa" ? 1 : 0) - mine; if (maxOffers <= 0) return;
     var space = DY.space(t) - DY.committed(t);
     var c = DY.roleCounts(t.roster);
     var cands = pool.filter(function(p){
@@ -312,25 +342,40 @@ DY.cpuFaOffers = function(){
     }).map(function(p){ return {p:p, v:teamFaValue(t, p)}; }).sort(function(a, b){ return b.v - a.v; });
     for (var i = 0; i < cands.length && maxOffers > 0; i++){
       var p = cands[i].p, ask = DY.askFor(p, t.id);
-      var mult = t.tag === "Contender" ? rr(0.96, 1.12) : t.tag === "Rebuilding" ? rr(0.86, 1.02) : rr(0.92, 1.06);
+      var mult = (t.tag === "Contender" ? rr(0.96, 1.12) : t.tag === "Rebuilding" ? rr(0.86, 1.02) : rr(0.92, 1.06)) + (t.plan === "fa" ? 0.06 : 0) + (p.rfa === t.id ? 0.05 : 0);
       if (g.off.week === 3) mult += 0.04;
       var sal = Math.round(clamp(ask * mult, DY.MIN_SAL, DY.MAX_SAL) / 5) * 5;
       if (sal > space) { if (ask <= space + 20) sal = Math.round(space / 5) * 5; else continue; }
       if (sal < DY.MIN_SAL) continue;
       // don't burn the whole budget on one player if there are holes to fill
       if (slots >= 2 && sal > space - DY.MIN_SAL * (slots - 1)) continue;
-      var type = p.age <= 23 ? (chance(0.6) ? "2G" : "1+1T") : p.age >= 29 ? (chance(0.6) ? "1" : "1+1T") : (DY.knownOvr(p) >= 88 ? (chance(0.55) ? "2G" : "1+1P") : pick(["1", "2G", "1+1T"]));
+      var type = DY.cpuType(t, p);
       (g.fa.offers[p.id] = g.fa.offers[p.id] || []).push({tid:t.id, sal:sal, type:type, wk:g.off.week, drop:worst ? worst.id : null});
       space -= sal; maxOffers--;
       if (worst && maxOffers <= 0) break;
     }
   });
 };
+// restricted free agency (players coming off rookie deals)
+DY.rfaCanMatch = function(O, p, o){ var own = (DY.faOffersFor(p.id).find(function(x){ return x.tid === O.id; }) || {sal:0}).sal; return DY.openSlots(O) > 0 && o.sal <= DY.space(O) - (DY.committed(O) - own) && DY.roleFeasible(O.roster.concat([p.id])); };
+DY.rfaWants = function(O, p, sal){ var home = p.drafted && p.drafted.tid === O.id; return DY.tradeValue(p, O) >= sal * (home ? 0.75 : 1) || (home && DY.knownOvr(p) >= 83) || (O.plan === "core" && DY.knownOvr(p) >= 80); };
+DY.rfaPending = function(){ var g = G(); return g.fa && g.fa.rfa ? Object.keys(g.fa.rfa).map(Number) : []; };
+DY.rfaDecide = function(pid, match){
+  var g = G(), x = g.fa && g.fa.rfa && g.fa.rfa[pid], p = g.P[pid]; if (!x) return "That offer sheet is gone.";
+  var O = g.teams[p.rfa], t = g.teams[x.tid];
+  delete g.fa.rfa[pid]; delete g.fa.offers[pid];
+  if (match){ if (!DY.rfaCanMatch(O, p, x)) return "You can't fit that contract anymore."; DY.signPlayer(p, O.id, x.sal, x.type, "Matched an offer sheet and re-signed with"); p.signedWk = g.season * 100 + 90; DY.remember(p, O.id, 4); DY.news("fa", O.name + " match for " + p.n, O.name + " matched " + t.name + "'s offer sheet: " + p.n + " stays home at " + DY.money(x.sal) + ".", {pid:pid, tid:O.id}); return null; }
+  if ((DY.openSlots(t) > 0 || (x.drop != null && t.roster.indexOf(x.drop) >= 0)) && x.sal <= DY.space(t) + 1){ if (x.drop != null) DY.release(x.drop, true); DY.signPlayer(p, t.id, x.sal, x.type); p.signedWk = g.season * 100 + 90; DY.news("fa", p.n + " heads to " + t.city, O.name + " declined to match. " + p.n + " signs with " + t.name + " (" + DY.money(x.sal) + ").", {pid:pid, tid:t.id}); }
+  return null;
+};
 DY.endFaWeek = function(){
   var g = G(), wk = g.off.week, signed = [];
+  if (g.off.rfaHold){ g.off.rfaHold = false; DY.rfaPending().forEach(function(pid){ DY.rfaDecide(pid, false); }); DY.finalizeOffseason(); return []; }
+  DY.rfaPending().forEach(function(pid){ DY.rfaDecide(pid, false); });     // offer sheets you didn't answer: he signs it
   var ids = shuffle(Object.keys(g.fa.offers).map(Number));
   ids.forEach(function(pid){
-    var p = g.P[pid], list = (g.fa.offers[pid] || []).filter(function(o){ var t = g.teams[o.tid]; if (p.team != null || !(DY.openSlots(t) > 0 || (o.drop != null && t.roster.indexOf(o.drop) >= 0)) || (o.sal > DY.space(t) + 1 && o.sal > DY.MIN_SAL)) return false; var ids = t.roster.filter(function(i){ return i !== o.drop; }).concat([p.id]); return DY.roleFeasible(ids); });
+    var p = g.P[pid]; if (g.fa.rfa && g.fa.rfa[pid]) return;          // waiting on his old team to match
+    var list = (g.fa.offers[pid] || []).filter(function(o){ var t = g.teams[o.tid]; if (p.team != null || !(DY.openSlots(t) > 0 || (o.drop != null && t.roster.indexOf(o.drop) >= 0)) || (o.sal > DY.space(t) + 1 && o.sal > DY.MIN_SAL)) return false; var ids = t.roster.filter(function(i){ return i !== o.drop; }).concat([p.id]); return DY.roleFeasible(ids); });
     if (!list.length){ delete g.fa.offers[pid]; return; }
     var scored = list.map(function(o){ var ev = DY.evalOffer(p, o, {week:wk}); return {o:o, s:ev.score + gauss() * 0.12, ev:ev}; }).sort(function(a, b){ return b.s - a.s; });
     var best = scored[0], thr = wk === 1 ? 0.3 : wk === 2 ? 0.08 : -0.6;
@@ -339,6 +384,15 @@ DY.endFaWeek = function(){
     if (list.length >= 2 && wk === 1) thr += 0.08;            // a bidding war: he can wait
     if (best.s >= thr){
       var o = best.o, t = g.teams[o.tid];
+      // restricted free agent: his old team gets to match the offer sheet
+      if (p.rfa != null && o.tid !== p.rfa && g.teams[p.rfa]){
+        var O = g.teams[p.rfa];
+        if (DY.rfaCanMatch(O, p, o)){
+          if (O.user && !g.settings.auto){ g.fa.rfa[pid] = {tid:o.tid, sal:o.sal, type:o.type, drop:o.drop, wk:wk}; DY.news("fa", p.n + " signs an offer sheet", p.n + " agreed to an offer sheet with " + t.name + ": " + DY.money(o.sal) + ", " + DY.conName(o.type) + ". He's a restricted free agent — " + O.name + " can match it and keep him.", {pid:pid, tid:O.id}); return; }
+          if (DY.rfaWants(O, p, o.sal)){ DY.news("fa", O.name + " match for " + p.n, t.name + " signed " + p.n + " to an offer sheet (" + DY.money(o.sal) + ") and " + O.name + " matched it. Home-grown stays home.", {pid:pid, tid:O.id}); o = {tid:O.id, sal:o.sal, type:o.type, drop:null}; t = O; }
+          else DY.news("fa", O.name + " let " + p.n + " walk", O.name + " declined to match " + t.name + "'s offer sheet for " + p.n + " (" + DY.money(o.sal) + ").", {pid:pid, tid:t.id});
+        }
+      }
       if (o.drop != null) DY.release(o.drop, true);
       DY.signPlayer(p, t.id, o.sal, o.type);
       p.signedWk = g.season * 100 + 90;
@@ -358,6 +412,7 @@ DY.endFaWeek = function(){
   g.fa.log.push({wk:wk, signed:signed, raises:raises});
   DY.faWeekNews(wk, signed);
   if (wk < 3){ g.off.week++; DY.cpuFaOffers(); DY.cpuTrades(); DY.cpuOffersToUser(); }
+  else if (DY.rfaPending().length) g.off.rfaHold = true;        // answer the last offer sheets, then free agency closes
   else DY.finalizeOffseason();
   return signed;
 };
@@ -386,6 +441,7 @@ DY.finalizeOffseason = function(){
   });
   g.teams.forEach(function(t){ if (!t.user) DY.fillRoster(t); });
   var u = DY.userT(); if (u.roster.length < DY.ROSTER){ var n0 = u.roster.length; DY.fillRoster(u, true); if (u.roster.length > n0) DY.news("move", "Roster filled", "Your roster had open spots at the end of free agency, so the league office auto-signed the best available players at the minimum.", {tid:u.id}); }
+  DY.active().forEach(function(p){ if (p.team == null) p.rfa = null; });
   g.fa = null;
   g.season++;
   g.off = null;
@@ -396,6 +452,10 @@ DY.finalizeOffseason = function(){
   DY.active().forEach(function(p){ if (p.rookie && p.rookie.hidden && p.team != null){ p.rookie.hidden = false; reveals.push(p); } p.relMem = null; });
   g.teams.forEach(function(t){ t.dead = t.deadNext || 0; t.deadNext = 0; t.cashAdj = 0; t.userTag = t.user ? t.userTag : false; });
   DY.setTags(true);
+  DY.cpuScouting();
+  DY.active().forEach(function(p){ p.draftRights = null; p.draftDeclined = null; p.undrafted = null; });
+  DY.resetPicks();
+  Object.keys(g.scout || {}).forEach(function(tid){ var m = g.scout[tid]; Object.keys(m).forEach(function(pid){ var p = g.P[pid]; if (!p || !p.rookie || !p.rookie.hidden || p.status === "retired") delete m[pid]; }); });
   DY.newSeasonSetup();
   DY.active().forEach(function(p){ p.ovrH.push({s:g.season, o:Math.round(p.ovr)}); });
   g.phase = "preseason";

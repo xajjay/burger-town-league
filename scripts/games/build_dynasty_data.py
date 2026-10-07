@@ -37,6 +37,11 @@ for r in AS[3:]:
     for j in keys:
         if r[j]: alias.setdefault(str(r[j]).strip().lower(), c)
     career[c] = dict(ovr=num(r[ax['Player Overall']]), war10=num(r[ax['WAR / 10 Maps']]), notes=r[ax['Notes (Career Accolades)']] or '')
+CM = list(wb['Career Model'].iter_rows(values_only=True))
+_ci = next(i for i, r in enumerate(CM) if r and r[0] == 'Player'); _cx = {str(h).strip(): j for j, h in enumerate(CM[_ci]) if h}
+talent = {}
+for r in CM[_ci + 1:]:
+    if r and r[0] and isinstance(r[_cx['Talent']], (int, float)): talent[alias.get(str(r[0]).strip().lower(), str(r[0]).strip())] = float(r[_cx['Talent']])
 canon = lambda n: alias.get(str(n).strip().lower(), str(n).strip())
 
 # ---- per player-season mode K/Ds from the season tabs ----
@@ -123,7 +128,7 @@ for c, rows in by.items():
             n = o[key + 'N']
             if n: ob[key] = round(o[key] / n, 3); ob[key + 'N'] = int(n)
     mp = {k: v for k, v in mapstat.get(c, {}).items() if v[2] + v[3] >= 2}
-    out.append(dict(n=c, r=ROLE_FIX.get(c, rows[-1]['r']), maps=mp or None, tags=TAGS.get(c), ovr=round(ovr, 1), seasons=len({p['s'] for p in rows}),
+    out.append(dict(tal=round(talent[c], 1) if c in talent else None, n=c, r=ROLE_FIX.get(c, rows[-1]['r']), maps=mp or None, tags=TAGS.get(c), ovr=round(ovr, 1), seasons=len({p['s'] for p in rows}),
                     first=rows[0]['s'], last=rows[-1]['s'], m=m, k=k, d=d, kd=round(k / max(1, d), 3), ip=round(ip, 2),
                     hp=mk('hp'), snd=mk('snd'), ctl=mk('ctl'), war10=None if cv.get('war10') is None else round(cv['war10'], 3),
                     best=max(p['o'] for p in rows), lastO=rows[-1]['o'],

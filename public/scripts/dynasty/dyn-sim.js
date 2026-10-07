@@ -10,7 +10,7 @@ var G = function(){ return DY.G; };
 DY.newDynasty = function(opts, data){
   var g = {v:DY.VERSION, rs:(Date.now() ^ Math.floor(Math.random() * 1e9)) | 0, created:Date.now(), season:1, phase:"draft", week:1, round:0,
     user:0, teams:[], minors:[], P:{}, nid:0, news:[], hist:[], tx:[], offers:[], res:[], mres:[], sched:[], msched:[], po:null, mpo:null,
-    awards:null, off:null, retiredIds:[], hof:[], ext:{}, fa:null, settings:{}, pr:[], notes:[], weekLog:[]};
+    awards:null, off:null, retiredIds:[], hof:[], ext:{}, fa:null, settings:{}, pr:[], notes:[], weekLog:[], bonds:{}};
   DY.setG(g);
   var fits = DY.fitKd(data.players);
   data.players.forEach(function(d){ var p = DY.realPlayer(d, g.nid++, fits); g.P[p.id] = p; });
@@ -30,7 +30,7 @@ DY.newDynasty = function(opts, data){
   g.teams = teams.map(function(f, i){
     var t = {id:i, city:f.city, nick:f.nick, name:(f.city + " " + f.nick).trim(), abbr:f.abbr, pool:f.pool, user:!!f.user, mkt:f.mkt, c1:f.c1 || "#888888", c2:f.c2 || "#111111", shape:i % 5,
       roster:[], lineup:[], tag:"Buying", budget:DY.START_BUDGET, cashAdj:0, dead:0, hist:[], w:0, l:0, mw:0, ml:0, h2h:{}, streak:0,
-      fan:{eng:clamp(46 + (f.mkt - 1) * 35 + gauss() * 4, 25, 75)}, style:pick(["balanced", "stars", "youth", "value"]), rivals:[], titles:0, legacyIds:{}};
+      fan:{eng:clamp(46 + (f.mkt - 1) * 35 + gauss() * 4, 25, 75)}, style:pick(["balanced", "stars", "youth", "value"]), rivals:[], titles:0, legacyIds:{}, scout:1, jerseys:[], taxNext:0, plan:DY.randPlan ? DY.randPlan() : "balanced"};
     t.fan.base = t.fan.eng; return t;
   });
   g.user = g.teams.findIndex(function(t){ return t.user; });
@@ -75,7 +75,8 @@ DY.chem = function(t){
   var ps = ids.map(function(i){ return P[i]; });
   var c = (mean(ps.map(function(p){ return p.chem; })) - 65) / 20 + (Math.max.apply(null, ps.map(function(p){ return p.lead; })) - 60) / 30 + (mean(ps.map(function(p){ return p.rel; })) - 55) / 40;
   var cont = mean(ps.map(function(p){ return Math.min(3, p.tenure || 0); })) * 0.25; // continuity: seasons together
-  return clamp(c + cont, -2.5, 2.5);
+  var bonds = DY.bondChem ? DY.bondChem(ids) : 0;                                     // how the four actually get along
+  return clamp(c + cont + bonds, -3, 3);
 };
 DY.teamRating = function(t, ids){
   var P = G().P; ids = ids || (t.lineup.length ? t.lineup : DY.bestLineup(t.roster)); if (!ids || !ids.length) return 60;
@@ -125,12 +126,14 @@ DY.finishDraft = function(){
   var g = G();
   g.teams.forEach(function(t){
     t.roster.forEach(function(id){ var p = g.P[id]; p.con = {sal:DY.salaryFor(p.ovr + Math.min(2, (p.rep || 0) * 0.25)), yrs:1, type:"1+1T", opt:true, signed:1, by:t.id}; p.rel = clamp(58 + p.pri.loyal * 20 + gauss() * 6, 30, 85); p.tenure = 0; p.joined = 1; DY.addLog(p, "Drafted by " + t.name + " in the fantasy draft (pick " + (g.draft.picks.find(function(x){ return x.p === id; }).n + 1) + ").");});
+    if (DY.meetTeam) t.roster.forEach(function(id){ DY.meetTeam(g.P[id], t.id); });
     DY.fixLineup(t);
   });
   var maxPay = Math.max.apply(null, g.teams.map(function(t){ return DY.payroll(t); }));
   var b0 = Math.max(DY.START_BUDGET, Math.ceil((maxPay + 60) / 50) * 50);
   g.teams.forEach(function(t){ t.budget = b0; });
   g.startBudget = b0;
+  if (DY.resetPicks) DY.resetPicks();
   DY.academyDraft();
   DY.setTags(true);
   DY.newSeasonSetup();
@@ -203,7 +206,7 @@ DY.newSeasonSetup = function(){
   // players: season stat buckets, season form (some guys just have an off year), weekly heat
   DY.active().forEach(function(p){
     p.st = {reg:DY.newStats(), po:DY.newStats(), mi:DY.newStats()};
-    var sd = 0.6 + (100 - p.cons) / 22; p.form = clamp(gauss() * sd, -5, 5); p.hot = 0; p.preOvr = p.ovr; p.trq = p.trq || 0;
+    var sd = 0.9 + (100 - p.cons) / 17; p.form = clamp(gauss() * sd, -6, 6); p.hot = 0; p.preOvr = p.ovr; p.trq = p.trq || 0;
     p.seasonTeam = p.team; p.seasonMinor = p.minor;
     if (p.team != null) p.tenure = (p.tenure || 0);
   });
@@ -227,6 +230,33 @@ DY.rollLineup = function(t, playoffs, finals){
   if (sub != null && !finals) for (var k = 0; k < ids.length; k++){ var p = g.P[ids[k]]; if (chance(p.avail * (playoffs ? 0.25 : 1))){ notes.push({out:ids[k], inn:sub}); ids[k] = sub; break; } }
   return {ids:ids, notes:notes};
 };
+/* ---------- MAP VETO ----------
+   HP: A ban, B ban, A picks map 1, B picks map 4. SnD: B ban, A ban, B picks map 2, A picks map 5.
+   Control: A ban, B ban, the last map is map 3. Team A = the first-listed / higher-seeded team. */
+DY.VETO_ORDER = [["A", "ban", "HP"], ["B", "ban", "HP"], ["A", "pick", "HP", 0], ["B", "pick", "HP", 3], ["B", "ban", "SND"], ["A", "ban", "SND"], ["B", "pick", "SND", 1], ["A", "pick", "SND", 4], ["A", "ban", "CTL"], ["B", "ban", "CTL"], [null, "left", "CTL", 2]];
+// how much a team likes a map: its lineup's map history + its own record there this season
+DY.mapValue = function(t, mode, map){
+  var g = G(), ids = t.lineup.length ? t.lineup : t.roster, aff = mean(ids.map(function(i){ return DY.mapAff(g.P[i], mode, map); }));
+  var r = t.mrec && t.mrec.s && t.mrec.s[mode + "|" + map], rec = r ? (r[0] - r[1]) / (r[0] + r[1] + 4) * 1.5 : 0;
+  return aff + rec;
+};
+DY.vetoNew = function(A, B){ var pool = {}; DY.MODES.forEach(function(m){ pool[m] = Object.keys(DY.MAP_W[m]); }); return {a:A.id, b:B.id, i:0, pool:pool, steps:[], maps:[null, null, null, null, null]}; };
+DY.vetoCur = function(v){ var st = DY.VETO_ORDER[v.i]; if (!st) return null; return {side:st[0], tid:st[0] === "A" ? v.a : st[0] === "B" ? v.b : null, act:st[1], mode:st[2], slot:st[3]}; };
+DY.vetoEdge = function(v, tid, mode, map){ var g = G(), me = g.teams[tid], op = g.teams[tid === v.a ? v.b : v.a]; return DY.mapValue(me, mode, map) - DY.mapValue(op, mode, map); };
+DY.vetoAI = function(v){ var c = DY.vetoCur(v), best = null, bv = 0; v.pool[c.mode].forEach(function(m){ var e = DY.vetoEdge(v, c.tid, c.mode, m) + gauss() * 0.25 + Math.log(DY.MAP_W[c.mode][m]) * 0.05; var val = c.act === "ban" ? -e : e; if (best == null || val > bv){ best = m; bv = val; } }); return best; };
+DY.vetoChoose = function(v, map){
+  var c = DY.vetoCur(v); if (!c || c.act === "left") return "Veto is finished."; if (v.pool[c.mode].indexOf(map) < 0) return "That map isn't available.";
+  v.pool[c.mode] = v.pool[c.mode].filter(function(m){ return m !== map; });
+  if (c.act === "pick") v.maps[c.slot] = map;
+  v.steps.push([c.tid, c.act, c.mode, map, Math.round(DY.vetoEdge(v, c.tid, c.mode, map) * 10) / 10]); v.i++;
+  var n = DY.vetoCur(v); if (n && n.act === "left"){ var last = v.pool[n.mode][0]; v.maps[n.slot] = last; v.steps.push([null, "left", n.mode, last, 0]); v.i++; }
+  return null;
+};
+// run CPU steps until it's the user's turn (or the veto is done)
+DY.vetoRun = function(v, userTid){ var c; while ((c = DY.vetoCur(v)) && c.tid !== userTid) DY.vetoChoose(v, DY.vetoAI(v)); return v; };
+DY.vetoFull = function(A, B){ var v = DY.vetoNew(A, B); return DY.vetoRun(v, -1); };
+DY.vetoDone = function(v){ return !DY.vetoCur(v); };
+function compactRec(r){ r.maps = r.maps.map(function(m){ return Array.isArray(m) ? m : [m.mode[0], m.sc[0], m.sc[1]]; }); delete r.tot; delete r.veto; r.lite = 1; }
 function pickMap(mode, used){ var w = DY.MAP_W[mode], opts = Object.keys(w).filter(function(m){ return !used[mode + m]; }); if (!opts.length) opts = Object.keys(w); return wpick(opts, function(m){ return w[m]; }); }
 function recInc(o, k, won){ var r = o[k] || (o[k] = [0, 0]); r[won ? 0 : 1]++; }
 // One best-of-5 series. bucket: "reg" | "po" | "mi". ctx: {ta, tb} team objects (main league) for map/mode records.
@@ -234,9 +264,10 @@ DY.simSeries = function(A, B, bucket, detail, bo, ctx){
   var g = G(); bo = bo || 5; var need = Math.ceil(bo / 2); ctx = ctx || {};
   var mk = function(s){ return {ps:s.ids.map(function(i){ return g.P[i]; }), chem:s.chem || 0, off:DY.offRole(s.ids)}; };
   var a = mk(A), b = mk(B), fa = gauss() * 1.1, fb = gauss() * 1.1, wa = 0, wb = 0, maps = [], used = {}, tot = {};
+  a.ps.concat(b.ps).forEach(function(p){ p.night = clamp(1 + gauss() * (0.05 + (100 - p.cons) / 1000), 0.75, 1.3); });
   a.ps.concat(b.ps).forEach(function(p){ tot[p.id] = {k:0, d:0, war:0, m:0}; });
   while (wa < need && wb < need){
-    var mode = DY.SERIES_MODES[maps.length % 5], mp = pickMap(mode, used); used[mode + mp] = 1;
+    var mode = DY.SERIES_MODES[maps.length % 5], mp = (ctx.maps && ctx.maps[maps.length]) || pickMap(mode, used); used[mode + mp] = 1;
     var diff = sideEff(a, mode, mp) - sideEff(b, mode, mp) + fa - fb + (maps.length >= 4 ? (mean(a.ps.map(function(p){ return p.clutch; })) - mean(b.ps.map(function(p){ return p.clutch; }))) / 25 : 0);
     var p = 1 / (1 + Math.exp(-diff / 5.2));
     var mres = playMap(a, b, mode, p, mp, detail);
@@ -262,7 +293,7 @@ function addLine(s, mode, L){
 // K/D spread calibrated to real BTL: a season K/D of 1.40+ is rare
 function killWeights(ps, dir, mode, map){ return ps.map(function(p){ var sk = mode === "SND" ? p.at.snd * 0.5 + p.at.gun * 0.5 : mode === "HP" ? p.at.hp * 0.4 + p.at.gun * 0.6 : p.at.ctl * 0.4 + p.at.gun * 0.6;
   sk += DY.mapAff(p, mode, map) + p.form + p.hot;
-  var g = Math.exp((sk - 78) / (dir > 0 ? 92 : -92)), e = 0.8 + p.entry / 250; return g * e * rr(0.74, 1.26); }); }
+  var g = Math.exp((sk - 78) / (dir > 0 ? 104 : -104)), e = 0.8 + p.entry / 250; return g * e * (p.night || 1) * rr(0.66, 1.34); }); }
 var nm = function(p){ return p.n; };
 function playMap(a, b, mode, p, map, detail){
   var la = a.ps.map(function(pl){ return {id:pl.id, k:0, d:0, o1:0, o2:0, o3:0, fd:0, war:0}; }), lb = b.ps.map(function(pl){ return {id:pl.id, k:0, d:0, o1:0, o2:0, o3:0, fd:0, war:0}; });
@@ -306,7 +337,7 @@ function playMap(a, b, mode, p, map, detail){
   la.forEach(function(L, i){ L.k = ka[i]; L.d = Math.max(mode === "SND" ? 0 : 3, da[i]); });
   lb.forEach(function(L, i){ L.k = kb[i]; L.d = Math.max(mode === "SND" ? 0 : 3, db[i]); });
   if (mode === "HP"){
-    [[a, la, sc[0]], [b, lb, sc[1]]].forEach(function(x){ var hs = splitInt(x[2] * rr(0.95, 1.15), x[0].ps.map(function(pl){ return Math.exp((pl.at.obj - 72) / 11) * (pl.role === "SMG" ? 1.3 : 1) * rr(0.65, 1.35); })); x[1].forEach(function(L, i){ L.o1 = hs[i]; }); });
+    [[a, la, sc[0]], [b, lb, sc[1]]].forEach(function(x){ var hs = splitInt(x[2] * rr(0.95, 1.15), x[0].ps.map(function(pl){ return Math.exp((pl.at.obj - 74) / 24) * (pl.role === "SMG" ? 1.2 : 1) * rr(0.55, 1.45); })); x[1].forEach(function(L, i){ L.o1 = hs[i]; }); });
     if (ev) hpStory(a, b, la, lb, sc, ev);
   } else if (mode === "CTL"){
     [[a, la], [b, lb]].forEach(function(x){ x[1].forEach(function(L, i){ var pl = x[0].ps[i]; L.o1 = Math.round(L.k * clamp(0.6 + (pl.at.obj - 72) / 70 + gauss() * 0.07, 0.4, 0.97)); }); });
@@ -377,16 +408,19 @@ DY.pruneRivals = function(){ DY.allP().forEach(function(p){ if (!p.rv) return; v
    REGULAR SEASON FLOW
    ===================================================================================== */
 DY.userMatch = function(){ var g = G(); if (g.phase !== "season" || g.round >= DY.ROUNDS) return null; return g.sched[g.round].pairs.find(function(pr){ return pr.indexOf(g.user) >= 0; }); };
-DY.playRound = function(){
+DY.playRound = function(userVeto){
   var g = G(); if (g.phase !== "season" || g.round >= DY.ROUNDS) return null;
+  // keep full box scores (watchable) only for the latest round; your own matches stay forever
+  g.res.forEach(function(r){ if (!r.lite && r.a !== g.user && r.b !== g.user) compactRec(r); });
   var rd = g.sched[g.round], out = null, bigs = [];
   g.teams.forEach(function(t){ DY.fixLineup(t); });
   rd.pairs.forEach(function(pr){
     var A = g.teams[pr[0]], B = g.teams[pr[1]], la = DY.rollLineup(A), lb = DY.rollLineup(B);
     la.chem = DY.chem(A); lb.chem = DY.chem(B);
-    var user = A.user || B.user, pre = [[A.w, A.l], [B.w, B.l]], s = DY.simSeries(la, lb, "reg", user, 5, {ta:A, tb:B});
-    var rec = {r:g.round, a:A.id, b:B.id, wa:s.wa, wb:s.wb, maps:s.maps.map(function(m){ return user ? m : [m.mode[0], m.sc[0], m.sc[1]]; }), sub:la.notes.concat(lb.notes), ia:s.ia, ib:s.ib, pool:rd.pool, pre:pre};
-    if (user) rec.tot = s.tot;
+    var user = A.user || B.user, pre = [[A.w, A.l], [B.w, B.l]];
+    var v = user && userVeto && DY.vetoDone(userVeto) ? userVeto : DY.vetoFull(A, B);
+    var s = DY.simSeries(la, lb, "reg", true, 5, {ta:A, tb:B, maps:v.maps});
+    var rec = {r:g.round, a:A.id, b:B.id, wa:s.wa, wb:s.wb, maps:s.maps, sub:la.notes.concat(lb.notes), ia:s.ia, ib:s.ib, pool:rd.pool, pre:pre, tot:s.tot, veto:v.steps};
     g.res.push(rec);
     applyResult(A, B, s.wa, s.wb);
     Object.keys(s.tot).forEach(function(id){ var T = s.tot[id]; bigs.push({id:+id, k:T.k, d:T.d, war:T.war, m:T.m, r:rec}); });
@@ -407,6 +441,7 @@ function applyResult(A, B, wa, wb){
   W.w++; L.l++; W.h2h[L.id] = (W.h2h[L.id] || 0) + 1;
   W.streak = W.streak >= 0 ? W.streak + 1 : 1; L.streak = L.streak <= 0 ? L.streak - 1 : -1;
   W.wk.push("W"); L.wk.push("L");
+  if (DY.bondSeries){ DY.bondSeries(W, true); DY.bondSeries(L, false); }
   [W, L].forEach(function(t, i){ t.roster.forEach(function(id){ var p = G().P[id], starter = t.lineup.indexOf(id) >= 0; p.rel = clamp(p.rel + (i === 0 ? 0.9 : -0.8) * (0.5 + p.pri.win * 1.5) - (!starter ? 0.9 * (0.4 + p.pri.pt * 2) : 0), 0, 100); }); });
 }
 DY.playAcademyRound = function(){
@@ -435,6 +470,7 @@ DY.powerRank = function(){
 
 DY.endWeek = function(){
   var g = G(), prev = g.pr || [];
+  if (DY.weeklyScouting) DY.weeklyScouting();
   g.pr = DY.powerRank();
   DY.weeklyNews(prev);
   DY.updateFans();
@@ -486,14 +522,14 @@ DY.poRef = function(ref){ var g = G(); if (ref[0] === "s") return g.po.seeds[ref
 DY.poOrder = function(){ var g = G(), gf = g.po && g.po.res.GF; return gf && winnerOf(gf) === DY.poRef(DY.PO.GF.b) ? DY.PO_ORDER : DY.PO_ORDER.slice(0, -1); };
 DY.poNext = function(){ var g = G(); if (!g.po) return null; var ord = DY.poOrder(); return g.po.idx < ord.length ? ord[g.po.idx] : null; };
 DY.userAlive = function(){ var g = G(), u = g.user; if (!g.po || !DY.poNext()) return false; var si = g.po.seeds.indexOf(u); if (si < 0) return false; var losses = 0; DY.poOrder().forEach(function(id){ var r = g.po.res[id]; if (r && loserOf(r) === u) losses++; }); return losses < (si >= 8 ? 1 : 2); };
-DY.playPlayoff = function(){
+DY.playPlayoff = function(userVeto){
   var g = G(), id = DY.poNext(); if (!id) return null;
   var M = DY.PO[id], a = DY.poRef(M.a), b = DY.poRef(M.b), A = g.teams[a], B = g.teams[b];
   DY.fixLineup(A); DY.fixLineup(B);
   var finals = !!DY.FINALS[id], la = DY.rollLineup(A, true, finals), lb = DY.rollLineup(B, true, finals); la.chem = DY.chem(A); lb.chem = DY.chem(B);
-  var user = A.user || B.user, s = DY.simSeries(la, lb, "po", true, 5, {ta:A, tb:B, stage:/GF/.test(id) ? "gf" : DY.FINALS[id] ? "final" : "po"});
-  var rec = {id:id, a:a, b:b, wa:s.wa, wb:s.wb, maps:s.maps, tot:s.tot, ia:s.ia, ib:s.ib, sub:la.notes.concat(lb.notes), pre:[[A.w, A.l], [B.w, B.l]]};
-  if (!user && !/GF|L10|W7/.test(id)) rec.maps = s.maps.map(function(m){ return {mode:m.mode, map:m.map, sc:m.sc, aw:m.aw}; }); else if (!user) rec.maps.forEach(function(m){ delete m.ev; });
+  var user = A.user || B.user, v = user && userVeto && DY.vetoDone(userVeto) ? userVeto : DY.vetoFull(A, B);
+  var s = DY.simSeries(la, lb, "po", true, 5, {ta:A, tb:B, maps:v.maps, stage:/GF/.test(id) ? "gf" : DY.FINALS[id] ? "final" : "po"});
+  var rec = {id:id, a:a, b:b, wa:s.wa, wb:s.wb, maps:s.maps, tot:s.tot, ia:s.ia, ib:s.ib, sub:la.notes.concat(lb.notes), pre:[[A.w, A.l], [B.w, B.l]], veto:v.steps};
   g.po.res[id] = rec; g.po.idx++;
   (function(){ var w = s.wa > s.wb ? A : B, l = s.wa > s.wb ? B : A, si = g.po.seeds.indexOf(l.id), losses = 0; DY.poOrder().forEach(function(k){ var r = g.po.res[k]; if (r && loserOf(r) === l.id) losses++; }); if (losses >= (si >= 8 ? 1 : 2) || id === "GF2" || (id === "GF" && l.id === DY.poRef(DY.PO.GF.b))){ var r1 = DY.rvRec(w, l.id), r2 = DY.rvRec(l, w.id); r1.ko++; r2.kod++; rec.elim = l.id; } })();
   DY.playoffResultNews(id, rec);
@@ -532,8 +568,13 @@ DY.computeAwards = function(){
   g.teams.forEach(function(t){ teamMaps[t.id] = t.mw + t.ml; });
   var rows = DY.active().filter(function(p){ return p.team != null && p.st && p.st.reg.m > 0; }).map(function(p){
     var s = p.st.reg, t = g.teams[p.team], wp = t.w / Math.max(1, t.w + t.l);
-    return {p:p, s:s, so:DY.seasonOvr(s), wp:wp, q:s.m >= 0.5 * (teamMaps[p.team] || 1), score:s.war + 2.2 * (wp - 0.5) + (s.m / Math.max(1, teamMaps[p.team])) * 0.8};
+    return {p:p, s:s, so:DY.seasonOvr(s), wp:wp, kd:s.k / Math.max(1, s.d), w10:s.war / s.m * 10, q:s.m >= 0.5 * (teamMaps[p.team] || 1)};
   });
+  // voters compare each player with his own role first (SMG stats and hill time run differently from AR), then weigh K/D and winning most
+  var qq = rows.filter(function(r){ return r.q; });
+  var zs = function(k, byRole){ ["AR", "SMG"].forEach(function(role){ var grp = byRole ? qq.filter(function(r){ return r.p.role === role; }) : qq; var v = grp.map(function(r){ return r[k]; }), mu = mean(v), sd = Math.sqrt(mean(v.map(function(x){ return (x - mu) * (x - mu); }))) || 1; rows.forEach(function(r){ if (!byRole || r.p.role === role) r["z" + k] = (r[k] - mu) / sd; }); }); };
+  zs("w10", true); zs("kd", true); zs("wp", false);
+  rows.forEach(function(r){ r.score = r.zkd * 0.45 + r.zwp * 0.3 + r.zw10 * 0.25 + gauss() * 0.1 + (r.s.m / Math.max(1, teamMaps[r.p.team])) * 0.2; });
   var q = rows.filter(function(r){ return r.q; }).sort(function(a, b){ return b.score - a.score; });
   var A = {s:g.season, mvp:q[0] ? q[0].p.id : null, as1:[], as2:[], roy:null, mip:null, sb:null, amvp:null, fmvp:null};
   var used = {}; if (A.mvp != null) {}

@@ -16,6 +16,7 @@ DY.pack = function(g){
 };
 DY.unpack = function(str, data){
   var g = JSON.parse(str);
+  if (DY.migrate && g && g.teams) DY.migrate(g);
   var by = {}; (data && data.players || []).forEach(function(d){ by[d.n] = d; });
   Object.keys(g.P).forEach(function(k){ var p = g.P[k], d = p.real && by[p.n]; if (d){ p.realLine = {seasons:d.seasons, first:d.first, last:d.last, kd:d.kd, m:d.m, hp:d.hp, snd:d.snd, ctl:d.ctl, ip:d.ip, obj:d.obj, war10:d.war10, acc:d.acc, maps:d.maps}; } });
   return g;
@@ -57,7 +58,7 @@ DY.importText = function(txt, data){ var g = DY.unpack(txt, data); if (!g || g.v
 DY.CAMP = {gun:"Slaying", hp:"Hardpoint", snd:"Search & Destroy", ctl:"Control", obj:"Objective", pot:"Potential"};
 DY.campApply = function(p, f){
   var g = G();
-  if (f === "pot"){ p.ceil = Math.min(99.4, p.ceil + rr(2.5, 4)); var i = DY.gradeRank(p.potG); if (i > 0) p.potG = DY.GRADES[i - 1][0]; }
+  if (f === "pot"){ p.ceil = Math.min(99.4, p.ceil + rr(1.5, 3)); var i = DY.gradeRank(p.potG); if (i > 0) p.potG = DY.GRADES[i - 1][0]; }
   else { p.at[f] = Math.min(99, p.at[f] + rr(2, 4)); DY.setOvr(p); if (p.ceil < p.ovr) p.ceil = p.ovr; }
   p.camp = {s:g.season, f:f}; DY.addLog(p, "Preseason camp: worked on " + DY.CAMP[f] + ".");
 };
@@ -85,12 +86,12 @@ DY.setAuto = function(on){ G().settings.auto = !!on; };
 /* ---------- UI helpers ---------- */
 DY.setUserLineup = function(ids){ var t = DY.userT(); if (ids.length !== 4 || ids.some(function(i){ return t.roster.indexOf(i) < 0; })) return "Pick 4 players from your roster."; if (DY.offRole(ids) > 0) return "Your lineup needs 2 ARs and 2 SMGs."; t.lineup = ids.slice(); return null; };
 DY.setUserTag = function(tag){ var t = DY.userT(); if (DY.TAGS.indexOf(tag) < 0) return; t.tag = tag; t.userTag = true; };
-DY.startSeason = function(){ var g = G(); if (g.phase === "preseason"){ if (g.settings.auto && (g.camp || []).length < 2) DY.autoCamp(DY.userT()); DY.cpuCamps(); g.phase = "season"; DY.news("league", "Season " + g.season + " is LIVE", "Five weeks. Ten matches. Four pools. Top two in each pool go to the winners bracket, third place starts in elimination, fourth place goes home. Let's GO.", {}); } };
+DY.startSeason = function(){ var g = G(); if (g.phase === "preseason"){ if (g.settings.auto && (g.camp || []).length < 2) DY.autoCamp(DY.userT()); DY.cpuCamps(); if (DY.applyTax) DY.applyTax(); if (DY.ensureClass){ g.teams.forEach(function(t){ t.sp = Math.min(t.sp || 0, 8); }); DY.ensureClass(); } g.phase = "season"; DY.news("league", "Season " + g.season + " is LIVE", "Five weeks. Ten matches. Four pools. Top two in each pool go to the winners bracket, third place starts in elimination, fourth place goes home. Let's GO.", {}); } };
 DY.simWeek = function(){ var g = G(), w = g.week, out = []; while (g.phase === "season" && g.week === w){ var r = DY.playRound(); if (r) out.push(r); } return out; };
 DY.simToPlayoffs = function(){ var g = G(); while (g.phase === "season") DY.playRound(); };
 DY.simPlayoffsUntilUser = function(){ var g = G(); while (g.phase === "playoffs"){ var id = DY.poNext(); if (!id) break; var M = DY.PO[id], a = DY.poRef(M.a), b = DY.poRef(M.b); if ((a === g.user || b === g.user)) return id; DY.playPlayoff(); } return null; };
 DY.simPlayoffsAll = function(){ var g = G(); while (g.phase === "playoffs") DY.playPlayoff(); };
 DY.offStage = function(){ var g = G(); return g.phase === "offseason" ? g.off.stage : null; };
 DY.toOptions = function(){ var g = G(); if (g.off && g.off.stage === "recap") g.off.stage = "options"; };
-DY.seasonLabel = function(){ var g = G(); if (g.phase === "draft") return "Fantasy draft"; if (g.phase === "preseason") return "Season " + g.season + " · Preseason"; if (g.phase === "season") return "Season " + g.season + " · Week " + g.week + " of 5"; if (g.phase === "playoffs") return "Season " + g.season + " · Playoffs"; var o = g.off; return "Season " + g.season + " offseason · " + (o.stage === "recap" ? "Season recap" : o.stage === "options" ? "Progression & options" : "Free agency week " + o.week + " of 3"); };
+DY.seasonLabel = function(){ var g = G(); if (g.phase === "draft") return "Fantasy draft"; if (g.phase === "preseason") return "Season " + g.season + " · Preseason"; if (g.phase === "season") return "Season " + g.season + " · Week " + g.week + " of 5"; if (g.phase === "playoffs") return "Season " + g.season + " · Playoffs"; var o = g.off; return "Season " + g.season + " offseason · " + (o.stage === "recap" ? "Season recap" : o.stage === "options" ? "Progression & options" : o.stage === "draft" ? "Rookie draft" : o.stage === "signing" ? "Rookie signings" : "Free agency week " + o.week + " of 3"); };
 })(typeof window !== "undefined" ? window : globalThis);

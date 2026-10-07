@@ -155,3 +155,55 @@
 .gm .dy .pbp li.end{border-left-color:var(--ok);font-weight:700}
 .gm .dy td.n.b{font-weight:800;color:var(--mustard)}
 .gm .dy .cmp .m small{font-size:10px;color:var(--muted);letter-spacing:0}
+/* map veto */
+.gm .dy .mapset{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.gm .dy .ms{background:var(--panel-2);border:1px solid var(--line);border-radius:2px;padding:6px 8px;display:flex;flex-direction:column;min-width:0}
+.gm .dy .ms .lab{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.gm .dy .ms b{overflow-wrap:anywhere}
+.gm .dy .ms.tbd b{color:var(--muted);font-weight:500}
+.gm .dy .vlog{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:3px;font-size:13px}
+.gm .dy .vlog li{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.gm .dy .vlog li.ban b:last-of-type{text-decoration:line-through;color:var(--ketchup)}
+.gm .dy .vlog li.pick b:last-of-type,.gm .dy .vlog li.left b:last-of-type{color:var(--ok)}
+.gm .dy .vopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.gm .dy .vopt{background:var(--panel-2);border:1px solid var(--line);border-radius:2px;padding:10px;display:flex;flex-direction:column;gap:2px;text-align:left}
+.gm .dy .vopt:hover{border-color:var(--mustard)}
+.gm .dy .vopt small{color:var(--muted);font-size:11px}
+@media (max-width:640px){.gm .dy .mapset{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* team needs, rookie draft lottery */
+.gm .dy .needs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.gm .dy .need{border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:8px 10px;min-width:0}
+.gm .dy .need .lab{font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gm .dy .need .v{font-size:22px;font-weight:800;margin:2px 0}
+.gm .dy .need.good{border-color:var(--good)}.gm .dy .need.good .v{color:var(--ok)}
+.gm .dy .need.bad{border-color:var(--ketchup)}.gm .dy .need.bad .v{color:var(--bad)}
+.gm .dy .need.weak{box-shadow:inset 0 0 0 1px var(--mustard)}
+.gm .dy .lotto{display:flex;flex-wrap:wrap;gap:6px}
+.gm .dy .lotto .lt{display:flex;align-items:center;gap:4px;border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:4px 8px;font-size:13px}
+.gm .dy .lotto .lt.me{border-color:var(--mustard)}
+@media (max-width:640px){.gm .dy .needs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.gm .dy .dots{display:inline-flex;gap:3px;vertical-align:middle}
+.gm .dy .dots i{width:8px;height:8px;border-radius:50%;border:1px solid var(--line);background:transparent}
+.gm .dy .dots i.on{background:var(--mustard);border-color:var(--mustard)}
+.gm .dy .lotto .lt.done{opacity:.55}.gm .dy .lotto .lt.now{border-color:var(--ketchup);box-shadow:0 0 0 1px var(--ketchup)}
+.gm .dy .pot.q{opacity:.6}
+.gm .dy .bar .v{white-space:nowrap}
+/* draft lottery */
+.gm .dy .lodds{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.gm .dy .lodds .lo{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:4px 8px;font-size:13px}
+.gm .dy .lodds .lo.me{border-color:var(--mustard)}
+.gm .dy .lslots{display:grid;gap:8px}
+.gm .dy .ls{display:flex;align-items:center;gap:12px;min-height:58px;border:1px solid var(--line);background:var(--soft);border-radius:8px;padding:8px 12px}
+.gm .dy .ls .pk{font-family:var(--font-mono);font-weight:800;font-size:20px;width:38px;color:var(--muted)}
+.gm .dy .ls .tn{display:flex;flex-direction:column;gap:2px}
+.gm .dy .ls.shown{animation:dyPop .55s cubic-bezier(.2,1.4,.4,1)}
+.gm .dy .ls.shown .pk{color:var(--mustard)}
+.gm .dy .ls.me{border-color:var(--mustard);box-shadow:0 0 0 1px var(--mustard),0 0 22px rgba(242,169,0,.25)}
+.gm .dy .ls.drawing{border-color:var(--ketchup)}
+.gm .dy .balls{display:flex;gap:6px}
+.gm .dy .balls i{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d8d2c4 60%,#9d968a);opacity:.25;font-style:normal;font-weight:900;font-size:12px;color:#111;display:flex;align-items:center;justify-content:center}
+.gm .dy .ls.drawing .balls i{opacity:1;animation:dyBounce .5s ease-in-out infinite alternate}
+.gm .dy .ls.drawing .balls i:nth-child(2){animation-delay:.15s}.gm .dy .ls.drawing .balls i:nth-child(3){animation-delay:.3s}
+@keyframes dyPop{0%{transform:scale(.7) rotateX(70deg);opacity:0}60%{transform:scale(1.04) rotateX(0);opacity:1}100%{transform:scale(1)}}
+@keyframes dyBounce{from{transform:translateY(0) rotate(0)}to{transform:translateY(-10px) rotate(200deg)}}
+@media (prefers-reduced-motion:reduce){.gm .dy .ls.shown,.gm .dy .ls.drawing .balls i{animation:none}}

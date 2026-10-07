@@ -17,7 +17,7 @@ DY.marketValue = function(p){
   if (p.age <= 23) adj += (DY.knownCeil(p) - ko) * 0.3;
   if (p.age >= 30) adj -= (p.age - 29) * 0.6;
   adj += DY.recentHardware(p) + (G().season <= 2 ? Math.min(1.5, (p.rep || 0) * 0.2) : 0);
-  if (p.rookie && p.rookie.hidden && p.rookie.arche === "gen") adj += 0;
+  if (p.rookie && p.rookie.hidden) adj += p.rookie.arche === "gen" ? 4 : p.rookie.arche === "star" ? 1.5 : 0;   // agents know who they have
   return DY.salaryFor(adj);
 };
 // what the player asks for from a given team
@@ -25,11 +25,36 @@ DY.askFor = function(p, tid){
   var mv = DY.marketValue(p), m = 0.86 + p.pri.money * 0.62;
   if (tid != null && p.team === tid) m -= clamp((p.rel - 50) / 100, -0.1, 0.3) * p.pri.loyal * 1.4;
   if (p.rookie && p.rookie.hidden && p.rookie.holdout) m += 0.08;
+  if (p.draftRights && p.draftRights.prem) m += p.draftRights.prem;
+  if (p.draftRights && p.rookie && p.rookie.holdout && tid != null && DY.teamOutlook(G().teams[tid]) < 0.5) m += 0.12;   // "I wanted to go to a contender": costs extra
+  // winners get (slightly) more expensive: a ring in the last season or two
+  var rings = p.acc.filter(function(a){ return a.a === "CHAMP" && a.s >= G().season - 1; }).length; m += Math.min(0.08, rings * 0.04);
+  if (tid != null && DY.bondWith){
+    var bw = DY.bondWith(p, tid); m += bw.f < 0 ? -bw.f * 0.1 : -bw.f * 0.06;      // friends there: small discount. A beef there: premium
+    var mem = DY.memWith(p, tid); m += mem < 0 ? -mem / 300 : -mem / 600;           // bad blood costs extra, good history saves a little
+  }
   return Math.round(clamp(mv * m, DY.MIN_SAL, DY.MAX_SAL) / 5) * 5;
 };
-DY.CON_TYPES = {"1":"1 season", "2G":"2 seasons guaranteed", "1+1T":"1 + 1 (team option)", "1+1P":"1 + 1 (player option)"};
-DY.conText = function(c){ if (!c) return "—"; var when = c.opt ? (c.type === "1+1T" ? "team option after this season" : "player option after this season") : c.yrs >= 2 ? c.yrs + " seasons left" : "expires after this season"; return DY.money(c.sal) + " · " + DY.CON_TYPES[c.type] + " · " + when; };
-DY.newCon = function(sal, type, tid){ return {sal:sal, type:type, yrs:type === "2G" ? 2 : 1, opt:type === "1+1T" || type === "1+1P", by:tid, signed:G().season}; };
+/* Contracts: 1-4 guaranteed seasons, optionally followed by one team (T) or player (P) option season; 4 seasons max in total.
+   Type strings: "3", "2+T", "3+P" … (old saves: "1", "2G", "1+1T", "1+1P" still read fine). */
+DY.MAX_YEARS = 4;
+DY.ctype = function(t){ if (t === "2G") return {g:2, o:null}; var m = /^(\d)(?:\+1?([TP]))?$/.exec(String(t || "1")); return m ? {g:+m[1], o:m[2] || null} : {g:1, o:null}; };
+DY.mkType = function(g, o){ return String(g) + (o ? "+" + o : ""); };
+DY.validType = function(t){ var c = DY.ctype(t); if (c.g < 1 || c.g > DY.MAX_YEARS) return "Contracts run 1 to " + DY.MAX_YEARS + " guaranteed seasons."; if (c.g + (c.o ? 1 : 0) > DY.MAX_YEARS) return "4 seasons max, including the option year (e.g. 3 + team option)."; return null; };
+DY.conName = function(t){ var c = DY.ctype(t); return c.g + (c.g === 1 ? " season" : " seasons") + (c.o ? " + " + (c.o === "T" ? "team" : "player") + " option" : ""); };
+DY.CON_TYPES = new Proxy({}, {get:function(o, k){ return DY.conName(k); }});
+DY.conText = function(c){ if (!c) return "—"; var o = DY.ctype(c.type).o, on = o === "T" ? "team option" : "player option";
+  var when = c.yrs >= 2 ? c.yrs + " seasons left" + (c.opt ? " + " + on : "") : c.opt ? (c.yrs >= 1 ? "1 season left + " + on : on + " year") : "expires after this season";
+  return DY.money(c.sal) + " · " + DY.conName(c.type) + (c.rookie ? " (rookie deal)" : "") + " · " + when; };
+DY.newCon = function(sal, type, tid){ var c = DY.ctype(type); return {sal:sal, type:type, yrs:c.g, opt:!!c.o, by:tid, signed:G().season}; };
+// what a CPU front office offers: young upside = control, stars = term, vets = short. Plans tilt it.
+DY.cpuType = function(t, p){
+  var a = p.age, ko = DY.knownOvr(p), up = DY.knownCeil(p) - ko, plan = t.plan || "balanced";
+  if (a <= 23 && up >= 4) return plan === "fa" ? pick(["2+T", "2"]) : pick(["3+T", "3", "2+T"]);
+  if (a >= 30) return pick(["1", "1+T", "2"]);
+  if (ko >= 88) return plan === "core" ? pick(["4", "3+T"]) : pick(["3", "2+P", "3+T", "2"]);
+  return plan === "fa" ? pick(["1", "2", "1+T"]) : plan === "core" ? pick(["3", "2+T"]) : pick(["2", "2+T", "1+T", "3"]);
+};
 
 /* team projection 0..1 used by players judging "is this a contender?" */
 DY.teamOutlook = function(t){
@@ -42,12 +67,15 @@ DY.teamOutlook = function(t){
   return clamp(o, 0, 1);
 };
 DY.wouldStart = function(p, t){ var ids = t.roster.filter(function(i){ return i !== p.id; }).concat([p.id]); return DY.bestLineup(ids).indexOf(p.id) >= 0; };
+// how a player feels about the shape of a deal: veterans want security, rising kids bet on themselves, nobody loves a team option
 function typePref(p, type){
-  var old = p.age >= 28, young = p.age <= 23, rising = young && DY.knownCeil(p) - DY.knownOvr(p) >= 4;
-  if (type === "2G") return old ? 0.35 : rising ? -0.1 : 0.15;
-  if (type === "1+1P") return rising ? 0.3 : old ? 0.05 : 0.2;
-  if (type === "1+1T") return old ? -0.25 : rising ? -0.2 : -0.1;
-  return rising ? 0.15 : old ? -0.2 : 0; // "1"
+  var c = DY.ctype(type), g = c.g, old = p.age >= 28, rising = p.age <= 23 && DY.knownCeil(p) - DY.knownOvr(p) >= 4, v;
+  if (old) v = Math.min(0.45, (g - 1) * 0.15) - (g === 1 ? 0.15 : 0);
+  else if (rising) v = g <= 2 ? 0.1 : -(g - 2) * 0.12;
+  else v = g === 2 || g === 3 ? 0.15 : g === 1 ? 0 : 0.05;
+  if (c.o === "T") v -= old ? 0.25 : 0.18; else if (c.o === "P") v += rising ? 0.3 : 0.15;
+  if (p.pri.money >= 0.38 && g >= 3) v += 0.08;
+  return v;
 }
 /* score an offer from the player's point of view, with plain-English feedback */
 DY.evalOffer = function(p, o, ctx){
@@ -59,16 +87,23 @@ DY.evalOffer = function(p, o, ctx){
   var s = p.pri.money * money * 2.1 + p.pri.win * win * 1.5 + p.pri.loyal * loyal * 1.7 + p.pri.pt * pt * 1.5 + sec * 0.45;
   if (!p.team && p.status === "fa") s += 0.25 + p.pri.pt * 0.5;      // main league over the academy
   if (p.trq && p.team === o.tid) s -= 1;
-  if (p.rookie && p.rookie.holdout && win < 0.25 && (ctx.week || 1) < 3) s -= 0.7;
+  if (p.rookie && p.rookie.holdout && win < 0.25 && (ctx.week || 1) < 3 && !ctx.rookie) s -= 0.7;   // drafted holdouts show it in their price instead (askFor)
   if (t.user && ctx.rival) s -= 0.05;
+  if (p.rfa === o.tid) s += 0.12;          // home-grown: comfortable staying where he came up
+  var bw = DY.bondWith ? DY.bondWith(p, o.tid) : {f:0, fr:[], en:[]}, mem = DY.memWith ? DY.memWith(p, o.tid) : 0;
+  s += bw.f * 0.6 + mem / 30 * (0.35 + p.pri.loyal * 1.4);
   var why = [];
-  if (money < -0.35 && p.pri.money >= 0.2) why.push(["money", "Wants more money" + (rnd() < 0.7 ? " (looking for about " + DY.money(ask) + ")" : "")]);
+  if (bw.en.length && bw.f < -0.2) why.push(["bond", "Doesn't want to play with " + G().P[bw.en[0]].n]);
+  if (mem <= -10) why.push(["mem", "Hasn't forgotten how things ended with " + t.abbr]);
+  if (bw.fr.length && bw.f > 0.2) why.push(["bond+", "Wants to team up with " + G().P[bw.fr[0]].n]);
+  if (money < -0.35 && p.pri.money >= 0.2) why.push(["money", "Wants more money" + (!ctx.quiet && rnd() < 0.7 ? " (looking for about " + DY.money(ask) + ")" : "")]);
   if (win < -0.2 && p.pri.win >= 0.28) why.push(["win", "Not sold on your team's chances to win"]);
   if (!starts && p.pri.pt >= 0.2) why.push(["pt", "Worried about a starting spot"]);
-  if (sec < -0.05) why.push(["type", o.type === "1+1T" ? "Doesn't love the team option" : "Would prefer a different contract length"]);
+  if (sec < -0.05){ var ct = DY.ctype(o.type); why.push(["type", ct.o === "T" ? "Doesn't love the team option" : ct.g >= 3 && p.age <= 23 ? "Doesn't want to be locked in that long" : ct.g === 1 && p.age >= 28 ? "Wants more security than one season" : "Would prefer a different contract length"]); }
   if (loyal > 0.4) why.push(["loyal", "Appreciates the loyalty"]);
   if (p.rookie && p.rookie.holdout && win < 0.25) why.push(["hold", "Wants to start his career on a contender"]);
-  var shown = s + gauss() * 0.18, tone = shown > 0.45 ? "Loves the offer" : shown > 0.15 ? "Very interested" : shown > -0.1 ? "Open to it" : shown > -0.45 ? "Lukewarm" : "Not interested";
+  if (mem >= 12) why.push(["mem+", "Good memories with this franchise"]);
+  var shown = s + (ctx.quiet ? 0 : gauss() * 0.18), tone = shown > 0.45 ? "Loves the offer" : shown > 0.15 ? "Very interested" : shown > -0.1 ? "Open to it" : shown > -0.45 ? "Lukewarm" : "Not interested";
   return {score:s, ask:ask, money:money, win:win, starts:starts, tone:tone, why:why.slice(0, 2)};
 };
 
@@ -78,9 +113,10 @@ DY.evalOffer = function(p, o, ctx){
 DY.signPlayer = function(p, tid, sal, type, how){
   var g = G(), t = g.teams[tid];
   if (p.minor != null && g.minors[p.minor]) g.minors[p.minor].roster = g.minors[p.minor].roster.filter(function(i){ return i !== p.id; });
-  p.minor = null; p.team = tid; p.status = "main"; p.con = DY.newCon(sal, type, tid); p.trq = 0;
-  p.rel = clamp(55 + (p.formerTeam === tid ? (p.relMem || 0) * 0.3 : 0) + gauss() * 5, 30, 90); p.tenure = p.formerTeam === tid ? (p.tenure || 0) : 0;
+  p.minor = null; p.team = tid; p.status = "main"; p.con = DY.newCon(sal, type, tid); p.trq = 0; p.rfa = null;
+  p.rel = clamp(55 + (p.formerTeam === tid ? (p.relMem || 0) * 0.3 : 0) + (DY.memWith ? DY.memWith(p, tid) * 0.4 : 0) + gauss() * 5, 25, 90); p.tenure = p.formerTeam === tid ? (p.tenure || 0) : 0;
   if (t.roster.indexOf(p.id) < 0) t.roster.push(p.id);
+  if (DY.meetTeam) DY.meetTeam(p, tid);
   if (p.rookie && !p.rookieSeason) p.rookieSeason = g.phase === "offseason" ? g.season + 1 : g.season;
   if (p.prevTeams.indexOf(tid) < 0) p.prevTeams.push(tid);
   DY.fixLineup(t);
@@ -98,6 +134,7 @@ DY.release = function(pid, quiet){
   var dead = p.con ? p.con.sal : 0;
   if (g.phase === "offseason") t.deadNext = (t.deadNext || 0) + (p.con && p.con.yrs >= 1 ? dead : 0); else t.dead = (t.dead || 0) + dead;
   t.roster = t.roster.filter(function(i){ return i !== pid; }); t.lineup = t.lineup.filter(function(i){ return i !== pid; });
+  if (DY.leaveTeam) DY.leaveTeam(p, t.id, "release");
   p.formerTeam = t.id; p.relMem = p.rel - 15;
   DY.toAcademy(p); DY.fixLineup(t);
   DY.addLog(p, "Released by " + t.name + ".");
@@ -107,7 +144,7 @@ DY.release = function(pid, quiet){
 };
 // in-season signing (immediate answer). Offseason signings go through the weekly free agency process instead.
 DY.inSeasonSign = function(pid, sal, type, dropId){
-  var g = G(), t = DY.userT(), p = g.P[pid];
+  var g = G(), t = DY.userT(), p = g.P[pid], vt = DY.validType(type); if (vt) return {err:vt};
   if (g.phase !== "season" && g.phase !== "preseason") return {err:"Free agents sign through the offseason process right now."};
   if (p.team != null) return {err:"He's under contract."};
   var ids = t.roster.filter(function(i){ return i !== dropId; }).concat([pid]);
@@ -129,7 +166,7 @@ DY.inSeasonSign = function(pid, sal, type, dropId){
    ===================================================================================== */
 DY.extEligible = function(p){ var c = p.con; return !!c && (c.yrs <= 1) && p.team != null; };
 DY.offerExtension = function(pid, sal, type){
-  var g = G(), p = g.P[pid], t = DY.userT();
+  var g = G(), p = g.P[pid], t = DY.userT(), vt = DY.validType(type); if (vt) return {err:vt};
   if (g.phase !== "season" || g.week < 3) return {err:"Extension talks open after week 2."};
   if (p.team !== t.id || !DY.extEligible(p)) return {err:"He isn't eligible for an extension."};
   var x = g.ext[pid];
@@ -157,9 +194,13 @@ DY.cpuExtensions = function(){
   g.teams.forEach(function(t){
     if (t.user && !g.settings.auto) return;
     t.roster.forEach(function(id){
-      var p = g.P[id]; if (!DY.extEligible(p) || g.ext[id] || p.ovr < 80 || !chance(0.35)) return;
-      var keep = t.tag === "Rebuilding" ? p.age <= 25 : p.ovr >= 82; if (!keep) return;
-      var ask = DY.askFor(p, t.id), sal = Math.round(Math.min(DY.MAX_SAL, ask * rr(0.95, 1.05)) / 5) * 5, type = p.age >= 28 ? (chance(.5) ? "2G" : "1") : (chance(.6) ? "2G" : "1+1T");
+      var p = g.P[id]; if (!DY.extEligible(p) || g.ext[id]) return;
+      // home-grown players and "keep the core" front offices get priority
+      var home = p.drafted && p.drafted.tid === t.id, core = t.plan === "core";
+      if (home ? DY.knownOvr(p) < 75 && DY.knownCeil(p) < 85 : p.ovr < 80) return;
+      if (!chance(home ? 0.8 : core ? 0.6 : 0.35)) return;
+      var keep = home || (t.tag === "Rebuilding" || t.plan === "draft" ? p.age <= 25 : p.ovr >= 82); if (!keep) return;
+      var ask = DY.askFor(p, t.id), sal = Math.round(Math.min(DY.MAX_SAL, ask * (home ? rr(1.0, 1.1) : rr(0.95, 1.05))) / 5) * 5, type = DY.cpuType(t, p);
       if (nextYearSpace(t, sal) < 0) return;
       g.ext[id] = {sal:sal, type:type, status:"pending", wk:g.week, tid:t.id};
     });
@@ -189,55 +230,87 @@ DY.tradeValue = function(p, t, outIds){
   if (p.age <= 23) adj += (DY.knownCeil(p) - ko) * 0.35 * w.youth;
   if (p.age >= 29) adj -= (p.age - 28) * 0.7 * (t.tag === "Rebuilding" ? 1.6 : 1);
   adj += DY.recentHardware(p) * 0.5;
-  var talent = DY.salaryFor(adj) + 20, sal = p.con ? p.con.sal : DY.MIN_SAL, yrs = p.con ? p.con.yrs + (p.con.opt && p.con.type === "1+1T" ? 0.6 : p.con.opt ? 0.2 : 0) : 0.5;
+  var talent = DY.salaryFor(adj) + 20, sal = p.con ? p.con.sal : DY.MIN_SAL, yrs = p.con ? p.con.yrs + (p.con.opt && DY.ctype(p.con.type).o === "T" ? 0.6 : p.con.opt ? 0.2 : 0) : 0.5;
+  if (p.con && p.con.rookie && p.age <= 24) yrs += 0.8;      // cheap control + restricted free agency after
   var v = w.tal * talent * needMult(p, t, outIds) + w.fin * (talent - sal) * Math.max(0.5, yrs);
   if (p.trq && p.team === t.id) v *= 0.82;
   return Math.max(5, v);
 };
 DY.cashValue = function(c, t){ return c * (TAG_W[t.tag] || TAG_W.Buying).cash; };
-// can these two rosters/budgets live with this deal? (cash > 0 means A sends cash to B)
+// can these two rosters/budgets live with this deal? (cash > 0 means A sends cash to B). Items are player ids or "pk<team id>" draft picks.
 DY.tradeLegal = function(A, B, giveA, giveB, cash){
-  var g = G();
+  var g = G(), sa = DY.splitItems(giveA), sb = DY.splitItems(giveB);
   if (g.phase === "playoffs") return "Rosters are locked for the playoffs.";
-  if (!giveA.length && !giveB.length) return "Add players to the deal.";
+  if (!giveA.length && !giveB.length) return "Add players or picks to the deal.";
   if (Math.abs(cash) > 300) return "Cash in a trade is capped at $300k.";
-  var ra = A.roster.filter(function(i){ return giveA.indexOf(i) < 0; }).concat(giveB), rb = B.roster.filter(function(i){ return giveB.indexOf(i) < 0; }).concat(giveA);
+  if (sa.pk.length || sb.pk.length){
+    if (!DY.picksTradable()) return "Draft picks can only be traded before the draft starts.";
+    if (sa.pk.some(function(o){ return g.picks[o] !== A.id; }) || sb.pk.some(function(o){ return g.picks[o] !== B.id; })) return "A team can only trade picks it owns.";
+  }
+  if (sa.pl.some(function(i){ return A.roster.indexOf(i) < 0; }) || sb.pl.some(function(i){ return B.roster.indexOf(i) < 0; })) return "Those players aren't on those rosters.";
+  var ra = A.roster.filter(function(i){ return sa.pl.indexOf(i) < 0; }).concat(sb.pl), rb = B.roster.filter(function(i){ return sb.pl.indexOf(i) < 0; }).concat(sa.pl);
   if (ra.length > DY.ROSTER || rb.length > DY.ROSTER) return "Rosters max out at " + DY.ROSTER + " players.";
-  if (ra.length < 4 || rb.length < 4) return "Both teams need at least 4 players after the trade.";
-  if (!DY.canField(ra)) return A.name + " would not have 2 ARs and 2 SMGs.";
-  if (!DY.canField(rb)) return B.name + " would not have 2 ARs and 2 SMGs.";
-  var pay = function(ids, t){ return sum(ids.map(function(i){ var c = g.P[i].con; return c ? c.sal : 0; })) + (g.phase === "offseason" ? (t.deadNext || 0) : (t.dead || 0)); };
+  if (g.phase === "season" || g.phase === "preseason"){
+    // games are being played: both teams must still be able to field a lineup
+    if (ra.length < 4 || rb.length < 4) return "During the season both teams need at least 4 players after the trade.";
+    if (!DY.canField(ra)) return A.name + " would not have 2 ARs and 2 SMGs.";
+    if (!DY.canField(rb)) return B.name + " would not have 2 ARs and 2 SMGs.";
+  } else {
+    // offseason: rosters can be short, as long as the open spots can still get them to 2 ARs + 2 SMGs
+    if (!DY.roleFeasible(ra)) return A.name + " couldn't get back to 2 ARs and 2 SMGs with the spots left.";
+    if (!DY.roleFeasible(rb)) return B.name + " couldn't get back to 2 ARs and 2 SMGs with the spots left.";
+  }
+  var pay = function(ids, t){ return sum(ids.map(function(i){ var c = g.P[i].con; return c ? c.sal : 0; })) + (g.phase === "offseason" ? (t.deadNext || 0) : (t.dead || 0)) + DY.scoutCost(t); };
   if (pay(ra, A) > A.budget + (A.cashAdj || 0) - cash) return A.name + " can't fit that payroll in its budget.";
   if (pay(rb, B) > B.budget + (B.cashAdj || 0) + cash) return B.name + " can't fit that payroll in its budget.";
-  if (giveA.concat(giveB).some(function(i){ var p = g.P[i]; return p.signedWk && p.signedWk === g.season * 100 + (g.phase === "offseason" ? 90 : g.week); })) return "Players signed this week can't be traded yet.";
+  if (sa.pl.concat(sb.pl).some(function(i){ var p = g.P[i]; return p.signedWk && p.signedWk === g.season * 100 + (g.phase === "offseason" ? 90 : g.week); })) return "Players signed this week can't be traded yet.";
   return null;
+};
+// what a team thinks a package is worth. Receiving several players is worth less than the sum: there are only so many roster spots,
+// and a player who wouldn't crack the lineup barely moves the needle (no turning three scrubs into a star).
+var DEPTH_W = [1, 0.62, 0.38, 0.25, 0.2];
+DY.itemValue = function(x, t, outIds){ return DY.isPick(x) ? DY.pickValue(DY.pickOrig(x), t) : DY.tradeValue(G().P[x], t, outIds); };
+DY.pkgValue = function(items, t, outIds, receiving){
+  var g = G(), sp = DY.splitItems(items), pv = sum(sp.pk.map(function(o){ return DY.pickValue(o, t); }));
+  if (!receiving) return pv + sum(sp.pl.map(function(i){ return DY.tradeValue(g.P[i], t, outIds); }));
+  var keep = t.roster.filter(function(i){ return (outIds || []).indexOf(i) < 0; }), lineup = DY.bestLineup(keep.length >= 4 ? keep : keep), floor = lineup.length >= 4 ? Math.min.apply(null, lineup.map(function(i){ return DY.knownOvr(g.P[i]); })) : 0;
+  var vals = sp.pl.map(function(i){ var p = g.P[i], v = DY.tradeValue(p, t, outIds); var young = p.age <= 23 && t.tag === "Rebuilding"; if (DY.knownOvr(p) < floor - 3 && !young) v *= 0.6; return v; }).sort(function(a, b){ return b - a; });
+  return pv + sum(vals.map(function(v, i){ return v * DEPTH_W[Math.min(i, DEPTH_W.length - 1)]; }));
 };
 // B's answer to an offer from A
 DY.evalTrade = function(A, B, giveA, giveB, cash){
   var g = G(), err = DY.tradeLegal(A, B, giveA, giveB, cash); if (err) return {ok:false, msg:err};
-  var gain = sum(giveA.map(function(i){ return DY.tradeValue(g.P[i], B, giveB); })) + DY.cashValue(cash, B), loss = sum(giveB.map(function(i){ return DY.tradeValue(g.P[i], B); }));
+  var outB = DY.splitItems(giveB).pl;
+  var gain = DY.pkgValue(giveA, B, outB, true) + DY.cashValue(cash, B), loss = DY.pkgValue(giveB, B, null, false);
   var margin = B.tag === "Contender" ? 0.12 : B.tag === "Buying" ? 0.06 : 0.03;
   if (B.rivals.indexOf(A.id) >= 0) margin += 0.08;
   // contenders protect their core: losing a top-2 player hurts more
   var core = DY.bestLineup(B.roster).slice().sort(function(a, b){ return g.P[b].ovr - g.P[a].ovr; }).slice(0, 2);
-  if (B.tag === "Contender" && giveB.some(function(i){ return core.indexOf(i) >= 0; })) margin += 0.1;
+  if (B.tag === "Contender" && outB.some(function(i){ return core.indexOf(i) >= 0; })) margin += 0.1;
+  // consolidation: giving up the best player in the deal needs a real centerpiece coming back
+  var bestOut = Math.max.apply(null, outB.map(function(i){ return DY.tradeValue(g.P[i], B); }).concat([0])), bestIn = Math.max.apply(null, DY.splitItems(giveA).pl.map(function(i){ return DY.tradeValue(g.P[i], B, outB); }).concat(DY.splitItems(giveA).pk.map(function(o){ return DY.pickValue(o, B); })).concat([0]));
+  var star = bestOut > bestIn * 1.35 && bestOut > 150;
+  if (star) margin += 0.18;
   var need = loss * (1 + margin) + 10, ratio = gain / Math.max(1, loss);
   var ok = gain >= need;
-  var msg = ok ? B.name + " accept." : B.name + " decline: " + (ratio < 0.7 ? "not close." : ratio < 0.95 ? "they want more value back." : "close — sweeten it a little.") + (B.rivals.indexOf(A.id) >= 0 ? " (Pool rivals ask for a premium.)" : "");
+  var msg = ok ? B.name + " accept." : B.name + " decline: " + (star && ratio >= 0.8 ? "quantity isn't quality — they want a real centerpiece back for their best player." : ratio < 0.7 ? "not close." : ratio < 0.95 ? "they want more value back." : "close — sweeten it a little.") + (B.rivals.indexOf(A.id) >= 0 ? " (Pool rivals ask for a premium.)" : "");
   return {ok:ok, msg:msg, gain:gain, loss:loss, need:need, ratio:ratio};
 };
 DY.doTrade = function(A, B, giveA, giveB, cash, quiet){
-  var g = G();
-  A.roster = A.roster.filter(function(i){ return giveA.indexOf(i) < 0; }).concat(giveB);
-  B.roster = B.roster.filter(function(i){ return giveB.indexOf(i) < 0; }).concat(giveA);
+  var g = G(), sa = DY.splitItems(giveA), sb = DY.splitItems(giveB);
+  A.roster = A.roster.filter(function(i){ return sa.pl.indexOf(i) < 0; }).concat(sb.pl);
+  B.roster = B.roster.filter(function(i){ return sb.pl.indexOf(i) < 0; }).concat(sa.pl);
+  sa.pk.forEach(function(o){ g.picks[o] = B.id; }); sb.pk.forEach(function(o){ g.picks[o] = A.id; });
   A.cashAdj = (A.cashAdj || 0) - cash; B.cashAdj = (B.cashAdj || 0) + cash;
   var stamp = g.season * 100 + (g.phase === "offseason" ? 90 : g.week);
-  giveA.forEach(function(i){ var p = g.P[i]; p.team = B.id; p.con.by = B.id; p.rel = clamp(52 + gauss() * 6 + (p.trq ? 12 : 0), 25, 85); p.trq = 0; p.tenure = 0; p.signedWk = stamp; if (p.prevTeams.indexOf(B.id) < 0) p.prevTeams.push(B.id); DY.addLog(p, "Traded from " + A.name + " to " + B.name + "."); delete g.ext[i]; });
-  giveB.forEach(function(i){ var p = g.P[i]; p.team = A.id; p.con.by = A.id; p.rel = clamp(52 + gauss() * 6 + (p.trq ? 12 : 0), 25, 85); p.trq = 0; p.tenure = 0; p.signedWk = stamp; if (p.prevTeams.indexOf(A.id) < 0) p.prevTeams.push(A.id); DY.addLog(p, "Traded from " + B.name + " to " + A.name + "."); delete g.ext[i]; });
+  if (DY.leaveTeam){ sa.pl.forEach(function(i){ DY.leaveTeam(g.P[i], A.id, "trade"); }); sb.pl.forEach(function(i){ DY.leaveTeam(g.P[i], B.id, "trade"); }); }
+  sa.pl.forEach(function(i){ var p = g.P[i]; p.team = B.id; p.con.by = B.id; p.rel = clamp(52 + gauss() * 6 + (p.trq ? 12 : 0), 25, 85); p.trq = 0; p.tenure = 0; p.signedWk = stamp; if (p.prevTeams.indexOf(B.id) < 0) p.prevTeams.push(B.id); DY.addLog(p, "Traded from " + A.name + " to " + B.name + "."); delete g.ext[i]; });
+  sb.pl.forEach(function(i){ var p = g.P[i]; p.team = A.id; p.con.by = A.id; p.rel = clamp(52 + gauss() * 6 + (p.trq ? 12 : 0), 25, 85); p.trq = 0; p.tenure = 0; p.signedWk = stamp; if (p.prevTeams.indexOf(A.id) < 0) p.prevTeams.push(A.id); DY.addLog(p, "Traded from " + B.name + " to " + A.name + "."); delete g.ext[i]; });
+  if (DY.meetTeam){ sa.pl.forEach(function(i){ DY.meetTeam(g.P[i], B.id); }); sb.pl.forEach(function(i){ DY.meetTeam(g.P[i], A.id); }); }
   A.lineup = A.lineup.filter(function(i){ return A.roster.indexOf(i) >= 0; }); B.lineup = B.lineup.filter(function(i){ return B.roster.indexOf(i) >= 0; });
-  DY.fixLineup(A); DY.fixLineup(B);
-  var nm = function(ids){ return ids.map(function(i){ return g.P[i].n; }).join(", "); };
-  var desc = A.abbr + " send " + (giveA.length ? nm(giveA) : "nothing") + (cash > 0 ? " + " + DY.money(cash) : "") + " to " + B.abbr + " for " + (giveB.length ? nm(giveB) : "nothing") + (cash < 0 ? " + " + DY.money(-cash) : "");
+  if (A.roster.length >= 4) DY.fixLineup(A); if (B.roster.length >= 4) DY.fixLineup(B);
+  var nmL = function(items){ return items.map(DY.itemName).join(", "); };
+  var desc = A.abbr + " send " + (giveA.length ? nmL(giveA) : "nothing") + (cash > 0 ? " + " + DY.money(cash) : "") + " to " + B.abbr + " for " + (giveB.length ? nmL(giveB) : "nothing") + (cash < 0 ? " + " + DY.money(-cash) : "");
   DY.tx("TRADE: " + desc, [A.id, B.id]);
   if (!quiet) DY.tradeNews(A, B, giveA, giveB, cash);
   g.offers = g.offers.filter(function(o){ return !o.give.concat(o.get).some(function(i){ return giveA.indexOf(i) >= 0 || giveB.indexOf(i) >= 0; }); });
@@ -254,16 +327,23 @@ DY.neutralValue = function(p){
   var talent = DY.salaryFor(adj) + 20, sal = p.con ? p.con.sal : DY.MIN_SAL, yrs = p.con ? p.con.yrs + (p.con.opt ? 0.4 : 0) : 0.5;
   return Math.max(5, 0.9 * talent + 0.35 * (talent - sal) * Math.max(0.5, yrs));
 };
-DY.fairEnough = function(give, get, cashToGetter, minRatio){ var g = G(), a = sum(give.map(function(i){ return DY.neutralValue(g.P[i]); })) + Math.max(0, cashToGetter), b = sum(get.map(function(i){ return DY.neutralValue(g.P[i]); })) + Math.max(0, -cashToGetter); return a >= b * (minRatio || 0.85); };
+DY.fairEnough = function(give, get, cashToGetter, minRatio){
+  var g = G(), side = function(items){ var sp = DY.splitItems(items), vals = sp.pl.map(function(i){ return DY.neutralValue(g.P[i]); }).sort(function(a, b){ return b - a; }); return sum(sp.pk.map(DY.pickNeutral)) + sum(vals.map(function(v, i){ return v * DEPTH_W[Math.min(i, DEPTH_W.length - 1)]; })); };
+  var a = side(give) + Math.max(0, cashToGetter), b = side(get) + Math.max(0, -cashToGetter);
+  return a >= b * (minRatio || 0.85);
+};
 function buildPackage(buyer, seller, targetIds, maxCash){
   var g = G(), best = null, bestCost = 1e9;
   var cands = buyer.roster.filter(function(i){ return targetIds.indexOf(i) < 0; });
+  // top-4 teams don't get to flip picks for more talent (keeps the rich from getting richer); everyone else can
+  var rk = g.teams.filter(function(o){ return DY.teamRating(o) > DY.teamRating(buyer); }).length;
+  if (DY.picksTradable() && !DY.NO_PK && (buyer.user || rk >= 4)) DY.picksOf(buyer.id).forEach(function(o){ cands.push("pk" + o); });
   var sets = [[]]; cands.forEach(function(i){ sets.push([i]); }); for (var x = 0; x < cands.length; x++) for (var y = x + 1; y < cands.length; y++) sets.push([cands[x], cands[y]]);
   sets.forEach(function(give){
     for (var cash = 0; cash <= maxCash; cash += 25){
       var ev = DY.evalTrade(buyer, seller, give, targetIds, cash); if (!ev.ok) continue;
       if (!DY.fairEnough(give, targetIds, cash, 0.85)) continue;
-      var bv = sum(targetIds.map(function(i){ return DY.tradeValue(g.P[i], buyer, give); })), bc = sum(give.map(function(i){ return DY.tradeValue(g.P[i], buyer); })) + DY.cashValue(cash, buyer);
+      var bv = DY.pkgValue(targetIds, buyer, DY.splitItems(give).pl, true), bc = DY.pkgValue(give, buyer, null, false) + DY.cashValue(cash, buyer);
       if (bv < bc * 1.03) break;
       var cost = bc; if (cost < bestCost){ bestCost = cost; best = {give:give, cash:cash}; }
       break;
@@ -273,14 +353,14 @@ function buildPackage(buyer, seller, targetIds, maxCash){
 }
 DY.cpuTrades = function(){
   var g = G(); if (g.phase === "playoffs") return;
-  var buyers = shuffle(g.teams.filter(function(t){ return !t.user && t.tag !== "Rebuilding"; })), done = 0, maxT = chance(0.55) ? rint(1, 2) : 0;
+  var buyers = shuffle(g.teams.filter(function(t){ return !t.user && t.tag !== "Rebuilding" && t.plan !== "draft"; })).sort(function(a, b){ return (b.plan === "trade") - (a.plan === "trade"); }), done = 0, maxT = (chance(0.55) ? rint(1, 2) : 0) + (buyers.some(function(t){ return t.plan === "trade"; }) && chance(0.5) ? 1 : 0);
   for (var bi = 0; bi < buyers.length && done < maxT; bi++){
     var B = buyers[bi]; if (B.roster.length < 4) continue;
     var lineup = DY.bestLineup(B.roster), weakest = lineup.slice().sort(function(a, b){ return g.P[a].ovr - g.P[b].ovr; })[0];
-    var sellers = shuffle(g.teams.filter(function(t){ return !t.user && t.id !== B.id && (t.tag === "Rebuilding" || t.roster.some(function(i){ return g.P[i].trq; })); }));
+    var sellers = shuffle(g.teams.filter(function(t){ return !t.user && t.id !== B.id && (t.tag === "Rebuilding" || t.plan === "draft" || t.roster.some(function(i){ return g.P[i].trq; })); }));
     for (var si = 0; si < sellers.length; si++){
       var S = sellers[si]; if (S.roster.length < 4) continue;
-      var targets = S.roster.map(function(i){ return g.P[i]; }).filter(function(p){ return p.ovr >= g.P[weakest].ovr + 2.5 && (S.tag === "Rebuilding" ? p.age >= 25 || p.trq : p.trq); }).sort(function(a, b){ return b.ovr - a.ovr; });
+      var targets = S.roster.map(function(i){ return g.P[i]; }).filter(function(p){ return p.ovr >= g.P[weakest].ovr + 2.5 && (S.tag === "Rebuilding" || S.plan === "draft" ? (p.age >= 25 && !(p.drafted && p.drafted.tid === S.id)) || p.trq : p.trq); }).sort(function(a, b){ return b.ovr - a.ovr; });
       var found = false;
       for (var ti = 0; ti < Math.min(3, targets.length); ti++){
         var pk = buildPackage(B, S, [targets[ti].id], Math.min(300, Math.max(0, DY.space(B))));
@@ -333,6 +413,12 @@ DY.setTags = function(initial){
     if (i >= 12 && t.style === "stars" && chance(0.4)) tag = "Buying";
     if (t.user){ if (!t.userTag) t.tag = tag; t.suggest = tag; return; }
     t.tag = tag;
+    // front-office plans shift with results: a rebuild that worked turns into "keep the core"; a team stuck at the bottom commits to the draft
+    if (!initial && DY.PLAN_NAME){ var was = t.plan;
+      if (t.plan === "draft" && i < 6) t.plan = "core";
+      else if (i >= 12 && t.plan !== "draft" && chance(0.3)) t.plan = "draft";
+      else if (chance(0.06)) t.plan = DY.randPlan();
+      if (was !== t.plan) DY.news("league", t.name + ": new direction", t.name + " are now " + DY.PLAN_NAME[t.plan].toLowerCase() + ". " + DY.PLAN_TEXT[t.plan], {tid:t.id}); }
     if (!initial && old && old !== tag && (tag === "Rebuilding" || old === "Rebuilding")) DY.news("league", t.name + " " + (tag === "Rebuilding" ? "hit the reset button" : "are buyers again"), tag === "Rebuilding" ? "Front office sources say " + t.name + " are open for business. Veterans, check your phones." : t.name + " think they're close. They're shopping.", {tid:t.id});
   });
 };
@@ -342,18 +428,9 @@ DY.setTags = function(initial){
    ===================================================================================== */
 DY.weeklyMarket = function(){
   var g = G();
-  // relationships: pay vs value, trade requests
-  DY.active().forEach(function(p){
-    if (p.team == null) return;
-    var t = g.teams[p.team], mv = DY.marketValue(p);
-    if (p.con && p.con.sal < mv * 0.75) p.rel = clamp(p.rel - 0.6 * p.pri.money * 2, 0, 100);
-    if (p.con && p.con.sal > mv * 1.1) p.rel = clamp(p.rel + 0.4, 0, 100);
-    p.rel = clamp(p.rel + (60 - p.rel) * 0.03 * p.pri.loyal, 0, 100);
-    if (!p.trq && p.rel < 24 && t.w < t.l && p.pri.win + p.pri.pt > 0.45 && chance(0.4)){
-      p.trq = 1; DY.addLog(p, "Requested a trade from " + t.name + ".");
-      DY.news("drama", p.n + " requests a trade", "Sources tell me " + p.n + " wants OUT of " + t.city + ". Relationship's been rocky, the record is " + t.w + "-" + t.l + ", and the man wants to win. " + (t.user ? "Your move, front office." : "Somebody's getting a phone call."), {pid:p.id, tid:t.id});
-    }
-  });
+  // moods, trade requests and locker room drama (dyn-life.js)
+  DY.moodWeek();
+  DY.lockerRoom();
   if (g.week === 3) DY.setTags(false);
   DY.cpuInSeasonSignings();
   DY.cpuTrades();
@@ -395,7 +472,8 @@ DY.seasonEndFans = function(){
     t.titlesRecent = (t.titlesRecent || 0) * 0.6 + (f === 1 ? 1 : 0);
     var po = f === 1 ? 110 : f === 2 ? 70 : f <= 4 ? 45 : f <= 8 ? 25 : f <= 12 ? 10 : 0;
     var calc = 760 + t.fan.eng * 10 * (0.85 + t.mkt * 0.15) + po * 1.2;
-    var nb = Math.round(clamp(t.budget * 0.35 + calc * 0.65, DY.BUDGET_MIN, DY.BUDGET_MAX) / 25) * 25;
+    var nb = Math.round(clamp(t.budget * 0.35 + calc * 0.65 - (t.taxNext || 0), DY.BUDGET_MIN - 100, DY.BUDGET_MAX) / 25) * 25;
+    t.taxPaid = t.taxNext || 0; t.taxNext = 0;
     t.budgetPrev = t.budget; t.budget = nb;
   });
 };

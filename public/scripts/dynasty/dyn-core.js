@@ -134,7 +134,7 @@ DY.addStats = function(a, b){ Object.keys(b).forEach(function(k){ if (k === "bes
 function baseP(id, name){
   return {id:id, n:name, real:false, role:"AR", at:{gun:70, hp:70, snd:70, ctl:70, obj:70}, ovr:70, ceil:75, potG:"C", age:22, yrs:0, exp0:0,
     cons:70, clutch:60, lead:50, chem:65, work:65, avail:.025, entry:50, pri:randPri(), persona:"Balanced",
-    status:"fa", team:null, minor:null, con:null, rel:60, form:0, hot:0, mood:0, st:null, car:[], acc:[], log:[], ovrH:[], legacy:0, trq:0, rookie:null, ext:null, prevTeams:[]};
+    status:"fa", team:null, minor:null, con:null, rel:60, form:0, hot:0, mood:0, st:null, car:[], acc:[], log:[], ovrH:[], legacy:0, trq:0, rookie:null, ext:null, prevTeams:[], tmem:{}};
 }
 // Build a real player's Dynasty profile from career data (see scripts/games/build_dynasty_data.py).
 // Skills are set RELATIVE TO THE LEAGUE: mode K/Ds vs his own K/D compared with how the league splits,
@@ -150,7 +150,8 @@ var TAGMAP = {
 DY.realPlayer = function(d, id, N){
   var p = baseP(id, d.n), h = HAND[d.n] || {}, tg = d.tags || {}, fl = tg.flags || [], has = function(f){ return fl.indexOf(f) >= 0; };
   p.real = true; p.role = d.r === "SMG" ? "SMG" : "AR";
-  var shrink = function(n, k){ return n / (n + k); }, m = d.m, base = d.ovr - 1;
+  // skills are built from his TALENT (career overall minus longevity/trophy credit); the rest of his overall is reputation (p.ovrAdj) that fades over the years
+  var shrink = function(n, k){ return n / (n + k); }, m = d.m, base = d.ovr - 1 - (d.tal != null ? Math.max(0, d.ovr - d.tal) * 0.6 : 0);
   var f = N.fit[p.role], resid = d.kd - (f.a + f.b * d.ovr);
   var gun = base + clamp(resid * 48, -10, 10) * shrink(m, 18);
   var modeOff = function(x, key){ if (x == null || !d.kd) return gauss() * 2.5; var r = x / d.kd, z = (r - N.ratio[key][0]) / N.ratio[key][1]; return clamp(z * 4.6, -11, 11) * shrink(m, 28); };
@@ -166,8 +167,8 @@ DY.realPlayer = function(d, id, N){
     if (o.pl != null) zs.push((((o.pl + 2 * (o.df || 0)) - 0.85) / 0.45) * shrink(o.plN, 5));
     if (o.ok != null) zs.push(((o.ok - 15.5) / 3) * shrink(o.okN, 4));
     obj = (p.role === "SMG" ? 74 : 66) + clamp(mean(zs) * 10, -18, 18) + (d.ovr - 80) * 0.25;
-  } else obj = (p.role === "SMG" ? 74 : 64) + (d.ovr - 80) * 0.28 + gauss() * 6;
-  if (has("objplus")) obj += 7; if (has("objminus")) obj -= 9; if (tg.style === "Objective player") obj += 8; if (tg.style === "Slow / anchor") obj -= 3;
+  } else obj = (p.role === "SMG" ? 75 : 65) + (d.ovr - 80) * 0.2 + gauss() * 7;
+  if (has("objplus")) obj += 4; if (has("objminus")) obj -= 9; if (tg.style === "Objective player") obj += 8; if (tg.style === "Slow / anchor") obj -= 3;
   at.obj = obj;
   DY.ATTR.forEach(function(k){ at[k] = clamp(at[k], 40, 99); });
   p.at = at; p.ovrAdj = 0; p.ovrAdj = d.ovr - DY.calcOvr(at); DY.setOvr(p);
@@ -184,7 +185,8 @@ DY.realPlayer = function(d, id, N){
   else p.age = Math.round(19.5 + d.seasons * 0.8 + rr(0, 4.5) + (d.last < 5 ? 1.5 : 0));
   var room = p.age <= 21 ? rr(2, 10) : p.age <= 23 ? rr(1, 7) : p.age <= 26 ? rr(0, 4) : rr(0, 1.5);
   if (m < 20) room += rr(0, 5);
-  p.ceil = clamp(p.ovr + room + (h.ceil || 0), p.ovr, 99);
+  var ceil0 = clamp(p.ovr + room + (h.ceil || 0), p.ovr, 99);                         // what scouts expect
+  p.ceil = clamp(p.ovr + (room + (h.ceil || 0)) * (p.age <= 23 ? rr(0.35, 1.3) : 1), p.ovr, 99);   // what he can actually reach — a high-potential kid isn't guaranteed to hit it
   // traits: tags first, then hand notes, then stats
   p.cons = TAGMAP.cons[tg.consistency] != null ? TAGMAP.cons[tg.consistency] + gauss() * 3 : (h.cons || clamp(68 + gauss() * 10 - (m < 15 ? 6 : 0), 35, 92));
   if (has("mistakes")) p.cons -= 7;
@@ -196,7 +198,7 @@ DY.realPlayer = function(d, id, N){
   p.work = has("work") ? rr(86, 95) : has("lazy") ? rr(45, 58) : (h.work || clamp(62 + gauss() * 12, 30, 95));
   p.avail = TAGMAP.avail[tg.availability] != null ? TAGMAP.avail[tg.availability] : (h.avail || clamp(.02 + Math.abs(gauss()) * .012, .008, .06));
   if (has("rust")) p.avail += 0.015;
-  ["cons", "clutch", "lead", "chem", "work"].forEach(function(k){ p[k] = clamp(p[k], 15, 97); });
+  ["cons", "clutch", "lead", "chem", "work"].forEach(function(k){ p[k] = clamp(p[k] + gauss() * 3, 15, 97); });   // a little different every dynasty
   var pb = TAGMAP.pri[tg.persona];
   p.pri = pb ? randPri(pb) : h.pri ? Object.assign({}, h.pri) : randPri(d.acc.mvp + d.acc.as1 >= 2 ? {win:.08} : null);
   if (has("unselfish")){ p.pri.money = Math.max(.05, p.pri.money - .08); }
@@ -207,7 +209,7 @@ DY.realPlayer = function(d, id, N){
   p.rep = d.acc.mvp * 3 + d.acc.as1 * 1.5 + d.acc.as2 + d.acc.champ * 1.2;
   p.realLine = {seasons:d.seasons, first:d.first, last:d.last, kd:d.kd, m:d.m, hp:d.hp, snd:d.snd, ctl:d.ctl, ip:d.ip, obj:d.obj, war10:d.war10, acc:d.acc, maps:d.maps};
   p.maps = DY.mapAffinity(d);
-  p.potG = DY.gradeFor(p.ceil + gauss() * (p.age <= 23 ? 2.5 : 1));
+  p.potG = DY.gradeFor(ceil0 + gauss() * (p.age <= 23 ? 2.5 : 1));
   return p;
 };
 // map preferences from real Season 5-6 map-by-map K/D (vs his own mode K/D), shrunk for small samples
@@ -233,12 +235,33 @@ DY.norms = function(data){
 DY.fitKd = DY.norms;
 
 /* ---------------- gamertag generator for rookies ---------------- */
-var A1 = ["Zen","Vex","Kai","Rift","Nova","Jinx","Blaze","Frost","Volt","Echo","Ghost","Hex","Lux","Myth","Nyx","Onyx","Pyro","Rogue","Sly","Tox","Vibe","Wraith","Zest","Crisp","Dusk","Ember","Flick","Glitch","Halo","Ion","Juke","Knox","Lynx","Mako","Nitro","Orbit","Prism","Quill","Rush","Saint","Tempo","Umbra","Vapor","Wisp","Xeno","Yeti","Zulu","Ace","Bolt","Cruz","Dash","Fury","Grim","Havok","Iced","Jolt","Koda","Lucid","Mav","Neon","Opti","Pax","Rook","Snipe","Trix","Vandal","Wick","Zap","Cosmo","Drift","Spectre","Riot","Kilo","Sonic","Torch","Banshee","Cinder","Diesel","Gator","Mamba","Pluto","Rascal","Scout","Taz"];
-var A2 = ["","","","","x","z","y","o","ix","er","ey","zy","ie","os","ii","yy","On","Up","GG","TV","HD","NA","Jr","3","7","9","11","23","99","_","LoL","Kid","Boy","Szn","Ttv"];
+/* Rookie gamertags: built from fragments of BTL names and pro Call of Duty (CDL / CWL) tags, mixed with
+   gamer styling. A generated tag is never an exact real name. */
+var PRO = ["Scump","Crimsix","Formal","Clayster","Karma","Simp","aBeZy","Cellium","Shotzzy","Dashy","iLLeY","Pred","Kenny","Arcitys","Octane","Envoy","Hydra","Ghosty","Huke","Attach","Apathy","Skyz","Insight","Kismet","Drazah","Pentagrxm","Abuzah","Sib","Nero","Standy","Asim","Bance","Owakening","Gunless","Methodz","Censor","Nadeshot","Teepee","ProoFy","Accuracy","Zoomaa","Parasite","Rated","Silly","Fero","Vivid","Hollow","Priestahh","Assault","Neptune","Cammy","Afro","Gismo","Slasher","Classic","JKap","Aches","TeeP","Rambo","Sharp","Proto","Temp","Remy","Theory","Zer0","Lucky","Felo","Breszy","Exceed","Nastie","Spart","Zed","Mack","Bance","Venom","Clay","Phantomz","Ghosty","Seany","Diamondcon","Flames","Mosh","Vengeance","Joee","Jurd","Royalty","Kremp","Hicksy","Envy","Sukry","Brack","Lqgend","Nero","Beans","Cleanx","Estreal","Kremp","Mercules","Pentagrxm","Scrap","SlasheR","Spart","Vortex","Wartex","Wuskin","Zaptius","Gunless","Rhino","Kenny","Pred","Stainville","Skrapz","Bance","Peatie","Joshh","Rated","Dylan","CleanX"];
+var NAME_STYLE = [["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""], ["i", ""], ["x", ""], ["", "x"], ["", "z"], ["", "y"], ["", "zz"], ["", "TV"], ["", "7"], ["", "GG"], ["", "Jr"]];
+var BAD = /(fag|nig|nazi|rape|cunt|shit|fuck|slut|whore|kkk|cum|anal|sex|dick|cock|tits)/i;
+var nameParts = null, realNames = null;
+function buildParts(){
+  var src = PRO.slice(); try { (root.DYN_DATA && root.DYN_DATA.players || []).forEach(function(d){ src.push(d.n); }); } catch (e){}
+  if (G && G.P) Object.keys(G.P).forEach(function(k){ if (G.P[k].real) src.push(G.P[k].n); });
+  realNames = {}; src.forEach(function(n){ realNames[n.toLowerCase().replace(/[^a-z0-9]/g, "")] = 1; });
+  var heads = [], tails = [];
+  src.forEach(function(n){ var w = n.replace(/[^A-Za-z]/g, ""); if (w.length < 3) return; var l = w.toLowerCase();
+    for (var k = 3; k <= Math.min(4, l.length - 1); k++) heads.push(l.slice(0, k)); for (var j = 2; j <= Math.min(3, l.length - 1); j++) tails.push(l.slice(-j)); });
+  nameParts = {h:heads, t:tails};
+}
 DY.makeName = function(taken){
-  for (var t = 0; t < 200; t++){
-    var n = pick(A1) + pick(A2); if (chance(.18)) n = pick(["i","x","The","Lil","Big","Mr","Sir"]) + n; if (chance(.12)) n = n.toLowerCase();
-    if (!taken[n.toLowerCase()]){ taken[n.toLowerCase()] = 1; return n; }
+  if (!nameParts) buildParts();
+  for (var t = 0; t < 400; t++){
+    var h = pick(nameParts.h), tl = pick(nameParts.t), core = h + tl;
+    if (core.length < 4 || core.length > 9) continue;
+    if (/(.)\1\1/.test(core) || /[^aeiouy]{3}/.test(core) || /[aeiou]{3}/.test(core) || /([aeiou])\1/.test(core) || /h$|hh|q[^u]|[jvwx][^aeiouy]/.test(core) || !/[aeiouy]/.test(core)) continue;
+    var st = pick(NAME_STYLE); if (/[xyz]$/.test(core) && /^[xyz]/.test(st[1])) st = ["", ""];
+    var n = st[0] + (st[0] ? core.charAt(0).toUpperCase() + core.slice(1) : core.charAt(0).toUpperCase() + core.slice(1)) + st[1];
+    if (chance(0.1)) n = n.replace(/o/, "0"); else if (chance(0.06)) n = n.replace(/e/, "3");
+    var key = n.toLowerCase().replace(/[^a-z0-9]/g, ""), ck = core.toLowerCase();
+    if (realNames[key] || realNames[ck] || BAD.test(n) || taken[n.toLowerCase()]) continue;
+    taken[n.toLowerCase()] = 1; return n;
   }
   return "Rookie" + rint(100, 999);
 };
@@ -247,9 +270,10 @@ DY.makeName = function(taken){
 DY.P = function(id){ return G.P[id]; };
 DY.T = function(id){ return G.teams[id]; };
 DY.userT = function(){ return G.teams[G.user]; };
-DY.active = function(){ return Object.keys(G.P).map(function(k){ return G.P[k]; }).filter(function(p){ return p.status !== "retired"; }); };
+DY.active = function(){ return Object.keys(G.P).map(function(k){ return G.P[k]; }).filter(function(p){ return p.status !== "retired" && p.status !== "prospect"; }); };
+DY.prospects = function(){ return Object.keys(G.P).map(function(k){ return G.P[k]; }).filter(function(p){ return p.status === "prospect"; }).sort(function(a, b){ return a.rookie.rank - b.rookie.rank; }); };
 DY.allP = function(){ return Object.keys(G.P).map(function(k){ return G.P[k]; }); };
-DY.payroll = function(t){ return sum(t.roster.map(function(id){ var c = G.P[id].con; return c ? c.sal : 0; })) + (G.phase === "offseason" ? (t.deadNext || 0) : (t.dead || 0)); };
+DY.payroll = function(t){ return sum(t.roster.map(function(id){ var c = G.P[id].con; return c ? c.sal : 0; })) + (G.phase === "offseason" ? (t.deadNext || 0) : (t.dead || 0)) + (DY.SCOUT ? DY.SCOUT[t.scout || 0].c : 0); };
 DY.space = function(t){ return t.budget + (t.cashAdj || 0) - DY.payroll(t); };
 DY.ovrR = function(p){ return Math.round(p.ovr); };
 DY.hiddenOvr = function(p){ return !!(p.rookie && p.rookie.hidden); };

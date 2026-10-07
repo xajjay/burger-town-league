@@ -56,8 +56,8 @@ DY.championNews = function(){
   DY.news("champ", tn(c) + " are Season " + g.season + " champions", pick(["CHAMPIONS! I said what I said!", "Pop the bottles.", "They did it. They ACTUALLY did it."]) + " " + tn(c) + " beat " + tn(r) + " " + Math.max(f.wa, f.wb) + "-" + Math.min(f.wa, f.wb) + (g.po.res.GF2 ? " in the bracket reset" : " in the grand final") + ". Finals MVP: " + (g.awards.fmvp != null ? nm(g.awards.fmvp) : "—") + ".", {tid:c, pid:g.awards.fmvp});
 };
 DY.tradeNews = function(A, B, ga, gb, cash){
-  var g = G(), big = ga.concat(gb).map(function(i){ return g.P[i]; }).sort(function(a, b){ return b.ovr - a.ovr; })[0];
-  var list = function(ids){ return ids.length ? ids.map(nm).join(" + ") : "future considerations"; };
+  var g = G(), big = ga.concat(gb).filter(function(i){ return !DY.isPick(i); }).map(function(i){ return g.P[i]; }).sort(function(a, b){ return b.ovr - a.ovr; })[0];
+  var list = function(ids){ return ids.length ? ids.map(DY.itemName).join(" + ") : "future considerations"; };
   DY.news("trade", "TRADE: " + (big ? big.n + " is on the move" : A.abbr + " and " + B.abbr + " make a deal"), A.name + " get " + list(gb) + (cash < 0 ? " and " + DY.money(-cash) + " in budget" : "") + ". " + B.name + " get " + list(ga) + (cash > 0 ? " and " + DY.money(cash) + " in budget" : "") + ". " + pick(["Winners and losers? Ask me in May.", "I LOVE this trade. For one side.", "Somebody got fleeced and I think we all know who.", "Bold. Very bold."]), {tid:A.id, pid:big ? big.id : null});
 };
 DY.offseasonNews = function(){
