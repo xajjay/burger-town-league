@@ -30,6 +30,8 @@ DY.MIN_SAL = 50;           // $k league minimum
 DY.MAX_SAL = 1000;         // $k absolute max
 DY.START_BUDGET = 1100;    // $k, same for every team in Season 1
 DY.BUDGET_MIN = 950; DY.BUDGET_MAX = 1900;
+DY.REV_SHARE = 0.4;        // share of revenue pooled and split evenly across the league
+DY.SALARY_CAP = 1350;      // hard cap on spending ($k): a team can never spend more than this, however big its budget
 DY.MODES = ["HP", "SND", "CTL"];
 DY.MODE_NAME = {HP:"Hardpoint", SND:"Search & Destroy", CTL:"Control"};
 DY.SERIES_MODES = ["HP", "SND", "CTL", "HP", "SND"];
@@ -128,6 +130,8 @@ var HAND = {
   "Chadwick":{pri:{money:.2, win:.26, loyal:.14, pt:.4}, cons:60, clutch:58, lead:40, chem:70, work:72, age:21, ceil:8}
 };
 
+/* AJ's calls: objective players the data doesn't capture (or under-sells). [low, high] objective range per dynasty. */
+DY.OBJ_BOOST = {Starry:[88, 94], Dez:[86, 92], Jealous:[88, 94], Python:[88, 94], Bleepa:[87, 93]};
 /* ---------------- player creation ---------------- */
 DY.newStats = function(){ return {m:0, k:0, d:0, hm:0, hk:0, hd:0, sm:0, sk:0, sd:0, cm:0, ck:0, cd:0, hill:0, pl:0, df:0, fb:0, fd:0, ok:0, war:0, sw:0, sl:0, best:0}; };
 DY.addStats = function(a, b){ Object.keys(b).forEach(function(k){ if (k === "best") a.best = Math.max(a.best || 0, b.best || 0); else a[k] = (a[k] || 0) + (b[k] || 0); }); return a; };
@@ -160,15 +164,21 @@ DY.realPlayer = function(d, id, N){
   if (best) at[best] += 3.5;
   if (tg.best === "All modes"){ var mm = (at.hp + at.snd + at.ctl) / 3; ["hp", "snd", "ctl"].forEach(function(k){ at[k] = mm + (at[k] - mm) * 0.5 + 1; }); }
   // objective: from Season 5-6 boards where we have them, otherwise role + playstyle + a guess
-  var o = d.obj, obj;
+  // Objective is its OWN skill: a 75-overall player who lives on the hill and plays the objective is a 90+ objective player.
+  var o = d.obj, obj, NO = N.obj, OB = DY.OBJ_BOOST[d.n];
   if (o){
-    var zs = [];
-    if (o.hill != null) zs.push(((o.hill - N.obj[p.role].hill) / 24) * shrink(o.hillN, 5));
-    if (o.pl != null) zs.push((((o.pl + 2 * (o.df || 0)) - 0.85) / 0.45) * shrink(o.plN, 5));
-    if (o.ok != null) zs.push(((o.ok - 15.5) / 3) * shrink(o.okN, 4));
-    obj = (p.role === "SMG" ? 74 : 66) + clamp(mean(zs) * 10, -18, 18) + (d.ovr - 80) * 0.25;
-  } else obj = (p.role === "SMG" ? 75 : 65) + (d.ovr - 80) * 0.2 + gauss() * 7;
+    var num = 0, den = 0, top = -9, add = function(z, w, n){ if (z == null || !isFinite(z)) return; var zz = clamp(z, -3, 4) * n / (n + 2); num += zz * w; den += w; top = Math.max(top, zz); };
+    if (o.hill != null) add((o.hill - NO[p.role].hill) / NO[p.role].hsd, 0.45, o.hillN || 0);
+    if (o.pl != null) add(((o.pl + 2 * (o.df || 0)) - NO.pd[0]) / NO.pd[1], 0.25, o.plN || 0);
+    if (o.ok != null) add((o.ok - NO.ok[0]) / NO.ok[1], 0.3, o.okN || 0);
+    var zc = den ? (num / den) * 0.6 + Math.max(0, top) * 0.4 : 0;    // a standout objective stat counts on its own
+    obj = (p.role === "SMG" ? 76 : 71) + clamp(zc * 13, -24, 24) + (d.ovr - 80) * 0.08;
+  } else {
+    obj = (p.role === "SMG" ? 75 : 68) + (d.ovr - 80) * 0.1 + gauss() * 7;
+    if (chance(0.12)) obj = Math.max(obj, rr(84, 93));          // a few unknowns are objective specialists in any given dynasty
+  }
   if (has("objplus")) obj += 4; if (has("objminus")) obj -= 9; if (tg.style === "Objective player") obj += 8; if (tg.style === "Slow / anchor") obj -= 3;
+  if (OB) obj = Math.max(obj, rr(OB[0], OB[1]));
   at.obj = obj;
   DY.ATTR.forEach(function(k){ at[k] = clamp(at[k], 40, 99); });
   p.at = at; p.ovrAdj = 0; p.ovrAdj = d.ovr - DY.calcOvr(at); DY.setOvr(p);
@@ -195,6 +205,7 @@ DY.realPlayer = function(d, id, N){
   if (has("iq")){ p.clutch = Math.max(p.clutch, 80); p.lead = Math.max(p.lead, 75); }
   p.chem = TAGMAP.chem[tg.teammate] != null ? TAGMAP.chem[tg.teammate] + gauss() * 3 : (h.chem || clamp(68 + gauss() * 12, 30, 95));
   if (has("conflict")) p.chem -= 12; if (has("unselfish") || has("glue")) p.chem += 5;
+  if (d.n === "Jealous"){ p.chem = Math.max(p.chem, rr(86, 93)); p.lead = Math.max(p.lead, rr(82, 90)); }   // a great teammate and a voice in the room
   p.work = has("work") ? rr(86, 95) : has("lazy") ? rr(45, 58) : (h.work || clamp(62 + gauss() * 12, 30, 95));
   p.avail = TAGMAP.avail[tg.availability] != null ? TAGMAP.avail[tg.availability] : (h.avail || clamp(.02 + Math.abs(gauss()) * .012, .008, .06));
   if (has("rust")) p.avail += 0.015;
@@ -222,12 +233,16 @@ DY.mapAffinity = function(d){
 DY.mapAff = function(p, mode, map){ return (p.maps && p.maps[mode + "|" + map]) || 0; };
 DY.baseP = baseP;
 DY.norms = function(data){
-  var out = {fit:{}, ratio:{}, obj:{AR:{hill:52}, SMG:{hill:68}}};
+  var out = {fit:{}, ratio:{}, obj:{AR:{hill:52, hsd:18}, SMG:{hill:68, hsd:18}, pd:[0.85, 0.45], ok:[15.5, 3]}};
+  var msd = function(v, d0){ if (v.length < 4) return d0; var mu = mean(v), sd = Math.sqrt(mean(v.map(function(x){ return (x - mu) * (x - mu); }))); return [mu, Math.max(sd, d0[1] * 0.5)]; };
+  var od = data.filter(function(d){ return d.obj; });
+  out.obj.pd = msd(od.filter(function(d){ return d.obj.pl != null && d.obj.plN >= 4; }).map(function(d){ return d.obj.pl + 2 * (d.obj.df || 0); }), out.obj.pd);
+  out.obj.ok = msd(od.filter(function(d){ return d.obj.ok != null && d.obj.okN >= 4; }).map(function(d){ return d.obj.ok; }), out.obj.ok);
   ["AR", "SMG"].forEach(function(r){
     var xs = data.filter(function(d){ return d.r === r && d.m >= 20; }), mx = mean(xs.map(function(d){ return d.ovr; })), my = mean(xs.map(function(d){ return d.kd; }));
     var b = sum(xs.map(function(d){ return (d.ovr - mx) * (d.kd - my); })) / Math.max(1e-6, sum(xs.map(function(d){ return (d.ovr - mx) * (d.ovr - mx); })));
     out.fit[r] = {a:my - b * mx, b:b};
-    var hs = data.filter(function(d){ return d.r === r && d.obj && d.obj.hill != null && d.obj.hillN >= 4; }).map(function(d){ return d.obj.hill; }); if (hs.length >= 3) out.obj[r].hill = mean(hs);
+    var hs = data.filter(function(d){ return d.r === r && d.obj && d.obj.hill != null && d.obj.hillN >= 4; }).map(function(d){ return d.obj.hill; }); if (hs.length >= 3){ var hm = msd(hs, [out.obj[r].hill, 18]); out.obj[r].hill = hm[0]; out.obj[r].hsd = hm[1]; }
   });
   ["hp", "snd", "ctl"].forEach(function(k){ var rs = data.filter(function(d){ return d.m >= 20 && d[k] != null && d.kd; }).map(function(d){ return d[k] / d.kd; }), mu = mean(rs); out.ratio[k] = [mu, Math.sqrt(mean(rs.map(function(x){ return (x - mu) * (x - mu); }))) || 0.08]; });
   return out;
@@ -274,7 +289,8 @@ DY.active = function(){ return Object.keys(G.P).map(function(k){ return G.P[k]; 
 DY.prospects = function(){ return Object.keys(G.P).map(function(k){ return G.P[k]; }).filter(function(p){ return p.status === "prospect"; }).sort(function(a, b){ return a.rookie.rank - b.rookie.rank; }); };
 DY.allP = function(){ return Object.keys(G.P).map(function(k){ return G.P[k]; }); };
 DY.payroll = function(t){ return sum(t.roster.map(function(id){ var c = G.P[id].con; return c ? c.sal : 0; })) + (G.phase === "offseason" ? (t.deadNext || 0) : (t.dead || 0)) + (DY.SCOUT ? DY.SCOUT[t.scout || 0].c : 0); };
-DY.space = function(t){ return t.budget + (t.cashAdj || 0) - DY.payroll(t); };
+DY.spendLimit = function(t){ return (DY.SALARY_CAP ? Math.min(t.budget, DY.SALARY_CAP) : t.budget) + (t.cashAdj || 0); };
+DY.space = function(t){ return DY.spendLimit(t) - DY.payroll(t); };
 DY.ovrR = function(p){ return Math.round(p.ovr); };
 DY.hiddenOvr = function(p){ return !!(p.rookie && p.rookie.hidden); };
 DY.addLog = function(p, text){ p.log.unshift({s:G.season, w:G.phase === "offseason" ? "Off" : "W" + G.week, t:text}); if (p.log.length > 40) p.log.length = 40; };

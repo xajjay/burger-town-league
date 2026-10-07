@@ -261,8 +261,8 @@ DY.tradeLegal = function(A, B, giveA, giveB, cash){
     if (!DY.roleFeasible(rb)) return B.name + " couldn't get back to 2 ARs and 2 SMGs with the spots left.";
   }
   var pay = function(ids, t){ return sum(ids.map(function(i){ var c = g.P[i].con; return c ? c.sal : 0; })) + (g.phase === "offseason" ? (t.deadNext || 0) : (t.dead || 0)) + DY.scoutCost(t); };
-  if (pay(ra, A) > A.budget + (A.cashAdj || 0) - cash) return A.name + " can't fit that payroll in its budget.";
-  if (pay(rb, B) > B.budget + (B.cashAdj || 0) + cash) return B.name + " can't fit that payroll in its budget.";
+  if (pay(ra, A) > DY.spendLimit(A) - cash) return A.name + " can't fit that payroll in its budget.";
+  if (pay(rb, B) > DY.spendLimit(B) + cash) return B.name + " can't fit that payroll in its budget.";
   if (sa.pl.concat(sb.pl).some(function(i){ var p = g.P[i]; return p.signedWk && p.signedWk === g.season * 100 + (g.phase === "offseason" ? 90 : g.week); })) return "Players signed this week can't be traded yet.";
   return null;
 };
@@ -474,7 +474,11 @@ DY.seasonEndFans = function(){
     var calc = 760 + t.fan.eng * 10 * (0.85 + t.mkt * 0.15) + po * 1.2;
     var nb = Math.round(clamp(t.budget * 0.35 + calc * 0.65 - (t.taxNext || 0), DY.BUDGET_MIN - 100, DY.BUDGET_MAX) / 25) * 25;
     t.taxPaid = t.taxNext || 0; t.taxNext = 0;
-    t.budgetPrev = t.budget; t.budget = nb;
+    t.budgetPrev = t.budget; t.budgetRaw = nb;
   });
+  // revenue sharing: part of every team's revenue goes into a league pool that's split evenly
+  var mean0 = mean(g.teams.map(function(t){ return t.budgetRaw; }));
+  g.teams.forEach(function(t){ var nb = t.budgetRaw * (1 - DY.REV_SHARE) + mean0 * DY.REV_SHARE; t.shareIn = Math.round(nb - t.budgetRaw); t.budget = Math.round(clamp(nb, DY.BUDGET_MIN - 100, DY.BUDGET_MAX) / 25) * 25; });
+  g.teams.forEach(function(t){ delete t.budgetRaw; });
 };
 })(typeof window !== "undefined" ? window : globalThis);
