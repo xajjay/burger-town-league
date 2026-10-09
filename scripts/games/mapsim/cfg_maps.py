@@ -91,7 +91,7 @@ MAPS = {
 # ---------------- Oct 9, 2026: Moscow (HP + SnD), Apocalypse (HP), Miami (SnD), Express (SnD) ----------------
 # These layouts aren't outlined in red, so the footprint comes from the light map outline (outline=True), and blue
 # drawn inside red buildings is forced open (cyan_open=True). Hill sp: 2 = filled blob (primary), 1 = drawn number (secondary).
-IMG = 'img/'   # copies of the COLD WAR MAPS screenshots: mo_paint.png = Moscow/moscow layout.png, mo_hills.png = m hills.png, ap_loc.png = APOC LOCATIONS.png, mi_bombs.png = miami boms.png, etc.
+IMG = 'img/'   # copies of the COLD WAR MAPS screenshots: mo_paint.png = Moscow/moscow layout.png, mo_hills.png = m hills.png, ap_loc.png = APOC LOCATIONS.png, mi_bombs.png = miami boms.png, so_* = Standoff, etc.
 MO_W = [(187, 381), (210, 403), (183, 430), (206, 452)]       # Warsaw Pact / red, west (hills image)
 MO_E = [(1390, 376), (1420, 376), (1423, 412), (1455, 412)]   # NATO / blue, east (hills image)
 AP_W = [(188, 65), (200, 95), (165, 108), (178, 138)]         # Warsaw Pact / red, north-west (locations image)
@@ -162,3 +162,14 @@ MAPS.update({
              atk=[(278, 292), (322, 278), (310, 305), (262, 320)], **{'def': [(1305, 277), (1278, 292), (1322, 305), (1352, 292)]}),
   ),
 })
+
+MAPS['Standoff'] = dict(
+    paint=IMG + 'so_paint.png', outline=True, cyan_open=True, reg2=True, seed=[(5, 5), (1285, 5), (1285, 905), (5, 905)],
+    close=[((678, 2), (762, 2)), ((222, 907), (328, 907))],
+    off=[(420, 0, 684, 64)],   # spawn corridors run off the screenshot
+    excl=[(420, 0, 680, 60), (680, 0, 765, 100), (232, 792, 318, 905)],
+    org=(200, 0), sc=0.33, cell=6, bbox=(200, 0, 920, 910), nvia=22,
+    ann={'bombs': IMG + 'so_bombs.png', 'call': IMG + 'so_call.png'},
+    SND=dict(img='bombs', sites=[dict(c='A', n='Tractor', p=(236, 358)), dict(c='B', n='Garden', p=(443, 558))],
+             atk=[(668, 20), (688, 42), (660, 68), (683, 92)], **{'def': [(208, 818), (235, 840), (200, 862), (228, 885)]}),
+)

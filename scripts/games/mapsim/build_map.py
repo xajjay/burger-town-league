@@ -30,13 +30,16 @@ def footprint(red, seed):
     out = cv2.dilate((ff == 2).astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
     return ~out
 
-def footprint_outline(img, seed, thr=60):
-    """maps whose outer edge isn't painted red: flood the dark background from a corner, the light outline stops it"""
+def footprint_outline(img, seed, thr=60, lines=()):
+    """maps whose outer edge isn't painted red: flood the dark background from a corner, the light outline stops it.
+    lines: extra barrier segments that close the outline where it runs off the screenshot (spawn corridors at the edge)"""
     H, W = img.shape[:2]
     bar = (img.astype(int).mean(2) > thr).astype(np.uint8)
+    for (p, q) in lines: cv2.line(bar, p, q, 1, 3)
     bar = cv2.dilate(bar, np.ones((3, 3), np.uint8))
     ff = (1 - bar).astype(np.uint8); m = np.zeros((H + 2, W + 2), np.uint8)
-    cv2.floodFill(ff, m, seed, 2)
+    for sd in (seed if isinstance(seed, list) else [seed]):
+        if ff[sd[1], sd[0]] == 1: cv2.floodFill(ff, m, sd, 2)
     out = cv2.dilate((ff == 2).astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
     return ~out
 
@@ -79,7 +82,8 @@ def b36(v):
 def build(name, C, log):
     img = cv2.imread(C['paint'])
     red, cyan, white, light = masks(img, C.get('excl', []), C.get('extra_red', []))
-    foot = footprint_outline(img, C.get('seed', (5, 5))) if C.get('outline') else footprint(red, C.get('seed', (5, 5)))
+    foot = footprint_outline(img, C.get('seed', (5, 5)), lines=C.get('close', [])) if C.get('outline') else footprint(red, C.get('seed', (5, 5)))
+    for (x0, y0, x1, y1) in C.get('off', []): foot[y0:y1, x0:x1] = False   # boxes that are off the map (editor toolbar)
     # base frame: the paint image itself, or warped onto another reference (Raid keeps its old frame)
     if C.get('base'):
         bimg = cv2.imread(C['base'])

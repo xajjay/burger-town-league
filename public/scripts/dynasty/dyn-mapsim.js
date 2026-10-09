@@ -1,5 +1,5 @@
 /* Burger Town Leagues — DYNASTY: visual map simulation (Raid, Checkmate, Garrison, Moscow, Apocalypse: Hardpoint;
-   Raid, Moscow, Miami, Express: Search and Destroy; Raid, Checkmate, Garrison: Control).
+   Raid, Moscow, Miami, Express, Standoff: Search and Destroy; Raid, Checkmate, Garrison: Control).
    Eight agents play the mode on a top-down grid traced from the Raid overhead map, with real walls and doorways
    (doors placed where players walked through them in AJ's walkthrough and match footage). Every kill, death,
    second on the hill, plant, defuse and capture in the box score comes from what happens on the map.
