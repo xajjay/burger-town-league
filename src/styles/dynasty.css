@@ -111,7 +111,7 @@
 .gm .dy .bmatches{gap:8px;justify-content:center}
 /* modal */
 .gm .dy-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.88);display:flex;align-items:flex-start;justify-content:center;padding:4vh 12px;overflow-y:auto}
-.gm .dy-modal .dlg{background:var(--panel);border:1px solid var(--line);width:min(920px,100%);border-radius:2px;position:relative;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+.gm .dy-modal .dlg{background:var(--panel);border:1px solid var(--line);width:min(1080px,100%);border-radius:2px;position:relative;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
 .gm .dy-modal .dlg-h{padding:18px 20px 12px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
 .gm .dy-modal .dlg-b{padding:16px 20px 22px;display:flex;flex-direction:column;gap:14px}
 .gm .dy-modal .xclose{position:absolute;right:10px;top:8px;background:transparent;border:0;color:var(--muted);font-size:24px;line-height:1;padding:4px 8px;cursor:pointer}
@@ -216,11 +216,11 @@
 .gm .dy .vis-mid{display:flex;flex-direction:column;align-items:center;line-height:1.15}
 .gm .dy .vis-mid b{font-size:12px;letter-spacing:.06em;text-transform:uppercase}
 .gm .dy .vis-mid small{font-size:15px;font-weight:700}
-.gm .dy .vis-stage{position:relative;width:100%;max-width:640px;margin:0 auto;box-sizing:border-box;background:#0f1215;border:1px solid var(--line);padding:6px}
-.gm .dy .vis-stage canvas{display:block;width:100%;height:auto;aspect-ratio:285/228}
+.gm .dy .vis-stage{position:relative;width:100%;max-width:100%;margin:0 auto;box-sizing:border-box;background:#0f1215;border:1px solid var(--line);padding:6px}
+.gm .dy .vis-stage canvas{display:block;width:100%;height:auto;max-height:76vh;object-fit:contain;aspect-ratio:285/228;margin:0 auto}
 .gm .dy .vis-banner{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.78);border:1px solid var(--line);padding:8px 14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:14px;pointer-events:none}
 .gm .dy .vis-tn small{font-weight:600;letter-spacing:.04em;font-size:10.5px}
-.gm .dy .vis-feed{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:2px;align-items:flex-end;pointer-events:none;font-size:11px}
+.gm .dy .vis-feed{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:2px;align-items:flex-end;pointer-events:none;font-size:12.5px}
 .gm .dy .vis-feed div{background:rgba(0,0,0,.62);padding:2px 6px;white-space:nowrap}
 .gm .dy .vis-clock{position:absolute;left:8px;top:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);background:rgba(0,0,0,.5);padding:2px 6px}
 .gm .dy .vis-ctl{display:flex;gap:6px;align-items:center;flex-wrap:wrap}

@@ -179,6 +179,8 @@ MS.run = function(inp, opts){
   var mode = inp.mode || "HP", P = prep(inp.map || "Raid"), M = P.M, rnd = mul(inp.seed || 1), DT = MS.DT;
   var gauss = function(){ var u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
   var cu = CU(P), SPB = M.spb || MS.SPB;
+  // the temporary-node pool is shared by every run on this map: reset it so a replay plays out exactly like the original sim
+  for (var q0 = 0; q0 < 40; q0++){ var n0 = P.nodes[P.tmpBase + q0]; if (n0){ n0.direct = false; n0.c = -1; n0.lim = -1; delete P.fields[P.tmpBase + q0]; } }
   var A = inp.ps.map(function(p, i){
     var tm = i < 4 ? 0 : 1, smg = p.r === "SMG";
     return {i:i, tm:tm, p:p, smg:smg, x:0, y:0, f:0, hp:MS.MAXHP, alive:false, resp:0, lastHit:-9, tgt:-1, react:0, still:0, goal:-1, via:-1, wp:null, wpT:0, mode:"x", k:0, d:0, ot:0, o1:0, o2:0, o3:0, fd:0, streak:0, best:0, multi:[], fire:-1, look:0, atk:-1, dec:rnd() * 0.5, wait:0, spot:null, lastFire:-9,
@@ -647,7 +649,7 @@ MS.run = function(inp, opts){
       rounds.push({r:rd + 1, atk:atk, w:won, why:R.out.why, op:R.oplan, dp:R.dplan, s:sc.slice(), planter:R.planter != null ? R.planter : -1, site:R.bomb.site, defuser:R.defuserDone != null ? R.defuserDone : -1,
         fb:kr.length ? kr[0].k : -1, clutch:cl && aliveOf(won).length >= 1 && cl.i != null && A[cl.i].alive && cl.vs >= 1 && A[cl.i].tm === won ? {i:cl.i, vs:cl.vs} : null, ace:ace, end:Math.round(t * 10) / 10, kills:kr.length});
       // gap between rounds (shown as a short pause in the viewer)
-      if (rec){ var gEnd = t + C.GAP; while (t < gEnd){ if (t + 1e-6 >= frames.length * frameEvery){ var lf = frames[frames.length - 1]; frames.push({t:Math.round(t * 10) / 10, r:rd, atk:atk, tl:0, s:sc.slice(), b:lf.b, p:lf.p, gap:1}); } t += DT; } }
+      if (rec){ var gEnd = t + C.GAP; while (t < gEnd){ if (t + 1e-6 >= frames.length * frameEvery){ var lf = frames[frames.length - 1]; frames.push({t:Math.round(t * 10) / 10, r:rd, atk:atk, tl:0, s:sc.slice(), b:lf.b, p:lf.p, gap:1}); } t += DT; } t = gEnd; }
       else t += C.GAP;
       rd++;
     }
@@ -740,7 +742,7 @@ MS.run = function(inp, opts){
       sc[out.w]++;
       var top = A.filter(function(a){ return a.tm === out.w; }).sort(function(x, y){ return (y.o1 + y.k * 0.2) - (x.o1 + x.k * 0.2); })[0];
       rounds.push({r:rd + 1, atk:atk, w:out.w, why:out.why, s:sc.slice(), caps:Z.filter(function(z){ return z.lock; }).length, zl:Z.map(function(z){ return z.lock ? 1 : 0; }), lives:lives.slice(), star:top ? top.i : -1, end:Math.round(t * 10) / 10});
-      if (rec){ var gEnd = t + C.GAP; while (t < gEnd){ if (t + 1e-6 >= frames.length * frameEvery){ var lf = frames[frames.length - 1]; frames.push({t:Math.round(t * 10) / 10, r:rd, atk:atk, tl:0, s:sc.slice(), z:lf.z, lv:lf.lv, p:lf.p, gap:1}); } t += DT; } }
+      if (rec){ var gEnd = t + C.GAP; while (t < gEnd){ if (t + 1e-6 >= frames.length * frameEvery){ var lf = frames[frames.length - 1]; frames.push({t:Math.round(t * 10) / 10, r:rd, atk:atk, tl:0, s:sc.slice(), z:lf.z, lv:lf.lv, p:lf.p, gap:1}); } t += DT; } t = gEnd; }
       else t += C.GAP;
       rd++;
     }

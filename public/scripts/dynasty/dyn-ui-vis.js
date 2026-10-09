@@ -7,20 +7,59 @@ var COL = ["#ff6b4a", "#3fc6ff"], COL_D = ["rgba(255,107,74,.28)", "rgba(63,198,
 X.clock = function(t){ t = Math.max(0, Math.floor(t)); return Math.floor(t / 60) + ":" + ("0" + t % 60).slice(-2); };
 X.visOk = function(mp){ return !!(mp && mp.vis && DY.MS && DY.MS.MAPS[mp.vis.map] && DY.MS.VERSION === (mp.vis.v || 1) && !mp.visBad && typeof document !== "undefined" && document.createElement("canvas").getContext); };
 
-/* ---------- static map art (cached per map and size) ---------- */
-var ART = {};
+/* ---------- static map art (cached per map and size) ----------
+   The walls the sim uses (AJ's painted layout, one cell ~1.5 px of map) are drawn as smooth shapes: the cell grid is
+   upscaled with bilinear filtering and re-thresholded, so blocks get clean edges instead of stair steps. The real
+   minimap (M.art, registered onto the same frame) sits underneath as texture. */
+var ART = {}, ARTIMG = {};
+function artImg(MP){
+  var a = MP.M.art; if (!a || typeof Image === "undefined") return null;
+  var im = ARTIMG[MP.name];
+  if (!im){ im = ARTIMG[MP.name] = new Image(); im.onload = function(){ im.ok = true; Object.keys(ART).forEach(function(k){ if (k.indexOf(MP.name + "|") === 0) delete ART[k]; }); }; im.src = a.src; }
+  return im.ok ? im : null;
+}
+// smooth mask of the cells passing test(), drawn into a w x h canvas in the given colour (alpha 0..1)
+function smoothMask(MP, test, w, h, S, rgb, alpha, lo, hi){
+  var W = MP.W, H = MP.H, g = MP.g, b = MP.M.box, c = document.createElement("canvas"); c.width = W + 2; c.height = H + 2;
+  var cx = c.getContext("2d"), id = cx.createImageData(W + 2, H + 2), d = id.data;
+  // 3x3 blur (twice) on the cell mask first: diagonal walls come out as clean slopes instead of stair steps
+  var W2 = W + 2, H2 = H + 2, m = new Float32Array(W2 * H2), t2 = new Float32Array(W2 * H2);
+  for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) if (test(g[y * W + x])) m[(y + 1) * W2 + x + 1] = 1;
+  for (var pass = 0; pass < 2; pass++){
+    for (var yy = 1; yy < H2 - 1; yy++) for (var xx = 1; xx < W2 - 1; xx++){ var k0 = yy * W2 + xx; t2[k0] = (m[k0] * 4 + (m[k0 - 1] + m[k0 + 1] + m[k0 - W2] + m[k0 + W2]) * 2 + m[k0 - W2 - 1] + m[k0 - W2 + 1] + m[k0 + W2 - 1] + m[k0 + W2 + 1]) / 16; }
+    var sw = m; m = t2; t2 = sw;
+  }
+  for (var q2 = 0; q2 < W2 * H2; q2++) d[q2 * 4 + 3] = Math.round(m[q2] * 255);
+  cx.putImageData(id, 0, 0);
+  var o = document.createElement("canvas"); o.width = w; o.height = h; var ox = o.getContext("2d");
+  ox.imageSmoothingEnabled = true; if ("imageSmoothingQuality" in ox) ox.imageSmoothingQuality = "high";
+  var cs = MP.CS * S; ox.drawImage(c, (-b[0] - MP.CS) * S, (-b[1] - MP.CS) * S, (W + 2) * cs, (H + 2) * cs);
+  var od = ox.getImageData(0, 0, w, h), q = od.data; lo = lo == null ? 110 : lo; hi = hi == null ? 150 : hi;
+  for (var k = 0; k < q.length; k += 4){ var a = q[k + 3], t = a <= lo ? 0 : a >= hi ? 1 : (a - lo) / (hi - lo); q[k] = rgb[0]; q[k + 1] = rgb[1]; q[k + 2] = rgb[2]; q[k + 3] = Math.round(t * alpha * 255); }
+  ox.putImageData(od, 0, 0); return o;
+}
 function mapArt(MP, S){
-  var key = MP.name + "|" + S; if (ART[key]) return ART[key];
+  var im = artImg(MP), key = MP.name + "|" + S + "|" + (im ? 1 : 0); if (ART[key]) return ART[key];
   var b = MP.M.box, w = Math.round((b[2] - b[0]) * S), h = Math.round((b[3] - b[1]) * S), c = document.createElement("canvas"); c.width = w; c.height = h;
-  var x = c.getContext("2d"), g = MP.g, W = MP.W, H = MP.H, cs = MP.CS * S, fill = ["", "#2a3138", "#4a535d", "#39424b", "#0c0f12", "#5a4a63", "#8b939b"];
-  for (var cy = 0; cy < H; cy++) for (var cx = 0; cx < W; cx++){ var v = g[cy * W + cx]; if (!v) continue; x.fillStyle = fill[v]; x.fillRect(Math.floor((cx * MP.CS - b[0]) * S), Math.floor((cy * MP.CS - b[1]) * S), Math.ceil(cs) + 0.5, Math.ceil(cs) + 0.5); }
-  // map edge
-  x.fillStyle = "#11151a";
-  for (var yy = 0; yy < H; yy++) for (var xx = 0; xx < W; xx++){ if (!g[yy * W + xx]) continue;
-    if (xx + 1 >= W || !g[yy * W + xx + 1]) x.fillRect(((xx + 1) * MP.CS - b[0]) * S - 0.7, (yy * MP.CS - b[1]) * S, 1.4, cs);
-    if (xx === 0 || !g[yy * W + xx - 1]) x.fillRect((xx * MP.CS - b[0]) * S - 0.7, (yy * MP.CS - b[1]) * S, 1.4, cs);
-    if (yy + 1 >= H || !g[(yy + 1) * W + xx]) x.fillRect((xx * MP.CS - b[0]) * S, ((yy + 1) * MP.CS - b[1]) * S - 0.7, cs, 1.4);
-    if (yy === 0 || !g[(yy - 1) * W + xx]) x.fillRect((xx * MP.CS - b[0]) * S, (yy * MP.CS - b[1]) * S - 0.7, cs, 1.4); }
+  var x = c.getContext("2d");
+  x.fillStyle = "#0a0d10"; x.fillRect(0, 0, w, h);
+  // floor: map footprint, with the real minimap as texture when it has loaded
+  var foot = smoothMask(MP, function(v){ return v !== 0; }, w, h, S, [36, 42, 48], 1, 96, 140);
+  var fl = document.createElement("canvas"); fl.width = w; fl.height = h; var fx = fl.getContext("2d");
+  fx.drawImage(foot, 0, 0);
+  fx.globalCompositeOperation = "source-atop";
+  fx.drawImage(smoothMask(MP, function(v){ return v === 2 || v === 5; }, w, h, S, [62, 70, 78], 1), 0, 0);   // indoor floor a shade lighter
+  if (im){ var a = MP.M.art; fx.globalAlpha = 0.3; fx.drawImage(im, (a.x - b[0]) * S, (a.y - b[1]) * S, a.w * S, a.h * S); fx.globalAlpha = 1; fx.fillStyle = "rgba(12,16,20,.28)"; fx.fillRect(0, 0, w, h); }
+  fx.globalCompositeOperation = "source-over";
+  // map edge glow
+  x.save(); x.shadowColor = "rgba(150,165,180,.28)"; x.shadowBlur = 2 * S / 2; x.drawImage(fl, 0, 0); x.restore();
+  // walls: a light rim, then the solid block (so every building has a clean outline)
+  x.drawImage(smoothMask(MP, function(v){ return v === 4; }, w, h, S, [104, 116, 128], 1, 84, 112), 0, 0);
+  x.drawImage(smoothMask(MP, function(v){ return v === 4; }, w, h, S, [22, 27, 33], 1, 118, 140), 0, 0);
+  // Checkmate plane: walk under it, it blocks sight
+  x.drawImage(smoothMask(MP, function(v){ return v === 5; }, w, h, S, [120, 92, 140], 0.75), 0, 0);
+  // short walls / cover you can see over
+  x.drawImage(smoothMask(MP, function(v){ return v === 6; }, w, h, S, [176, 184, 192], 0.95, 70, 110), 0, 0);
   ART[key] = c; return c;
 }
 function shapePath(x, Z, px, py, S){
@@ -72,10 +111,10 @@ function tick(now){
   U.visRaf = requestAnimationFrame(tick);
 }
 function lerpAng(a, b, f){ var d = b - a; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return a + d * f; }
-function label(x, t, X0, Y0, dpr, col){ x.font = "700 " + Math.round(9 * dpr) + "px ui-monospace,monospace"; x.textAlign = "center"; x.textBaseline = "middle"; x.lineWidth = 3 * dpr; x.strokeStyle = "rgba(0,0,0,.75)"; x.strokeText(t, X0, Y0); x.fillStyle = col; x.fillText(t, X0, Y0); }
+function label(x, t, X0, Y0, dpr, col){ x.font = "700 " + Math.round(12 * dpr) + "px ui-monospace,monospace"; x.textAlign = "center"; x.textBaseline = "middle"; x.lineWidth = 3 * dpr; x.strokeStyle = "rgba(0,0,0,.75)"; x.strokeText(t, X0, Y0); x.fillStyle = col; x.fillText(t, X0, Y0); }
 function draw(v){
   var cv = document.getElementById("vis-cv"); if (!cv) return;
-  var MP = v.P, b = MP.M.box, bw = b[2] - b[0], bh = b[3] - b[1], cssW = cv.clientWidth || 320, dpr = Math.min(2, window.devicePixelRatio || 1), S = cssW / bw * dpr;
+  var MP = v.P, b = MP.M.box, bw = b[2] - b[0], bh = b[3] - b[1], cssW = Math.min(cv.clientWidth || 320, cv.clientHeight ? cv.clientHeight * (b[2] - b[0]) / (b[3] - b[1]) : 1e9), dpr = Math.min(2, window.devicePixelRatio || 1), S = cssW / bw * dpr;
   var Wd = Math.round(bw * S), Hd = Math.round(bh * S); if (cv.width !== Wd || cv.height !== Hd){ cv.width = Wd; cv.height = Hd; }
   var x = cv.getContext("2d"), fr = v.res.frames, fi = Math.min(fr.length - 1, Math.floor(v.t / 0.2)), F = fr[fi], F2 = fr[Math.min(fr.length - 1, fi + 1)], f = clamp01((v.t - F.t) / 0.2), md = v.md;
   var px = function(xx){ return (xx - b[0]) * S; }, py = function(yy){ return (yy - b[1]) * S; };
@@ -110,11 +149,11 @@ function draw(v){
   var pos = F.p.map(function(p, i){ var q = F2.p[i]; var lerp = p[2] && q[2] && Math.hypot(q[0] - p[0], q[1] - p[1]) < 8; return {x:lerp ? p[0] + (q[0] - p[0]) * f : p[0], y:lerp ? p[1] + (q[1] - p[1]) * f : p[1], al:p[2], a:lerp ? lerpAng(p[3], q[3], f) : p[3], fire:p[4], hp:p[5]}; });
   pos.forEach(function(p, i){ if (!p.al || p.fire < 0) return; var e = pos[p.fire]; if (!e || !e.al) return; x.strokeStyle = i < 4 ? "rgba(255,170,150,.55)" : "rgba(150,220,255,.55)"; x.lineWidth = 1 * dpr; x.beginPath(); x.moveTo(px(p.x), py(p.y)); x.lineTo(px(e.x), py(e.y)); x.stroke(); });
   pos.forEach(function(p, i){
-    if (!p.al) return; var X0 = px(p.x), Y0 = py(p.y), r = 5 * dpr, c = i < 4 ? COL[0] : COL[1];
+    if (!p.al) return; var X0 = px(p.x), Y0 = py(p.y), r = Math.max(5.5, Math.min(9, cssW / 105)) * dpr, c = i < 4 ? COL[0] : COL[1];
     x.save(); x.translate(X0, Y0); x.rotate(p.a);
     x.beginPath(); x.moveTo(r * 1.35, 0); x.lineTo(-r * 0.85, r * 0.85); x.lineTo(-r * 0.4, 0); x.lineTo(-r * 0.85, -r * 0.85); x.closePath();
     x.fillStyle = c; x.fill(); x.lineWidth = (p.fire >= 0 ? 1.6 : 1) * dpr; x.strokeStyle = p.fire >= 0 ? "#fff" : "rgba(0,0,0,.7)"; x.stroke(); x.restore();
-    x.fillStyle = "#fff"; x.font = "700 " + Math.round(8.5 * dpr) + "px ui-monospace,monospace"; x.textAlign = "left"; x.textBaseline = "middle";
+    x.fillStyle = "#fff"; x.font = "700 " + Math.round(Math.max(9, Math.min(13, cssW / 70)) * dpr) + "px ui-monospace,monospace"; x.textAlign = "left"; x.textBaseline = "middle";
     x.strokeStyle = "rgba(0,0,0,.8)"; x.lineWidth = 2.5 * dpr; x.strokeText(String(i + 1), X0 + r * 0.9, Y0 - r * 0.9); x.fillText(String(i + 1), X0 + r * 0.9, Y0 - r * 0.9);
     if (md === "SND" && F.b && F.b[2] === 0 && F.b[3] === i){ x.save(); x.translate(X0 - r * 1.3, Y0 + r * 1.2); x.rotate(Math.PI / 4); x.fillStyle = "#ff5a3c"; x.fillRect(-2 * dpr, -2 * dpr, 4 * dpr, 4 * dpr); x.restore(); }
     if (p.hp < 150){ x.fillStyle = "rgba(0,0,0,.6)"; x.fillRect(X0 - r, Y0 + r * 1.2, r * 2, 2 * dpr); x.fillStyle = p.hp > 75 ? "#e9edf1" : "#ffcf4a"; x.fillRect(X0 - r, Y0 + r * 1.2, r * 2 * Math.max(0, p.hp) / 150, 2 * dpr); }
