@@ -1,0 +1,182 @@
+[
+{
+"n": "kitchen west (yard)",
+"r": [
+51,
+55,
+72,
+76
+]
+},
+{
+"n": "kitchen south-west",
+"r": [
+55,
+59,
+91,
+95
+]
+},
+{
+"n": "kitchen north (rocks)",
+"r": [
+63,
+67,
+45,
+49
+]
+},
+{
+"n": "kitchen east to mid",
+"r": [
+77,
+81,
+61,
+66
+]
+},
+{
+"n": "kitchen east lower to mid",
+"r": [
+77,
+81,
+76,
+79
+]
+},
+{
+"n": "money room to stairs corridor",
+"r": [
+91,
+95,
+50,
+53
+]
+},
+{
+"n": "money room north to pool",
+"r": [
+84,
+87,
+35,
+39
+]
+},
+{
+"n": "kitchen south-east (pillar)",
+"r": [
+73,
+77,
+93,
+97
+]
+},
+{
+"n": "bedroom west (pool)",
+"r": [
+113,
+117,
+24,
+28
+]
+},
+{
+"n": "bedroom south-west (stairs)",
+"r": [
+101,
+105,
+46,
+50
+]
+},
+{
+"n": "bedroom east (AC)",
+"r": [
+133,
+137,
+33,
+36
+]
+},
+{
+"n": "bedroom south (walkway)",
+"r": [
+124,
+128,
+66,
+71
+]
+},
+{
+"n": "art north (walkway)",
+"r": [
+119,
+123,
+72,
+77
+]
+},
+{
+"n": "art west (mid)",
+"r": [
+102,
+107,
+84,
+88
+]
+},
+{
+"n": "art south (white van)",
+"r": [
+114,
+118,
+97,
+103
+]
+},
+{
+"n": "office south-east (statue)",
+"r": [
+124,
+127,
+101,
+107
+]
+},
+{
+"n": "art east (weights)",
+"r": [
+141,
+146,
+83,
+87
+]
+},
+{
+"n": "garage west (alley)",
+"r": [
+160,
+165,
+68,
+73
+]
+},
+{
+"n": "garage west upper",
+"r": [
+160,
+165,
+44,
+48
+]
+},
+{
+"n": "garage north (AC)",
+"r": [
+169,
+175,
+43,
+48
+]
+}
+]

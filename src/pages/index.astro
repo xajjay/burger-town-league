@@ -1,11 +1,38 @@
 ---
 import Base from '../layouts/Base.astro';
-import { hallOfFame, careerStats, social, foundedYear, homeDescription, signupFormUrl, upcomingSeasonLabel, upcomingSeasonYear } from '../data/leagueData.js';
+import { hallOfFame, careerStats, social, foundedYear, homeDescription, seasons, latestSeasonId, isKnownPlayer } from '../data/leagueData.js';
+import raw from '../data/real_data.json';
+import season6Matches from '../data/season6-matches.json';
 
 const top5 = hallOfFame.slice(0, 5).map(p => ({
   ...p,
   overall: careerStats.find(c => c.player === p.player)?.overall ?? null,
 }));
+
+// Last completed season: champion banner
+const last = seasons.find(s => s.id === latestSeasonId);
+const champ = raw.champions.find(c => c.season === String(latestSeasonId));
+const champPlayers = (champ?.players || '').split(',').map(s => s.trim()).filter(Boolean);
+const champStanding = (raw.seasons[String(latestSeasonId)]?.standings || []).find(s => s.champion);
+
+// YouTube: the Grand Final up top, then the rest of the playoff VODs
+const PLAYOFF_ORDER = ['Grand Finals', 'Losers Finals', 'Winners Finals', 'Losers Round 2', 'Winners Round 1', 'Losers Round 1'];
+const playoffVods = season6Matches.series
+  .filter(s => s.phase === 'playoffs' && s.vodUrl)
+  .sort((a, b) => PLAYOFF_ORDER.indexOf(a.round) - PLAYOFF_ORDER.indexOf(b.round));
+const featured = playoffVods[0];
+const ytId = (url) => {
+  const m = (url || '').match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+};
+const featuredId = ytId(featured?.vodUrl);
+
+const featuredGames = [
+  { href: '/games/dynasty', tag: 'Multi-season', title: 'Dynasty', blurb: 'Run a franchise for as many seasons as you want: contracts, trades, rookies, and live minimap matches.' },
+  { href: '/games/12-0', tag: 'Daily challenge', title: '12–0', blurb: 'Spin real teams from all six seasons, draft a squad and run the bracket.' },
+  { href: '/games/franchise-mode', tag: 'Season mode', title: 'Franchise Mode', blurb: 'One full season: lineups, trades, weekly matches played live and the playoffs.' },
+  { href: '/games/gridlock', tag: 'Daily challenge', title: 'Gridlock', blurb: 'Fill the 3×3 grid with players who fit both the row and the column.' },
+];
 ---
 <Base title="Burger Town Leagues | Cold War Draft League">
   <section class="hero">
@@ -15,7 +42,7 @@ const top5 = hallOfFame.slice(0, 5).map(p => ({
         <h1 class="script-heading">Burger Town Leagues</h1>
         <p>{homeDescription}</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="/current-season">View Current Season</a>
+          <a class="btn btn-primary" href={`/season/${latestSeasonId}`}>View Last Season</a>
           <a class="btn btn-ghost" href={social.youtube} target="_blank" rel="noopener">Watch on YouTube</a>
         </div>
       </div>
@@ -25,28 +52,86 @@ const top5 = hallOfFame.slice(0, 5).map(p => ({
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="pixel-card" style="text-align: center; padding: 40px 24px;">
-        <span class="eyebrow">Sign Ups Open</span>
-        <h2 class="script-heading" style="font-size: 2rem; margin-bottom: 12px;">Join {upcomingSeasonLabel} ({upcomingSeasonYear})</h2>
-        <p style="color: var(--paper-dim); max-width: 50ch; margin: 0 auto 20px;">
-          Burger Town's first official season is forming now. Sign up to be drafted onto a team and join the next chapter of the Cold War Draft League.
-        </p>
-        <a class="btn btn-primary" href={signupFormUrl} target="_blank" rel="noopener">Sign Up Now</a>
+  {champ && (
+    <section>
+      <div class="wrap">
+        <div class="pixel-card home-champ">
+          <div>
+            <span class="eyebrow">{last.name} Champions · BTL Season 1</span>
+            <h2 class="script-heading" style="font-size: clamp(2rem, 5vw, 2.8rem); margin-bottom: 10px;">{champ.team}</h2>
+            <p style="color: var(--paper-dim); margin: 0 0 6px;">
+              {champPlayers.map((p, i) => (
+                <>{isKnownPlayer(p) ? <a href={`/players/${encodeURIComponent(p)}`} style="color: var(--paper);">{p}</a> : p}{i < champPlayers.length - 1 ? ' · ' : ''}</>
+              ))}
+            </p>
+            <p style="color: var(--paper-dim); margin: 0 0 20px; font-size: 0.9rem;">
+              {champStanding && <>Regular season {champStanding.record} · </>}Won the Grand Final 3-1 over the Detroit Dirty Dogs
+            </p>
+            <div class="hero-actions" style="justify-content: flex-start;">
+              <a class="btn btn-primary" href={`/season/${latestSeasonId}`}>Season Recap &amp; Stats</a>
+              <a class="btn btn-ghost" href="/current-season/playoffs">Playoff Bracket</a>
+            </div>
+          </div>
+          <div class="home-awards">
+            <div><span class="eyebrow">League MVP</span><a href={`/players/${encodeURIComponent(last.mvp)}`}>{last.mvp}</a></div>
+            {last.finalsMvp && <div><span class="eyebrow">Finals MVP</span><a href={`/players/${encodeURIComponent(last.finalsMvp)}`}>{last.finalsMvp}</a></div>}
+            <div><span class="eyebrow">All-Stars</span><a href={`/season/${latestSeasonId}`}>{(raw.allStars[String(latestSeasonId)] || []).filter(a => a.tier === '1st Team').map(a => a.player).join(', ')}</a></div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
+
+  {featuredId && (
+    <section>
+      <div class="wrap">
+        <div class="home-yt">
+          <div class="home-yt-video">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${featuredId}`}
+              title={`${featured.name}: ${featured.round}`}
+              loading="lazy"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div>
+            <span class="eyebrow">On YouTube</span>
+            <h2 class="script-heading" style="font-size: 2rem; margin-bottom: 10px;">Watch every series</h2>
+            <p style="color: var(--paper-dim); margin: 0 0 16px;">
+              Every BTL series is on our YouTube channel. Start with the {featured.round}: {featured.winner} {featured.seriesScore}.
+            </p>
+            <a class="btn btn-primary" href={social.youtube} target="_blank" rel="noopener">Subscribe on YouTube</a>
+            <ul class="home-vods">
+              {playoffVods.slice(1, 5).map(s => (
+                <li><a href={s.vodUrl} target="_blank" rel="noopener">▶ {s.round}: {s.name}</a> <span>{s.winner} {s.seriesScore.split('-').map(Number).sort((a, b) => b - a).join('-')}</span></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
 
   <section>
     <div class="wrap">
-      <div class="pixel-card" style="text-align: center; padding: 32px 24px;">
-        <span class="eyebrow">New</span>
-        <h2 class="script-heading" style="font-size: 2rem; margin-bottom: 12px;">Play the Games</h2>
-        <p style="color: var(--paper-dim); max-width: 52ch; margin: 0 auto 20px;">
-          Daily challenges built on real league history: draft a team, guess the player, fill the grid and more. Share your results in Discord.
-        </p>
-        <a class="btn btn-primary" href="/games">Play Now</a>
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px;">
+        <div>
+          <span class="eyebrow">Play</span>
+          <h2 class="script-heading" style="font-size: 2.2rem; margin: 0;">Play the Games</h2>
+          <p style="color: var(--paper-dim); max-width: 56ch; margin: 8px 0 0;">Eight games built on real league history, including six daily challenges. Share your results in Discord.</p>
+        </div>
+        <a class="btn btn-primary" href="/games">All Games</a>
+      </div>
+      <div class="grid grid-4">
+        {featuredGames.map(g => (
+          <a class="pixel-card" href={g.href} style="text-decoration: none; display: block;">
+            <span class="eyebrow">{g.tag}</span>
+            <h3 class="script-heading" style="font-size: 1.9rem; margin: 0;">{g.title}</h3>
+            <p style="color: var(--paper-dim); margin: 8px 0 16px; font-size: 0.9rem;">{g.blurb}</p>
+            <span class="btn btn-ghost">Play</span>
+          </a>
+        ))}
       </div>
     </div>
   </section>
@@ -70,7 +155,7 @@ const top5 = hallOfFame.slice(0, 5).map(p => ({
           </tbody>
         </table>
       </div>
-      <p style="margin-top: 16px;"><a class="btn btn-ghost" href="/hall-of-fame">View Full Hall of Fame</a></p>
+      <p style="margin-top: 16px;"><a class="btn btn-ghost" href="/hall-of-fame">View Full Hall of Fame</a> <a class="btn btn-ghost" href="/history/all-seasons">All-Time Records</a></p>
     </div>
   </section>
 
@@ -90,15 +175,34 @@ const top5 = hallOfFame.slice(0, 5).map(p => ({
         </div>
         <div class="pixel-card">
           <span class="eyebrow">Discord</span>
-          <p>Sign up for a draft, talk trash, and get match reminders.</p>
+          <p>Talk trash, share your game scores, and hear first about the next season.</p>
           <a class="btn btn-primary" href={social.discord} target="_blank" rel="noopener">Join Server</a>
         </div>
         <div class="pixel-card">
-          <span class="eyebrow">Hall of Fame</span>
-          <p>Every champion, MVP, and All-Star since Season 1.</p>
-          <a class="btn btn-ghost" href="/hall-of-fame">View History</a>
+          <span class="eyebrow">League Workbook</span>
+          <p>Every stat from all six seasons in one spreadsheet.</p>
+          <a class="btn btn-ghost" href="/downloads/BTL_League_History.xlsx" download>Download</a>
         </div>
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  .home-champ { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: center; padding: 32px 28px; border-color: var(--gold-dim); }
+  .home-awards { display: flex; flex-direction: column; gap: 12px; }
+  .home-awards > div { background: rgba(242, 169, 0, 0.06); border: 1px solid var(--line); padding: 10px 14px; }
+  .home-awards .eyebrow { display: block; margin-bottom: 2px; }
+  .home-awards a { color: var(--paper); font-weight: 700; font-size: 1.05rem; text-decoration: none; }
+  .home-awards a:hover { color: var(--gold); }
+  .home-yt { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: center; }
+  .home-yt-video { position: relative; aspect-ratio: 16 / 9; background: #000; border: 1px solid var(--line); }
+  .home-yt-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .home-vods { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-direction: column; gap: 8px; font-size: 0.88rem; }
+  .home-vods a { color: var(--paper); text-decoration: none; }
+  .home-vods a:hover { color: var(--gold); }
+  .home-vods span { color: var(--paper-dim); display: block; font-size: 0.8rem; }
+  @media (max-width: 820px) {
+    .home-champ, .home-yt { grid-template-columns: 1fr; }
+  }
+</style>

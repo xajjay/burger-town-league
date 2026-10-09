@@ -20,8 +20,9 @@ const historyTabs = [
       <span class="eyebrow">Preserved from prior leagues</span>
       <h1 class="script-heading">Draft League History</h1>
       <p style="color: var(--paper-dim); max-width: 65ch;">
-        Burger Town's player base carries forward the history of two prior draft leagues. Seasons 1–2 were played under the <strong style="color: var(--paper);">CTRL League</strong>, and Seasons 3–5 under the <strong style="color: var(--paper);">Z Star League</strong>. That history is fully preserved here.
+        Burger Town's player base carries forward the history of two prior draft leagues. Seasons 1–2 were played under the <strong style="color: var(--paper);">CTRL League</strong>, and Seasons 3–5 under the <strong style="color: var(--paper);">Z Star League</strong>. That history is fully preserved here. Season 6 was Burger Town's first season (<strong style="color: var(--paper);">BTL Season 1</strong>), won by the London Royal Ravens.
       </p>
+      <p style="margin-top: 16px;"><a class="btn btn-ghost" href="/downloads/BTL_League_History.xlsx" download>Download the league workbook (.xlsx)</a></p>
     </div>
   </section>
 
@@ -30,7 +31,7 @@ const historyTabs = [
       <h2 class="section-title">Champions &amp; MVPs</h2>
       <div class="table-scroll">
         <table class="stat-table">
-          <thead><tr><th>Season</th><th>League</th><th>Champion</th><th>MVP</th></tr></thead>
+          <thead><tr><th>Season</th><th>League</th><th>Champion</th><th>MVP</th><th>Finals MVP</th></tr></thead>
           <tbody>
             {seasons.map(s => (
               <tr>
@@ -38,6 +39,7 @@ const historyTabs = [
                 <td>{s.league}</td>
                 <td>{s.champion}</td>
                 <td>{isKnownPlayer(s.mvp) ? <a href={`/players/${encodeURIComponent(s.mvp)}`}>{s.mvp}</a> : s.mvp}</td>
+                <td>{s.finalsMvp ? <a href={`/players/${encodeURIComponent(s.finalsMvp)}`}>{s.finalsMvp}</a> : <span style="color: var(--paper-dim);">—</span>}</td>
               </tr>
             ))}
           </tbody>

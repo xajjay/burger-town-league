@@ -207,3 +207,26 @@
 @keyframes dyPop{0%{transform:scale(.7) rotateX(70deg);opacity:0}60%{transform:scale(1.04) rotateX(0);opacity:1}100%{transform:scale(1)}}
 @keyframes dyBounce{from{transform:translateY(0) rotate(0)}to{transform:translateY(-10px) rotate(200deg)}}
 @media (prefers-reduced-motion:reduce){.gm .dy .ls.shown,.gm .dy .ls.drawing .balls i{animation:none}}
+/* live minimap (Hardpoint played out on the map) */
+.gm .dy .vis{margin:8px 0 4px;display:flex;flex-direction:column;gap:8px}
+.gm .dy .vis-hud{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;background:var(--black);border:1px solid var(--line);padding:6px 10px;font-family:var(--font-mono)}
+.gm .dy .vis-hud .vis-sc{font-weight:800;font-size:13px;letter-spacing:.04em}
+.gm .dy .vis-hud .vis-sc b{font-size:22px;color:var(--text);margin:0 4px}
+.gm .dy .vis-hud .vis-sc:last-child{text-align:right}
+.gm .dy .vis-mid{display:flex;flex-direction:column;align-items:center;line-height:1.15}
+.gm .dy .vis-mid b{font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.gm .dy .vis-mid small{font-size:15px;font-weight:700}
+.gm .dy .vis-stage{position:relative;width:100%;max-width:640px;margin:0 auto;box-sizing:border-box;background:#0f1215;border:1px solid var(--line);padding:6px}
+.gm .dy .vis-stage canvas{display:block;width:100%;height:auto;aspect-ratio:285/228}
+.gm .dy .vis-banner{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.78);border:1px solid var(--line);padding:8px 14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:14px;pointer-events:none}
+.gm .dy .vis-tn small{font-weight:600;letter-spacing:.04em;font-size:10.5px}
+.gm .dy .vis-feed{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:2px;align-items:flex-end;pointer-events:none;font-size:11px}
+.gm .dy .vis-feed div{background:rgba(0,0,0,.62);padding:2px 6px;white-space:nowrap}
+.gm .dy .vis-clock{position:absolute;left:8px;top:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);background:rgba(0,0,0,.5);padding:2px 6px}
+.gm .dy .vis-ctl{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.gm .dy .vis-ctl .lab{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-right:2px}
+.gm .dy .vis-tn{font-weight:800;font-size:12px;letter-spacing:.08em;margin-bottom:2px}
+.gm .dy .vis-tb td,.gm .dy .vis-tb th{padding:3px 6px;font-size:12px}
+.gm .dy .vis-tb tr.dead td{opacity:.45}
+.gm .dy .vis-no{display:inline-flex;width:17px;height:17px;align-items:center;justify-content:center;color:#0b0d0f;font-weight:800;font-size:10.5px;border-radius:2px}
+.gm .dy .vis-note{margin:0}

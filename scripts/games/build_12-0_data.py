@@ -2,7 +2,7 @@
 
 Usage:  python scripts/games/build_12-0_data.py path/to/CW_Draft_League_History.xlsx
 Needs:  pip install openpyxl
-Re-run whenever the workbook's Season 1-6 sheets, Player Info roles, or All Seasons aliases change.
+Re-run whenever the workbook's Season 1-6 sheets (Season 6 final since Oct 9, 2026), Player Info roles, or All Seasons aliases change.
 """
 import openpyxl, re, json, collections
 import sys, os
@@ -30,18 +30,40 @@ for r in wb['Player Info'].iter_rows(min_row=2,values_only=True):
     if r[0]: roles[alias.get(str(r[0]).lower(),r[0])]=r[1]
 def canon(n): return alias.get(str(n).strip().lower(), str(n).strip())
 seasons={}
-for s in range(1,6):
+for s in range(1,7):
     rows=list(wb['Season %d'%s].iter_rows(values_only=True))
     hx=hdr(rows); iO=hx['Player Overall']; iN=hx['Notes']; iW=hx.get('WAR')
     players={}
     for r in rows[3:]:
-        if r[0] and str(r[0]).startswith('Final'): break
+        if r[0] and (str(r[0]).startswith('Final') or str(r[0]).startswith('Team Rosters')): break
         if not r[0] or r[0]=='Player' or num(r[iO]) is None: continue
         if s==5 and num(r[4]) is None: continue
         players[str(r[0]).strip().lower()]=dict(name=str(r[0]).strip(),abbr=r[1],k=num(r[2]),d=num(r[3]),ip=num(r[9]),kd=num(r[4]),maps=num(r[5]),hp=num(r[6]),snd=num(r[7]),ctl=num(r[8]),ovr=int(r[iO]),notes=r[iN] or '',war=num(r[iW]) if iW is not None else None)
     # team blocks
     teams=[]; cur=None
-    for i,r in enumerate(rows):
+    if s==6:
+        # Season 6 roster blocks sit side by side (cols A and H) under 'Team Rosters', above 'Team Records by Map'.
+        # Standing = regular-season finish; CHAMPION / RUNNER UP markers sit in the header row of the block.
+        top=next(i for i,r in enumerate(rows) if r[0] and str(r[0]).startswith('Team Rosters'))
+        end=next((i for i,r in enumerate(rows) if r[0] and str(r[0]).startswith('Team Records')), len(rows))
+        for i in range(top,end):
+            r=rows[i]
+            for off in (0,7):
+                a=r[off] if len(r)>off else None
+                if not (a and ' — Standing:' in str(a)): continue
+                name=str(a).split(' — ')[0].strip()
+                m=re.search(r'Standing: (\S+)',str(a)); fin=m.group(1) if m else None
+                flags=[c for c in r[off+1:off+7] if c in ('CHAMPION','RUNNER UP')]
+                t=dict(name=name,finish=fin,champ='CHAMPION' in flags,ru='RUNNER UP' in flags,roster=[])
+                for rr in rows[i+2:i+9]:
+                    v=rr[off] if len(rr)>off else None
+                    if not v or ' — ' in str(v): break
+                    if str(v).strip().lower() in players: t['roster'].append(players[str(v).strip().lower()]['name'])
+                teams.append(t)
+        rows_iter=[]
+    else:
+        rows_iter=rows
+    for i,r in enumerate(rows_iter):
         a=r[0]
         if a and ' — ' in str(a) and ('Finish' in str(a) or 'Standing' in str(a) or 'Blown' in str(a)):
             name=str(a).split(' — ')[0].strip()
@@ -137,42 +159,10 @@ for s,S in raw['seasons'].items():
             ip=None if p['ip'] is None else round(p['ip'],2), k=int(p['k'] or 0), d=int(p['d'] or 0), rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(p['maps'] or 0), a=[]))
         ids.append(pid)
     if ids: teams.append(dict(id=len(teams),s=s,name='Free Agent',fin=None,rank=None,champ=False,ru=False,p=ids,fa=True))
-# ---- Season 6 (in progress): stats + rosters only. Overalls are provisional and accolades are not awarded yet,
-#      so these rows are flagged prov=True and only used by games that do not need them. ----
-rows6=list(wb['Season 6'].iter_rows(values_only=True)); h6=hdr(rows6); iW6=h6.get('WAR')
-stats6={}
-for r in rows6[3:]:
-    if r[0] and str(r[0]).startswith('Team Rosters'): break
-    if not r[0] or r[0]=='Player': continue
-    if (num(r[5]) or 0)<=0: continue
-    stats6[str(r[0]).strip().lower()]=r
-missing6=[]
-for i,r in enumerate(rows6[:70]):
-    for off in (0,7):
-        a=r[off] if len(r)>off else None
-        if not (a and ' — Standing:' in str(a)): continue
-        tname=str(a).split(' — ')[0].strip(); ids=[]
-        for rr in rows6[i+2:i+8]:
-            v=rr[off] if len(rr)>off else None
-            if not v or ' — ' in str(v): break
-            key=str(v).strip().lower()
-            if key not in stats6: continue
-            q=stats6[key]; n=str(v).strip(); c=canon(n)
-            if c.lower() in EXCLUDE: continue
-            if not roles.get(c): missing6.append(c)
-            hp,ctl,snd=num(q[6]),num(q[8]),num(q[7])
-            resp=(2*hp+ctl)/3 if hp is not None and ctl is not None else (hp if hp is not None else ctl)
-            ov=num(q[11])
-            pid=len(players)
-            players.append(dict(id=pid,n=n,c=c,s=6,t=len(teams),r=roles.get(c) or 'AR',o=int(ov) if ov else 0,kd=round(num(q[4]),3),w=None if iW6 is None or num(q[iW6]) is None else round(num(q[iW6]),2),
-                ip=None if num(q[9]) is None else round(num(q[9]),2), k=int(num(q[2]) or 0), d=int(num(q[3]) or 0), rk=None if resp is None else round(resp,3), sk=None if snd is None else round(snd,3), m=int(num(q[5]) or 0), a=[], prov=True))
-            ids.append(pid)
-        if ids: teams.append(dict(id=len(teams),s=6,name=tname,fin=None,rank=None,champ=False,ru=False,p=ids,fa=False,cur=True))
-print('S6 teams:',[(t['name'],len(t['p'])) for t in teams if t.get('cur')],'roles defaulted to AR:',sorted(set(missing6)))
 print('unmapped (no All Seasons alias):',sorted(unmapped))
 # opponents: top-4 regular season OR champ/runner-up
 for t in teams:
-    t['fa']=bool(t.get('fa')); t['elig']= (not t['fa']) and (not t.get('cur')) and bool(t['p']) and ((t['rank'] is not None and t['rank']<=4) or t['champ'] or t['ru'])
+    t['fa']=bool(t.get('fa')); t['elig']= (not t['fa']) and bool(t['p']) and ((t['rank'] is not None and t['rank']<=4) or t['champ'] or t['ru'])
 print('eligible opponents:',[(t['s'],t['name']) for t in teams if t['elig']])
 json.dump(dict(players=players,teams=teams),open(OUT,'w'),separators=(',',':'))
 print(len(players),'player-seasons',len(teams),'teams', len(json.dumps(players))//1024,'KB')

@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { seasons, seasonStats, standings, seriesList, seasonRecords, isHofPlayer, hasSuperBurger, teamAbbr } from '../../data/leagueData.js';
 import { seasonColumns } from '../../data/statColumns.js';
+import season6Matches from '../../data/season6-matches.json';
 
 export function getStaticPaths() {
   return seasons.map(s => ({ params: { id: String(s.id) } }));
@@ -16,6 +17,12 @@ const seasonSeries = seriesList.filter(s => s.season === seasonId);
 const records = seasonRecords[String(seasonId)] || [];
 const hasObj = seasonId >= 5;
 const cols = seasonColumns(seasonId);
+// Season 6 (BTL Season 1): series live in season6-matches.json and have their own pages under /current-season/series
+const PLAYOFF_ORDER = ['Grand Finals', 'Losers Finals', 'Winners Finals', 'Losers Round 2', 'Winners Round 1', 'Losers Round 1'];
+const s6Series = seasonId === 6 ? [
+  ...season6Matches.series.filter(s => s.phase === 'playoffs').sort((a, b) => PLAYOFF_ORDER.indexOf(a.round) - PLAYOFF_ORDER.indexOf(b.round)),
+  ...season6Matches.series.filter(s => s.phase !== 'playoffs').sort((a, b) => (b.week || 0) - (a.week || 0)),
+] : [];
 
 const historyTabs = [
   { href: "/history", label: "Draft League History" },
@@ -37,6 +44,7 @@ const currentPath = Astro.url.pathname;
       <p style="color: var(--paper-dim); max-width: 60ch;">
         Champion: <strong style="color: var(--gold);">{season.champion}</strong>
         {season.mvp !== 'TBD' && <> · MVP: <strong style="color: var(--gold);">{season.mvp}</strong></>}
+        {season.finalsMvp && <> · Finals MVP: <strong style="color: var(--gold);">{season.finalsMvp}</strong></>}
       </p>
     </div>
   </section>
@@ -146,6 +154,30 @@ const currentPath = Astro.url.pathname;
                       </td>
                     ) : <td>N/A</td>
                   ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {s6Series.length > 0 && (
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Series Results</h2>
+        <p style="color: var(--paper-dim); font-size: 0.9rem; margin-bottom: 16px;">Click a series for the map-by-map box score. <a href="/current-season/playoffs">See the full playoff bracket</a>.</p>
+        <div class="table-scroll">
+          <table class="stat-table">
+            <thead><tr><th>Stage</th><th>Series</th><th>Result</th><th>VOD</th></tr></thead>
+            <tbody>
+              {s6Series.map(s => (
+                <tr>
+                  <td>{s.phase === 'playoffs' ? <span class="badge badge-red">{s.round}</span> : `Week ${s.week}`}</td>
+                  <td><a href={`/current-season/series/${s.slug}`}>{s.name}</a></td>
+                  <td style="color: var(--gold); font-weight: 700;">{s.doubleForfeit ? 'Double forfeit' : `${s.winner} ${(s.seriesScore || '').split('-').map(Number).sort((a, b) => b - a).join('-')}${s.forfeit ? ' (forfeit)' : ''}`}</td>
+                  <td>{s.vodUrl ? <a href={s.vodUrl} target="_blank" rel="noopener">Watch ▶</a> : ''}</td>
                 </tr>
               ))}
             </tbody>

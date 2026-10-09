@@ -45,13 +45,14 @@ import { seasons, hallOfFame, isKnownPlayer, tournamentWinners } from '../data/l
       <h2 class="section-title">Champions &amp; MVPs</h2>
       <div class="table-scroll">
         <table class="stat-table">
-          <thead><tr><th>Season</th><th>Champion</th><th>MVP</th></tr></thead>
+          <thead><tr><th>Season</th><th>Champion</th><th>MVP</th><th>Finals MVP</th></tr></thead>
           <tbody>
             {seasons.map(s => (
               <tr>
                 <td><a href={`/season/${s.id}`}>{s.name} ({s.year})</a></td>
                 <td>{s.champion}</td>
                 <td>{isKnownPlayer(s.mvp) ? <a href={`/players/${encodeURIComponent(s.mvp)}`}>{s.mvp}</a> : s.mvp}</td>
+                <td>{s.finalsMvp ? <a href={`/players/${encodeURIComponent(s.finalsMvp)}`}>{s.finalsMvp}</a> : <span style="color: var(--paper-dim);">—</span>}</td>
               </tr>
             ))}
           </tbody>

@@ -17,7 +17,7 @@ const currentPath = Astro.url.pathname;
       <span class="eyebrow">{season6.status}</span>
       <h1 class="script-heading">{upcomingSeasonLabel} ({upcomingSeasonYear})</h1>
       <p style="color: var(--paper-dim); max-width: 60ch;">
-        The draft is done — 6 teams, 5 players each, ready to go. Check the Rosters and Schedule tabs for the full breakdown, or join the Discord for match updates.
+        BTL Season 1 is in the books. The <strong style="color: var(--gold);">London Royal Ravens</strong> won the title, beating the Detroit Dirty Dogs 3-1 in the Grand Final. MVP: <a href="/players/Inkster" style="color: var(--gold);">Inkster</a> · Finals MVP: <a href="/players/Dragon" style="color: var(--gold);">Dragon</a>.
       </p>
     </div>
   </section>
@@ -34,15 +34,15 @@ const currentPath = Astro.url.pathname;
           </div>
         ))}
       </div>
-      <p style="margin-top: 20px;"><a class="btn btn-ghost" href="/current-season/rosters">View Full Rosters</a> <a class="btn btn-ghost" href="/current-season/schedule">View Schedule</a></p>
+      <p style="margin-top: 20px;"><a class="btn btn-primary" href="/season/6">Season 6 Recap &amp; Awards</a> <a class="btn btn-ghost" href="/current-season/playoffs">Playoff Bracket</a> <a class="btn btn-ghost" href="/current-season/player-stats">Final Stats</a></p>
     </div>
   </section>
 
   <section>
     <div class="wrap">
       <div class="pixel-card" style="max-width: 560px;">
-        <span class="eyebrow">Get Notified</span>
-        <p style="color: var(--paper); font-size: 1.1rem; margin: 4px 0 16px;">Follow along in Discord for match schedules and results as the season kicks off.</p>
+        <span class="eyebrow">What's Next</span>
+        <p style="color: var(--paper); font-size: 1.1rem; margin: 4px 0 16px;">Join the Discord to hear first about the next BTL season.</p>
         <a class="btn btn-primary" href={social.discord} target="_blank" rel="noopener">Join the Discord</a>
       </div>
     </div>

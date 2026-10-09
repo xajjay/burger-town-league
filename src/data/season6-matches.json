@@ -172,6 +172,61 @@
       ]
     },
     {
+      "slug": "playoffs-losers-finals-detroit-dirty-dogs-vs-miami-reapers",
+      "phase": "playoffs",
+      "round": "Losers Finals",
+      "name": "Detroit Dirty Dogs vs Miami Reapers",
+      "teamA": "Detroit Dirty Dogs",
+      "teamB": "Miami Reapers",
+      "seriesScore": "3-0",
+      "winner": "Detroit Dirty Dogs",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/rAHGe3heTOw",
+      "maps": [
+        { "mapNum": 1, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 220, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 5, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 3, "map": "Checkmate", "mode": "Control", "teamAScore": 3, "teamBScore": 1, "winner": "Detroit Dirty Dogs" }
+      ],
+      "players": [
+        { "player": "Inkster", "team": "Detroit Dirty Dogs", "kills": 71, "deaths": 57, "perMap": [35, 7, 29], "perMapDeaths": [31, 8, 18] },
+        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 68, "deaths": 51, "perMap": [32, 9, 27], "perMapDeaths": [26, 7, 18] },
+        { "player": "Peach", "team": "Detroit Dirty Dogs", "kills": 66, "deaths": 62, "perMap": [36, 9, 21], "perMapDeaths": [30, 8, 24] },
+        { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 59, "deaths": 49, "perMap": [32, 7, 20], "perMapDeaths": [25, 5, 19] },
+        { "player": "Karnij", "team": "Miami Reapers", "kills": 60, "deaths": 64, "perMap": [23, 14, 23], "perMapDeaths": [37, 7, 20] },
+        { "player": "Renicide", "team": "Miami Reapers", "kills": 59, "deaths": 79, "perMap": [31, 8, 20], "perMapDeaths": [40, 9, 30] },
+        { "player": "Acro Ace", "team": "Miami Reapers", "kills": 58, "deaths": 56, "perMap": [32, 3, 23], "perMapDeaths": [26, 7, 23] },
+        { "player": "Horror", "team": "Miami Reapers", "kills": 42, "deaths": 65, "perMap": [26, 3, 13], "perMapDeaths": [32, 9, 24] }
+      ]
+    },
+    {
+      "slug": "playoffs-grand-finals-london-royal-ravens-vs-detroit-dirty-dogs",
+      "phase": "playoffs",
+      "round": "Grand Finals",
+      "name": "London Royal Ravens vs Detroit Dirty Dogs",
+      "teamA": "London Royal Ravens",
+      "teamB": "Detroit Dirty Dogs",
+      "seriesScore": "3-1",
+      "winner": "London Royal Ravens",
+      "forfeit": false,
+      "vodUrl": "https://youtu.be/B8xSFwHvpjs",
+      "maps": [
+        { "mapNum": 1, "map": "Raid", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 147, "winner": "London Royal Ravens" },
+        { "mapNum": 2, "map": "Standoff", "mode": "Search & Destroy", "teamAScore": 6, "teamBScore": 0, "winner": "London Royal Ravens" },
+        { "mapNum": 3, "map": "Raid", "mode": "Control", "teamAScore": 2, "teamBScore": 3, "winner": "Detroit Dirty Dogs" },
+        { "mapNum": 4, "map": "Checkmate", "mode": "Hardpoint", "teamAScore": 250, "teamBScore": 245, "winner": "London Royal Ravens" }
+      ],
+      "players": [
+        { "player": "Dragon", "team": "London Royal Ravens", "kills": 101, "deaths": 98, "perMap": [29, 5, 27, 40], "perMapDeaths": [26, 1, 40, 31] },
+        { "player": "Hitta", "team": "London Royal Ravens", "kills": 85, "deaths": 86, "perMap": [27, 9, 25, 24], "perMapDeaths": [17, 3, 32, 34] },
+        { "player": "Trap", "team": "London Royal Ravens", "kills": 81, "deaths": 87, "perMap": [24, 8, 24, 25], "perMapDeaths": [21, 3, 31, 32] },
+        { "player": "Realm", "team": "London Royal Ravens", "kills": 65, "deaths": 91, "perMap": [12, 2, 27, 24], "perMapDeaths": [23, 3, 32, 33] },
+        { "player": "Docsukii", "team": "Detroit Dirty Dogs", "kills": 102, "deaths": 71, "perMap": [27, 4, 37, 34], "perMapDeaths": [20, 6, 23, 22] },
+        { "player": "Inkster", "team": "Detroit Dirty Dogs", "kills": 91, "deaths": 87, "perMap": [20, 2, 41, 28], "perMapDeaths": [26, 6, 26, 29] },
+        { "player": "Habibi", "team": "Detroit Dirty Dogs", "kills": 87, "deaths": 84, "perMap": [20, 3, 33, 31], "perMapDeaths": [21, 6, 26, 31] },
+        { "player": "Peach", "team": "Detroit Dirty Dogs", "kills": 82, "deaths": 90, "perMap": [20, 1, 24, 37], "perMapDeaths": [25, 6, 28, 31] }
+      ]
+    },
+    {
       "slug": "nashville-mighty-ducks-vs-san-jose-cougars-2",
       "week": 3,
       "name": "Nashville Mighty Ducks vs San Jose Cougars",

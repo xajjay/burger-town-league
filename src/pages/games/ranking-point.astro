@@ -25,7 +25,7 @@ const sub = p => (D.norm(p.n) !== D.norm(p.c) ? "aka " + p.n + " · " : "") + D.
 function makeRound(r){
   for (let tries = 0; tries < 200; tries++){
     const season = 1 + Math.floor(r() * 6);
-    const key = season === 1 ? "kd" : season === 6 ? B.pick(["kd","rk","sk","ip"], r) : B.pick(Object.keys(STATS), r);
+    const key = season === 1 ? "kd" : B.pick(Object.keys(STATS), r);
     const st = STATS[key];
     const cand = B.shuffle(DATA.players.filter(p => p.s === season && st.get(p) != null && (season !== 6 || p.m >= 12)), r);
     const chosen = [], seen = {};
@@ -50,7 +50,7 @@ B.shell({game:"ranking-point", start:function(ctx){
 
   function render(){
     const done = over(), reveal = done;
-    let h = '<div class="rk-head"><div class="rk-stat"><small>Season ' + R.season + (R.season === 6 ? ' (in progress)' : '') + ' · rank by</small>' + esc(st.label) + '</div><div class="status">Attempt <b>' + Math.min(S.hist.length + 1, MAXTRY) + '</b> of ' + MAXTRY + '</div></div>';
+    let h = '<div class="rk-head"><div class="rk-stat"><small>Season ' + R.season + '' + ' · rank by</small>' + esc(st.label) + '</div><div class="status">Attempt <b>' + Math.min(S.hist.length + 1, MAXTRY) + '</b> of ' + MAXTRY + '</div></div>';
     h += '<div class="rk-ends"><span>▲ Highest</span><span>' + (done ? "" : "drag the ≡ handle or use the arrows") + '</span></div><div class="rk-list" id="rklist">';
     S.order.forEach((id, i) => {
       const p = P[id], locked = S.locked[i], correct = R.answer.indexOf(id) === i;

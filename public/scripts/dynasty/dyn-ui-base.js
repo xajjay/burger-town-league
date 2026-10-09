@@ -157,7 +157,7 @@ var sum = function(a){ return a.reduce(function(x, y){ return x + y; }, 0); };
 
 /* ---------- modal stack ---------- */
 X.openModal = function(kind, arg, extra){ U.modal = {kind:kind, arg:arg, tab:(extra && extra.tab) || null, live:extra && extra.live, cur:0, evN:0}; X.renderModal(); };
-X.closeModal = function(){ U.modal = null; if (U.liveT){ clearInterval(U.liveT); U.liveT = null; } if (U.lotT){ clearTimeout(U.lotT); U.lotT = null; } X.renderModal(); };
+X.closeModal = function(){ U.modal = null; X.stopVis(); if (U.liveT){ clearInterval(U.liveT); U.liveT = null; } if (U.lotT){ clearTimeout(U.lotT); U.lotT = null; } X.renderModal(); };
 X.renderModal = function(){
   var host = document.getElementById("dy-modal-host");
   if (!U.modal){ host.innerHTML = ""; document.body.style.overflow = ""; return; }
@@ -168,7 +168,7 @@ X.renderModal = function(){
   if (keepScroll && m.keep) host.querySelector(".dy-modal").scrollTop = st;
   m.keep = false;
   if (m.kind === "lotto" && m.arg.rev < m.arg.lotto.length && !U.lotT) U.lotT = setTimeout(function(){ U.lotT = null; if (U.modal && U.modal.kind === "lotto"){ U.modal.arg.rev++; U.modal.keep = true; X.renderModal(); } }, m.arg.rev === 0 ? 1100 : 1500);
-  if (m.kind === "box" && m.live && !U.liveT){ var mp0 = m.arg.maps[m.cur]; if (mp0 && mp0.ev && m.evN < mp0.ev.length) X.startLive(); }
+  if (m.kind === "box" && m.live && !U.liveT){ var mp0 = m.arg.maps[m.cur]; if (mp0 && mp0.ev && m.evN < mp0.ev.length){ if (X.visOk(mp0)) X.startVis(); else X.startLive(); } }
 };
 
 /* =====================================================================================
@@ -457,7 +457,9 @@ X.boxScore = function(rec){
     var done = mapDone(i), ev = mp.ev || [], shown = live && i === cur ? ev.slice(0, evN) : ev;
     var last = shown.filter(function(e){ return e.s; }).slice(-1)[0], liveSc = done ? mp.sc : last ? last.s : [0, 0];
     h += '<div class="mapc' + (live && i === cur && !done ? " now" : "") + '"><div class="mh"><span>Map ' + (i + 1) + ' · ' + DY.MODE_NAME[mp.mode] + ' · ' + esc(mp.map || "") + '</span><span class="s"><span class="' + (done && mp.aw ? "up" : "") + '">' + esc(A.abbr) + ' ' + liveSc[0] + '</span> – <span class="' + (done && !mp.aw ? "up" : "") + '">' + liveSc[1] + ' ' + esc(B.abbr) + '</span></span></div>';
-    if (ev.length && (live || U.showPbp)) h += '<ol class="pbp">' + shown.map(function(e){ return '<li class="' + (e.hl ? "hl " : "") + (e.end ? "end " : "") + (e.w || "") + '">' + (e.s ? '<span class="num">' + (mp.mode === "HP" ? "H" : "R") + e.r + ' · ' + e.s[0] + '-' + e.s[1] + '</span>' : '<span class="num">' + (e.end ? "FINAL" : "★") + '</span>') + '<span>' + esc(e.t) + '</span></li>'; }).join("") + '</ol>';
+    var visOn = live && i === cur && !done && X.visOk(mp);
+    if (visOn) h += X.visBlock(rec, mp, A, B);
+    if (ev.length && (live || U.showPbp)) h += '<ol class="pbp"' + (visOn ? ' id="vis-pbp"' : '') + '>' + shown.map(function(e){ return X.pbpLi(e, mp); }).join("") + '</ol>';
     if (done && mp.la){
       var lines = function(L){ return '<table class="tb"><thead><tr><th></th><th class="n">K</th><th class="n">D</th><th class="n">+/-</th><th class="n">' + OBJH[mp.mode] + '</th><th class="n">WAR+</th></tr></thead><tbody>' + L.map(function(x){ var o = mp.mode === "HP" ? x[3] + "s" : mp.mode === "SND" ? x[3] + "/" + x[4] + "/" + x[5] : x[3]; return '<tr><td>' + X.pl(x[0]) + '</td><td class="n">' + x[1] + '</td><td class="n">' + x[2] + '</td><td class="n">' + X.delta(x[1] - x[2]) + '</td><td class="n">' + o + '</td><td class="n">' + f2(x[6]) + '</td></tr>'; }).join("") + '</tbody></table>'; };
       h += '<div class="grid2" style="margin-top:8px">' + lines(mp.la) + lines(mp.lb) + '</div>';
@@ -478,6 +480,7 @@ X.boxScore = function(rec){
   }
   return h + '<div class="row" style="justify-content:flex-end">' + X.btn("close", "Continue", "primary") + '</div></div>';
 };
+X.pbpLi = function(e, mp){ return '<li class="' + (e.hl ? "hl " : "") + (e.end ? "end " : "") + (e.w || "") + '">' + (e.s ? '<span class="num">' + (mp.mode === "HP" ? "H" : "R") + e.r + ' · ' + e.s[0] + '-' + e.s[1] + '</span>' : '<span class="num">' + (e.end ? "FINAL" : e.tm != null ? X.clock(e.tm) : "★") + '</span>') + '<span>' + esc(e.t) + '</span></li>'; };
 X.startLive = function(){
   var ms = {slow:1100, normal:650, fast:280}[U.speed || "normal"];
   if (U.liveT) clearInterval(U.liveT);

@@ -292,7 +292,9 @@ if (effectiveTopic) {
   // is available: match previews, the schedule itself, and stat angles that
   // don't require results yet. Match recaps stay off until real results exist
   // (flip on once scores start coming in — see the "results" field to add later).
-  const hasLiveSeason = true;
+  // Oct 9, 2026: BTL Season 1 is over (London Royal Ravens are champions), so the bot is back on
+  // offseason angles. Flip this to true when the next season has a schedule in season6.json's place.
+  const hasLiveSeason = false;
 
   const angles = hasLiveSeason
     ? [
@@ -300,7 +302,7 @@ if (effectiveTopic) {
         'top10_ar', 'top10_smg', 'awards_chase', 'best_individual_seasons',
       ]
     : [
-        'player_spotlight', 'power_rankings_alltime', 'season_preview', 'awards_chase',
+        'player_spotlight', 'power_rankings_alltime', 'awards_chase',
         'all_time_teams', 'underrated_players', 'best_individual_seasons',
         'top10_ar', 'top10_smg', 'top10_kd_alltime',
       ];

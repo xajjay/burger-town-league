@@ -15,10 +15,11 @@ export const signupFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd7tkxczx
 export const rulebookUrl = "https://docs.google.com/document/d/1yFZNfyt_Fgq2tdFr63N2HR-z9iS_tohesAoDdQuprwM/edit?tab=t.0";
 
 export const seasonYears = { 1: 2023, 2: 2023, 3: 2024, 4: 2024, 5: 2026, 6: 2026 };
-// Season 6 (BTL Season 1) is in progress: its stats show on player cards / career totals,
-// but it has no /season/6 page yet and no awards (Super Burger etc.) until it's final.
-export const currentSeasonId = 6;
-export const completedSeasonIds = ['1', '2', '3', '4', '5'];
+// Season 6 (BTL Season 1) finished Oct 2026 — London Royal Ravens are champions. No season is in progress
+// right now (currentSeasonId = null); the /current-season pages keep showing BTL Season 1 until the next one starts.
+export const currentSeasonId = null;
+export const completedSeasonIds = ['1', '2', '3', '4', '5', '6'];
+export const latestSeasonId = 6;
 export const upcomingSeasonLabel = "BTL Season 1";
 export const upcomingSeasonYear = 2026;
 
@@ -209,6 +210,7 @@ export function getPlayerPhoto(name) {
 
 const championBySeason = Object.fromEntries(raw.champions.map(c => [c.season, c]));
 const mvpBySeason = Object.fromEntries(raw.mvps.map(m => [m.season, resolveName(m.mvp)]));
+const finalsMvpBySeason = Object.fromEntries(Object.entries(raw.finalsMvps || {}).map(([s, f]) => [s, resolveName(f.player)]));
 
 const REMOVED_PLAYERS = new Set(['anura']); // left the league; excluded entirely per request
 
@@ -220,6 +222,7 @@ export const seasons = completedSeasonIds.map(sid => ({
   champion: championBySeason[sid]?.team || 'TBD',
   championManager: championBySeason[sid]?.manager || '',
   mvp: mvpBySeason[sid] || 'TBD',
+  finalsMvp: finalsMvpBySeason[sid] || null,
   status: 'Complete',
 }));
 
@@ -331,7 +334,7 @@ export const allStarsBySeason = raw.allStars;
 
 export const perPlayerSeasonHonors = raw.perPlayerSeasonHonors;
 
-// Series/match-level data — currently only recorded for Season 5
+// Series/match-level data — Season 5 (Season 6 series live in season6-matches.json)
 export const seriesList = raw.series.map((s) => ({
   slug: s.slug,
   season: s.season || 5,

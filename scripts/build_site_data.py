@@ -14,8 +14,9 @@ workbook is safe):
   * hallOfFame                 - numbers + rank from the Hall of Fame tab, incl. career WAR
   * seasonRecords["6"]         - computed from src/data/season6-matches.json
 
-Honors / accolades / All-Star picks are left as they are in real_data.json
-(they get updated by hand when awards are handed out).
+Seasons 1-5 honors / All-Star picks are left as they are in real_data.json.
+Season 6 awards (champion, MVP, Finals MVP, All-Stars, honors) come from the League History
+tab and the Season 6 Notes column; career and Hall of Fame accolade text from the workbook.
 """
 import json, os, re, sys
 import openpyxl
@@ -92,6 +93,9 @@ for s in range(1, 7):
     ci = {f: col(ix, *names) for f, names in SEASON_FIELDS.items()}
     ci['war'] = ix.get('WAR')
     wbrows = {}
+    iNotes = ix.get('Notes')
+    if s == 6:
+        notes6 = {}
     for r in rows[3:]:
         a = r[0]
         if isinstance(a, str) and (a.startswith('Final') or a.startswith('Team Rosters')):
@@ -108,14 +112,19 @@ for s in range(1, 7):
             else:
                 vals[f] = rnd(v, 4)
         wbrows[canon(a)] = (str(a).strip(), r[ix['Team']], vals)
+        if s == 6 and iNotes is not None:
+            # Season 6 awards come straight from the Notes column ("All-Star First Team | League MVP | ...")
+            notes6[canon(a)] = [h.strip() for h in str(r[iNotes] or '').split('|') if h.strip()]
 
     sd = J['seasons'].setdefault(str(s), {'players': [], 'standings': []})
     have = {p['player']: p for p in sd['players']}
     if s == 6:
         sd['players'] = []
         for c, (disp, team, vals) in wbrows.items():
+            honors = notes6.get(c, [])
+            allstar = '1st Team' if 'All-Star First Team' in honors else '2nd Team' if 'All-Star Second Team' in honors else None
             sd['players'].append(dict(player=c, displayName=disp, team=abbrev_to_team.get(team, team),
-                                      honors=[], allStar=None, **vals))
+                                      honors=honors, allStar=allstar, **vals))
     else:
         for c, (disp, team, vals) in wbrows.items():
             if c not in have:
@@ -142,6 +151,21 @@ st = []
 # playoff seeds (tiebreaks applied); falls back to record order for anything not listed
 S6_SEEDS = ['London Royal Ravens', 'Miami Reapers', 'Detroit Dirty Dogs', 'Nashville Mighty Ducks',
             'San Jose Cougars', 'Newark Stars']
+S6_CHAMPION, S6_RUNNER_UP = 'London Royal Ravens', 'Detroit Dirty Dogs'   # BTL Season 1 final (Oct 2026)
+ORD = {1: '1st', 2: '2nd', 3: '3rd', 4: '4th', 5: '5th', 6: '6th', 7: '7th', 8: '8th'}
+# regular-season map record per team (maps actually played; forfeits add no maps)
+s6_maprec = {}
+_mw = {}
+for se in M6['series']:
+    if se.get('phase') or se.get('doubleForfeit'):
+        continue
+    if not se.get('maps'):
+        continue
+    res = [(m['winner'] == se['teamA']) for m in se['maps']]
+    wa, wb_ = sum(res), len(res) - sum(res)
+    for t, w, l in ((se['teamA'], wa, wb_), (se['teamB'], wb_, wa)):
+        x = _mw.setdefault(t, [0, 0]); x[0] += w; x[1] += l
+s6_maprec = {t: '%d-%d' % tuple(v) for t, v in _mw.items()}
 order = sorted(S6['teams'], key=lambda t: (S6_SEEDS.index(t['name']) if t['name'] in S6_SEEDS else 99, -recsort(t)))
 for rank, t in enumerate(order, 1):
     names = [t['captain']] + t['players']
@@ -151,8 +175,11 @@ for rank, t in enumerate(order, 1):
         if p:
             roster.append(dict(player=p['player'], kd=p['kd'], overall=p['overall']))
     roster.sort(key=lambda x: -(x['overall'] or 0))
-    st.append(dict(team=t['name'], officialFinish='', champion=False, runnerUp=False, record=t['record'],
-                   mapRecord=None, winPct=None, manager=t['captain'], rank=rank, roster=roster))
+    w_, l_ = map(int, t['record'].split('-'))
+    st.append(dict(team=t['name'], officialFinish=ORD[rank], champion=t['name'] == S6_CHAMPION,
+                   runnerUp=t['name'] == S6_RUNNER_UP, record=t['record'], mapRecord=s6_maprec.get(t['name']),
+                   winPct='%d%%' % round(100 * w_ / (w_ + l_)) if w_ + l_ else None,
+                   manager=t['captain'], rank=rank, roster=roster))
 J['seasons']['6']['standings'] = st
 
 # ---- career (All Seasons tab) ----
@@ -190,6 +217,7 @@ for r in rows[3:]:
         warPlus=rnd(r[col(ix, 'WAR+')], 2),
         warPlus10=rnd(r[ix['WAR+ / 10 Maps']], 3) if 'WAR+ / 10 Maps' in ix else None,
         bestSeasonWar=rnd(r[col(ix, 'Best Season WAR')], 2),
+        accolades=(str(r[ix['Notes (Career Accolades)']]).replace(' — ', ': ') if 'Notes (Career Accolades)' in ix and r[ix['Notes (Career Accolades)']] else entry.get('accolades', '')),
         seriesW=None if num(r[col(ix, 'Career Series W')]) is None else int(num(r[col(ix, 'Career Series W')])),
         seriesL=None if num(r[col(ix, 'Career Series L')]) is None else int(num(r[col(ix, 'Career Series L')])),
     )
@@ -216,6 +244,16 @@ for r in rows[hi + 1:]:
              allStar1=int(r[ix['All-Star 1st Team']] or 0), allStar2=int(r[ix['All-Star 2nd Team']] or 0),
              legacyScore=round(num(r[ix['Legacy Score']]), 2),
              careerWar=rnd(r[col(ix, 'Career WAR')], 2), war10=rnd(r[col(ix, 'WAR / 10 Maps')], 2))
+    ia = col(ix, 'Career Accolades')
+    if ia is not None and r[ia]:
+        h['accolades'] = str(r[ia]).replace(' — ', ': ')
+# drop anyone no longer on the workbook's Hall of Fame list
+_hof_names = set()
+for r in rows[hi + 1:]:
+    if num(r[0]) is None:
+        break
+    _hof_names.add(canon(r[ix['Player']]))
+J['hallOfFame'] = [h for h in J['hallOfFame'] if h['player'] in _hof_names]
 J['hallOfFame'].sort(key=lambda h: h['rank'])
 
 # ---- Season 6 records from recorded series ----
@@ -224,8 +262,8 @@ maps_by_mode = {m: [] for m in MODE.values()}
 series_tot = []
 for se in M6['series']:
     for p in se['players']:
-        if p['player'] == 'Aldo':
-            continue
+        if p['player'] == 'Aldo' or p.get('isManager'):
+            continue  # removed player / emergency manager cameos don't hold records
         n = canon(p['player'])
         for i, k in enumerate(p['perMap']):
             if k is None:
@@ -242,9 +280,34 @@ for cat, idx, hi_ in [('Kill Record', 1, True), ('Death Low', 2, False), ('KD Re
         if not pool:
             continue
         best = (max if hi_ else min)(pool, key=lambda t: t[idx])
-        modes[m] = dict(holder=best[0], value=best[idx])
+        modes[m] = dict(holder=best[0], value=round(best[idx], 2) if idx == 3 else best[idx])
     recs.append(dict(category=cat, modes=modes))
 J['seasonRecords']['6'] = recs
+
+# ---- Season 6 awards (League History tab + Season 6 Notes) ----
+lh = sheet('League History')
+for r in lh:
+    if r[1] and str(r[1]).startswith('Season 6') and r[2] == S6_CHAMPION:
+        J['champions'] = [c for c in J['champions'] if c['season'] != '6'] + [dict(
+            season='6', year='2026', league='Burger Town Leagues', team=r[2], players=r[3],
+            manager='' if r[4] in (None, '—') else r[4])]
+    if r[1] and str(r[1]).startswith('Season 6 Cold War') and r[2] and r[3] and isinstance(r[4], (int, float)) and r[2] != S6_CHAMPION:
+        J['mvps'] = [m for m in J['mvps'] if m['season'] != '6'] + [dict(season='6', mvp=canon(r[2]), team=r[3])]
+    if r[1] == 'Season 6 Finals MVP':
+        J['finalsMvps'] = {'6': dict(player=canon(r[2]), team=r[3])}
+J['allStars']['6'] = []
+for p in sorted(J['seasons']['6']['players'], key=lambda p: (p['allStar'] != '1st Team', -(p['war'] or 0))):
+    if p['allStar']:
+        J['allStars']['6'].append(dict(tier=p['allStar'], player=p['player'], kd=p['kd']))
+for p in J['seasons']['6']['players']:
+    hon = J['perPlayerSeasonHonors'].setdefault(p['player'], {})
+    if p['honors']:
+        hon['6'] = list(p['honors'])
+    else:
+        hon.pop('6', None)
+J.setdefault('seasonMeta', {})['6'] = {'realName': 'Season 6 Cold War (2026'}
+print('S6 awards:', J['champions'][-1]['team'], '| MVP', J['mvps'][-1]['mvp'], '| Finals MVP', J.get('finalsMvps'),
+      '| All-Stars', [(a['tier'], a['player']) for a in J['allStars']['6']])
 
 json.dump(J, open(OUT, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
 print('wrote', OUT)

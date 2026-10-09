@@ -270,11 +270,11 @@ DY.simSeries = function(A, B, bucket, detail, bo, ctx){
     var mode = DY.SERIES_MODES[maps.length % 5], mp = (ctx.maps && ctx.maps[maps.length]) || pickMap(mode, used); used[mode + mp] = 1;
     var diff = sideEff(a, mode, mp) - sideEff(b, mode, mp) + fa - fb + (maps.length >= 4 ? (mean(a.ps.map(function(p){ return p.clutch; })) - mean(b.ps.map(function(p){ return p.clutch; }))) / 25 : 0);
     var p = 1 / (1 + Math.exp(-diff / 5.2));
-    var mres = playMap(a, b, mode, p, mp, detail);
+    var mres = playMap(a, b, mode, p, mp, detail, ctx.vis !== false);
     mres.aw ? wa++ : wb++;
     [[a, mres.la], [b, mres.lb]].forEach(function(x){ x[0].ps.forEach(function(pl, i){ var L = x[1][i], s = pl.st && pl.st[bucket]; addLine(s, mode, L); var T = tot[pl.id]; T.k += L.k; T.d += L.d; T.war += L.war; T.m++; }); });
     if (ctx.ta && ctx.tb){ [[ctx.ta, mres.aw], [ctx.tb, !mres.aw]].forEach(function(x){ var t = x[0]; t.mrec = t.mrec || {}; t.mrec.s = t.mrec.s || {}; recInc(t.mrec.s, mode, x[1]); recInc(t.mrec.s, mode + "|" + mp, x[1]); }); }
-    if (detail) maps.push({mode:mode, map:mp, sc:mres.sc, aw:mres.aw, la:mres.la.map(lineOut), lb:mres.lb.map(lineOut), ev:mres.ev, p:Math.round(p * 100)});
+    if (detail) maps.push({mode:mode, map:mp, sc:mres.sc, aw:mres.aw, la:mres.la.map(lineOut), lb:mres.lb.map(lineOut), ev:mres.ev, p:Math.round(p * 100), vis:mres.vis || undefined});
     else maps.push({mode:mode, map:mp, sc:mres.sc, aw:mres.aw});
   }
   var fin = function(side, won){ side.ps.forEach(function(p){ var s = p.st && p.st[bucket]; if (s){ s[won ? "sw" : "sl"]++; s.best = Math.max(s.best || 0, tot[p.id].k); } if (bucket !== "mi" && p.st){ var T = tot[p.id]; p.recent = (p.recent || []).concat([[T.k, T.d, Math.round(T.war * 100) / 100, T.m]]).slice(-6); } }); };
@@ -295,10 +295,33 @@ function killWeights(ps, dir, mode, map){ return ps.map(function(p){ var sk = mo
   sk += DY.mapAff(p, mode, map) + p.form + p.hot;
   var g = Math.exp((sk - 78) / (dir > 0 ? 104 : -104)), e = 0.8 + p.entry / 250; return g * e * (p.night || 1) * rr(0.66, 1.34); }); }
 var nm = function(p){ return p.n; };
-function playMap(a, b, mode, p, map, detail){
+// inputs for the minimap sim. Team strength comes in only through p (so it isn't counted twice);
+// inside a team, each player's slaying, objective, hardpoint feel and aggression shape what he does.
+DY.VIS_C = {HP:36, SND:16, CTL:24};
+DY.visInput = function(a, b, p, map, mode){
+  mode = mode || "HP";
+  var r1 = function(x){ return Math.round(x * 10) / 10; };
+  var sk = function(pl){ return mode === "SND" ? pl.at.snd * 0.5 + pl.at.gun * 0.5 : mode === "HP" ? pl.at.hp * 0.4 + pl.at.gun * 0.6 : pl.at.ctl * 0.4 + pl.at.gun * 0.6; };
+  var side = function(s){ var gs = s.ps.map(function(pl){ return sk(pl) + DY.mapAff(pl, mode, map) + pl.form + pl.hot; }), m = mean(gs);
+    return s.ps.map(function(pl, i){ return {r:pl.role, gs:r1(78 + gs[i] - m), ob:Math.round(pl.at.obj), hs:Math.round(mode === "HP" ? pl.at.hp : mode === "SND" ? pl.at.snd : pl.at.ctl), en:Math.round(pl.entry), cl:Math.round(pl.clutch), ni:Math.round((pl.night || 1) * 100) / 100}; }); };
+  var q = clamp(p, 0.03, 0.97), C = DY.VIS_C[mode] || 34, e = Math.exp(Math.log(q / (1 - q)) / C);
+  return {map:map, mode:mode, v:DY.MS.VERSION, seed:rint(1, 2000000000), edge:[Math.round(e * 10000) / 10000, Math.round(10000 / e) / 10000], ps:side(a).concat(side(b))};
+};
+function playMap(a, b, mode, p, map, detail, visOn){
   var la = a.ps.map(function(pl){ return {id:pl.id, k:0, d:0, o1:0, o2:0, o3:0, fd:0, war:0}; }), lb = b.ps.map(function(pl){ return {id:pl.id, k:0, d:0, o1:0, o2:0, o3:0, fd:0, war:0}; });
   var aw, sc, KA, KB, ev = detail ? [] : null, rounds = [];
   var pace = clamp(mean(a.ps.concat(b.ps).map(function(x){ return x.entry; })) / 50, 0.88, 1.15);
+  // Hardpoint on a mapped map, when the match keeps details: play it out on the minimap. The box score is what happened there.
+  var vis = detail && visOn !== false && DY.MS && DY.MS.has && DY.MS.has(map, mode) && a.ps.length === 4 && b.ps.length === 4 ? DY.visInput(a, b, p, map, mode) : null;
+  if (vis){
+    var vr = DY.MS.run(vis);
+    aw = vr.aw; sc = vr.sc;
+    var put = function(L, x){ L.k = x.k; L.d = x.d; if (mode === "HP") L.o1 = x.o; else if (mode === "SND"){ L.o1 = x.o1; L.o2 = x.o2; L.o3 = x.o3; L.fd = x.fd; } else L.o1 = x.o1; };
+    la.forEach(function(L, i){ put(L, vr.lines[i]); });
+    lb.forEach(function(L, i){ put(L, vr.lines[i + 4]); });
+    DY.MS.story(vr, a.ps.concat(b.ps).map(nm)).forEach(function(e){ ev.push(e); });
+    vis.sc = vr.sc.slice(); vis.len = vr.len;
+  } else {
   if (mode === "SND"){
     var q = clamp(0.5 + (p - 0.5) * 0.55, 0.06, 0.94), ra = 0, rb = 0, rd = 0;
     while (ra < 6 && rb < 6){
@@ -343,14 +366,15 @@ function playMap(a, b, mode, p, map, detail){
     [[a, la], [b, lb]].forEach(function(x){ x[1].forEach(function(L, i){ var pl = x[0].ps[i]; L.o1 = Math.round(L.k * clamp(0.6 + (pl.at.obj - 72) / 70 + gauss() * 0.07, 0.4, 0.97)); }); });
     if (ev) ctlStory(a, b, la, lb, sc, aw, ev);
   }
+  }
   [[a, la], [b, lb]].forEach(function(x){ x[1].forEach(function(L, i){ var pl = x[0].ps[i], smg = pl.role === "SMG";
     var net = smg ? L.k * 0.93 - L.d * 0.86 : L.k - L.d, w = net * WINV[mode];
     if (mode === "HP") w += (L.o1 - 62) * 0.0047 * 0.5; else if (mode === "SND") w += (L.o1 * 0.25 + L.o2 * 0.5) * 0.137; else w += (L.o1 - 12) * 0.25 * 0.0235;
     L.war = w + 0.05; }); });
   if (ev){ var all = la.map(function(L, i){ return {L:L, p:a.ps[i]}; }).concat(lb.map(function(L, i){ return {L:L, p:b.ps[i]}; })).sort(function(x, y){ return y.L.war - x.L.war; }); var top = all[0];
     ev.push({end:1, t:"Map MVP: " + top.p.n + " (" + top.L.k + "-" + top.L.d + (mode === "HP" ? ", " + top.L.o1 + "s hill" : mode === "CTL" ? ", " + top.L.o1 + " obj kills" : "") + ")"});
-    var streak = wpick(all.slice(0, 4), function(x){ return x.L.k; }); if (mode !== "SND" && streak.L.k >= 24 && rnd() < 0.6) ev.splice(Math.max(0, ev.length - 2), 0, {t:streak.p.n + " goes on a " + rint(8, 13) + "-kill streak", hl:true, w:a.ps.indexOf(streak.p) >= 0 ? "a" : "b"}); }
-  return {aw:aw, sc:sc, la:la, lb:lb, ev:ev};
+    var streak = wpick(all.slice(0, 4), function(x){ return x.L.k; }); if (mode !== "SND" && !vis && streak.L.k >= 24 && rnd() < 0.6) ev.splice(Math.max(0, ev.length - 2), 0, {t:streak.p.n + " goes on a " + rint(8, 13) + "-kill streak", hl:true, w:a.ps.indexOf(streak.p) >= 0 ? "a" : "b"}); }
+  return {aw:aw, sc:sc, la:la, lb:lb, ev:ev, vis:vis};
 }
 // hill-by-hill story for Hardpoint (adds up to the final score)
 function hpStory(a, b, la, lb, sc, ev){
@@ -414,13 +438,15 @@ DY.playRound = function(userVeto){
   g.res.forEach(function(r){ if (!r.lite && r.a !== g.user && r.b !== g.user) compactRec(r); });
   var rd = g.sched[g.round], out = null, bigs = [];
   g.teams.forEach(function(t){ DY.fixLineup(t); });
-  rd.pairs.forEach(function(pr){
+  // game of the week: the non-user matchup with the best combined team rating gets the minimap treatment too
+  var gotw = -1, gv = -1e9; rd.pairs.forEach(function(pr, k){ var A0 = g.teams[pr[0]], B0 = g.teams[pr[1]]; if (A0.user || B0.user) return; var v0 = DY.teamRating(A0) + DY.teamRating(B0) - Math.abs(DY.teamRating(A0) - DY.teamRating(B0)); if (v0 > gv){ gv = v0; gotw = k; } });
+  rd.pairs.forEach(function(pr, pk){
     var A = g.teams[pr[0]], B = g.teams[pr[1]], la = DY.rollLineup(A), lb = DY.rollLineup(B);
     la.chem = DY.chem(A); lb.chem = DY.chem(B);
     var user = A.user || B.user, pre = [[A.w, A.l], [B.w, B.l]];
     var v = user && userVeto && DY.vetoDone(userVeto) ? userVeto : DY.vetoFull(A, B);
-    var s = DY.simSeries(la, lb, "reg", true, 5, {ta:A, tb:B, maps:v.maps});
-    var rec = {r:g.round, a:A.id, b:B.id, wa:s.wa, wb:s.wb, maps:s.maps, sub:la.notes.concat(lb.notes), ia:s.ia, ib:s.ib, pool:rd.pool, pre:pre, tot:s.tot, veto:v.steps};
+    var s = DY.simSeries(la, lb, "reg", true, 5, {ta:A, tb:B, maps:v.maps, vis:!!(user || pk === gotw || (g.settings && g.settings.visAll))});
+    var rec = {r:g.round, a:A.id, b:B.id, wa:s.wa, wb:s.wb, maps:s.maps, gotw:pk === gotw || undefined, sub:la.notes.concat(lb.notes), ia:s.ia, ib:s.ib, pool:rd.pool, pre:pre, tot:s.tot, veto:v.steps};
     g.res.push(rec);
     applyResult(A, B, s.wa, s.wb);
     Object.keys(s.tot).forEach(function(id){ var T = s.tot[id]; bigs.push({id:+id, k:T.k, d:T.d, war:T.war, m:T.m, r:rec}); });
@@ -528,7 +554,7 @@ DY.playPlayoff = function(userVeto){
   DY.fixLineup(A); DY.fixLineup(B);
   var finals = !!DY.FINALS[id], la = DY.rollLineup(A, true, finals), lb = DY.rollLineup(B, true, finals); la.chem = DY.chem(A); lb.chem = DY.chem(B);
   var user = A.user || B.user, v = user && userVeto && DY.vetoDone(userVeto) ? userVeto : DY.vetoFull(A, B);
-  var s = DY.simSeries(la, lb, "po", true, 5, {ta:A, tb:B, maps:v.maps, stage:/GF/.test(id) ? "gf" : DY.FINALS[id] ? "final" : "po"});
+  var s = DY.simSeries(la, lb, "po", true, 5, {ta:A, tb:B, maps:v.maps, vis:!!(user || DY.FINALS[id] || (g.settings && g.settings.visAll)), stage:/GF/.test(id) ? "gf" : DY.FINALS[id] ? "final" : "po"});
   var rec = {id:id, a:a, b:b, wa:s.wa, wb:s.wb, maps:s.maps, tot:s.tot, ia:s.ia, ib:s.ib, sub:la.notes.concat(lb.notes), pre:[[A.w, A.l], [B.w, B.l]], veto:v.steps};
   g.po.res[id] = rec; g.po.idx++;
   (function(){ var w = s.wa > s.wb ? A : B, l = s.wa > s.wb ? B : A, si = g.po.seeds.indexOf(l.id), losses = 0; DY.poOrder().forEach(function(k){ var r = g.po.res[k]; if (r && loserOf(r) === l.id) losses++; }); if (losses >= (si >= 8 ? 1 : 2) || id === "GF2" || (id === "GF" && l.id === DY.poRef(DY.PO.GF.b))){ var r1 = DY.rvRec(w, l.id), r2 = DY.rvRec(l, w.id); r1.ko++; r2.kod++; rec.elim = l.id; } })();

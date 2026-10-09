@@ -141,12 +141,13 @@ const seriesColumn = {
 
       {tab === 'playoffs' && (
         <>
-          <span class="eyebrow">Double Elimination · 6 Teams</span>
+          <span class="eyebrow">Double Elimination · 6 Teams · Final</span>
           <h1 class="script-heading" style="margin-bottom: 8px;">Playoffs</h1>
           <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 20px;">
-            The BTL Season 1 playoff bracket is underway. Follow the live bracket for real-time matchups and results — seeding is set by final regular-season standings.
+            The <strong style="color: var(--gold);">London Royal Ravens</strong> are the BTL Season 1 champions, beating the Detroit Dirty Dogs 3-1 in the Grand Final without dropping a series all postseason. Finals MVP: <a href="/players/Dragon" style="color: var(--gold);">Dragon</a>.
           </p>
-          <a class="btn btn-primary" href="https://challonge.com/t40oa1gv" target="_blank" rel="noopener">View Live Bracket</a>
+          <a class="btn btn-primary" href="/current-season/series/playoffs-grand-finals-london-royal-ravens-vs-detroit-dirty-dogs">Grand Final Box Score</a>
+          <a class="btn btn-ghost" href="https://youtu.be/B8xSFwHvpjs" target="_blank" rel="noopener">Watch the Grand Final</a>
         </>
       )}
 
@@ -162,7 +163,7 @@ const seriesColumn = {
           <span class="eyebrow">{season6.status}</span>
           <h1 class="script-heading" style="margin-bottom: 8px;">Standings</h1>
           <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 24px;">
-            Updated after each series as results come in.
+            Final regular-season standings. Seeds 1-6 went to the playoffs; the <a href="/current-season/playoffs">London Royal Ravens won the title</a>.
           </p>
         </>
       )}
@@ -180,7 +181,7 @@ const seriesColumn = {
           <h1 class="script-heading" style="margin-bottom: 8px;">Player Stats</h1>
           <p style="color: var(--paper-dim); max-width: 60ch; margin-bottom: 24px;">
             {season6PlayerStats.length > 0
-              ? 'K/D and series played update automatically after every recorded series. OVR (all-era scale), WAR+ (Wins Above Replacement plus objective play), WAR+/10 (per 10 maps), mode K/Ds and objective stats come from the league workbook. SnD Objectives = plants + defuses per SnD map.'
+              ? 'Final BTL Season 1 stats, regular season and playoffs. K/D and series played come from every recorded series. OVR (all-era scale), WAR+ (Wins Above Replacement plus objective play), WAR+/10 (per 10 maps), mode K/Ds and objective stats come from the league workbook. SnD Objectives = plants + defuses per SnD map.'
               : 'Will populate here as soon as the first series is played.'}
           </p>
         </>
@@ -224,7 +225,7 @@ const seriesColumn = {
       <div class="wrap">
         <h2 class="section-title">Bracket</h2>
         <p style="color: var(--paper-dim); font-size: 0.85rem; margin-bottom: 28px;">
-          Double elimination, 6 teams. Follow the live bracket above for real-time results as matches are played.
+          Double elimination, 6 teams. Click any series for the map-by-map box score. <a href="https://challonge.com/t40oa1gv" target="_blank" rel="noopener">Challonge bracket</a>.
         </p>
 
         <h3 style="color: var(--gold); font-family: var(--font-body); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.04em; margin-bottom: 14px;">Winners Bracket</h3>
@@ -254,10 +255,12 @@ const seriesColumn = {
             </div>
           </div>
           <div class="bracket-col" style="flex: 0 0 220px; align-self: center;">
-            <p style="color: var(--paper-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px;">Finals</p>
-            <div class="pixel-card bracket-match">
-              <p class="bracket-team" style="margin: 0 0 6px;"><span style="color: var(--paper-dim);">1</span> London Royal Ravens</p>
-              <p class="bracket-team" style="margin: 0; color: var(--paper-dim); font-style: italic;">Winner of Losers Bracket</p>
+            <p style="color: var(--paper-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px;">Grand Finals</p>
+            <div class="pixel-card bracket-match" style="border-color: var(--gold);">
+              <a href="/current-season/series/playoffs-grand-finals-london-royal-ravens-vs-detroit-dirty-dogs" style="text-decoration: none; display: block;">
+                <p class="bracket-team" style="margin: 0 0 6px; font-weight: 700;"><span style="color: var(--paper-dim); font-weight: 400;">1</span> London Royal Ravens <span style="float: right; color: var(--gold);">🏆 3-1</span></p>
+                <p class="bracket-team" style="margin: 0; color: var(--paper-dim);"><span>3</span> Detroit Dirty Dogs <span style="float: right;">1-3</span></p>
+              </a>
             </div>
           </div>
         </div>
@@ -289,10 +292,12 @@ const seriesColumn = {
             </div>
           </div>
           <div class="bracket-col" style="flex: 0 0 220px; align-self: center;">
-            <p style="color: var(--paper-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px;">Losers Round 3</p>
+            <p style="color: var(--paper-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px;">Losers Finals</p>
             <div class="pixel-card bracket-match">
-              <p class="bracket-team" style="margin: 0 0 6px;"><span style="color: var(--paper-dim);">3</span> Detroit Dirty Dogs</p>
-              <p class="bracket-team" style="margin: 0;"><span style="color: var(--paper-dim);">2</span> Miami Reapers</p>
+              <a href="/current-season/series/playoffs-losers-finals-detroit-dirty-dogs-vs-miami-reapers" style="text-decoration: none; display: block;">
+                <p class="bracket-team" style="margin: 0 0 6px; font-weight: 700;"><span style="color: var(--paper-dim); font-weight: 400;">3</span> Detroit Dirty Dogs <span style="float: right; color: var(--gold);">✓</span></p>
+                <p class="bracket-team" style="margin: 0; color: var(--paper-dim);"><span>2</span> Miami Reapers <span style="float: right;">0-3</span></p>
+              </a>
             </div>
           </div>
         </div>
