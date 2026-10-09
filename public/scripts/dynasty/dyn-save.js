@@ -18,6 +18,9 @@ DY.unpack = function(str, data){
   var g = JSON.parse(str);
   if (DY.migrate && g && g.teams) DY.migrate(g);
   var by = {}; (data && data.players || []).forEach(function(d){ by[d.n] = d; });
+  // Oct 9: role type / flex / personality from AJ's notes for saves made before they existed
+  Object.keys(g.P).forEach(function(k){ var p = g.P[k], d = p.real && by[p.n], tg = d && d.tags || {};
+    if (p.rtype === undefined){ if (tg.role === "FLEX" && p.flex == null) p.flex = 1; p.rtype = DY.RTYPE[tg.rtype] ? tg.rtype : null; p.flexT = tg.flex || null; p.pers = tg.personality || null; DY.fillTraits(p); } });
   Object.keys(g.P).forEach(function(k){ var p = g.P[k], d = p.real && by[p.n]; if (d){ p.realLine = {seasons:d.seasons, first:d.first, last:d.last, kd:d.kd, m:d.m, hp:d.hp, snd:d.snd, ctl:d.ctl, ip:d.ip, obj:d.obj, war10:d.war10, acc:d.acc, maps:d.maps}; } });
   return g;
 };
@@ -84,7 +87,7 @@ DY.cpuCamps = function(){ G().teams.forEach(function(t){ if (!t.user) DY.autoCam
 DY.setAuto = function(on){ G().settings.auto = !!on; };
 
 /* ---------- UI helpers ---------- */
-DY.setUserLineup = function(ids){ var t = DY.userT(); if (ids.length !== 4 || ids.some(function(i){ return t.roster.indexOf(i) < 0; })) return "Pick 4 players from your roster."; if (DY.offRole(ids) > 0) return "Your lineup needs 2 ARs and 2 SMGs."; t.lineup = ids.slice(); return null; };
+DY.setUserLineup = function(ids){ var t = DY.userT(); if (ids.length !== 4 || ids.some(function(i){ return t.roster.indexOf(i) < 0; })) return "Pick 4 players from your roster."; if (DY.offRole(ids) > DY.MAX_OFF) return "Start at least one AR and one SMG: a lineup can have 3 of one role, and one of them plays off role."; t.lineup = ids.slice(); return null; };
 DY.setUserTag = function(tag){ var t = DY.userT(); if (DY.TAGS.indexOf(tag) < 0) return; t.tag = tag; t.userTag = true; };
 DY.startSeason = function(){ var g = G(); if (g.phase === "preseason"){ if (g.settings.auto && (g.camp || []).length < 2) DY.autoCamp(DY.userT()); DY.cpuCamps(); if (DY.applyTax) DY.applyTax(); if (DY.ensureClass){ g.teams.forEach(function(t){ t.sp = Math.min(t.sp || 0, 8); }); DY.ensureClass(); } g.phase = "season"; DY.news("league", "Season " + g.season + " is LIVE", "Five weeks. Ten matches. Four pools. Top two in each pool go to the winners bracket, third place starts in elimination, fourth place goes home. Let's GO.", {}); } };
 DY.simWeek = function(){ var g = G(), w = g.week, out = []; while (g.phase === "season" && g.week === w){ var r = DY.playRound(); if (r) out.push(r); } return out; };

@@ -6,11 +6,19 @@
   "flags": [
    "glue"
   ],
+  "flex": "AR only",
   "persona": "Loyalty",
+  "personality": "Reserved",
+  "role": "AR",
+  "rtype": "Anchor AR",
   "stage": "Veteran",
   "style": "Slow / anchor",
   "teammate": "Great vibes",
   "tier": "Strong #2"
+ },
+ "AimKun": {
+  "flex": "SMG only",
+  "role": "SMG"
  },
  "Aj": {
   "availability": "Always there",
@@ -19,11 +27,20 @@
   "flags": [
    "objplus"
   ],
+  "flex": "Flexible",
   "persona": "Winning",
+  "personality": "Balanced",
+  "role": "SMG",
+  "rtype": "Well-rounded SMG",
   "stage": "Prime",
   "style": "Balanced",
   "teammate": "Good",
   "tier": "Star / captain"
+ },
+ "Andrix": {
+  "flex": "SMG only",
+  "role": "SMG",
+  "rtype": "Slayer SMG"
  },
  "Aurora": {
   "availability": "Often busy",
@@ -35,32 +52,73 @@
    "mistakes",
    "clutch"
   ],
+  "flex": "SMG only",
   "persona": "Money",
+  "personality": "Balanced",
+  "role": "SMG",
+  "rtype": "Slayer SMG",
   "stage": "Prime",
   "style": "Aggressive",
   "teammate": "Good",
   "tier": "Star / captain"
  },
  "Bleepa": {
+  "availability": "Always there",
+  "best": "Hardpoint",
+  "consistency": "Streaky",
   "flags": [
    "unselfish"
   ],
+  "flex": "AR only",
   "persona": "Balanced",
+  "personality": "Leader / IGL",
+  "role": "AR",
+  "rtype": "Quick AR",
+  "stage": "Veteran",
+  "style": "Fast-paced",
   "teammate": "Great vibes",
-  "tier": "Depth / sub"
+  "tier": "3rd / 4th man"
+ },
+ "Boogey": {
+  "role": "AR"
+ },
+ "Bubbles": {
+  "flex": "AR only",
+  "role": "AR"
+ },
+ "Casperfy": {
+  "flex": "AR only",
+  "role": "AR"
  },
  "Chadwick": {
   "flags": [
    "debut"
-  ]
+  ],
+  "role": "SMG"
+ },
+ "Collision": {
+  "flex": "Flexible",
+  "role": "SMG"
  },
  "CrazieViews": {
+  "availability": "Sometimes busy",
+  "best": "Hardpoint",
+  "consistency": "Very consistent",
   "flags": [
    "lead",
    "iq",
    "rust",
    "conflict"
-  ]
+  ],
+  "flex": "AR only",
+  "persona": "Winning",
+  "personality": "Leader / IGL",
+  "role": "AR",
+  "rtype": "Slayer AR",
+  "stage": "Prime",
+  "style": "Fast-paced",
+  "teammate": "Hard to play with",
+  "tier": "Star / captain"
  },
  "Crooked": {
   "flags": [
@@ -68,16 +126,65 @@
    "iq",
    "rust",
    "clutch"
-  ]
+  ],
+  "role": "SMG"
+ },
+ "Dayz": {
+  "flex": "SMG only",
+  "role": "SMG"
  },
  "Deceptions": {
-  "best": "Hardpoint",
-  "stage": "Young / still improving"
+  "availability": "Sometimes busy",
+  "best": "All modes",
+  "consistency": "Very consistent",
+  "flex": "Flexible",
+  "persona": "Money",
+  "role": "SMG",
+  "rtype": "Slayer SMG",
+  "stage": "Young / still improving",
+  "style": "Aggressive",
+  "tier": "Star / captain"
+ },
+ "DessieLoso": {
+  "flex": "SMG only",
+  "role": "SMG"
  },
  "Docsukii": {
   "flags": [
    "glue"
-  ]
+  ],
+  "role": "AR"
+ },
+ "Dragon": {
+  "best": "Hardpoint",
+  "consistency": "Very consistent",
+  "flex": "Flexible",
+  "persona": "Winning",
+  "personality": "Balanced",
+  "role": "AR",
+  "rtype": "Quick AR",
+  "style": "Fast-paced",
+  "teammate": "Good"
+ },
+ "EJ": {
+  "flex": "Flexible",
+  "role": "SMG"
+ },
+ "Edot": {
+  "flex": "SMG only",
+  "role": "SMG"
+ },
+ "Elive": {
+  "consistency": "Normal",
+  "flex": "AR only",
+  "persona": "Loyalty",
+  "personality": "Balanced",
+  "role": "AR",
+  "rtype": "Anchor AR",
+  "stage": "Veteran",
+  "style": "Slow / anchor",
+  "teammate": "Good",
+  "tier": "3rd / 4th man"
  },
  "Ephrisy": {
   "availability": "Always there",
@@ -85,39 +192,101 @@
   "consistency": "Very consistent",
   "flags": [
    "work",
-   "lazy"
+   "lazy",
+   "clutch"
   ],
   "persona": "Balanced",
+  "role": "AR",
   "stage": "Prime",
   "style": "Balanced",
   "teammate": "Great vibes",
   "tier": "Star / captain"
  },
+ "Godofwarfare": {
+  "flex": "SMG only",
+  "persona": "Loyalty",
+  "role": "SMG",
+  "rtype": "Well-rounded SMG"
+ },
+ "Grihmey": {
+  "flex": "AR only",
+  "role": "AR"
+ },
  "Habibi": {
   "flags": [
    "debut",
    "glue"
-  ]
+  ],
+  "role": "SMG"
+ },
+ "Hazier": {
+  "flex": "Flexible",
+  "role": "AR"
+ },
+ "Hitta": {
+  "best": "SnD",
+  "consistency": "Normal",
+  "flex": "SMG only",
+  "persona": "Winning",
+  "personality": "Balanced",
+  "role": "SMG",
+  "rtype": "Slayer SMG",
+  "stage": "Young / still improving",
+  "style": "Balanced"
+ },
+ "Horror": {
+  "flex": "AR only",
+  "persona": "Balanced",
+  "role": "AR",
+  "teammate": "Great vibes",
+  "tier": "3rd / 4th man"
  },
  "Hype": {
   "availability": "Sometimes busy",
   "best": "Hardpoint",
   "consistency": "Very consistent",
+  "flex": "Flexible",
   "persona": "Money",
+  "personality": "Reserved",
+  "role": "FLEX",
+  "rtype": "Slayer AR",
   "stage": "Prime",
   "style": "Aggressive",
   "teammate": "Good",
   "tier": "Star / captain"
  },
+ "Iconz": {
+  "flex": "SMG only",
+  "role": "SMG",
+  "tier": "3rd / 4th man"
+ },
  "Inkster": {
   "availability": "Sometimes busy",
   "best": "SnD",
   "consistency": "Very consistent",
+  "flex": "Flexible",
   "persona": "Balanced",
+  "personality": "Leader / IGL",
+  "role": "FLEX",
+  "rtype": "Quick AR",
   "stage": "Prime",
   "style": "Balanced",
   "teammate": "Good",
   "tier": "Star / captain"
+ },
+ "Jealous": {
+  "availability": "Always there",
+  "best": "Hardpoint",
+  "consistency": "Very consistent",
+  "flex": "AR only",
+  "persona": "Loyalty",
+  "personality": "Leader / IGL",
+  "role": "AR",
+  "rtype": "Anchor AR",
+  "stage": "Veteran",
+  "style": "Slow / anchor",
+  "teammate": "Great vibes",
+  "tier": "3rd / 4th man"
  },
  "Jmetree": {
   "availability": "Often busy",
@@ -128,17 +297,74 @@
    "objminus",
    "unselfish"
   ],
+  "flex": "AR only",
   "persona": "Winning",
+  "personality": "Balanced",
+  "role": "AR",
+  "rtype": "Quick AR",
   "stage": "Prime",
   "style": "Balanced",
   "teammate": "Great vibes",
+  "tier": "Strong #2"
+ },
+ "Josh": {
+  "flex": "Flexible",
+  "role": "AR",
+  "stage": "Prime",
+  "teammate": "Hard to play with",
+  "tier": "Strong #2"
+ },
+ "Kai": {
+  "availability": "Sometimes busy",
+  "consistency": "Normal",
+  "flex": "Flexible",
+  "persona": "Balanced",
+  "personality": "Balanced",
+  "role": "AR",
+  "rtype": "Slayer AR",
+  "stage": "Prime",
+  "style": "Aggressive",
+  "teammate": "Hard to play with",
   "tier": "Strong #2"
  },
  "Karnij": {
   "flags": [
    "rust",
    "debut"
-  ]
+  ],
+  "role": "AR"
+ },
+ "Killfeed": {
+  "flex": "AR only",
+  "role": "AR"
+ },
+ "Kirchy": {
+  "best": "Hardpoint",
+  "consistency": "Normal",
+  "flex": "SMG only",
+  "persona": "Winning",
+  "personality": "Leader / IGL",
+  "role": "SMG",
+  "rtype": "Well-rounded SMG",
+  "style": "Balanced",
+  "teammate": "Great vibes"
+ },
+ "Lazyy": {
+  "consistency": "Normal",
+  "flex": "AR only",
+  "persona": "Playing time",
+  "personality": "Balanced",
+  "role": "AR",
+  "rtype": "Anchor AR",
+  "stage": "Veteran",
+  "style": "Slow / anchor",
+  "teammate": "Good",
+  "tier": "3rd / 4th man"
+ },
+ "Leib": {
+  "flex": "Flexible",
+  "role": "SMG",
+  "tier": "3rd / 4th man"
  },
  "Lewy": {
   "availability": "Sometimes busy",
@@ -149,30 +375,80 @@
    "mistakes",
    "conflict"
   ],
+  "flex": "Flexible",
   "persona": "Money",
+  "personality": "Leader / IGL",
+  "role": "AR",
+  "rtype": "Quick AR",
   "stage": "Prime",
   "style": "Aggressive",
   "teammate": "Hard to play with",
   "tier": "Strong #2"
+ },
+ "Lurkens": {
+  "flex": "AR only",
+  "role": "AR",
+  "rtype": "Quick AR",
+  "stage": "Young / still improving"
+ },
+ "Mythycall": {
+  "flex": "AR only",
+  "role": "AR",
+  "tier": "3rd / 4th man"
+ },
+ "Nada": {
+  "flex": "Flexible",
+  "role": "AR",
+  "tier": "3rd / 4th man"
  },
  "Nastyy": {
   "availability": "Always there",
   "best": "SnD",
   "consistency": "Streaky",
   "flags": [
-   "lazy"
+   "lazy",
+   "clutch"
   ],
+  "flex": "SMG only",
   "persona": "Balanced",
+  "personality": "Balanced",
+  "role": "SMG",
+  "rtype": "Entry SMG",
   "stage": "Older / declining",
   "style": "Fast-paced",
   "teammate": "Hard to play with",
   "tier": "3rd / 4th man"
  },
+ "Nej": {
+  "flex": "AR only",
+  "role": "AR"
+ },
+ "NickBoston": {
+  "flex": "AR only",
+  "role": "AR"
+ },
+ "Nuance": {
+  "flex": "AR only",
+  "role": "AR"
+ },
+ "Pablo": {
+  "best": "Hardpoint",
+  "consistency": "Normal",
+  "flex": "SMG only",
+  "persona": "Balanced",
+  "personality": "Reserved",
+  "role": "SMG",
+  "rtype": "OBJ SMG",
+  "stage": "Prime",
+  "style": "Balanced",
+  "teammate": "Great vibes"
+ },
  "Peach": {
   "flags": [
    "work",
    "debut"
-  ]
+  ],
+  "role": "AR"
  },
  "Proxzify": {
   "availability": "Sometimes busy",
@@ -181,11 +457,41 @@
   "flags": [
    "iq"
   ],
+  "flex": "AR only",
   "persona": "Balanced",
+  "role": "AR",
+  "rtype": "Anchor AR",
   "stage": "Veteran",
   "style": "Slow / anchor",
   "teammate": "Good",
   "tier": "3rd / 4th man"
+ },
+ "Purp": {
+  "best": "Hardpoint",
+  "consistency": "Normal",
+  "flex": "AR only",
+  "persona": "Money",
+  "role": "AR",
+  "rtype": "Slayer AR",
+  "stage": "Prime",
+  "style": "Slow / anchor"
+ },
+ "Python": {
+  "availability": "Always there",
+  "best": "SnD",
+  "consistency": "Streaky",
+  "flex": "SMG only",
+  "persona": "Loyalty",
+  "personality": "Reserved",
+  "role": "SMG",
+  "rtype": "OBJ SMG",
+  "stage": "Prime",
+  "style": "Objective player",
+  "teammate": "Great vibes",
+  "tier": "3rd / 4th man"
+ },
+ "Realm": {
+  "role": "SMG"
  },
  "Renicide": {
   "availability": "Always there",
@@ -194,11 +500,49 @@
   "flags": [
    "unselfish"
   ],
+  "flex": "Flexible",
   "persona": "Winning",
+  "personality": "Balanced",
+  "role": "SMG",
+  "rtype": "Entry SMG",
   "stage": "Prime",
   "style": "Fast-paced",
   "teammate": "Great vibes",
   "tier": "Star / captain"
+ },
+ "Shadow": {
+  "role": "AR"
+ },
+ "Skapun": {
+  "availability": "Sometimes busy",
+  "best": "Hardpoint",
+  "consistency": "Very consistent",
+  "flex": "SMG only",
+  "persona": "Money",
+  "personality": "Balanced",
+  "role": "SMG",
+  "rtype": "Slayer SMG",
+  "stage": "Prime",
+  "style": "Aggressive",
+  "tier": "Star / captain"
+ },
+ "Starry": {
+  "best": "Control",
+  "consistency": "Normal",
+  "flex": "SMG only",
+  "persona": "Balanced",
+  "personality": "Balanced",
+  "role": "SMG",
+  "rtype": "Well-rounded SMG",
+  "stage": "Prime",
+  "style": "Balanced",
+  "teammate": "Great vibes",
+  "tier": "3rd / 4th man"
+ },
+ "Thermo": {
+  "flex": "SMG only",
+  "role": "SMG",
+  "teammate": "Hard to play with"
  },
  "Toremeant": {
   "best": "All modes",
@@ -206,10 +550,31 @@
   "flags": [
    "mistakes"
   ],
+  "role": "AR",
   "stage": "Prime",
   "style": "Balanced",
   "teammate": "Good",
   "tier": "3rd / 4th man"
+ },
+ "Trap": {
+  "availability": "Always there",
+  "best": "SnD",
+  "consistency": "Very consistent",
+  "flex": "Flexible",
+  "persona": "Winning",
+  "personality": "Balanced",
+  "role": "SMG",
+  "rtype": "Entry SMG",
+  "stage": "Prime",
+  "style": "Fast-paced",
+  "teammate": "Good"
+ },
+ "Tubby": {
+  "consistency": "Streaky",
+  "flex": "Flexible",
+  "persona": "Money",
+  "role": "SMG",
+  "teammate": "Hard to play with"
  },
  "Utopian": {
   "availability": "Always there",
@@ -219,17 +584,46 @@
    "unselfish",
    "glue"
   ],
+  "flex": "Flexible",
   "persona": "Loyalty",
+  "personality": "Reserved",
+  "role": "SMG",
+  "rtype": "OBJ SMG",
   "stage": "Veteran",
   "style": "Balanced",
   "teammate": "Great vibes",
   "tier": "3rd / 4th man"
  },
+ "Verb": {
+  "availability": "Always there",
+  "consistency": "Very consistent",
+  "flex": "AR only",
+  "persona": "Loyalty",
+  "personality": "Leader / IGL",
+  "role": "AR",
+  "rtype": "Anchor AR",
+  "stage": "Prime",
+  "style": "Slow / anchor",
+  "teammate": "Great vibes",
+  "tier": "3rd / 4th man"
+ },
  "Waly": {
+  "availability": "Always there",
+  "best": "Hardpoint",
+  "consistency": "Very consistent",
   "flags": [
    "iq",
    "clutch",
    "conflict"
-  ]
+  ],
+  "flex": "AR only",
+  "persona": "Loyalty",
+  "personality": "Balanced",
+  "role": "AR",
+  "rtype": "Anchor AR",
+  "stage": "Veteran",
+  "style": "Slow / anchor",
+  "teammate": "Hard to play with",
+  "tier": "Strong #2"
  }
 }

@@ -1672,17 +1672,17 @@
       "player": "Bleepa",
       "seasonsLabel": "S2, S3, S4, S5",
       "numQualifyingSeasons": 4,
-      "kills": 1410,
-      "deaths": 1649,
-      "kd": 0.8551,
+      "kills": 1442,
+      "deaths": 1709,
+      "kd": 0.8438,
       "seasonKD": {
         "2": 0.8644,
         "3": 0.8644,
-        "4": 0.7944,
+        "4": 0.7435,
         "5": 0.869
       },
-      "maps": 83,
-      "avgSeasonOverall": 72.4,
+      "maps": 86,
+      "avgSeasonOverall": 83.9,
       "playerOverall": 76,
       "accolades": "",
       "careerWar": -2.3,
@@ -1691,7 +1691,7 @@
       "warPlus": -2.32,
       "bestSeasonWar": -0.08,
       "seriesW": 5,
-      "seriesL": 13,
+      "seriesL": 14,
       "warPlus10": -0.27
     },
     {
@@ -3287,7 +3287,9 @@
     "shasta": "Shasta",
     "kael": "Kael",
     "jah": "Jah",
-    "n8dogg": "N8DOGG"
+    "n8dogg": "N8DOGG",
+    "poobs": "Bleepa",
+    "Poobs": "Bleepa"
   },
   "hallOfFame": [
     {
@@ -8461,21 +8463,21 @@
           "player": "Bleepa",
           "displayName": "Bleepa",
           "team": "LA Reapers",
-          "kills": 197,
-          "deaths": 248,
-          "kd": 0.7944,
-          "maps": 12,
-          "hpKd": 0.7403,
-          "sndKd": 1.1,
-          "ctlKd": 0.8243,
-          "interactionsPerMap": 37.08,
-          "allStarScore": 0.7952,
+          "kills": 32,
+          "deaths": 60,
+          "kd": 0.5333,
+          "maps": 3,
+          "hpKd": 0.4516,
+          "sndKd": 0.375,
+          "ctlKd": 0.7143,
+          "interactionsPerMap": 30.67,
+          "allStarScore": 0.6553,
           "overall": 67,
-          "seriesPlayed": 3,
+          "seriesPlayed": 1,
           "honors": [],
           "allStar": "",
           "war": -1.0981,
-          "war10": -0.9151,
+          "war10": -3.6604,
           "warRank": 60
         },
         {
@@ -8981,7 +8983,7 @@
             },
             {
               "player": "Bleepa",
-              "kd": 0.7944,
+              "kd": 0.5333,
               "overall": 67
             },
             {

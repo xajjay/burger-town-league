@@ -195,7 +195,7 @@ function pcOverview(p){
   var sk = hidden ? X.prospectView(p)
     : '<div class="bars">' + DY.ATTR.map(function(k){ return X.bar(DY.ATTR_NAME[k], p.at[k], 99, ATTR_COL[k]); }).join("") + '</div>';
   h += '<div class="card"><h3>Skillset</h3>' + sk + '</div>';
-  var tr = '<div class="bars">' + X.bar("Entry / first bloods", p.entry, 100, "c3") + X.bar("Clutch", p.clutch, 100, "c2") + X.bar("Consistency", p.cons, 100, "c4") + X.bar("Leadership", p.lead, 100) + X.bar("Teammate", p.chem, 100, "c4") + X.bar("Work ethic", p.work, 100, "c2") + X.bar("Availability", 100 - p.avail * 600, 100, "", Math.round((1 - p.avail) * 100) + "%") + '</div>';
+  var tr = '<div class="row" style="gap:6px;margin-bottom:8px;flex-wrap:wrap">' + [p.rtype, p.flex != null ? "FLEX: either role" : p.flexT, p.pers].filter(Boolean).map(function(x){ return '<span class="badge">' + esc(x) + '</span>'; }).join("") + '</div><div class="bars">' + X.bar("Entry / first bloods", p.entry, 100, "c3") + X.bar("Clutch", p.clutch, 100, "c2") + X.bar("Consistency", p.cons, 100, "c4") + X.bar("Leadership", p.lead, 100) + X.bar("Teammate", p.chem, 100, "c4") + X.bar("Work ethic", p.work, 100, "c2") + X.bar("Availability", 100 - p.avail * 600, 100, "", Math.round((1 - p.avail) * 100) + "%") + '</div>';
   var know = hidden ? DY.scoutView(p, g.user).lvl : 4;
   h += '<div class="card"><h3>Traits</h3>' + (know >= 3 ? tr : '<p class="muted" style="margin:0">Scout him to level 3 to learn his traits and work habits.</p>') + '</div>';
   // personality

@@ -164,6 +164,26 @@ print('unmapped (no All Seasons alias):',sorted(unmapped))
 for t in teams:
     t['fa']=bool(t.get('fa')); t['elig']= (not t['fa']) and bool(t['p']) and ((t['rank'] is not None and t['rank']<=4) or t['champ'] or t['ru'])
 print('eligible opponents:',[(t['s'],t['name']) for t in teams if t['elig']])
+# one person, two gamertags in the same season (e.g. Bleepa + Poobs in S4): fold the free-agent line into his rostered line
+_fa = {pid for t in teams if t['fa'] for pid in t['p']}
+_main = {(q['c'], q['s']): q for q in players if q['id'] not in _fa}
+_drop = set()
+for q in players:
+    if q['id'] in _fa and (q['c'], q['s']) in _main:
+        x = _main[(q['c'], q['s'])]; m0, m1 = x['m'], q['m']
+        for key in ('rk', 'sk', 'ip'):
+            if x[key] is not None and q[key] is not None: x[key] = round((x[key] * m0 + q[key] * m1) / max(1, m0 + m1), 3)
+        x['k'] += q['k']; x['d'] += q['d']; x['m'] = m0 + m1; x['kd'] = round(x['k'] / max(1, x['d']), 3); _drop.add(q['id'])
+        print('merged', q['n'], 'into', x['n'], 'S%d' % q['s'])
+if _drop:
+    _new = {}
+    players = [q for q in players if q['id'] not in _drop]
+    for i, q in enumerate(players): _new[q['id']] = i; q['id'] = i
+    for t in teams: t['p'] = [_new[i] for i in t['p'] if i in _new]
+    teams = [t for t in teams if t['p'] or not t['fa']]
+    _tid = {}
+    for i, t in enumerate(teams): _tid[t['id']] = i; t['id'] = i
+    for q in players: q['t'] = _tid[q['t']]
 json.dump(dict(players=players,teams=teams),open(OUT,'w'),separators=(',',':'))
 print(len(players),'player-seasons',len(teams),'teams', len(json.dumps(players))//1024,'KB')
 import collections

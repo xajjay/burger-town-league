@@ -52,20 +52,43 @@ DY.canField = function(ids){ var c = DY.roleCounts(ids); return Math.max(0, 2 - 
 DY.roleFeasible = function(ids){ return DY.offRole(ids.length >= 4 ? ids : ids) <= Math.max(0, DY.ROSTER - ids.length) || (function(){ var c = DY.roleCounts(ids); return Math.max(0, Math.max(0, 2 - c.ar) + Math.max(0, 2 - c.smg) - c.fx) <= DY.ROSTER - ids.length; })(); };
 DY.validRoster = function(ids){ return ids.length >= 4 && ids.length <= DY.ROSTER && DY.canField(ids); };
 DY.offRole = function(ids){ var c = DY.roleCounts(ids); return Math.max(0, Math.max(0, 2 - c.ar) + Math.max(0, 2 - c.smg) - c.fx); };
+/* Off role: a lineup can start 3 of one role; one of them plays the other role. The cost (in team-average rating points)
+   depends on how flexible he is: true FLEX 0, Flexible 0.7, untagged 2.2, "SMG only" / "AR only" 3.2. */
+DY.offCost = function(p){ return p.flex != null ? 0 : p.flexT === "Flexible" ? 0.7 : (p.flexT === "SMG only" || p.flexT === "AR only") ? 3.2 : 2.2; };
+DY.MAX_OFF = 1;
+// who plays what: {roles:{id:"AR"|"SMG"}, off:[ids playing off role], cost}. The most flexible player takes the off-role spot.
+DY.lineRoles = function(ids){
+  var P = G().P, roles = {}, ar = [], smg = [], fx = [];
+  ids.forEach(function(id){ var p = P[id]; if (p.flex != null) fx.push(p); else (p.role === "AR" ? ar : smg).push(p); });
+  ar.forEach(function(p){ roles[p.id] = "AR"; }); smg.forEach(function(p){ roles[p.id] = "SMG"; });
+  fx.sort(function(a, b){ return b.ovr - a.ovr; }).forEach(function(p){ var nA = ids.filter(function(i){ return roles[i] === "AR"; }).length, nS = ids.filter(function(i){ return roles[i] === "SMG"; }).length; roles[p.id] = nA <= nS ? "AR" : "SMG"; });
+  var off = [], cost = 0;
+  ["AR", "SMG"].forEach(function(r){
+    var o = r === "AR" ? "SMG" : "AR";
+    while (ids.filter(function(i){ return roles[i] === r; }).length < Math.min(2, ids.length - 2)){
+      var cand = ids.filter(function(i){ return roles[i] === o && P[i].flex == null && off.indexOf(i) < 0; }).sort(function(a, b){ return DY.offCost(P[a]) - DY.offCost(P[b]) || P[a].ovr - P[b].ovr; });
+      if (!cand.length) break; roles[cand[0]] = r; off.push(cand[0]); cost += DY.offCost(P[cand[0]]);
+    }
+  });
+  return {roles:roles, off:off, cost:cost};
+};
+DY.offPen = function(ids){ return DY.lineRoles(ids).cost; };
+DY.lineupOk = function(ids){ return ids.length === 4 && DY.offRole(ids) <= DY.MAX_OFF; };
 DY.playerVal = function(p){ return p.ovr + p.form + p.hot + (p.rel - 55) / 30; };
 DY.bestLineup = function(ids){
   var P = G().P; if (ids.length <= 4) return ids.slice();
   var best = null, bv = -1e9;
   var combos = [];
   (function rec(start, cur){ if (cur.length === 4){ combos.push(cur.slice()); return; } for (var i = start; i < ids.length; i++){ cur.push(ids[i]); rec(i + 1, cur); cur.pop(); } })(0, []);
-  combos.forEach(function(l){ var v = sum(l.map(function(i){ return DY.playerVal(P[i]); })) - 6 * DY.offRole(l); if (v > bv){ bv = v; best = l; } });
+  combos.forEach(function(l){ if (DY.offRole(l) > DY.MAX_OFF) return; var v = sum(l.map(function(i){ return DY.playerVal(P[i]); })) - 4 * DY.offPen(l); if (v > bv){ bv = v; best = l; } });
+  if (!best) combos.forEach(function(l){ var v = sum(l.map(function(i){ return DY.playerVal(P[i]); })) - 6 * DY.offRole(l); if (v > bv){ bv = v; best = l; } });
   return best;
 };
 DY.fixLineup = function(t){
   var l = (t.lineup || []).filter(function(i){ return t.roster.indexOf(i) >= 0; });
   if (t.user && G().settings.auto){ t.lineup = DY.bestLineup(t.roster); return; }
-  if (t.user && l.length === 4 && DY.offRole(l) === 0) { t.lineup = l; return; }
-  if (t.user && l.length < 4){ var rest = t.roster.filter(function(i){ return l.indexOf(i) < 0; }).sort(function(a, b){ return DY.playerVal(G().P[b]) - DY.playerVal(G().P[a]); }); while (l.length < 4 && rest.length) l.push(rest.shift()); if (DY.offRole(l) === 0){ t.lineup = l; return; } }
+  if (t.user && DY.lineupOk(l)) { t.lineup = l; return; }
+  if (t.user && l.length < 4){ var rest = t.roster.filter(function(i){ return l.indexOf(i) < 0; }).sort(function(a, b){ return DY.playerVal(G().P[b]) - DY.playerVal(G().P[a]); }); while (l.length < 4 && rest.length) l.push(rest.shift()); if (DY.lineupOk(l)){ t.lineup = l; return; } }
   t.lineup = DY.bestLineup(t.roster);
 };
 DY.sub = function(t){ return t.roster.find(function(i){ return t.lineup.indexOf(i) < 0; }); };
@@ -80,7 +103,7 @@ DY.chem = function(t){
 };
 DY.teamRating = function(t, ids){
   var P = G().P; ids = ids || (t.lineup.length ? t.lineup : DY.bestLineup(t.roster)); if (!ids || !ids.length) return 60;
-  return mean(ids.map(function(i){ return P[i].ovr; })) - 3 * DY.offRole(ids) + DY.chem(t) * 0.6;
+  return mean(ids.map(function(i){ return P[i].ovr; })) - DY.offPen(ids) - 3 * Math.max(0, DY.offRole(ids) - DY.MAX_OFF) + DY.chem(t) * 0.6;
 };
 DY.modeRating = function(t, m){ var P = G().P, ids = t.lineup.length ? t.lineup : t.roster; return mean(ids.map(function(i){ return DY.modeEff(P[i], m); })); };
 
@@ -224,7 +247,7 @@ DY.MAP_W = {HP:{Raid:70, Checkmate:63, Garrison:16, Moscow:14, Apocalypse:10}, S
 DY.FINALS = {W7:1, L10:1, GF:1, GF2:1};
 function splitInt(total, w){ var s = sum(w) || 1, raw = w.map(function(x){ return total * x / s; }), out = raw.map(Math.floor), rem = Math.round(total) - sum(out); raw.map(function(r, i){ return [r - out[i], i]; }).sort(function(a, b){ return b[0] - a[0]; }).forEach(function(x){ if (rem > 0){ out[x[1]]++; rem--; } }); return out; }
 function moodEff(p){ return p.form + p.hot + (p.rel - 55) / 45 + (p.trq ? -0.8 : 0); }
-function sideEff(side, m, map){ return mean(side.ps.map(function(p){ return DY.modeEff(p, m) + moodEff(p) + DY.mapAff(p, m, map) * 0.8; })) + side.chem - 3 * side.off; }
+function sideEff(side, m, map){ return mean(side.ps.map(function(p){ return DY.modeEff(p, m) + moodEff(p) + DY.mapAff(p, m, map) * 0.8; })) + side.chem - side.off; }
 DY.rollLineup = function(t, playoffs, finals){
   var g = G(), ids = t.lineup.slice(), sub = DY.sub(t), notes = [];
   if (sub != null && !finals) for (var k = 0; k < ids.length; k++){ var p = g.P[ids[k]]; if (chance(p.avail * (playoffs ? 0.25 : 1))){ notes.push({out:ids[k], inn:sub}); ids[k] = sub; break; } }
@@ -262,7 +285,7 @@ function recInc(o, k, won){ var r = o[k] || (o[k] = [0, 0]); r[won ? 0 : 1]++; }
 // One best-of-5 series. bucket: "reg" | "po" | "mi". ctx: {ta, tb} team objects (main league) for map/mode records.
 DY.simSeries = function(A, B, bucket, detail, bo, ctx){
   var g = G(); bo = bo || 5; var need = Math.ceil(bo / 2); ctx = ctx || {};
-  var mk = function(s){ return {ps:s.ids.map(function(i){ return g.P[i]; }), chem:s.chem || 0, off:DY.offRole(s.ids)}; };
+  var mk = function(s){ var lr = DY.lineRoles(s.ids); return {ps:s.ids.map(function(i){ return g.P[i]; }), chem:s.chem || 0, off:lr.cost + 3 * Math.max(0, lr.off.length - DY.MAX_OFF), roles:lr.roles}; };
   var a = mk(A), b = mk(B), fa = gauss() * 1.1, fb = gauss() * 1.1, wa = 0, wb = 0, maps = [], used = {}, tot = {};
   a.ps.concat(b.ps).forEach(function(p){ p.night = clamp(1 + gauss() * (0.05 + (100 - p.cons) / 1000), 0.75, 1.3); });
   a.ps.concat(b.ps).forEach(function(p){ tot[p.id] = {k:0, d:0, war:0, m:0}; });
@@ -303,7 +326,7 @@ DY.visInput = function(a, b, p, map, mode){
   var r1 = function(x){ return Math.round(x * 10) / 10; };
   var sk = function(pl){ return mode === "SND" ? pl.at.snd * 0.5 + pl.at.gun * 0.5 : mode === "HP" ? pl.at.hp * 0.4 + pl.at.gun * 0.6 : pl.at.ctl * 0.4 + pl.at.gun * 0.6; };
   var side = function(s){ var gs = s.ps.map(function(pl){ return sk(pl) + DY.mapAff(pl, mode, map) + pl.form + pl.hot; }), m = mean(gs);
-    return s.ps.map(function(pl, i){ return {r:pl.role, gs:r1(78 + gs[i] - m), ob:Math.round(pl.at.obj), hs:Math.round(mode === "HP" ? pl.at.hp : mode === "SND" ? pl.at.snd : pl.at.ctl), en:Math.round(pl.entry), cl:Math.round(pl.clutch), ni:Math.round((pl.night || 1) * 100) / 100}; }); };
+    return s.ps.map(function(pl, i){ var r = (s.roles && s.roles[pl.id]) || pl.role, offR = r !== pl.role && pl.flex == null; return {r:r, gs:r1(78 + gs[i] - m - (offR ? DY.offCost(pl) * 3 : 0)), ob:Math.round(pl.at.obj), hs:Math.round(mode === "HP" ? pl.at.hp : mode === "SND" ? pl.at.snd : pl.at.ctl), en:Math.round(pl.entry), cl:Math.round(pl.clutch), ni:Math.round((pl.night || 1) * 100) / 100}; }); };
   var q = clamp(p, 0.03, 0.97), C = DY.VIS_C[mode] || 34, e = Math.exp(Math.log(q / (1 - q)) / C);
   return {map:map, mode:mode, v:DY.MS.VERSION, seed:rint(1, 2000000000), edge:[Math.round(e * 10000) / 10000, Math.round(10000 / e) / 10000], ps:side(a).concat(side(b))};
 };

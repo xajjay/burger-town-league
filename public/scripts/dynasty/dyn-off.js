@@ -256,6 +256,7 @@ DY.rookieClass = function(prospects){
     if (hold) p.pri = DY.randPri({win:.25, pt:.05});
     p.persona = DY.personaLabel(p.pri);
     p.style = p.entry >= 72 ? "Aggressive" : p.entry >= 62 ? "Fast-paced" : p.entry <= 36 ? "Slow / anchor" : p.at.obj >= 80 && p.role === "SMG" ? "Objective player" : "Balanced";
+    p.rtype = null; p.flexT = null; p.pers = null; DY.fillTraits(p);
     var bias = arche === "gem" ? -5 : arche === "bust" ? 5 : 0, cbias = arche === "gem" ? -7 : arche === "bust" ? 8 : 0;
     var est = clamp(p.ovr + gauss() * 3.2 + bias, 55, 92), estC = clamp(p.ceil + gauss() * 3.2 + cbias, est, 99);
     p.potG = DY.gradeFor(estC);

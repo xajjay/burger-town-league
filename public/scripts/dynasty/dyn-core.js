@@ -132,6 +132,29 @@ var HAND = {
 
 /* AJ's calls: objective players the data doesn't capture (or under-sells). [low, high] objective range per dynasty. */
 DY.OBJ_BOOST = {Starry:[88, 94], Dez:[86, 92], Jealous:[88, 94], Python:[88, 94], Bleepa:[87, 93]};
+/* AJ's role types (Player Notes): small skill / aggression leanings on top of the stats. entry = where his aggression sits (0-100). */
+DY.RTYPE = {
+  "Slayer SMG":{role:"SMG", gun:2, obj:-3, entry:76, style:"Aggressive"},
+  "OBJ SMG":{role:"SMG", gun:-1, obj:7, entry:52, style:"Objective player"},
+  "Entry SMG":{role:"SMG", entry:88, obj:-1, style:"Aggressive"},
+  "Well-rounded SMG":{role:"SMG", gun:1, obj:2, entry:60, style:"Balanced"},
+  "Anchor AR":{role:"AR", gun:1, obj:-2, entry:26, style:"Slow / anchor"},
+  "Quick AR":{role:"AR", obj:1, entry:66, style:"Fast-paced"},
+  "Slayer AR":{role:"AR", gun:2.5, obj:-2, entry:58, style:"Balanced"}
+};
+DY.RTYPES = {SMG:["Slayer SMG", "OBJ SMG", "Entry SMG", "Well-rounded SMG"], AR:["Anchor AR", "Quick AR", "Slayer AR"]};
+DY.PERS = ["Leader / IGL", "Balanced", "Reserved"];
+// best-guess role type from a player's numbers (rookies, fictional players, old saves)
+DY.guessRtype = function(p){
+  if (p.role === "SMG") return p.at.obj >= 82 ? "OBJ SMG" : p.entry >= 80 ? "Entry SMG" : p.entry >= 66 ? "Slayer SMG" : "Well-rounded SMG";
+  return p.entry <= 38 ? "Anchor AR" : p.entry >= 62 ? "Quick AR" : "Slayer AR";
+};
+// role type, flex and personality for players without notes
+DY.fillTraits = function(p){
+  if (!p.rtype) p.rtype = DY.guessRtype(p);
+  if (p.flexT === undefined || p.flexT === null) p.flexT = p.flex != null ? "Flexible" : chance(0.3) ? "Flexible" : p.role === "SMG" ? "SMG only" : "AR only";
+  if (!p.pers) p.pers = p.lead >= 82 ? "Leader / IGL" : p.lead <= 44 ? "Reserved" : "Balanced";
+};
 /* ---------------- player creation ---------------- */
 DY.newStats = function(){ return {m:0, k:0, d:0, hm:0, hk:0, hd:0, sm:0, sk:0, sd:0, cm:0, ck:0, cd:0, hill:0, pl:0, df:0, fb:0, fd:0, ok:0, war:0, sw:0, sl:0, best:0}; };
 DY.addStats = function(a, b){ Object.keys(b).forEach(function(k){ if (k === "best") a.best = Math.max(a.best || 0, b.best || 0); else a[k] = (a[k] || 0) + (b[k] || 0); }); return a; };
@@ -154,6 +177,11 @@ var TAGMAP = {
 DY.realPlayer = function(d, id, N){
   var p = baseP(id, d.n), h = HAND[d.n] || {}, tg = d.tags || {}, fl = tg.flags || [], has = function(f){ return fl.indexOf(f) >= 0; };
   p.real = true; p.role = d.r === "SMG" ? "SMG" : "AR";
+  if (tg.role === "AR" || tg.role === "SMG") p.role = tg.role;            // AJ's call on his main role
+  else if (tg.role === "FLEX"){ p.flex = 1; }                             // true flex: plays either role at full strength
+  var RT = DY.RTYPE[tg.rtype];
+  if (RT && !tg.role && p.flex == null) p.role = RT.role;
+  p.rtype = RT ? tg.rtype : null; p.flexT = tg.flex || (p.flex != null ? "Flexible" : null); p.pers = tg.personality || null;
   // skills are built from his TALENT (career overall minus longevity/trophy credit); the rest of his overall is reputation (p.ovrAdj) that fades over the years
   var shrink = function(n, k){ return n / (n + k); }, m = d.m, base = d.ovr - 1 - (d.tal != null ? Math.max(0, d.ovr - d.tal) * 0.6 : 0);
   var f = N.fit[p.role], resid = d.kd - (f.a + f.b * d.ovr);
@@ -180,11 +208,13 @@ DY.realPlayer = function(d, id, N){
   if (has("objplus")) obj += 4; if (has("objminus")) obj -= 9; if (tg.style === "Objective player") obj += 8; if (tg.style === "Slow / anchor") obj -= 3;
   if (OB) obj = Math.max(obj, rr(OB[0], OB[1]));
   at.obj = obj;
+  if (RT){ at.gun += RT.gun || 0; at.obj += RT.obj || 0; }
   DY.ATTR.forEach(function(k){ at[k] = clamp(at[k], 40, 99); });
   p.at = at; p.ovrAdj = 0; p.ovrAdj = d.ovr - DY.calcOvr(at); DY.setOvr(p);
   // first bloods / aggression
   var entryData = o && o.fb != null ? clamp(50 + (o.fb - 1.2) * 22 * shrink(o.fbN, 4) + (d.ip - 37) * 1.2, 15, 95) : clamp(50 + (d.ip - 37) * 2.2 + gauss() * 7, 15, 95);
   p.entry = tg.style ? Math.round(entryData * 0.4 + TAGMAP.entry[tg.style] * 0.6) : entryData;
+  if (RT) p.entry = Math.round(clamp(p.entry * 0.55 + RT.entry * 0.45, 10, 97));
   // career clock: stage tag, or league experience (one recent season = still rising)
   p.exp0 = d.seasons; p.yrs = d.seasons;
   var ar = TAGMAP.age[tg.stage];
@@ -206,6 +236,8 @@ DY.realPlayer = function(d, id, N){
   p.chem = TAGMAP.chem[tg.teammate] != null ? TAGMAP.chem[tg.teammate] + gauss() * 3 : (h.chem || clamp(68 + gauss() * 12, 30, 95));
   if (has("conflict")) p.chem -= 12; if (has("unselfish") || has("glue")) p.chem += 5;
   if (d.n === "Jealous"){ p.chem = Math.max(p.chem, rr(86, 93)); p.lead = Math.max(p.lead, rr(82, 90)); }   // a great teammate and a voice in the room
+  if (p.pers === "Leader / IGL") p.lead = Math.max(p.lead, rr(84, 94));
+  else if (p.pers === "Reserved"){ p.lead = Math.min(p.lead, rr(36, 52)); p.chem += 2; }
   p.work = has("work") ? rr(86, 95) : has("lazy") ? rr(45, 58) : (h.work || clamp(62 + gauss() * 12, 30, 95));
   p.avail = TAGMAP.avail[tg.availability] != null ? TAGMAP.avail[tg.availability] : (h.avail || clamp(.02 + Math.abs(gauss()) * .012, .008, .06));
   if (has("rust")) p.avail += 0.015;
@@ -214,13 +246,14 @@ DY.realPlayer = function(d, id, N){
   p.pri = pb ? randPri(pb) : h.pri ? Object.assign({}, h.pri) : randPri(d.acc.mvp + d.acc.as1 >= 2 ? {win:.08} : null);
   if (has("unselfish")){ p.pri.money = Math.max(.05, p.pri.money - .08); }
   p.persona = DY.personaLabel(p.pri);
-  p.style = tg.style || (p.entry >= 72 ? "Aggressive" : p.entry >= 62 ? "Fast-paced" : p.entry <= 36 ? "Slow / anchor" : at.obj >= 82 && p.role === "SMG" ? "Objective player" : "Balanced");
+  p.style = tg.style || (RT && RT.style) || (p.entry >= 72 ? "Aggressive" : p.entry >= 62 ? "Fast-paced" : p.entry <= 36 ? "Slow / anchor" : at.obj >= 82 && p.role === "SMG" ? "Objective player" : "Balanced");
   p.tier = tg.tier || null;
   p.flags = fl.slice();
   p.rep = d.acc.mvp * 3 + d.acc.as1 * 1.5 + d.acc.as2 + d.acc.champ * 1.2;
   p.realLine = {seasons:d.seasons, first:d.first, last:d.last, kd:d.kd, m:d.m, hp:d.hp, snd:d.snd, ctl:d.ctl, ip:d.ip, obj:d.obj, war10:d.war10, acc:d.acc, maps:d.maps};
   p.maps = DY.mapAffinity(d);
   p.potG = DY.gradeFor(ceil0 + gauss() * (p.age <= 23 ? 2.5 : 1));
+  DY.fillTraits(p);
   return p;
 };
 // map preferences from real Season 5-6 map-by-map K/D (vs his own mode K/D), shrunk for small samples
